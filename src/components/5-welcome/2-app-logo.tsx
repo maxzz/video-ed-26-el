@@ -13,11 +13,11 @@ import { APP_NAME } from "./a-ui-app-page";
  * before the morph runs. The box also stacks above the Welcome piece copies: those cover the
  * page for a frame before the snapshot, and a hidden ancestor would hide the SVG with them.
  */
-export function AppLogo({ className, ...rest }: HTMLAttributes<HTMLDivElement>) {
+export function AppLogo({ className, iconClasses, ...rest }: HTMLAttributes<HTMLDivElement> & { iconClasses?: string }) {
     return (
         <ViewTransition name={APP_LOGO_VT_NAME} share="vt-logo-share">
             <div className={classNames("relative shrink-0 inline-block", className, "z-10")} {...rest}>
-                <AppLogoImage className="block size-full" />
+                <AppLogoImage className={classNames("block size-full", iconClasses)} />
             </div>
         </ViewTransition>
     );

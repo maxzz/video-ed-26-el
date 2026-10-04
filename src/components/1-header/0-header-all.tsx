@@ -17,8 +17,7 @@ export function Header() {
                 title="Show the Welcome page"
                 type="button"
             >
-                <AppLogo className="size-6" />
-                {APP_NAME}
+                <AppLogo className="size-4.5" iconClasses="stroke-[0.75]!" />
             </button>
 
             <AppMenu />

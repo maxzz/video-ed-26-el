@@ -3,7 +3,7 @@ import { useAtom, useAtomValue } from 'jotai';
 import { useSnapshot } from 'valtio';
 import { classNames } from '@/utils';
 import { appSettings, type WelcomeTransition } from '@/store/1-ui-settings';
-import { welcomeLogoClasses, WelcomeContent } from './1-welcome-content';
+import { welcomeLogoClasses, welcomeLogoIconClasses, WelcomeContent } from './1-welcome-content';
 import { AppLogo } from './2-app-logo';
 import { WelcomePieces } from './3-welcome-pieces';
 import { MainPage, mainPageAtom, TRANSITION_TYPE_TO_MAIN, TRANSITION_TYPE_TO_WELCOME, welcomeSplitAtom } from './a-ui-app-page';
@@ -79,7 +79,7 @@ function WelcomePage() {
 
     return (<>
         {/* While split, the live page is hidden behind its piece copies; only the logo stays visible */}
-        <WelcomeContent className={classNames(split && "invisible")} logo={<AppLogo className={classNames(welcomeLogoClasses, "visible")} />} />
+        <WelcomeContent className={classNames(split && "invisible")} logo={<AppLogo className={classNames(welcomeLogoClasses, "visible")} iconClasses={welcomeLogoIconClasses} />} />
 
         {split && <WelcomePieces onJoin={() => setSplit(false)} />}
     </>);

@@ -38,6 +38,7 @@ export function WelcomeContent({ logo, className, ...rest }: { logo: ReactNode; 
 }
 
 export const welcomeLogoClasses = "size-36 drop-shadow-xl";
+export const welcomeLogoIconClasses = "stroke-[0.5]! stroke-primary/70!";
 
 function EnterButton() {
     const navigate = useSetAtom(navigateToPageAtom);

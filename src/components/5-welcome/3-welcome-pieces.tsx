@@ -3,7 +3,7 @@ import { useSnapshot } from "valtio";
 import { classNames } from "@/utils";
 import { appSettings, type WelcomeTransition } from "@/store/1-ui-settings";
 
-import { welcomeLogoClasses, WelcomeContent } from "./1-welcome-content";
+import { welcomeLogoClasses, WelcomeContent, welcomeLogoIconClasses } from "./1-welcome-content";
 import { AppLogoImage } from "./2-app-logo";
 import { TRANSITION_TYPE_TO_MAIN, TRANSITION_TYPE_TO_WELCOME } from "./a-ui-app-page";
 
@@ -28,7 +28,7 @@ export function WelcomePieces({ onJoin }: { onJoin: () => void; }) {
             >
                 <div className={classNames("absolute overflow-hidden", anchor, frame)} aria-hidden>
                     <div className={classNames("absolute", anchor, content)}>
-                        <WelcomeContent className="h-full" logo={<AppLogoImage className={classNames(welcomeLogoClasses, "invisible")} />} inert />
+                        <WelcomeContent className="h-full" logo={<AppLogoImage className={classNames(welcomeLogoClasses, "invisible", welcomeLogoIconClasses)} />} inert />
                     </div>
                 </div>
             </ViewTransition>
