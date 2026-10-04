@@ -4,7 +4,7 @@ import { CheckIcon, ChevronRightIcon } from "lucide-react";
 import { Menubar as MenubarPrimitive } from "radix-ui";
 
 export function Menubar({ className, ...rest }: ComponentProps<typeof MenubarPrimitive.Root>) {
-    return <MenubarPrimitive.Root data-slot="menubar" className={cn("p-0.75 h-8 border rounded-lg flex items-center gap-0.5", className)} {...rest} />;
+    return <MenubarPrimitive.Root data-slot="menubar" className={cn("p-0.75 h-8 border rounded-lg flex items-center", className)} {...rest} />;
 }
 
 export function MenubarMenu({ ...rest }: ComponentProps<typeof MenubarPrimitive.Menu>) {
@@ -27,13 +27,13 @@ export function MenubarTrigger({ className, ...rest }: ComponentProps<typeof Men
     return (
         <MenubarPrimitive.Trigger
             data-slot="menubar-trigger"
-            className={cn("select-none px-1.5 py-0.5 text-xs font-medium hover:bg-muted aria-expanded:bg-muted outline-hidden rounded-sm flex items-center", className)}
+            className={cn("select-none px-1.25 py-1.25 text-xs font-medium hover:bg-muted aria-expanded:bg-muted outline-hidden rounded flex items-center", className)}
             {...rest}
         />
     );
 }
 
-export function MenubarContent({ className, align = "start", alignOffset = -4, sideOffset = 8, ...rest }: ComponentProps<typeof MenubarPrimitive.Content>) {
+export function MenubarContent({ className, align = "start", alignOffset = -1, sideOffset = 2, ...rest }: ComponentProps<typeof MenubarPrimitive.Content>) {
     return (
         <MenubarPortal>
             <MenubarPrimitive.Content
@@ -66,7 +66,7 @@ data-open:zoom-in-95 \
 \
 ring-1 \
 ring-foreground/10 \
-rounded-lg \
+rounded \
 shadow-md \
 overflow-hidden \
 z-50";
