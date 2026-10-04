@@ -1,15 +1,15 @@
 ---
 name: Web application menu
-overview: Replace the Electron application menu with a shadcn menubar in the web UI. Every item calls one dispatcher, `runMenuAction`, whose argument is a `what` payload; that function sends editor commands to the existing action registry and host commands to a single Electron IPC method.
+overview: Replace the Electron application menu with a shadcn menubar in the web UI. Web and Electron each get one menu-actions folder that lists every entry point; those entries call implementations that stay in their existing modules.
 todos:
   - id: host-action-contract
-    content: Add HostMenuAction and performHostAction to the IPC contract, Electron dispatcher, window/shell implementations, and the web mock.
+    content: Add HostMenuAction and performHostAction, with the Electron catalog in electron/main/menu-actions/ calling window, shell, and about implementations.
     status: pending
   - id: remove-native-menu
     content: Remove the custom Electron menu, hide the bar on Windows/Linux, keep a minimal macOS app menu, and drop setMenuState.
     status: pending
   - id: run-menu-action
-    content: Add runMenuAction with the what-union, editor dispatch via runAction, and edit-command for clipboard roles.
+    content: Add src/editor/0-core/menu-actions/ with a listing file and sibling entry files that call feature implementations or the Electron catalog.
     status: pending
   - id: shadcn-menubar
     content: Build the shadcn AppMenu from the current menu tree and mount it in the app header.
@@ -29,36 +29,43 @@ The native menu in [electron/main/menu.ts](electron/main/menu.ts) is the only to
 
 ```mermaid
 flowchart LR
-  item[Menubar item] --> runMenuAction
-  runMenuAction -->|editor what| runAction
-  runAction --> features[Feature functions]
-  runMenuAction -->|edit what| editCmd[document.execCommand]
-  runMenuAction -->|host what| performHostAction
-  performHostAction --> hostImpl[Electron window and shell]
+  item[Menubar item] --> webIndex["web menu-actions/index.ts"]
+  webIndex --> webEntries[Sibling web entry files]
+  webEntries --> features[Feature implementations]
+  webEntries --> hostEntry["web host.ts"]
+  hostEntry --> electronIndex["electron menu-actions/index.ts"]
+  electronIndex --> electronEntries[Sibling Electron entry files]
+  electronEntries --> electronImpl[Window shell and about implementations]
 ```
 
+## Two catalogs, one per world
 
+Entry points are centralized so a call from the web UI into Electron is visible by which folder it passes through. Implementations stay where they already live. The menu UI, keyboard accelerators, and IPC handler only call the listing file in their own world.
+
+Web catalog, [src/editor/0-core/menu-actions/](src/editor/0-core/menu-actions/):
+
+- `index.ts` lists every menu entry and is the only web function callers use: `runMenuAction(action)`. It switches on `what` and calls a sibling file. It does not contain the work.
+- `file.ts`, `edit.ts`, `segments.ts`, `view.ts`, `tools.ts`, `help.ts` are the web-owned entries. Each function calls the existing feature implementation (`openFilesDialog` in the file feature, `importEdlFile` in the edl feature, segment functions, and so on). Undo and Redo call the segment `undo` / `redo` functions. Cut, copy, paste, and select-all call `document.execCommand` through a tiny helper in [src/editor/0-core/8-lib/](src/editor/0-core/8-lib/).
+- `host.ts` is the only web file that crosses the boundary. Every host `what` is a function here, and each one calls `mainApi.performHostAction(action)`.
+
+Electron catalog, [electron/main/menu-actions/](electron/main/menu-actions/):
+
+- `index.ts` lists every host entry: `performHostAction(action)`. [electron/main/ipc/handlers.ts](electron/main/ipc/handlers.ts) forwards the IPC method to this file and does not switch itself.
+- `window.ts`, `shell.ts`, and `about.ts` sit next to that list. They call implementations that stay in the modules that already own the work: window controls and zoom in [electron/main/window.ts](electron/main/window.ts), `shell.openExternal` / `showItemInFolder` / `openPath` in a small shell module used by both this catalog and the existing `MainApi` methods, and About via [electron/main/about-panel.ts](electron/main/about-panel.ts).
+
+Keyboard, command palette, and the HTTP API keep using `runAction` and the feature registries. Menu clicks do not. Where a menu entry and a registered action share a name, both call the same feature function.
+
+No `useState` in the menu. Visibility uses existing Jotai atoms (`newVersionAtom`, plus `canUndoAtom` / `canRedoAtom` to disable Undo and Redo).
 
 ## Action shape
 
-One renderer entry, [src/editor/1-layout/7-actions/run-menu-action.ts](src/editor/1-layout/7-actions/run-menu-action.ts). The menu UI calls only `runMenuAction`. No `useState`; visibility comes from existing Jotai atoms (`newVersionAtom`, and `canUndoAtom` / `canRedoAtom` / `isFileOpenedAtom` only to disable items that already have that state).
+`MenuAction` lives next to the web catalog. Every variant has `what`. Extra fields exist only when that command needs them:
 
-`MenuAction` is a discriminated union. Every variant has `what`. Extra fields exist only when that command needs them:
+- No extra fields: `{ what: 'openFilesDialog' }`, `{ what: 'closeCurrentFile' }`, `{ what: 'toggleSettings' }`, and the other names already implemented in feature modules.
+- With fields: `{ what: 'importEdlFile'; format: EdlImportType }`, `{ what: 'exportEdlFile'; format: EdlExportType }`, `{ what: 'edit'; command: 'cut' | 'copy' | 'paste' | 'selectAll' }`.
+- Host commands use the shared `HostMenuAction` type: `{ what: 'quit' }`, `{ what: 'zoom'; direction: 'in' | 'out' | 'reset' }`, `{ what: 'openExternal'; url: string }`, and the other host variants. `MenuAction` includes that union, so `host.ts` can forward the same object.
 
-- Editor commands with no args: `{ what: 'openFilesDialog' }`, `{ what: 'closeCurrentFile' }`, `{ what: 'toggleSettings' }`, and the rest of the names already registered in feature `index.ts` files (segments, detect, concat, streams, keyboard, settings).
-- Editor commands with args: `{ what: 'importEdlFile'; format: EdlImportType }`, `{ what: 'exportEdlFile'; format: EdlExportType }`.
-- Clipboard roles: `{ what: 'edit'; command: 'cut' | 'copy' | 'paste' | 'selectAll' }`.
-- Host commands (shared type below): `{ what: 'quit' }`, `{ what: 'zoom'; direction: 'in' | 'out' | 'reset' }`, `{ what: 'openExternal'; url: string }`, and the other host variants.
-
-The switch in `run-menu-action.ts` does not contain the work:
-
-- Editor `what` values call `runAction(action.what)` or `runAction('importEdlFile', action.format)`. Implementations stay in the feature modules that already register those names. Keyboard, command palette, and the HTTP API keep using that registry.
-- `edit` calls a small `runEditCommand` in [src/editor/1-layout/7-actions/edit-command.ts](src/editor/1-layout/7-actions/edit-command.ts) (`document.execCommand`). Undo and Redo stay the segment actions (`undo` / `redo`), which is what Ctrl/Cmd+Z already does outside text fields. Text undo stays the browser default while an input is focused, because the keyboard listener already ignores those targets.
-- Host `what` values call one new IPC method, `mainApi.performHostAction(action)`.
-
-## Electron side
-
-Add `HostMenuAction` in [shared/ipc-contract.ts](shared/ipc-contract.ts) and `performHostAction(action: HostMenuAction)` on `MainApi` (and `mainApiMethods`). Variants:
+`HostMenuAction` is added to [shared/ipc-contract.ts](shared/ipc-contract.ts), with `performHostAction(action: HostMenuAction)` on `MainApi` and in `mainApiMethods`. Variants:
 
 - `quit`, `minimize`, `toggleMaximize`, `toggleFullscreen`, `toggleDevTools`, `showAbout`
 - `zoom` with `direction: 'in' | 'out' | 'reset'` (`webContents` zoom level; reset is level 0)
@@ -66,9 +73,11 @@ Add `HostMenuAction` in [shared/ipc-contract.ts](shared/ipc-contract.ts) and `pe
 - `showItemInFolder` with `path` (config file; path comes from `getAppInfo().paths.configFile`)
 - `openPath` with `path` (log file)
 
-[electron/main/ipc/handlers.ts](electron/main/ipc/handlers.ts) forwards that method to one file, [electron/main/host-menu-action.ts](electron/main/host-menu-action.ts). That file only switches on `what` and calls functions in [electron/main/host-actions/window.ts](electron/main/host-actions/window.ts) and [electron/main/host-actions/shell.ts](electron/main/host-actions/shell.ts). `quit`, fullscreen, devtools, and `openExternal` move here; the old `MainApi` methods stay for the callers that already use them (`quit` action, settings links, export dialogs).
+Existing `MainApi` methods (`quitApp`, `toggleFullscreen`, `toggleDevTools`, `openExternal`, `showItemInFolder`) stay for settings links, export dialogs, and the registered `quit` action. They call the same shell and window implementations as the Electron catalog, so the behavior is not copied.
 
 The web mock in [src/editor/0-core/8-lib/web-mock.ts](src/editor/0-core/8-lib/web-mock.ts) implements `performHostAction` as a no-op except `openExternal`, which keeps using `window.open`.
+
+Text undo stays the browser default while an input is focused, because the keyboard listener already ignores those targets. The Edit menu Undo / Redo items run segment undo.
 
 ## Remove the native menu
 
@@ -106,4 +115,4 @@ These are not in `defaultKeyBindings` (plain `KeyO` is “set cut end”, plain 
 
 Ctrl/Cmd+Z and Ctrl/Cmd+Shift+Z stay on the existing segment undo bindings. Cut, copy, paste, and select-all stay browser defaults.
 
-Update the one sentence in [src/editor/README.md](src/editor/README.md) that says the native Electron menu is a `runAction` caller, so it points at `runMenuAction` instead.
+Update the one sentence in [src/editor/README.md](src/editor/README.md) that says the native Electron menu is a `runAction` caller, so it points at the web `menu-actions` catalog instead.
