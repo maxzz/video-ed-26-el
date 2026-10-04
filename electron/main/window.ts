@@ -1,11 +1,13 @@
 import { fileURLToPath } from 'node:url';
-import { BrowserWindow, dialog, screen, shell, type BrowserWindowConstructorOptions } from 'electron';
+import { app, BrowserWindow, dialog, screen, shell, type BrowserWindowConstructorOptions } from 'electron';
 import debounce from 'lodash/debounce.js';
+import type { HostMenuAction } from '@shared/ipc-contract.ts';
 import * as configStore from './config-store.ts';
 import { appState } from './app-state.ts';
 import { setEventTarget, emitToRenderer } from './events.ts';
 import { attachContextMenu } from './context-menu.ts';
 import { t } from './i18n.ts';
+import { isMac } from './util.ts';
 
 // https://github.com/electron/electron/issues/526#issuecomment-563010533
 function getSavedBounds() {
@@ -37,6 +39,7 @@ export function createWindow() {
         minHeight: 300,
         backgroundColor: '#18181b',
         show: false,
+        autoHideMenuBar: !isMac,
         webPreferences: {
             preload: fileURLToPath(new URL('../preload/index.cjs', import.meta.url)),
             contextIsolation: true,
@@ -49,6 +52,9 @@ export function createWindow() {
 
     appState.mainWindow = win;
     setEventTarget(win);
+    if (!isMac) {
+        win.setMenuBarVisibility(false);
+    }
 
     if (savedBounds.isMaximized) {
         win.maximize();
@@ -110,4 +116,53 @@ export function createWindow() {
     win.on('move', saveWindowState);
 
     return win;
+}
+
+function requireWindow() {
+    const win = appState.mainWindow;
+    if (!win) {
+        throw new Error('No main window');
+    }
+    return win;
+}
+
+/** Allow the HTTP API to respond before the process exits */
+export function quitApp() {
+    setTimeout(() => app.quit(), 1000);
+}
+
+export function minimizeWindow() {
+    requireWindow().minimize();
+}
+
+export function toggleMaximizeWindow() {
+    const win = requireWindow();
+    if (win.isMaximized()) {
+        win.unmaximize();
+    } else {
+        win.maximize();
+    }
+}
+
+export function toggleFullscreenWindow() {
+    const win = requireWindow();
+    win.setFullScreen(!win.isFullScreen());
+}
+
+export function toggleDevToolsWindow() {
+    requireWindow().webContents.toggleDevTools();
+}
+
+type ZoomDirection = Extract<HostMenuAction, { what: 'zoom'; }>['direction'];
+
+/** One step matches the Electron zoom-in role (about 20%) */
+const zoomStep = 1;
+
+export function zoomWindow(direction: ZoomDirection) {
+    const contents = requireWindow().webContents;
+    if (direction === 'reset') {
+        contents.setZoomLevel(0);
+        return;
+    }
+    contents.setZoomLevel(contents.getZoomLevel() + (direction === 'in' ? zoomStep : -zoomStep));
 }

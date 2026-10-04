@@ -3,6 +3,8 @@ import { appStore } from '@/editor/0-core/9-state/store.ts';
 import { userSettingsAtom } from '@/editor/0-core/9-state/user-settings.ts';
 import { isAnyDialogOpenAtom } from '@/editor/0-core/9-state/dialogs.ts';
 import { getKeyupAction, hasAction, runAction } from '@/editor/0-core/7-actions/actions-registry.ts';
+import { isWindows } from '@/editor/0-core/8-lib/main-api.ts';
+import { runMenuAction, type MenuAction } from '@/editor/0-core/menu-actions/index.ts';
 import { allModifiers, altModifiers, controlModifiers, metaModifiers, shiftModifiers } from '@/editor/0-core/8-lib/util.ts';
 import { anyPanelOpenAtom, closeExportConfirm, commandPaletteOpenAtom, exportConfirmOpenAtom } from '@/editor/1-layout/9-state/panels-atoms.ts';
 import { creatingBindingAtom } from '../9-state/keyboard-atoms.ts';
@@ -66,6 +68,25 @@ function isKeyHandlingTarget(target: EventTarget | null) {
     return target.closest(keyHandlingWidgets) != null;
 }
 
+/** Accelerators that used to live on the native menu. Plain KeyO and Comma stay timeline bindings. */
+function menuHotkey(e: KeyboardEvent): MenuAction | undefined {
+    if (e.altKey) return;
+    if (e.code === 'F11' && !e.ctrlKey && !e.metaKey && !e.shiftKey) {
+        return { what: 'toggleFullscreen' };
+    }
+    const mod = e.ctrlKey || e.metaKey;
+    if (!mod) return;
+    if (!e.shiftKey && e.code === 'KeyO') return { what: 'openFilesDialog' };
+    if (!e.shiftKey && e.code === 'KeyW') return { what: 'closeCurrentFile' };
+    if (!e.shiftKey && e.code === 'Comma') return { what: 'toggleSettings' };
+    if (e.code === 'Equal' || e.code === 'NumpadAdd') return { what: 'zoom', direction: 'in' };
+    if (!e.shiftKey && (e.code === 'Minus' || e.code === 'NumpadSubtract')) return { what: 'zoom', direction: 'out' };
+    if (!e.shiftKey && (e.code === 'Digit0' || e.code === 'Numpad0')) return { what: 'zoom', direction: 'reset' };
+    if (e.shiftKey && e.code === 'KeyI') return { what: 'toggleDevTools' };
+    if (!e.shiftKey && e.code === 'KeyM' && isWindows) return { what: 'minimize' };
+    return undefined;
+}
+
 /** Ctrl/Cmd+K or Ctrl/Cmd+Shift+P */
 function isCommandPaletteHotkey(e: KeyboardEvent) {
     const mod = e.ctrlKey || e.metaKey;
@@ -92,6 +113,14 @@ function onKeyDown(e: KeyboardEvent) {
             e.preventDefault();
             e.stopPropagation();
         }
+        return;
+    }
+
+    const menuAction = menuHotkey(e);
+    if (menuAction) {
+        runMenuAction(menuAction);
+        e.preventDefault();
+        e.stopPropagation();
         return;
     }
 

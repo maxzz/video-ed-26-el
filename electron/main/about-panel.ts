@@ -20,3 +20,7 @@ export function getAboutPanelOptions(): AboutPanelOptionsOptions {
         ...(isLinux && { applicationVersion: app.getVersion() }),
     };
 }
+
+export function showAboutPanel() {
+    app.showAboutPanel();
+}

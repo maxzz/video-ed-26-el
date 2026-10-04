@@ -14,7 +14,10 @@ import { abortCompatStream, createCompatStream } from '../protocol-media.ts';
 import { appState } from '../app-state.ts';
 import { emitAppEvent, resolveApiAction } from '../api-actions.ts';
 import { changeLanguage } from '../i18n.ts';
-import { updateMenu } from '../menu.ts';
+import { installSystemMenu } from '../menu.ts';
+import { performHostAction as runHostMenuAction } from '../menu-actions/index.ts';
+import { openExternalUrl, showItemInFolder as revealInFolder } from '../shell.ts';
+import { quitApp as quit, toggleDevToolsWindow, toggleFullscreenWindow } from '../window.ts';
 import { emitToRenderer } from '../events.ts';
 import logger, { logFilePath } from '../logger.ts';
 import { arch, isDev, isLinux, isMac, isWindows, pathExists, platform, writeClipboardImage } from '../util.ts';
@@ -74,7 +77,7 @@ export const handlers: MainApi = {
         }
     },
     async quitApp() {
-        setTimeout(() => app.quit(), 1000); // allow HTTP API to respond
+        quit();
     },
     async focusWindow() {
         try {
@@ -95,21 +98,17 @@ export const handlers: MainApi = {
         notification.show();
     },
     async openExternal(url) {
-        if (appState.disableNetworking && /^https?:/.test(url)) {
-            logger.warn('openExternal blocked because networking is disabled', url);
-            return;
-        }
-        await shell.openExternal(url);
+        await openExternalUrl(url);
     },
     async setAskBeforeClose(value) {
         appState.askBeforeClose = value;
     },
     async setLanguage(language) {
         await changeLanguage(language);
-        updateMenu();
+        installSystemMenu();
     },
-    async setMenuState(state) {
-        appState.menuState = state;
+    async performHostAction(action) {
+        await runHostMenuAction(action);
     },
     async apiActionResponse(id) {
         resolveApiAction(id);
@@ -118,11 +117,10 @@ export const handlers: MainApi = {
         emitAppEvent(event);
     },
     async toggleFullscreen() {
-        const win = getWindow();
-        win.setFullScreen(!win.isFullScreen());
+        toggleFullscreenWindow();
     },
     async toggleDevTools() {
-        getWindow().webContents.toggleDevTools();
+        toggleDevToolsWindow();
     },
 
     // config
@@ -175,7 +173,7 @@ export const handlers: MainApi = {
         await shell.trashItem(path);
     },
     async showItemInFolder(path) {
-        shell.showItemInFolder(path);
+        revealInFolder(path);
     },
     async getMimeType(path) {
         return mime.lookup(path) || undefined;

@@ -115,6 +115,7 @@ function Segment({ seg, end, segNum, color, isActive, selected, invertCutSegment
         left: `${(seg.start / fileDurationNonZero) * 100}%`,
         width: `${((end - seg.start) / fileDurationNonZero) * 100}%`,
         originX: 0,
+        backgroundColor,
         borderLeft: border.vertical,
         borderRight: border.vertical,
         borderTop: border.horizontal,

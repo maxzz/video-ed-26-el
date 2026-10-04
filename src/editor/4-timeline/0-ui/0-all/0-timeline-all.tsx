@@ -83,7 +83,7 @@ function TimelineWaveforms() {
     if (!waveformEnabled || !shouldShowWaveform || (waveforms.length === 0 && overviewWaveform == null)) return null;
 
     return (
-        <div className="relative" style={{ height: waveformHeight, width: `${zoom * 100}%` }}>
+        <div className="relative bg-timeline-track" style={{ height: waveformHeight, width: `${zoom * 100}%` }}>
             {zoom === 1 && overviewWaveform != null
                 ? <WaveformImage waveform={overviewWaveform} />
                 : waveforms.map((waveform) => <WaveformImage key={`${waveform.from}-${waveform.to}`} waveform={waveform} />)}
@@ -145,7 +145,7 @@ function TimelineThumbnails() {
 function TimelineTrack() {
     const zoom = useAtomValue(zoomAtom);
     return (
-        <div ref={timelineWrapperRef} className="relative h-9 bg-muted/60 transition-[background] duration-500" style={{ width: `${zoom * 100}%` }}>
+        <div ref={timelineWrapperRef} className="relative h-9 bg-timeline-track transition-[background-color] duration-500" style={{ width: `${zoom * 100}%` }}>
             <BetweenSegmentsList />
             <TimelineSegments />
             <TimelineKeyframes />

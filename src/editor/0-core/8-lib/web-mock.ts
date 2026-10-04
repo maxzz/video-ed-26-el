@@ -33,7 +33,11 @@ export function createWebMockMainApi(): MainApi {
         setProgressBar: async () => {},
         setAskBeforeClose: async () => {},
         setLanguage: async () => {},
-        setMenuState: async () => {},
+        async performHostAction(action) {
+            if (action.what === 'openExternal') {
+                window.open(action.url, '_blank');
+            }
+        },
         apiActionResponse: async () => {},
         emitAppEvent: async () => {},
         focusWindow: async () => {},
