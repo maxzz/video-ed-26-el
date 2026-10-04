@@ -1,6 +1,7 @@
 import { useSetAtom } from "jotai";
 import { MainPage, APP_NAME, navigateToPageAtom } from "@/components/5-welcome/a-ui-app-page";
 import { AppLogo } from "@/components/5-welcome/2-app-logo";
+import { ButtonCommandPalette, ButtonKeyboardShortcuts } from "./6-btn-keyboard";
 import { ButtonOptions } from "./7-btn-options";
 import { ButtonThemeToggle } from "./8-btn-theme-toggle";
 
@@ -20,6 +21,8 @@ export function Header() {
             </button>
 
             <div className="flex items-center gap-2">
+                <ButtonCommandPalette />
+                <ButtonKeyboardShortcuts />
                 <ButtonOptions />
                 <ButtonThemeToggle />
             </div>

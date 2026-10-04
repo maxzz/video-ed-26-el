@@ -1,0 +1,54 @@
+import i18n from 'i18next';
+import type { EdlExportType, EdlFileType, EdlImportType, StateSegment } from '@/editor/0-core/2-lib/types.ts';
+import { appStore } from '@/editor/0-core/0-state/store.ts';
+import { customOutDirAtom } from '@/editor/0-core/0-state/user-settings.ts';
+import { getFrameCount } from '@/editor/0-core/0-state/timecode.ts';
+import { withErrorHandling } from '@/editor/0-core/0-state/working.ts';
+import { openYouTubeChaptersDialog } from '@/editor/0-core/2-lib/app-dialogs.tsx';
+import { detectedFpsAtom, fileDurationAtom, filePathAtom } from '@/editor/2-file/0-state/file-atoms.ts';
+import { checkFileOpened } from '@/editor/3-player/1-actions/player-actions.ts';
+import { cutSegmentsAtom, selectedSegmentsAtom } from '@/editor/5-segments/0-state/segments-store.ts';
+import { loadCutSegments } from '@/editor/5-segments/1-actions/segment-actions.ts';
+import { askForEdlImport, exportEdlFile, readEdlFile } from '../2-lib/edl-store.ts';
+import { formatYouTube } from '../2-lib/edl-formats.ts';
+
+export async function loadEdlFile({ path, type, append = false }: { path: string; type: EdlFileType; append?: boolean; }) {
+    console.log('Loading EDL file', type, path, append);
+    // cannot clampDuration because the duration is undefined (if no file loaded) or duration of a different file (if switching files)
+    loadCutSegments({ segments: await readEdlFile({ type, path, fps: appStore.get(detectedFpsAtom) }), append });
+}
+
+/** Native menu: File > Import project > <type> */
+export async function importEdlFile(type: EdlImportType) {
+    if (!checkFileOpened()) return;
+
+    await withErrorHandling(async () => {
+        const fileDuration = appStore.get(fileDurationAtom);
+        const edl = await askForEdlImport({ type, fps: appStore.get(detectedFpsAtom), fileDuration });
+        if (edl.length > 0) loadCutSegments({ segments: edl, append: true, clampDuration: fileDuration });
+    }, i18n.t('Failed to import project file'));
+}
+
+export async function exportYouTube() {
+    if (!checkFileOpened()) return;
+    await openYouTubeChaptersDialog(formatYouTube(appStore.get(cutSegmentsAtom) as StateSegment[]));
+}
+
+/** Native menu: File > Export project > <type>. Exports the selected segments */
+export async function tryExportEdlFile(type: EdlExportType | 'youtube') {
+    if (type === 'youtube') {
+        await exportYouTube();
+        return;
+    }
+    const selectedSegments = appStore.get(selectedSegmentsAtom);
+    if (!checkFileOpened() || selectedSegments.length === 0) return;
+    await withErrorHandling(async () => {
+        await exportEdlFile({
+            type,
+            cutSegments: selectedSegments as StateSegment[],
+            customOutDir: appStore.get(customOutDirAtom),
+            filePath: appStore.get(filePathAtom),
+            getFrameCount,
+        });
+    }, i18n.t('Failed to export project'));
+}

@@ -2,6 +2,7 @@ import { addTransitionType, startTransition } from 'react';
 import { flushSync } from 'react-dom';
 import { atom, getDefaultStore } from 'jotai';
 import { appSettings } from '@/store/1-ui-settings';
+import { appName } from '@shared/constants.ts';
 
 /**
  * Transient page state lives in Jotai (not Valtio) on purpose:
@@ -63,8 +64,8 @@ export const welcomeSplitAtom = atom(false);
 
 //---------------------------------------------------------------------------
 
-export const APP_NAME = "Template App";
+export const APP_NAME = appName;
 
-export const APP_DESCRIPTION = "A starting point for React apps: Tailwind CSS, shadcn/ui, Jotai, and Valtio. Replace this text, the name, and the logo with your own.";
+export const APP_DESCRIPTION = "Lossless video and audio editing: cut, trim, merge and rearrange media without re-encoding. Based on LosslessCut by Mikael Finstad.";
 
 //---------------------------------------------------------------------------

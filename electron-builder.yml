@@ -1,0 +1,86 @@
+# Packaging config (see upstream LosslessCut package.json "build").
+# ffmpeg/ffprobe must be fetched first for every target: pnpm fetch-ffmpeg <platform>-<arch>
+# The main process expects them in <resources>/ffmpeg (electron/main/ffmpeg/paths.ts)
+# and the main menu translations in <resources>/locales (electron/main/i18n.ts).
+appId: com.maxzz.videoed
+productName: VideoEd
+copyright: Copyright © 2016-2026 Mikael Finstad and contributors. Licensed under GPL-2.0.
+artifactName: ${productName}-${os}-${arch}.${ext}
+directories:
+  output: release
+  buildResources: build-resources
+files:
+  - out/**/*
+  - "!out/**/*.map"
+  - package.json
+asar: true
+npmRebuild: false
+publish: null
+electronFuses:
+  runAsNode: false
+  enableNodeOptionsEnvironmentVariable: false
+  enableNodeCliInspectArguments: false
+  enableEmbeddedAsarIntegrityValidation: true
+  onlyLoadAppFromAsar: true
+extraResources:
+  - from: resources/locales
+    to: locales
+    filter: ["**/translation.json"]
+fileAssociations:
+  - ext: [webm, mkv, flv, vob, ogv, drc, gif, gifv, mng, avi, mts, m2ts, ts, mov, qt, wmv, yuv, rm, rmvb, asf, amv, mp4, m4v, mpg, mp2, mpeg, mpe, mpv, m2v, svi, 3gp, 3g2, mxf, roq, nsv, f4v, f4p, f4a, f4b]
+    name: Video
+    description: Video files
+    role: Viewer
+  - ext: [aa, aac, aax, act, aiff, alac, amr, ape, au, awb, dct, dss, dvf, flac, gsm, iklax, ivs, m4a, m4b, m4p, mmf, mp3, mpc, msv, nmf, nsf, ogg, oga, mogg, opus, ra, rf64, sln, tta, voc, vox, wav, wma, wv, 8svx, cda]
+    name: Audio
+    description: Audio files
+    role: Viewer
+  - ext: [llc]
+    name: LosslessCut project
+    description: LosslessCut project
+    role: Editor
+win:
+  target:
+    - target: nsis
+      arch: [x64, arm64]
+    - target: 7z
+      arch: [x64, arm64]
+  extraResources:
+    - from: resources/ffmpeg/win32-${arch}
+      to: ffmpeg
+      filter: ["**/*", "!.gitkeep", "!.tmp/**"]
+nsis:
+  oneClick: false
+  allowToChangeInstallationDirectory: true
+mac:
+  category: public.app-category.video
+  hardenedRuntime: true
+  target:
+    - target: dmg
+      arch: [x64, arm64]
+  extraResources:
+    - from: resources/ffmpeg/darwin-${arch}
+      to: ffmpeg
+      filter: ["**/*", "!.gitkeep", "!.tmp/**"]
+  extendInfo:
+    UTExportedTypeDeclarations:
+      - UTTypeIdentifier: com.maxzz.videoed.project
+        UTTypeDescription: LosslessCut project
+        UTTypeConformsTo: [public.plain-text]
+        UTTypeTagSpecification:
+          public.filename-extension: [llc]
+linux:
+  executableName: videoed
+  category: AudioVideo
+  maintainer: maxzz <maxzz@users.noreply.github.com>
+  target:
+    - target: AppImage
+      arch: [x64]
+    - target: deb
+      arch: [x64]
+    - target: tar.bz2
+      arch: [x64]
+  extraResources:
+    - from: resources/ffmpeg/linux-${arch}
+      to: ffmpeg
+      filter: ["**/*", "!.gitkeep", "!.tmp/**"]

@@ -1,0 +1,21 @@
+export const appName = 'VideoEd';
+export const copyrightYear = 2026;
+
+export const homepageUrl = 'https://github.com/maxzz/video-ed-26-el';
+export const upstreamHomepageUrl = 'https://losslesscut.app/';
+export const githubUrl = 'https://github.com/mifi/lossless-cut/';
+export const getReleaseUrl = (version: string) => `${homepageUrl}/releases/tag/v${version}`;
+export const compareReleasesUrl = (fromVersion: string, toVersion: string) => `${homepageUrl}/compare/v${fromVersion}...v${toVersion}`;
+export const licensesUrl = 'https://losslesscut.mifi.no/licenses.txt';
+export const thanksUrl = 'https://mifi.no/thanks';
+export const discussionsUrl = 'https://mifi.no/losslesscut/discussions';
+export const usageUrl = 'https://mifi.no/losslesscut/usage';
+export const faqUrl = 'https://mifi.no/losslesscut/faq';
+export const featureRequestUrl = 'https://mifi.no/losslesscut/feature-request';
+export const publicBugReportUrl = 'https://mifi.no/losslesscut/bug-report';
+export const troubleshootingUrl = 'https://mifi.no/losslesscut/troubleshooting';
+export const exportedFileNameTemplateHelpUrl = 'https://mifi.no/losslesscut/file-name-template';
+export const selectSegmentByExpressionHelpUrl = 'https://mifi.no/losslesscut/select-segments-by-expression';
+export const editSegmentByExpressionHelpUrl = 'https://mifi.no/losslesscut/edit-segments-by-expression';
+export const changeEnabledStreamsExpressionHelpUrl = 'https://mifi.no/losslesscut/select-tracks-by-expression';
+export const supportEmail = 'losslesscut@mifi.no';
