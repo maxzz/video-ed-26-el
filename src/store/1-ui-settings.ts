@@ -22,6 +22,7 @@ export interface AppSettings {
     theme: ThemeMode;            // Theme mode
     showWelcome: boolean;        // Show the Welcome page at startup
     welcomeTransition: WelcomeTransition; // Transition between the Welcome and main pages
+    showStatusBar: boolean;      // Show the status bar on the main page
     panelSizes: PanelSizes;      // ResizablePanelGroup panel sizes
     expandedSections: string[];  // Expanded accordion sections by name
 }
@@ -30,6 +31,7 @@ const DEFAULT_SETTINGS: AppSettings = {
     theme: 'light',
     showWelcome: true,
     welcomeTransition: WelcomeTransition.quadrants,
+    showStatusBar: true,
     panelSizes: getValidPanelSizes(),
     expandedSections: ['resizable-panels', 'pierre-trees'],
 };

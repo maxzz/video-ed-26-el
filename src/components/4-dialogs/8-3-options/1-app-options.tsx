@@ -6,9 +6,9 @@ import { Label } from "@/ui/shadcn/label";
 import { Switch } from "@/ui/shadcn/switch";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/ui/shadcn/select";
 
-/** Template application options (theme, welcome page). Shown in the Options dialog and in the editor Settings */
+/** Template application options (theme, welcome page, status bar). Shown in the Options dialog and in the editor Settings */
 export function AppOptions() {
-    const { theme, showWelcome, welcomeTransition } = useSnapshot(appSettings);
+    const { theme, showWelcome, welcomeTransition, showStatusBar } = useSnapshot(appSettings);
 
     return (<>
         <OptionRow label="Theme">
@@ -26,6 +26,12 @@ export function AppOptions() {
         <OptionRow label="Welcome page transition">
             {(id) => (
                 <OptionSelect id={id} value={welcomeTransition} items={TRANSITION_ITEMS} onValueChange={(value) => { appSettings.welcomeTransition = value; }} />
+            )}
+        </OptionRow>
+
+        <OptionRow label="Show status bar">
+            {(id) => (
+                <Switch id={id} checked={showStatusBar} onCheckedChange={(checked) => { appSettings.showStatusBar = checked; }} />
             )}
         </OptionRow>
     </>);
