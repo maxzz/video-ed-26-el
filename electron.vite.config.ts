@@ -7,6 +7,10 @@ const sharedAlias = { '@shared': path.resolve(import.meta.dirname, './shared') }
 export default defineConfig({
     main: {
         resolve: { alias: sharedAlias },
+        // Vite 8 SSR builds honor ssr.external, not rollupOptions.external.
+        // electron-vite marks every dependency noExternal, which otherwise
+        // inlines the electron npm package and crashes on launch.
+        ssr: { external: ['electron'] },
         build: {
             target: 'node24',
             sourcemap: true,
@@ -17,6 +21,7 @@ export default defineConfig({
     },
     preload: {
         resolve: { alias: sharedAlias },
+        ssr: { external: ['electron'] },
         build: {
             target: 'node24',
             sourcemap: true,

@@ -108,7 +108,7 @@
         "dist:win": "pnpm build && electron-builder --win",
         "dist:mac": "pnpm build && electron-builder --mac",
         "dist:linux": "pnpm build && electron-builder --linux",
-        "postinstall": "electron-builder install-app-deps",
+        "postinstall": "electron-builder install-app-deps && install-electron",
         "check:tw": "node scripts/check-tailwind-class-order.mjs",
         "check:tw:fix": "node scripts/check-tailwind-class-order.mjs --fix"
     }
