@@ -6,7 +6,7 @@ import { readAllKeyframes } from './7-actions/keyframes.ts';
 import { generateOverviewWaveform } from './7-actions/waveform.ts';
 import './7-actions/thumbnails.ts';
 
-export { Timeline } from './0-ui/timeline.tsx';
+export { Timeline } from './0-ui/0-all/0-timeline-all.tsx';
 export { TimelineHosts } from './0-ui/timeline-hosts.tsx';
 export { BigWaveform } from './0-ui/big-waveform.tsx';
 export { bigWaveformEnabledAtom, zoomAtom, zoomedDurationAtom, zoomWindowStartTimeAtom, zoomWindowEndTimeAtom, neighbouringKeyFramesAtom } from './9-state/timeline-atoms.ts';

@@ -14,12 +14,12 @@ import { darkModeAtom, springAnimationAtom } from '@/editor/5-segments/9-state/s
 import {
     keyFramesInZoomWindowAtom, overviewWaveformAtom, shouldShowKeyframesAtom, shouldShowWaveformAtom, showThumbnailsAtom,
     thumbnailsSortedAtom, waveformEnabledAtom, waveformsAtom, zoomAtom,
-} from '../9-state/timeline-atoms.ts';
-import { onTimelineWheel } from '../7-actions/timeline-actions.ts';
+} from '../../9-state/timeline-atoms.ts';
+import { onTimelineWheel } from '../../7-actions/timeline-actions.ts';
 import { goToTimecode } from '@/editor/3-player/7-actions/video-events.ts';
-import { generateOverviewWaveform } from '../7-actions/waveform.ts';
-import { onTimelineMouseDown, onTimelineMouseMove, onTimelineMouseOut, onTimelineScroll, timelineScrollerRef, timelineWrapperRef } from '../7-actions/timeline-scroll.ts';
-import { BetweenSegmentsList, TimelineSegments } from './timeline-seg.tsx';
+import { generateOverviewWaveform } from '../../7-actions/waveform.ts';
+import { onTimelineMouseDown, onTimelineMouseMove, onTimelineMouseOut, onTimelineScroll, timelineScrollerRef, timelineWrapperRef } from '../../7-actions/timeline-scroll.ts';
+import { BetweenSegmentsList, TimelineSegments } from '../timeline-seg.tsx';
 
 // Port of upstream Timeline.tsx. Leaf components subscribe to their own atoms so the time markers don't re-render the whole timeline
 
@@ -39,7 +39,7 @@ export function Timeline() {
                     <div>
                         <div
                             ref={timelineScrollerRef}
-                            className="[scrollbar-width:none] overflow-x-scroll overflow-y-hidden"
+                            className="scrollbar-none overflow-x-scroll overflow-y-hidden"
                             onWheel={onTimelineWheel}
                             onScroll={onTimelineScroll}
                         >

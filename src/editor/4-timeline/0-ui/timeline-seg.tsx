@@ -77,7 +77,7 @@ function Marker({ seg, segNum, color, isActive, selected, fileDurationNonZero }:
                 className="shrink-0 -ml-1.75 size-3.5 text-center rounded-full"
                 style={{ backgroundColor: pinColor, border: `1px solid ${isActive ? activeBorder : 'transparent'}` }}
             >
-                <div role="button" className="min-w-0 text-[10px] tracking-[-.1em] text-white" onClick={() => setCurrentSegIndex(segNum)}>
+                <div role="button" className="min-w-0 text-[10px] -tracking-widest text-white" onClick={() => setCurrentSegIndex(segNum)}>
                     {segNum + 1}
                 </div>
             </div>
@@ -134,7 +134,7 @@ function Segment({ seg, end, segNum, color, isActive, selected, invertCutSegment
             onClick={() => setCurrentSegIndex(segNum)}
             title={title}
         >
-            <div className="self-start shrink-0 min-w-0 text-[10px] tracking-[-.1em]">{segNum + 1}</div>
+            <div className="self-start shrink-0 min-w-0 text-[10px] -tracking-widest">{segNum + 1}</div>
 
             <AnimatePresence>
                 {invertCutSegments && (
