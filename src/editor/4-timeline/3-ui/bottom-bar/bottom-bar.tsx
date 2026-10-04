@@ -1,0 +1,484 @@
+import type { ComponentProps, CSSProperties } from 'react';
+import { useAtomValue } from 'jotai';
+import { motion } from 'motion/react';
+import { useTranslation } from 'react-i18next';
+import {
+    AudioWaveformIcon, BabyIcon, CameraIcon, ChevronLeftIcon, ChevronRightIcon, ContrastIcon, FileOutputIcon, GaugeIcon, ImagesIcon, KeyIcon,
+    KeyRoundIcon, NotebookTextIcon, PauseIcon, PlayIcon, RotateCcwSquareIcon, ScissorsIcon, SkipBackIcon, SkipForwardIcon, StepBackIcon,
+    StepForwardIcon, Trash2Icon, TriangleAlertIcon,
+} from 'lucide-react';
+import { cn } from '@/utils/classnames';
+import { Button } from '@/ui/shadcn/button';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/ui/shadcn/select';
+import type { CaptureFormat } from '@shared/types.ts';
+import { appStore } from '@/editor/0-core/0-state/store.ts';
+import { userSettings, userSettingsAtom } from '@/editor/0-core/0-state/user-settings.ts';
+import { formatTimecodeAtom, getFrameCountAtom } from '@/editor/0-core/0-state/timecode.ts';
+import { hasAction, runAction } from '@/editor/0-core/1-actions/actions-registry.ts';
+import { askForPlaybackRate } from '@/editor/0-core/2-lib/app-dialogs.tsx';
+import { getSegColor as getSegColorRaw } from '@/editor/0-core/2-lib/colors.ts';
+import { exportConfirmOpenAtom } from '@/editor/1-layout/0-state/panels-atoms.ts';
+import { detectedFpsAtom, fileDurationNonZeroAtom, hasAudioAtom, hasVideoAtom, isFileOpenedAtom, isRotationSetAtom, rotationAtom } from '@/editor/2-file/0-state/file-atoms.ts';
+import { outputPlaybackRateAtom, playbackModeAtom, playbackRateAtom, playingAtom } from '@/editor/3-player/0-state/player-atoms.ts';
+import * as player from '@/editor/3-player/1-actions/player-actions.ts';
+import { currentCutSegAtom, segmentsToExportAtom, selectedSegmentsAtom } from '@/editor/5-segments/0-state/segments-store.ts';
+import { invertCutSegmentsAtom, simpleModeAtom } from '@/editor/5-segments/0-state/seg-ui-atoms.ts';
+import { setCutEnd, setCutStart } from '@/editor/5-segments/1-actions/segment-actions.ts';
+import { actionTitleAtom } from '../../0-state/action-title.ts';
+import { areWeCuttingAtom } from '../../0-state/bottom-bar-atoms.ts';
+import { currentFrameAtom, displayTimeAtom, isZoomedAtom, keyframesEnabledAtom, showThumbnailsAtom, waveformModeAtom, zoomAtom } from '../../0-state/timeline-atoms.ts';
+import {
+    increaseRotation, seekClosestKeyframe, timelineToggleComfortZoom, toggleExportConfirmEnabled, toggleInvertCutSegments, toggleShowKeyframes,
+    toggleShowThumbnails, toggleSimpleMode, toggleWaveformMode, zoomAbs,
+} from '../../1-actions/timeline-actions.ts';
+import { CutTimeInput } from './cut-time-input.tsx';
+import { JumpSegmentButton, SegmentCutpointButton, SetCutpointButton } from './segment-buttons.tsx';
+
+// Port of upstream BottomBar.tsx
+
+const zoomOptions = Array.from({ length: 13 }, (_unused, z) => 2 ** z);
+const leftRightWidth = 100;
+const activeClasses = 'text-primary';
+
+export function BottomBar() {
+    return (
+        <div className="shrink-0 bg-muted transition-[background] duration-500 border-t">
+            <BottomBarTopRow />
+            <BottomBarBottomRow />
+        </div>
+    );
+}
+
+function BarButton({ className, ...rest }: ComponentProps<'button'>) {
+    return <button type="button" className={cn('shrink-0 hover:text-foreground cursor-pointer', className)} {...rest} />;
+}
+
+function BottomBarTopRow() {
+    const { t } = useTranslation();
+    const isFileOpened = useAtomValue(isFileOpenedAtom);
+    const simpleMode = useAtomValue(simpleModeAtom);
+    const keyframesEnabled = useAtomValue(keyframesEnabledAtom);
+    const currentCutSeg = useAtomValue(currentCutSegAtom);
+    const actionTitle = useAtomValue(actionTitleAtom);
+
+    return (
+        <div className={cn('select-none flex items-center justify-between', !isFileOpened && 'opacity-50')}>
+            <div className="flex items-center" style={{ flexBasis: leftRightWidth }}>
+                {!simpleMode && <ViewToggles />}
+            </div>
+
+            <div className="grow" />
+
+            {!simpleMode && (
+                <>
+                    <BarButton title={actionTitle(t('Jump to start of video'), 'jumpTimelineStart')} onClick={player.jumpTimelineStart}>
+                        <SkipBackIcon className="size-4" />
+                    </BarButton>
+
+                    <JumpSegmentButton direction={-1} />
+
+                    <SegmentCutpointButton className="mr-1.25" currentCutSeg={currentCutSeg} side="start" Icon={StepBackIcon} onClick={player.jumpCutStart} title={actionTitle(t('Jump to current segment\'s start time'), 'jumpCutStart')} />
+                </>
+            )}
+
+            <SetCutpointButton className="mr-1.25" currentCutSeg={currentCutSeg ?? { segColorIndex: 0 }} side="start" onClick={setCutStart} title={actionTitle(t('Start current segment at current time'), 'setCutStart')} />
+
+            {!simpleMode && <CutTimeInput side="start" />}
+
+            {keyframesEnabled && <KeyframeSeekButton direction={-1} />}
+
+            {!simpleMode && (
+                <BarButton className="-mr-1 -ml-1.5" title={actionTitle(t('One frame back'), 'seekPreviousFrame')} onClick={() => player.shortStep(-1)}>
+                    <ChevronLeftIcon className="size-7" />
+                </BarButton>
+            )}
+
+            <PlayPauseButton />
+
+            {!simpleMode && (
+                <BarButton className="-mr-1.5 -ml-1" title={actionTitle(t('One frame forward'), 'seekNextFrame')} onClick={() => player.shortStep(1)}>
+                    <ChevronRightIcon className="size-7" />
+                </BarButton>
+            )}
+
+            {keyframesEnabled && <KeyframeSeekButton direction={1} />}
+
+            {!simpleMode && <CutTimeInput side="end" />}
+
+            <SetCutpointButton className="ml-1.25" currentCutSeg={currentCutSeg} side="end" onClick={setCutEnd} title={actionTitle(t('End current segment at current time'), 'setCutEnd')} />
+
+            {!simpleMode && (
+                <>
+                    <SegmentCutpointButton className="ml-1.25" currentCutSeg={currentCutSeg} side="end" Icon={StepForwardIcon} onClick={player.jumpCutEnd} title={actionTitle(t('Jump to current segment\'s end time'), 'jumpCutEnd')} />
+
+                    <JumpSegmentButton direction={1} />
+
+                    <BarButton title={actionTitle(t('Jump to end of video'), 'jumpTimelineEnd')} onClick={player.jumpTimelineEnd}>
+                        <SkipForwardIcon className="size-4" />
+                    </BarButton>
+                </>
+            )}
+
+            <div className="grow" />
+
+            <div style={{ flexBasis: leftRightWidth }} />
+        </div>
+    );
+}
+
+function ViewToggles() {
+    const { t } = useTranslation();
+    const hasAudio = useAtomValue(hasAudioAtom);
+    const hasVideo = useAtomValue(hasVideoAtom);
+    const waveformMode = useAtomValue(waveformModeAtom);
+    const showThumbnails = useAtomValue(showThumbnailsAtom);
+    const keyframesEnabled = useAtomValue(keyframesEnabledAtom);
+    const actionTitle = useAtomValue(actionTitleAtom);
+
+    return (
+        <>
+            {hasAudio && (
+                <BarButton className={cn('px-0.5', waveformMode != null && activeClasses)} title={actionTitle(t('Show waveform'), 'toggleWaveformMode')} onClick={toggleWaveformMode}>
+                    <AudioWaveformIcon className="size-5" />
+                </BarButton>
+            )}
+            {hasVideo && (
+                <>
+                    <BarButton className={cn('px-1', showThumbnails && activeClasses)} title={actionTitle(t('Show thumbnails'), 'toggleShowThumbnails')} onClick={toggleShowThumbnails}>
+                        <ImagesIcon className="size-4" />
+                    </BarButton>
+                    <BarButton className={cn('px-1', keyframesEnabled && activeClasses)} title={actionTitle(t('Show keyframes'), 'toggleShowKeyframes')} onClick={toggleShowKeyframes}>
+                        <KeyIcon className="size-4" />
+                    </BarButton>
+                </>
+            )}
+        </>
+    );
+}
+
+function KeyframeSeekButton({ direction }: { direction: -1 | 1; }) {
+    const { t } = useTranslation();
+    const currentFrame = useAtomValue(currentFrameAtom);
+    const actionTitle = useAtomValue(actionTitleAtom);
+    const prev = direction < 0;
+    return (
+        <BarButton
+            className={cn(prev ? 'mr-0.5 -scale-x-100' : 'ml-0.5', currentFrame?.keyframe && activeClasses)}
+            title={prev ? actionTitle(t('Seek previous keyframe'), 'seekBackwardsKeyframe') : actionTitle(t('Seek next keyframe'), 'seekForwardsKeyframe')}
+            onClick={() => seekClosestKeyframe(direction)}
+        >
+            <KeyRoundIcon className="size-5" />
+        </BarButton>
+    );
+}
+
+const roundButtonClasses = 'size-[2.3em] text-white rounded-full flex items-center justify-center';
+
+function PlayPauseButton() {
+    const { t } = useTranslation();
+    const playing = useAtomValue(playingAtom);
+    const actionTitle = useAtomValue(actionTitleAtom);
+    const Icon = playing ? PauseIcon : PlayIcon;
+    return (
+        <div
+            role="button"
+            className={cn('mt-0.5 mr-0.5 ml-1 bg-primary', roundButtonClasses, !playing && 'pl-0.5')}
+            title={actionTitle(t('Play/pause'), 'togglePlayResetSpeed')}
+            onClick={() => player.togglePlay()}
+        >
+            <Icon className="size-[.9em] fill-current" />
+        </div>
+    );
+}
+
+function BottomBarBottomRow() {
+    const { t } = useTranslation();
+    const isFileOpened = useAtomValue(isFileOpenedAtom);
+    const simpleMode = useAtomValue(simpleModeAtom);
+    const hasVideo = useAtomValue(hasVideoAtom);
+    const { exportConfirmEnabled } = useAtomValue(userSettingsAtom);
+    const actionTitle = useAtomValue(actionTitleAtom);
+
+    return (
+        <div className="relative px-1 py-0.5 h-8 flex items-center justify-between gap-2">
+            <InvertCutModeButton />
+
+            <div className="flex items-center">
+                <SimpleModeButton />
+                {simpleMode && (
+                    <div role="button" className="ml-1 text-xs cursor-pointer" onClick={toggleSimpleMode}>{t('Toggle advanced view')}</div>
+                )}
+            </div>
+
+            {isFileOpened && !simpleMode && (
+                <>
+                    <ZoomControls />
+                    <PlaybackRateIndicator />
+                    <FpsButton />
+                </>
+            )}
+
+            {isFileOpened && !simpleMode && hasVideo && <RotationButton />}
+
+            <div className="grow" />
+
+            <DisplayTime />
+
+            {!simpleMode && isFileOpened && (
+                <BarButton className="text-destructive hover:text-destructive" title={actionTitle(t('Close file and clean up'), 'cleanupFilesDialog')} onClick={() => runAction('cleanupFilesDialog')}>
+                    <Trash2Icon className="size-4" />
+                </BarButton>
+            )}
+
+            {hasVideo && (
+                <div className="whitespace-nowrap flex items-center gap-1">
+                    <BarButton title={actionTitle(t('Capture frame'), 'captureSnapshot')} onClick={() => runAction('captureSnapshot')}>
+                        <CameraIcon className="size-6" />
+                    </BarButton>
+                    {!simpleMode && <CaptureFormatButton />}
+                </div>
+            )}
+
+            {isFileOpened && <LoopSelectedSegmentsButton />}
+
+            {!exportConfirmEnabled && (
+                <span title={t('Export options screen is disabled, and you will not see any important notices or warnings.')}>
+                    <TriangleAlertIcon className="ml-1 size-4 text-destructive" />
+                </span>
+            )}
+            {(!simpleMode || !exportConfirmEnabled) && <ToggleExportConfirm />}
+
+            {isFileOpened && <ExportButton />}
+        </div>
+    );
+}
+
+function InvertCutModeButton() {
+    const { t } = useTranslation();
+    const invertCutSegments = useAtomValue(invertCutSegmentsAtom);
+    return (
+        <motion.div animate={{ rotateX: invertCutSegments ? 0 : 180 }} transition={{ duration: 0.3 }}>
+            <BarButton
+                className={cn('block', invertCutSegments && 'text-destructive')}
+                title={invertCutSegments ? t('Discard selected segments') : t('Keep selected segments')}
+                onClick={toggleInvertCutSegments}
+            >
+                <ContrastIcon className="size-6" />
+            </BarButton>
+        </motion.div>
+    );
+}
+
+function SimpleModeButton() {
+    const { t } = useTranslation();
+    const simpleMode = useAtomValue(simpleModeAtom);
+    return (
+        <BarButton className={simpleMode ? activeClasses : 'text-foreground'} title={t('Toggle advanced view')} onClick={toggleSimpleMode}>
+            <BabyIcon className="size-5" />
+        </BarButton>
+    );
+}
+
+function ZoomControls() {
+    const { t } = useTranslation();
+    const zoom = useAtomValue(zoomAtom);
+    return (
+        <>
+            <div role="button" className="cursor-pointer" title={t('Zoom')} onClick={timelineToggleComfortZoom}>{zoom}x</div>
+
+            <Select value={zoomOptions.includes(zoom) ? String(zoom) : ''} onValueChange={(v) => zoomAbs(() => parseInt(v, 10))}>
+                <SelectTrigger size="sm" className="w-[6.5em]" title={t('Zoom')}>
+                    <SelectValue placeholder={t('Zoom')} />
+                </SelectTrigger>
+                <SelectContent>
+                    {zoomOptions.map((val) => (
+                        <SelectItem key={val} value={String(val)}>{t('Zoom')} {val}x</SelectItem>
+                    ))}
+                </SelectContent>
+            </Select>
+        </>
+    );
+}
+
+function PlaybackRateIndicator() {
+    const { t } = useTranslation();
+    const playbackRate = useAtomValue(playbackRateAtom);
+    let flashColor = 'rgb(234 88 12)';
+    if (playbackRate === 1) flashColor = 'rgb(8 145 178)';
+    else if (playbackRate < 1) flashColor = 'rgb(234 179 8)';
+    return (
+        <motion.div
+            key={playbackRate}
+            className="px-0.5 text-xs text-muted-foreground rounded-lg"
+            title={t('Playback rate')}
+            initial={{ scale: 2, backgroundColor: flashColor }}
+            animate={{ scale: 1, backgroundColor: 'rgba(0,0,0,0)' }}
+            transition={{ duration: 0.2 }}
+        >
+            {playbackRate.toFixed(1)}
+        </motion.div>
+    );
+}
+
+async function handleChangePlaybackRateClick() {
+    const newRate = await askForPlaybackRate({ detectedFps: appStore.get(detectedFpsAtom), outputPlaybackRate: appStore.get(outputPlaybackRateAtom) });
+    if (newRate != null) player.setOutputPlaybackRate(newRate);
+}
+
+function FpsButton() {
+    const { t } = useTranslation();
+    const detectedFps = useAtomValue(detectedFpsAtom);
+    const outputPlaybackRate = useAtomValue(outputPlaybackRateAtom);
+    return (
+        <div className="whitespace-nowrap flex items-center">
+            <BarButton title={t('Change FPS')} onClick={handleChangePlaybackRateClick}>
+                <GaugeIcon className="size-5" />
+            </BarButton>
+            {detectedFps != null && (
+                <span role="button" className="ml-1 text-xs text-muted-foreground cursor-pointer" title={t('Video FPS')} onClick={handleChangePlaybackRateClick}>
+                    {(detectedFps * outputPlaybackRate).toFixed(3)}
+                </span>
+            )}
+        </div>
+    );
+}
+
+function RotationButton() {
+    const { t } = useTranslation();
+    const rotation = useAtomValue(rotationAtom);
+    const isRotationSet = useAtomValue(isRotationSetAtom);
+    const actionTitle = useAtomValue(actionTitleAtom);
+    const rotationStr = `${rotation}°`;
+    return (
+        <BarButton
+            className="whitespace-nowrap flex items-center"
+            title={actionTitle(`${t('Set output rotation. Current: ')} ${isRotationSet ? rotationStr : t('Don\'t modify')}`, 'increaseRotation')}
+            onClick={increaseRotation}
+        >
+            <RotateCcwSquareIcon className={cn('size-5', isRotationSet && activeClasses)} />
+            <span className="ml-0.5 inline-block text-xs text-right">{isRotationSet && rotationStr}</span>
+        </BarButton>
+    );
+}
+
+/** High frequency (follows the playhead): keep it a leaf */
+function DisplayTime() {
+    const displayTime = useAtomValue(displayTimeAtom);
+    const formatTimecode = useAtomValue(formatTimecodeAtom);
+    const getFrameCount = useAtomValue(getFrameCountAtom);
+    const isZoomed = useAtomValue(isZoomedAtom);
+    const fileDurationNonZero = useAtomValue(fileDurationNonZeroAtom);
+
+    return (
+        <div className="absolute inset-0 ml-6 flex items-center justify-center pointer-events-none">
+            <div className="font-mono tracking-[-0.08em] pointer-events-auto">
+                {formatTimecode({ seconds: displayTime })}
+                <span className="ml-2 min-w-[3.5em] inline-block">
+                    {getFrameCount(displayTime) ?? 0}<span className="select-none opacity-50">f</span>
+                    {isZoomed && (
+                        <span className="ml-2">{Math.round((displayTime / fileDurationNonZero) * 100)}<span className="select-none opacity-50">%</span></span>
+                    )}
+                </span>
+            </div>
+        </div>
+    );
+}
+
+const captureFormats: CaptureFormat[] = ['jpeg', 'png', 'webp'];
+
+function toggleCaptureFormat() {
+    if (hasAction('toggleCaptureFormat')) {
+        void runAction('toggleCaptureFormat');
+        return;
+    }
+    const index = captureFormats.indexOf(userSettings.captureFormat);
+    userSettings.captureFormat = captureFormats[(index + 1) % captureFormats.length]!;
+}
+
+function CaptureFormatButton() {
+    const { t } = useTranslation();
+    const { captureFormat } = useAtomValue(userSettingsAtom);
+    const actionTitle = useAtomValue(actionTitleAtom);
+    return (
+        <Button size="xs" variant="outline" className="w-[3.7em]" title={actionTitle(t('Capture frame format'), 'toggleCaptureFormat')} onClick={(e) => { e.currentTarget.blur(); toggleCaptureFormat(); }}>
+            {captureFormat.toUpperCase()}
+        </Button>
+    );
+}
+
+function LoopSelectedSegmentsButton() {
+    const { t } = useTranslation();
+    const selectedSegments = useAtomValue(selectedSegmentsAtom);
+    const playing = useAtomValue(playingAtom);
+    const playbackMode = useAtomValue(playbackModeAtom);
+    const actionTitle = useAtomValue(actionTitleAtom);
+
+    // need at least 2 gradient elements:
+    const selectedSegmentsSafe = (
+        selectedSegments.length >= 2
+            ? selectedSegments
+            : [selectedSegments[0] ?? { segColorIndex: 0 }, selectedSegments[1] ?? { segColorIndex: 1 }]
+    ).slice(0, 10);
+
+    const gradientColors = selectedSegmentsSafe.map((seg, i) => {
+        const segColor = getSegColorRaw(seg);
+        // make colors stronger, the more segments
+        return `${segColor.alpha(Math.max(0.4, Math.min(0.8, selectedSegmentsSafe.length / 3))).string()} ${((i / (selectedSegmentsSafe.length - 1)) * 100).toFixed(1)}%`;
+    }).join(', ');
+
+    const style: CSSProperties = { background: `linear-gradient(90deg, ${gradientColors})` };
+    const Icon = playing && (playbackMode === 'play-selected-segments' || playbackMode === 'loop-selected-segments') ? PauseIcon : PlayIcon;
+
+    return (
+        <div
+            role="button"
+            className={cn('text-[.7em] border border-muted-foreground', roundButtonClasses)}
+            style={style}
+            title={actionTitle(t('Play selected segments in order'), 'toggleLoopSelectedSegments')}
+            onClick={player.toggleLoopSelectedSegments}
+        >
+            <Icon className="size-3 fill-current" />
+        </div>
+    );
+}
+
+function ToggleExportConfirm() {
+    const { t } = useTranslation();
+    const { exportConfirmEnabled } = useAtomValue(userSettingsAtom);
+    return (
+        <BarButton
+            className={cn(exportConfirmEnabled ? activeClasses : 'text-muted-foreground', exportConfirmEnabled && 'ml-1')}
+            title={t('Show export options screen before exporting?')}
+            onClick={toggleExportConfirmEnabled}
+        >
+            <NotebookTextIcon className="size-5.5" />
+        </BarButton>
+    );
+}
+
+function onExportPress() {
+    if (hasAction('export')) void runAction('export');
+    else appStore.set(exportConfirmOpenAtom, true);
+}
+
+function ExportButton() {
+    const { t } = useTranslation();
+    const segmentsToExport = useAtomValue(segmentsToExportAtom);
+    const areWeCutting = useAtomValue(areWeCuttingAtom);
+    const { autoMerge } = useAtomValue(userSettingsAtom);
+
+    const CutIcon = areWeCutting ? ScissorsIcon : FileOutputIcon;
+
+    let title = t('Export');
+    if (segmentsToExport.length === 1) title = t('Export selection');
+    else if (segmentsToExport.length > 1) title = t('Export {{ num }} segments', { num: segmentsToExport.length });
+
+    const text = autoMerge && segmentsToExport.length > 1 ? t('Export+merge') : t('Export');
+
+    return (
+        <Button size="sm" className="whitespace-nowrap" title={title} onClick={(e) => { e.currentTarget.blur(); onExportPress(); }}>
+            <CutIcon />
+            {text}
+        </Button>
+    );
+}

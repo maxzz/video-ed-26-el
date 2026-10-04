@@ -1,14 +1,19 @@
-import { useId } from "react";
-import { useAtom } from "jotai";
-import { useSnapshot } from "valtio";
-import { appSettings, WelcomeTransition } from "@/store/1-ui-settings";
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/ui/shadcn/dialog";
-import { Label } from "@/ui/shadcn/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/ui/shadcn/select";
+import { useAtom, useSetAtom } from "jotai";
+import { SettingsIcon } from "lucide-react";
+import { settingsVisibleAtom } from "@/editor/1-layout/0-state/panels-atoms";
+import { Button } from "@/ui/shadcn/button";
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/ui/shadcn/dialog";
 import { isOpenOptionsDialogAtom } from "./9-types-options";
+import { AppOptions } from "./1-app-options";
 
 export function OptionsDialog() {
     const [isOpen, setIsOpen] = useAtom(isOpenOptionsDialogAtom);
+    const setSettingsVisible = useSetAtom(settingsVisibleAtom);
+
+    function openEditorSettings() {
+        setIsOpen(false);
+        setSettingsVisible(true);
+    }
 
     return (
         <Dialog open={isOpen} onOpenChange={setIsOpen}>
@@ -23,43 +28,16 @@ export function OptionsDialog() {
                 </DialogHeader>
 
                 <div className="px-4 py-4 flex flex-col gap-4">
-                    <WelcomeTransitionSelect />
+                    <AppOptions />
                 </div>
+
+                <DialogFooter className="m-0 px-4 py-3 flex-row justify-end">
+                    <Button variant="outline" size="sm" onClick={openEditorSettings}>
+                        <SettingsIcon />
+                        Editor settings
+                    </Button>
+                </DialogFooter>
             </DialogContent>
         </Dialog>
     );
 }
-
-function WelcomeTransitionSelect() {
-    const { welcomeTransition } = useSnapshot(appSettings);
-    const id = useId();
-
-    return (
-        <div className="flex items-center justify-between gap-4">
-            <Label htmlFor={id}>
-                Welcome page transition
-            </Label>
-
-            <Select value={welcomeTransition} onValueChange={(value) => { appSettings.welcomeTransition = value as WelcomeTransition; }}>
-                <SelectTrigger id={id} className="min-w-36" size="sm">
-                    <SelectValue />
-                </SelectTrigger>
-
-                <SelectContent position="popper" align="end">
-                    {TRANSITION_ITEMS.map(
-                        ([label, value]) => (
-                            <SelectItem value={value} key={value}>
-                                {label}
-                            </SelectItem>
-                        )
-                    )}
-                </SelectContent>
-            </Select>
-        </div>
-    );
-}
-
-const TRANSITION_ITEMS: readonly (readonly [label: string, value: WelcomeTransition])[] = [
-    ["Split into quarters", WelcomeTransition.quadrants],
-    ["Sliding doors", WelcomeTransition.doors],
-];

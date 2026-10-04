@@ -4,52 +4,52 @@ overview: "Port LosslessCut (GPL-2.0) into this repo as a secure electron-vite a
 todos:
   - id: p0-license
     content: Switch repo to GPL-2.0-only (LICENSE, package.json, README attribution), rename package
-    status: pending
+    status: completed
   - id: p0-electron
     content: Add electron-vite + electron-builder; electron.vite.config.ts with electron/main, electron/preload, renderer at repo root; tsconfig for electron and shared; pnpm build-script allowlist
-    status: pending
+    status: completed
   - id: p0-ipc
     content: shared/ipc-contract.ts, main ipc handlers, preload contextBridge (window.mainApi + onEvent), renderer editor/0-core main-api client and shared Jotai store
-    status: pending
+    status: completed
   - id: p0-media
     content: media:// protocol with Range support; ffmpeg paths resolver + scripts/fetch-ffmpeg.mjs + extraResources; ffprobe/ffmpeg job runner with progress and cancel
-    status: pending
+    status: completed
   - id: p0-config
     content: electron-store config in main; Valtio userSettings in renderer synced via IPC; port shared types/constants from src/common
-    status: pending
+    status: completed
   - id: p0-shell
     content: Delete xyz-demos; MainBody renders EditorRoot; adapt Header/Footer/Welcome; add missing shadcn components
-    status: pending
+    status: completed
   - id: p1-file-player
     content: "2-file and 3-player: open/drag-drop, ffprobe, file format state, video binding, compat player (MSE), subtitles, playback streams"
-    status: pending
+    status: completed
   - id: p2-timeline-segments
     content: "4-timeline and 5-segments: zoom/scroll, cut points, segment ops with valtio-history undo/redo, segment list, waveform, thumbnails, keyframes, auto-save"
-    status: pending
+    status: completed
   - id: p3-export
     content: "7-export: port ffmpeg cut/merge/smart cut to main, export sheet/confirm, output format, filename template, out dir, progress, last commands"
-    status: pending
+    status: completed
   - id: p4-streams
     content: "6-streams: tracks editor, tag editor, dispositions, GPS map"
-    status: pending
+    status: completed
   - id: p5-edl
     content: "9-edl: all project import/export formats with tests ported from upstream"
-    status: pending
+    status: completed
   - id: p6-concat-batch
     content: 8-concat merge dialog and batch file list
-    status: pending
+    status: completed
   - id: p7-capture-detect
     content: a-capture frame capture/extract frames; b-detect scene/black/silence/keyframe segment detection; expression dialog with eval worker
-    status: pending
+    status: completed
   - id: p8-keyboard-menu
     content: Actions registry, c-keyboard bindings + shortcuts editor, native menu and context menu wiring, cmdk command palette, d-settings dialog
-    status: pending
+    status: completed
   - id: p9-platform
     content: e-i18n, HTTP API, CLI args, update checker, about panel, electron-builder packaging for win/mac/linux
-    status: pending
+    status: completed
   - id: p10-tests
     content: Port vitest tests for pure logic (segments, edl formats, ffmpeg args, duration, output name template)
-    status: pending
+    status: completed
 isProject: false
 ---
 

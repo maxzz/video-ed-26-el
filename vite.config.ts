@@ -1,11 +1,12 @@
 import path from 'node:path';
 import tailwindcss from '@tailwindcss/vite';
-import { defineConfig } from 'vite';
+import { defineConfig, type UserConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 
-// https://vite.dev/config/
-export default defineConfig({
+/** Renderer config shared by the plain web build (`pnpm dev:web`) and electron-vite (`electron.vite.config.ts`) */
+export const rendererConfig: UserConfig = {
     base: "",
+    root: import.meta.dirname,
     server: {
         port: 3000,
     },
@@ -13,10 +14,15 @@ export default defineConfig({
     resolve: {
         alias: {
             '@': path.resolve(import.meta.dirname, './src'),
+            '@shared': path.resolve(import.meta.dirname, './shared'),
         },
+    },
+    worker: {
+        format: 'es',
     },
     build: {
         rolldownOptions: {
+            input: path.resolve(import.meta.dirname, 'index.html'),
             output: {
                 codeSplitting: {
                     groups: [
@@ -29,7 +35,10 @@ export default defineConfig({
             },
         },
     },
-});
+};
+
+// https://vite.dev/config/
+export default defineConfig(rendererConfig);
 
 function vendorChunkName(id: string): string | null {
     const pkg = npmPackageName(id);
@@ -43,11 +52,8 @@ function vendorChunkName(id: string): string | null {
     if (pkg === 'motion' || pkg === 'framer-motion') {
         return 'motion';
     }
-    if (pkg === 'gsap' || pkg === '@gsap/react') {
-        return 'gsap';
-    }
-    if (pkg === '@react-spring/web' || pkg.startsWith('@react-spring/')) {
-        return 'react-spring';
+    if (pkg === 'leaflet' || pkg === 'react-leaflet' || pkg.startsWith('@react-leaflet/')) {
+        return 'leaflet';
     }
 
     return 'vendor';

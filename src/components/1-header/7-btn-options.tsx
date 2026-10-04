@@ -1,18 +1,21 @@
 import { useSetAtom } from "jotai";
-import { isOpenOptionsDialogAtom } from "@/components/4-dialogs/8-3-options/9-types-options";
+import { useTranslation } from "react-i18next";
+import { settingsVisibleAtom } from "@/editor/1-layout/0-state/panels-atoms";
 import { Button } from "@/ui/shadcn/button";
 import { IconSliders } from "@/ui/icons/normal";
 
+/** Opens the editor Settings (which also include the template application options) */
 export function ButtonOptions() {
-    const setIsOpen = useSetAtom(isOpenOptionsDialogAtom);
+    const { t } = useTranslation();
+    const setSettingsVisible = useSetAtom(settingsVisibleAtom);
 
     return (
         <Button
             className="size-6 rounded"
             variant="ghost"
             size="icon"
-            onClick={() => setIsOpen(true)}
-            title="Options"
+            onClick={() => setSettingsVisible(true)}
+            title={t("Settings")}
             type="button"
         >
             <IconSliders className="size-3.5" />

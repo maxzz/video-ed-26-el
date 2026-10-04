@@ -22,3 +22,10 @@ dist-ssr
 #*.njsproj
 #*.sln
 #*.sw?
+
+# Electron
+out
+release
+resources/ffmpeg/*
+!resources/ffmpeg/.gitkeep
+

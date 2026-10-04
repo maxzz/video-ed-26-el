@@ -1,73 +1,56 @@
-# React + TypeScript + Vite
+# VideoEd
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A lossless video/audio editor for Electron. It is a port of [LosslessCut](https://github.com/mifi/lossless-cut) by Mikael Finstad, rebuilt with shadcn UI components and Jotai/Valtio state management.
 
-Currently, two official plugins are available:
+## License
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+This project is licensed under the GNU General Public License v2.0 (see [LICENSE](LICENSE)), the same license as LosslessCut, because large parts of its logic (ffmpeg argument building, project/EDL formats, segment handling, keyboard actions) are ported from LosslessCut.
 
-## React Compiler
+LosslessCut is Copyright (C) Mikael Finstad and contributors, licensed under GPL-2.0.
+ffmpeg is licensed under GPL v2+.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Getting started
 
-## Expanding the ESLint configuration
+```sh
+pnpm install
+# pnpm may skip Electron's postinstall; if `node_modules/electron/dist` is missing:
+node node_modules/electron/install.js
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+pnpm fetch-ffmpeg   # downloads ffmpeg/ffprobe for the current platform into resources/ffmpeg/<platform>-<arch>
+pnpm dev            # Electron + Vite with HMR
+pnpm dev:web        # renderer only, in a browser (Electron APIs are mocked)
+pnpm test           # vitest
+pnpm dist:win       # package with electron-builder (also dist:mac, dist:linux)
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+A custom ffmpeg folder can also be set in Settings ("Custom FFmpeg directory").
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## Project structure
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
 ```
+electron/main/         main process: window, menu, media:// protocol, ffmpeg/ffprobe, config store, HTTP API, CLI
+electron/preload/      contextBridge: exposes window.mainApi and window.mainEvents
+shared/                code shared by main and renderer: IPC contract, types, constants
+src/                   renderer (React)
+  components/          app shell (header, footer, welcome page, dialogs)
+  editor/              all editor functionality, one folder per feature
+  ui/shadcn/           shadcn components
+resources/ffmpeg/      ffmpeg binaries (not committed)
+```
+
+Every feature folder in `src/editor/` follows the same layout:
+
+```
+<n>-<feature>/
+  0-state/      Jotai atoms and/or Valtio proxies
+  1-actions/    write-only Jotai action atoms (commands)
+  2-lib/        pure logic + tests (no React)
+  3-ui/         shadcn-based components
+  index.ts      public API of the feature
+```
+
+State rules:
+
+- Valtio holds large mutable objects: user settings (synced to the main-process config store) and segments (with undo/redo through `valtio-history`).
+- Jotai holds everything else: primitive atoms for UI state, derived atoms, and write-only action atoms for commands.
+- All commands are registered in the actions registry (`src/editor/0-core/actions-registry.ts`), which is used by keyboard shortcuts, the native menu, the HTTP API and the command palette (Ctrl/Cmd+Shift+P).

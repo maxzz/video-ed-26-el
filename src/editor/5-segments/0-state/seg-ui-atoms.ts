@@ -1,0 +1,61 @@
+import { atom } from 'jotai';
+import type { ColorInstance } from 'color';
+import type { Transition } from 'motion/react';
+import type { InverseCutSegment, SegmentColorIndex, StateSegment } from '@/editor/0-core/2-lib/types.ts';
+import { appStore } from '@/editor/0-core/0-state/store.ts';
+import { prefersReducedMotionAtom, userSettingsAtom } from '@/editor/0-core/0-state/user-settings.ts';
+import { onFileReset } from '@/editor/0-core/1-actions/lifecycle.ts';
+import { getSegColor } from '@/editor/0-core/2-lib/colors.ts';
+import { commandedTimeAtom } from '@/editor/3-player/0-state/player-atoms.ts';
+import { isInitialSegment } from '../2-lib/segments.ts';
+import { cutSegmentsAtom, findSegmentsAtCursor, inverseCutSegmentsAtom, segColorCounterAtom, selectedSegmentsAtom } from './segments-store.ts';
+
+// UI state shared by the timeline, the bottom bar and the segment list (upstream SegColorsContext + parts of useUserSettings)
+
+const mySpring = { type: 'spring' as const, damping: 50, stiffness: 700 };
+
+export const darkModeAtom = atom((get) => get(userSettingsAtom).darkMode);
+export const simpleModeAtom = atom((get) => get(userSettingsAtom).simpleMode);
+export const invertCutSegmentsAtom = atom((get) => get(userSettingsAtom).invertCutSegments);
+
+export const springAnimationAtom = atom<Transition>((get) => (get(prefersReducedMotionAtom) ? { duration: 0 } : mySpring));
+
+export const getSegColorAtom = atom((get) => {
+    const { preferStrongColors } = get(userSettingsAtom);
+    return (seg: SegmentColorIndex | undefined): ColorInstance => {
+        const color = getSegColor(seg);
+        return preferStrongColors ? color.desaturate(0.2) : color.desaturate(0.6);
+    };
+});
+
+export const nextSegColorIndexAtom = atom((get) => {
+    const counter = get(segColorCounterAtom);
+    return isInitialSegment(get(cutSegmentsAtom) as StateSegment[]) ? counter : counter + 1;
+});
+
+/** Segments under the commanded time (not the high frequency player time) */
+export const segmentsAtCursorAtom = atom((get) => {
+    const cutSegments = get(cutSegmentsAtom);
+    return findSegmentsAtCursor(cutSegments, get(commandedTimeAtom)).flatMap((index) => (cutSegments[index] ? [cutSegments[index]] : []));
+});
+
+export const firstSegmentAtCursorAtom = atom((get) => get(segmentsAtCursorAtom)[0]);
+
+/** Rows of the segment list: the segments, or the gaps between them in "invert segments" mode */
+export const segmentListItemsAtom = atom<readonly (StateSegment | InverseCutSegment)[]>((get) => (
+    get(invertCutSegmentsAtom) ? get(inverseCutSegmentsAtom) : get(cutSegmentsAtom)
+));
+
+export const isOnlyMarkersAtom = atom((get) => {
+    const items = get(segmentListItemsAtom);
+    return items.length > 0 && items.every((seg) => seg.end == null);
+});
+
+export const selectedSegmentsTotalAtom = atom((get) => get(selectedSegmentsAtom).reduce((acc, seg) => (seg.end == null ? 0 : seg.end - seg.start) + acc, 0));
+
+/** Segment list drag and drop: id of the segment being dragged */
+export const draggingSegIdAtom = atom<string | undefined>(undefined);
+
+onFileReset(() => {
+    appStore.set(draggingSegIdAtom, undefined);
+});
