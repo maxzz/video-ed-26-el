@@ -7,11 +7,11 @@ import { closestCenter, DndContext, DragOverlay, PointerSensor, useSensor, useSe
 import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
 import { restrictToVerticalAxis } from '@dnd-kit/modifiers';
 import { Button } from '@/ui/shadcn/button';
-import { batchFilesAtom, filePathAtom, selectedBatchFilesAtom } from '@/editor/2-file/0-state/file-atoms.ts';
+import { batchFilesAtom, filePathAtom, selectedBatchFilesAtom } from '@/editor/2-file/9-state/file-atoms.ts';
 import { closeBatch, convertFormatBatch, handleBatchFilesDrop } from '@/editor/2-file/index.ts';
-import { batchDraggingIdAtom, batchSortDescAtom } from '../0-state/concat-atoms.ts';
-import { onBatchDragCancel, onBatchDragEnd, onBatchDragStart, sortBatchFiles } from '../1-actions/batch-list-actions.ts';
-import { concatBatch } from '../1-actions/concat-actions.ts';
+import { batchDraggingIdAtom, batchSortDescAtom } from '../9-state/concat-atoms.ts';
+import { onBatchDragCancel, onBatchDragEnd, onBatchDragStart, sortBatchFiles } from '../7-actions/batch-list-actions.ts';
+import { concatBatch } from '../7-actions/concat-actions.ts';
 import { BatchFile, BatchFileDragOverlay } from './batch-file.tsx';
 
 const mySpring = { type: 'spring' as const, damping: 50, stiffness: 700 };

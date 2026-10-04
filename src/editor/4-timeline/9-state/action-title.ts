@@ -1,8 +1,8 @@
 import { atom } from 'jotai';
-import type { KeyboardLayoutMap } from '@/editor/0-core/2-lib/types.ts';
-import { appStore } from '@/editor/0-core/0-state/store.ts';
-import { userSettingsAtom } from '@/editor/0-core/0-state/user-settings.ts';
-import { formatKeybinding } from '@/editor/0-core/2-lib/util.ts';
+import type { KeyboardLayoutMap } from '@/editor/0-core/8-lib/types.ts';
+import { appStore } from '@/editor/0-core/9-state/store.ts';
+import { userSettingsAtom } from '@/editor/0-core/9-state/user-settings.ts';
+import { formatKeybinding } from '@/editor/0-core/8-lib/util.ts';
 
 // Port of upstream useActionTitle: appends the key binding of an action to a button title
 

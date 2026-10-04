@@ -1,10 +1,10 @@
 import i18n from 'i18next';
-import { appStore } from '@/editor/0-core/0-state/store.ts';
-import { handleError } from '@/editor/0-core/0-state/working.ts';
-import { runFfmpegStartupCheck } from '@/editor/0-core/2-lib/ffmpeg/ffmpeg.ts';
-import { mainApi } from '@/editor/0-core/2-lib/main-api.ts';
-import { ffmpegInfoAtom } from '../0-state/file-atoms.ts';
-import { openSendReportDialog } from '../3-ui/send-report-dialog.tsx';
+import { appStore } from '@/editor/0-core/9-state/store.ts';
+import { handleError } from '@/editor/0-core/9-state/working.ts';
+import { runFfmpegStartupCheck } from '@/editor/0-core/8-lib/ffmpeg/ffmpeg.ts';
+import { mainApi } from '@/editor/0-core/8-lib/main-api.ts';
+import { ffmpegInfoAtom } from '../9-state/file-atoms.ts';
+import { openSendReportDialog } from '../0-ui/send-report-dialog.tsx';
 
 // Port of upstream mifi.ts runStartupCheck
 

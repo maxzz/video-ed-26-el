@@ -5,14 +5,14 @@ import invariant from 'tiny-invariant';
 
 import type { FileNameTemplateContext } from '@shared/userTypes.ts';
 
-import { hasDuplicates, filenamify, getOutFileExtension } from '@/editor/0-core/2-lib/util.ts';
-import { getAppInfo, isMac, isWindows } from '@/editor/0-core/2-lib/main-api.ts';
-import { getSegmentTags, formatSegNum, getGuaranteedSegments } from '@/editor/5-segments/2-lib/segments.ts';
-import type { FileStats, FormatTimecode, SegmentToExport } from '@/editor/0-core/2-lib/types.ts';
-import safeishEval from '@/editor/0-core/2-lib/eval/eval.ts';
-import { UserFacingError } from '@/editor/0-core/2-lib/errors.ts';
-import type { FileFfprobeMeta } from '@/editor/0-core/2-lib/ffmpeg/ffmpeg.ts';
-import { parsePath, sep as pathSep, join as pathJoin, normalize as pathNormalize, basename } from '@/editor/0-core/2-lib/node-shims.ts';
+import { hasDuplicates, filenamify, getOutFileExtension } from '@/editor/0-core/8-lib/util.ts';
+import { getAppInfo, isMac, isWindows } from '@/editor/0-core/8-lib/main-api.ts';
+import { getSegmentTags, formatSegNum, getGuaranteedSegments } from '@/editor/5-segments/8-lib/segments.ts';
+import type { FileStats, FormatTimecode, SegmentToExport } from '@/editor/0-core/8-lib/types.ts';
+import safeishEval from '@/editor/0-core/8-lib/eval/eval.ts';
+import { UserFacingError } from '@/editor/0-core/8-lib/errors.ts';
+import type { FileFfprobeMeta } from '@/editor/0-core/8-lib/ffmpeg/ffmpeg.ts';
+import { parsePath, sep as pathSep, join as pathJoin, normalize as pathNormalize, basename } from '@/editor/0-core/8-lib/node-shims.ts';
 
 
 export const segNumVariable = 'SEG_NUM';

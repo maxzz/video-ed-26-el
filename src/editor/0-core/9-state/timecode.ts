@@ -1,10 +1,10 @@
 import { atom } from 'jotai';
 import i18n from 'i18next';
-import type { FormatTimecode, ParseTimecode } from '../2-lib/types.ts';
-import { getFrameCountRaw } from '@/editor/9-edl/2-lib/edl-formats.ts';
-import { getFrameDuration } from '../2-lib/util.ts';
-import { formatDuration, parseDuration } from '../2-lib/duration.ts';
-import { detectedFpsAtom } from '@/editor/2-file/0-state/file-atoms.ts';
+import type { FormatTimecode, ParseTimecode } from '../8-lib/types.ts';
+import { getFrameCountRaw } from '@/editor/9-edl/8-lib/edl-formats.ts';
+import { getFrameDuration } from '../8-lib/util.ts';
+import { formatDuration, parseDuration } from '../8-lib/duration.ts';
+import { detectedFpsAtom } from '@/editor/2-file/9-state/file-atoms.ts';
 import { userSettingsAtom } from './user-settings.ts';
 import { appStore } from './store.ts';
 import { fireDialog } from './dialogs.ts';

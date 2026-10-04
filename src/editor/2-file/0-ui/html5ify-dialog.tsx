@@ -2,7 +2,7 @@ import { proxy, useSnapshot } from 'valtio';
 import i18n from 'i18next';
 import { useTranslation } from 'react-i18next';
 import type { Html5ifyMode } from '@shared/types';
-import { openCustomDialog } from '@/editor/0-core/0-state/dialogs.ts';
+import { openCustomDialog } from '@/editor/0-core/9-state/dialogs.ts';
 import { Button } from '@/ui/shadcn/button';
 import { Checkbox } from '@/ui/shadcn/checkbox';
 import { DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/ui/shadcn/dialog';

@@ -1,4 +1,4 @@
-import { mainApi, mainEvents } from '../2-lib/main-api.ts';
+import { mainApi, mainEvents } from '../8-lib/main-api.ts';
 import { runAction } from './actions-registry.ts';
 
 let initialized = false;

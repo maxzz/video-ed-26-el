@@ -1,10 +1,10 @@
 import type { CSSProperties, FocusEvent } from 'react';
 import { useAtomValue } from 'jotai';
 import { VideoIcon } from 'lucide-react';
-import { appStore } from '@/editor/0-core/0-state/store.ts';
+import { appStore } from '@/editor/0-core/9-state/store.ts';
 import { cn } from '@/utils/classnames';
-import { compatCanvasElementAtom, compatLoadingAtom, compatShowCanvasAtom, compatVideoElementAtom, effectiveRotationAtom } from '../0-state/player-atoms.ts';
-import '../1-actions/compat-player.ts';
+import { compatCanvasElementAtom, compatLoadingAtom, compatShowCanvasAtom, compatVideoElementAtom, effectiveRotationAtom } from '../9-state/player-atoms.ts';
+import '../7-actions/compat-player.ts';
 
 const setCompatVideo = (el: HTMLVideoElement | null) => { appStore.set(compatVideoElementAtom, el); };
 const setCompatCanvas = (el: HTMLCanvasElement | null) => { appStore.set(compatCanvasElementAtom, el); };
@@ -14,7 +14,7 @@ const blurOnFocus = (e: FocusEvent<HTMLVideoElement>) => e.target.blur();
 
 const onCompatVideoError = (error: unknown) => console.error('video error', error);
 
-/** Port of upstream MediaSourcePlayer. The streaming logic lives in 1-actions/compat-player.ts */
+/** Port of upstream MediaSourcePlayer. The streaming logic lives in 7-actions/compat-player.ts */
 export function MediaSourcePlayer() {
     const rotate = useAtomValue(effectiveRotationAtom);
     const loading = useAtomValue(compatLoadingAtom);

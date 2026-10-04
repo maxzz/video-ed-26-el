@@ -2,12 +2,12 @@ import { atom } from 'jotai';
 import pMap from 'p-map';
 import invariant from 'tiny-invariant';
 import type { FFprobeStream } from '@shared/ffprobe';
-import { appStore } from '@/editor/0-core/0-state/store.ts';
-import { userSettingsAtom } from '@/editor/0-core/0-state/user-settings.ts';
-import { onFileReset } from '@/editor/0-core/1-actions/lifecycle.ts';
-import { isStreamThumbnail, shouldCopyStreamByDefault } from '@/editor/0-core/2-lib/ffmpeg/streams.ts';
-import safeishEval from '@/editor/0-core/2-lib/eval/eval.ts';
-import { externalFilesMetaAtom, filePathAtom, mainStreamsAtom } from '@/editor/2-file/0-state/file-atoms.ts';
+import { appStore } from '@/editor/0-core/9-state/store.ts';
+import { userSettingsAtom } from '@/editor/0-core/9-state/user-settings.ts';
+import { onFileReset } from '@/editor/0-core/7-actions/lifecycle.ts';
+import { isStreamThumbnail, shouldCopyStreamByDefault } from '@/editor/0-core/8-lib/ffmpeg/streams.ts';
+import safeishEval from '@/editor/0-core/8-lib/eval/eval.ts';
+import { externalFilesMetaAtom, filePathAtom, mainStreamsAtom } from '@/editor/2-file/9-state/file-atoms.ts';
 
 // Port of upstream useStreamsMeta: which streams of which files are copied to the output.
 

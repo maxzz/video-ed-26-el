@@ -8,19 +8,19 @@ import { restrictToVerticalAxis } from '@dnd-kit/modifiers';
 import { useVirtualizer } from '@tanstack/react-virtual';
 import { ArrowDown01Icon, CircleCheckIcon, ContrastIcon, MinusIcon, PlusIcon, SplitIcon, TagIcon, XIcon } from 'lucide-react';
 import { cn } from '@/utils/classnames';
-import type { SegmentColorIndex } from '@/editor/0-core/2-lib/types.ts';
-import { appStore } from '@/editor/0-core/0-state/store.ts';
-import { formatTimecodeAtom } from '@/editor/0-core/0-state/timecode.ts';
-import { rightBarWidth } from '@/editor/0-core/2-lib/constants.ts';
-import { runAction } from '@/editor/0-core/1-actions/actions-registry.ts';
-import { actionTitleAtom } from '@/editor/4-timeline/0-state/action-title.ts';
-import { currentSegIndexSafeAtom, cutSegmentsAtom } from '../0-state/segments-store.ts';
+import type { SegmentColorIndex } from '@/editor/0-core/8-lib/types.ts';
+import { appStore } from '@/editor/0-core/9-state/store.ts';
+import { formatTimecodeAtom } from '@/editor/0-core/9-state/timecode.ts';
+import { rightBarWidth } from '@/editor/0-core/8-lib/constants.ts';
+import { runAction } from '@/editor/0-core/7-actions/actions-registry.ts';
+import { actionTitleAtom } from '@/editor/4-timeline/9-state/action-title.ts';
+import { currentSegIndexSafeAtom, cutSegmentsAtom } from '../9-state/segments-store.ts';
 import {
     darkModeAtom, draggingSegIdAtom, firstSegmentAtCursorAtom, getSegColorAtom, invertCutSegmentsAtom, isOnlyMarkersAtom,
     nextSegColorIndexAtom, segmentListItemsAtom, selectedSegmentsTotalAtom, simpleModeAtom, springAnimationAtom,
-} from '../0-state/seg-ui-atoms.ts';
-import * as seg from '../1-actions/segment-actions.ts';
-import { reorderSegmentDialog } from '../1-actions/segment-dialogs.tsx';
+} from '../9-state/seg-ui-atoms.ts';
+import * as seg from '../7-actions/segment-actions.ts';
+import { reorderSegmentDialog } from '../7-actions/segment-dialogs.tsx';
 import { SegmentRowContent, SortableSegmentRow } from './segment-row.tsx';
 
 // Port of upstream SegmentList.tsx (right bar)

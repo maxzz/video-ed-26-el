@@ -1,14 +1,14 @@
 import i18n from 'i18next';
 import invariant from 'tiny-invariant';
-import type { BatchFile } from '@/editor/0-core/2-lib/types.ts';
-import { appStore } from '@/editor/0-core/0-state/store.ts';
-import { userSettings } from '@/editor/0-core/0-state/user-settings.ts';
-import { isWorking, setWorking, withErrorHandling } from '@/editor/0-core/0-state/working.ts';
-import { confirmDialog } from '@/editor/0-core/2-lib/app-dialogs.tsx';
-import { mainApi } from '@/editor/0-core/2-lib/main-api.ts';
-import { basename } from '@/editor/0-core/2-lib/node-shims.ts';
-import { batchFilesAtom, filePathAtom, selectedBatchFilesAtom } from '../0-state/file-atoms.ts';
-import { getDroppedFilePaths } from '../2-lib/drop.ts';
+import type { BatchFile } from '@/editor/0-core/8-lib/types.ts';
+import { appStore } from '@/editor/0-core/9-state/store.ts';
+import { userSettings } from '@/editor/0-core/9-state/user-settings.ts';
+import { isWorking, setWorking, withErrorHandling } from '@/editor/0-core/9-state/working.ts';
+import { confirmDialog } from '@/editor/0-core/8-lib/app-dialogs.tsx';
+import { mainApi } from '@/editor/0-core/8-lib/main-api.ts';
+import { basename } from '@/editor/0-core/8-lib/node-shims.ts';
+import { batchFilesAtom, filePathAtom, selectedBatchFilesAtom } from '../9-state/file-atoms.ts';
+import { getDroppedFilePaths } from '../8-lib/drop.ts';
 import { userOpenSingleFile } from './load-media.ts';
 
 const mapPathsToFiles = (paths: string[]): BatchFile[] => paths.map((path) => ({ path, name: basename(path) }));

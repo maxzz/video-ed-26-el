@@ -3,10 +3,10 @@ import { useAtomValue } from 'jotai';
 import { useTranslation } from 'react-i18next';
 import { PointerIcon } from 'lucide-react';
 import { cn } from '@/utils/classnames';
-import type { SegmentColorIndex } from '@/editor/0-core/2-lib/types.ts';
-import { currentSegIndexSafeAtom, cutSegmentsAtom } from '@/editor/5-segments/0-state/segments-store.ts';
-import { darkModeAtom, getSegColorAtom } from '@/editor/5-segments/0-state/seg-ui-atoms.ts';
-import { setCurrentSegIndex } from '@/editor/5-segments/1-actions/segment-actions.ts';
+import type { SegmentColorIndex } from '@/editor/0-core/8-lib/types.ts';
+import { currentSegIndexSafeAtom, cutSegmentsAtom } from '@/editor/5-segments/9-state/segments-store.ts';
+import { darkModeAtom, getSegColorAtom } from '@/editor/5-segments/9-state/seg-ui-atoms.ts';
+import { setCurrentSegIndex } from '@/editor/5-segments/7-actions/segment-actions.ts';
 
 // Ports of upstream SegmentCutpointButton, SetCutpointButton and BottomBar renderJumpCutpointButton
 

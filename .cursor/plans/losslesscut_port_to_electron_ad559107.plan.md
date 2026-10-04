@@ -134,10 +134,10 @@ Every feature follows the same internal convention, so new features plug in with
 
 ```
 src/editor/<n>-<feature>/
-  0-state/      Jotai atoms and/or Valtio proxies
-  1-actions/    write-only Jotai action atoms (commands)
-  2-lib/        pure ported logic + *.test.ts (no React)
-  3-ui/         shadcn-based components
+  9-state/      Jotai atoms and/or Valtio proxies
+  7-actions/    write-only Jotai action atoms (commands)
+  8-lib/        pure ported logic + *.test.ts (no React)
+  0-ui/         shadcn-based components
   index.ts      public API of the feature
 ```
 

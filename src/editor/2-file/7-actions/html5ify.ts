@@ -1,13 +1,13 @@
 import i18n from 'i18next';
 import type { Html5ifyMode } from '@shared/types';
-import { appStore } from '@/editor/0-core/0-state/store.ts';
-import { customOutDirAtom, userSettings } from '@/editor/0-core/0-state/user-settings.ts';
-import { isWorking, setProgress, setWorking, withErrorHandling } from '@/editor/0-core/0-state/working.ts';
-import { DirectoryAccessDeclinedError } from '@/editor/0-core/2-lib/errors.ts';
-import { toast } from '@/editor/0-core/2-lib/toast.tsx';
-import { html5ify } from '@/editor/7-export/2-lib/ffmpeg-operations.ts';
-import { batchFilesAtom, filePathAtom, hasAudioAtom, hasVideoAtom, previewFilePathAtom, rememberConvertToSupportedFormatAtom, usingDummyVideoAtom } from '../0-state/file-atoms.ts';
-import { askForHtml5ifySpeed } from '../3-ui/html5ify-dialog.tsx';
+import { appStore } from '@/editor/0-core/9-state/store.ts';
+import { customOutDirAtom, userSettings } from '@/editor/0-core/9-state/user-settings.ts';
+import { isWorking, setProgress, setWorking, withErrorHandling } from '@/editor/0-core/9-state/working.ts';
+import { DirectoryAccessDeclinedError } from '@/editor/0-core/8-lib/errors.ts';
+import { toast } from '@/editor/0-core/8-lib/toast.tsx';
+import { html5ify } from '@/editor/7-export/8-lib/ffmpeg-operations.ts';
+import { batchFilesAtom, filePathAtom, hasAudioAtom, hasVideoAtom, previewFilePathAtom, rememberConvertToSupportedFormatAtom, usingDummyVideoAtom } from '../9-state/file-atoms.ts';
+import { askForHtml5ifySpeed } from '../0-ui/html5ify-dialog.tsx';
 import { ensureWritableOutDir } from './directory-access.ts';
 
 // Port of upstream useHtml5ify

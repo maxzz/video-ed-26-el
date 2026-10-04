@@ -2,7 +2,7 @@ import i18n from 'i18next';
 import orderBy from 'lodash/orderBy.js';
 import uniq from 'lodash/uniq.js';
 import type { KeyboardAction, ModifierKey } from '@shared/types.ts';
-import { allModifiers, altModifiers, controlModifiers, getMetaKeyName, metaModifiers, shiftModifiers } from '@/editor/0-core/2-lib/util.ts';
+import { allModifiers, altModifiers, controlModifiers, getMetaKeyName, metaModifiers, shiftModifiers } from '@/editor/0-core/8-lib/util.ts';
 
 // Port of the actionsMap of upstream KeyboardShortcuts.tsx. Titles are shared by the shortcuts dialog and the command palette.
 

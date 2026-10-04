@@ -5,20 +5,20 @@ import { BanIcon, BrushCleaningIcon, CogIcon, FileIcon, FileOutputIcon, FolderIc
 import { langNames, type SupportedLanguage } from '@shared/i18n.ts';
 import type { CaptureFormat, Config, EnableImportChapters, ModifierKey, TimecodeFormat } from '@shared/types.ts';
 import { defaultConfig } from '@shared/default-config.ts';
-import { userSettings } from '@/editor/0-core/0-state/user-settings.ts';
-import { getEnableImportChaptersOptions, isStoreBuild } from '@/editor/0-core/2-lib/util.ts';
-import { settingsVisibleAtom, showAdvancedSettingsAtom, toggleKeyboardShortcuts } from '@/editor/1-layout/0-state/panels-atoms.ts';
+import { userSettings } from '@/editor/0-core/9-state/user-settings.ts';
+import { getEnableImportChaptersOptions, isStoreBuild } from '@/editor/0-core/8-lib/util.ts';
+import { settingsVisibleAtom, showAdvancedSettingsAtom, toggleKeyboardShortcuts } from '@/editor/1-layout/9-state/panels-atoms.ts';
 import { getModifierKeyNames } from '@/editor/c-keyboard/index.ts';
 import { AppOptions } from '@/components/4-dialogs/8-3-options/1-app-options';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/ui/shadcn/dialog';
 import { Button } from '@/ui/shadcn/button';
 import { Switch } from '@/ui/shadcn/switch';
 import { Slider } from '@/ui/shadcn/slider';
-import { askForCleanupChoices } from '@/editor/7-export/1-actions/export-actions.ts';
+import { askForCleanupChoices } from '@/editor/7-export/7-actions/export-actions.ts';
 import {
     changeCustomFfPath, clearCustomFfPath, requestTuner, setLanguage,
     setShowAdvancedSettings, toggleExportConfirmEnabled, toggleStoreProjectInWorkingDir,
-} from '../1-actions/settings-actions.ts';
+} from '../7-actions/settings-actions.ts';
 import { SectionHeader, SettingRow, SettingSelect } from './settings-rows.tsx';
 import { OutDirSelector } from './out-dir-selector.tsx';
 

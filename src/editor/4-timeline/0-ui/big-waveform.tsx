@@ -3,13 +3,13 @@ import { atom, useAtomValue } from 'jotai';
 import { observe } from 'jotai-effect';
 import { CircleAlertIcon, LoaderCircleIcon } from 'lucide-react';
 import { cn } from '@/utils/classnames';
-import { appStore } from '@/editor/0-core/0-state/store.ts';
-import { ffmpegExtractWindow } from '@/editor/0-core/2-lib/constants.ts';
-import { fileDurationNonZeroAtom } from '@/editor/2-file/0-state/file-atoms.ts';
-import { playingAtom, relevantTimeAtom } from '@/editor/3-player/0-state/player-atoms.ts';
-import { seekRel } from '@/editor/3-player/1-actions/player-actions.ts';
-import { darkModeAtom } from '@/editor/5-segments/0-state/seg-ui-atoms.ts';
-import { bigWaveformEnabledAtom, waveformsAtom, zoomUnroundedAtom } from '../0-state/timeline-atoms.ts';
+import { appStore } from '@/editor/0-core/9-state/store.ts';
+import { ffmpegExtractWindow } from '@/editor/0-core/8-lib/constants.ts';
+import { fileDurationNonZeroAtom } from '@/editor/2-file/9-state/file-atoms.ts';
+import { playingAtom, relevantTimeAtom } from '@/editor/3-player/9-state/player-atoms.ts';
+import { seekRel } from '@/editor/3-player/7-actions/player-actions.ts';
+import { darkModeAtom } from '@/editor/5-segments/9-state/seg-ui-atoms.ts';
+import { bigWaveformEnabledAtom, waveformsAtom, zoomUnroundedAtom } from '../9-state/timeline-atoms.ts';
 
 // Port of upstream BigWaveform.tsx. Rendered by the player area when bigWaveformEnabledAtom is true.
 

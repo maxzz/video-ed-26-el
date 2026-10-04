@@ -1,20 +1,20 @@
 import i18n from 'i18next';
 import invariant from 'tiny-invariant';
 import type { DetectedSegment } from '@shared/ipc-contract.ts';
-import { appStore } from '@/editor/0-core/0-state/store.ts';
-import { userSettings } from '@/editor/0-core/0-state/user-settings.ts';
-import { handleError, isWorking, setProgress, setWorking } from '@/editor/0-core/0-state/working.ts';
-import { isAbortedError } from '@/editor/0-core/2-lib/util.ts';
-import type { FfmpegDialog } from '@/editor/0-core/2-lib/ffmpeg/ffmpeg-parameters.ts';
-import { blackDetect, detectSceneChanges as ffmpegDetectSceneChanges, silenceDetect } from '@/editor/0-core/2-lib/ffmpeg/ff-remote.ts';
-import { fileDurationAtom, filePathAtom } from '@/editor/2-file/0-state/file-atoms.ts';
-import { activeAudioStreamIndexesAtom, activeVideoStreamIndexAtom } from '@/editor/3-player/0-state/player-atoms.ts';
-import { seekAbs } from '@/editor/3-player/1-actions/player-actions.ts';
-import { currentCutSegOrWholeTimelineAtom } from '@/editor/5-segments/0-state/segments-store.ts';
-import { deleteCurrentCutSeg, loadCutSegments } from '@/editor/5-segments/1-actions/segment-actions.ts';
-import { appendLastCommandsLog } from '@/editor/7-export/0-state/export-atoms.ts';
-import { getFfmpegParameters, type ParameterDialogParameters, setFfmpegParametersForDialog } from '../0-state/detect-atoms.ts';
-import { showParametersDialog } from '../3-ui/parameters-dialog.tsx';
+import { appStore } from '@/editor/0-core/9-state/store.ts';
+import { userSettings } from '@/editor/0-core/9-state/user-settings.ts';
+import { handleError, isWorking, setProgress, setWorking } from '@/editor/0-core/9-state/working.ts';
+import { isAbortedError } from '@/editor/0-core/8-lib/util.ts';
+import type { FfmpegDialog } from '@/editor/0-core/8-lib/ffmpeg/ffmpeg-parameters.ts';
+import { blackDetect, detectSceneChanges as ffmpegDetectSceneChanges, silenceDetect } from '@/editor/0-core/8-lib/ffmpeg/ff-remote.ts';
+import { fileDurationAtom, filePathAtom } from '@/editor/2-file/9-state/file-atoms.ts';
+import { activeAudioStreamIndexesAtom, activeVideoStreamIndexAtom } from '@/editor/3-player/9-state/player-atoms.ts';
+import { seekAbs } from '@/editor/3-player/7-actions/player-actions.ts';
+import { currentCutSegOrWholeTimelineAtom } from '@/editor/5-segments/9-state/segments-store.ts';
+import { deleteCurrentCutSeg, loadCutSegments } from '@/editor/5-segments/7-actions/segment-actions.ts';
+import { appendLastCommandsLog } from '@/editor/7-export/9-state/export-atoms.ts';
+import { getFfmpegParameters, type ParameterDialogParameters, setFfmpegParametersForDialog } from '../9-state/detect-atoms.ts';
+import { showParametersDialog } from '../0-ui/parameters-dialog.tsx';
 
 // Port of the detection part of upstream useSegments
 

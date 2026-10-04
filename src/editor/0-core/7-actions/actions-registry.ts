@@ -1,6 +1,6 @@
 import { atom } from 'jotai';
-import { appStore } from '../0-state/store.ts';
-import { handleError } from '../0-state/working.ts';
+import { appStore } from '../9-state/store.ts';
+import { handleError } from '../9-state/working.ts';
 
 /**
  * Single dispatch point for keyboard shortcuts, the native menu, the HTTP API and the command palette.

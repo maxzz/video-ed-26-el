@@ -1,11 +1,11 @@
 import { observe } from 'jotai-effect';
-import { appStore } from '@/editor/0-core/0-state/store.ts';
-import { onFileReset } from '@/editor/0-core/1-actions/lifecycle.ts';
-import { renderThumbnails } from '@/editor/0-core/2-lib/ffmpeg/ffmpeg.ts';
-import { isAbortedError } from '@/editor/0-core/2-lib/util.ts';
-import { filePathAtom } from '@/editor/2-file/0-state/file-atoms.ts';
-import { isDurationValid } from '@/editor/5-segments/2-lib/segments.ts';
-import { showThumbnailsAtom, thumbnailsAtom, zoomedDurationAtom, zoomWindowStartTimeAtom } from '../0-state/timeline-atoms.ts';
+import { appStore } from '@/editor/0-core/9-state/store.ts';
+import { onFileReset } from '@/editor/0-core/7-actions/lifecycle.ts';
+import { renderThumbnails } from '@/editor/0-core/8-lib/ffmpeg/ffmpeg.ts';
+import { isAbortedError } from '@/editor/0-core/8-lib/util.ts';
+import { filePathAtom } from '@/editor/2-file/9-state/file-atoms.ts';
+import { isDurationValid } from '@/editor/5-segments/8-lib/segments.ts';
+import { showThumbnailsAtom, thumbnailsAtom, zoomedDurationAtom, zoomWindowStartTimeAtom } from '../9-state/timeline-atoms.ts';
 
 // Port of upstream useThumbnails: renders a strip of thumbnails for the visible (zoomed) window
 

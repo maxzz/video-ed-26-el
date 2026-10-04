@@ -1,9 +1,9 @@
 import type { DragEndEvent, DragStartEvent } from '@dnd-kit/core';
 import { arrayMove } from '@dnd-kit/sortable';
-import { appStore } from '@/editor/0-core/0-state/store.ts';
-import { batchFilesAtom } from '@/editor/2-file/0-state/file-atoms.ts';
+import { appStore } from '@/editor/0-core/9-state/store.ts';
+import { batchFilesAtom } from '@/editor/2-file/9-state/file-atoms.ts';
 import { setBatchFiles } from '@/editor/2-file/index.ts';
-import { batchDraggingIdAtom, batchSortDescAtom } from '../0-state/concat-atoms.ts';
+import { batchDraggingIdAtom, batchSortDescAtom } from '../9-state/concat-atoms.ts';
 
 // Port of the handlers of upstream components/BatchFilesList.tsx
 

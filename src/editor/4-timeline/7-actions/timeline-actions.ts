@@ -1,19 +1,19 @@
 import type { WheelEvent } from 'react';
 import i18n from 'i18next';
-import { appStore } from '@/editor/0-core/0-state/store.ts';
-import { userSettings } from '@/editor/0-core/0-state/user-settings.ts';
-import { showNotification } from '@/editor/0-core/2-lib/notifications.ts';
-import { zoomMax } from '@/editor/0-core/2-lib/constants.ts';
-import { calcShouldShowKeyframes } from '@/editor/0-core/2-lib/util.ts';
-import { isMatroska } from '@/editor/0-core/2-lib/ffmpeg/streams.ts';
-import { findNearestKeyFrameTime as ffmpegFindNearestKeyFrameTime } from '@/editor/0-core/2-lib/ffmpeg/ffmpeg.ts';
-import normalizeWheel from '@/editor/0-core/2-lib/normalize-wheel.ts';
-import { detectedFpsAtom, fileFormatAtom, rotationAtom } from '@/editor/2-file/0-state/file-atoms.ts';
-import { hideCompatPlayerAtom } from '@/editor/3-player/0-state/player-atoms.ts';
-import { getRelevantTime, seekAbs, seekRel, shortStep } from '@/editor/3-player/1-actions/player-actions.ts';
-import { isDurationValid } from '@/editor/5-segments/2-lib/segments.ts';
-import { isModifierPressed } from '../2-lib/modifier-keys.ts';
-import { comfortZoomAtom, forceBigWaveformAtom, neighbouringKeyFramesAtom, seekAccelerationAtom, zoomedDurationAtom, zoomUnroundedAtom } from '../0-state/timeline-atoms.ts';
+import { appStore } from '@/editor/0-core/9-state/store.ts';
+import { userSettings } from '@/editor/0-core/9-state/user-settings.ts';
+import { showNotification } from '@/editor/0-core/8-lib/notifications.ts';
+import { zoomMax } from '@/editor/0-core/8-lib/constants.ts';
+import { calcShouldShowKeyframes } from '@/editor/0-core/8-lib/util.ts';
+import { isMatroska } from '@/editor/0-core/8-lib/ffmpeg/streams.ts';
+import { findNearestKeyFrameTime as ffmpegFindNearestKeyFrameTime } from '@/editor/0-core/8-lib/ffmpeg/ffmpeg.ts';
+import normalizeWheel from '@/editor/0-core/8-lib/normalize-wheel.ts';
+import { detectedFpsAtom, fileFormatAtom, rotationAtom } from '@/editor/2-file/9-state/file-atoms.ts';
+import { hideCompatPlayerAtom } from '@/editor/3-player/9-state/player-atoms.ts';
+import { getRelevantTime, seekAbs, seekRel, shortStep } from '@/editor/3-player/7-actions/player-actions.ts';
+import { isDurationValid } from '@/editor/5-segments/8-lib/segments.ts';
+import { isModifierPressed } from '../8-lib/modifier-keys.ts';
+import { comfortZoomAtom, forceBigWaveformAtom, neighbouringKeyFramesAtom, seekAccelerationAtom, zoomedDurationAtom, zoomUnroundedAtom } from '../9-state/timeline-atoms.ts';
 
 export { showNotification };
 
@@ -117,4 +117,4 @@ export function toggleShowKeyframes() {
     userSettings.keyframesEnabled = enabled;
 }
 
-export { toggleInvertCutSegments, toggleSimpleMode, toggleExportConfirmEnabled } from '@/editor/0-core/1-actions/settings-toggles.ts';
+export { toggleInvertCutSegments, toggleSimpleMode, toggleExportConfirmEnabled } from '@/editor/0-core/7-actions/settings-toggles.ts';

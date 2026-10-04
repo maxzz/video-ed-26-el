@@ -1,5 +1,5 @@
 import i18n from 'i18next';
-import { fireDialog } from '@/editor/0-core/0-state/dialogs.ts';
+import { fireDialog } from '@/editor/0-core/9-state/dialogs.ts';
 import { parseYouTube } from './edl-formats.ts';
 
 export async function askForYouTubeInput({ fileDuration }: { fileDuration?: number | undefined; }) {

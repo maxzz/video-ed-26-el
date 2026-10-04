@@ -2,16 +2,16 @@ import type { ClipboardEvent, FormEvent } from 'react';
 import { useAtomValue } from 'jotai';
 import { useTranslation } from 'react-i18next';
 import { cn } from '@/utils/classnames';
-import { appStore } from '@/editor/0-core/0-state/store.ts';
-import { formatTimecodeAtom, parseTimecode } from '@/editor/0-core/0-state/timecode.ts';
-import { isExactDurationMatch } from '@/editor/0-core/2-lib/duration.ts';
-import { mainApi } from '@/editor/0-core/2-lib/main-api.ts';
-import { isFileOpenedAtom, startTimeOffsetAtom } from '@/editor/2-file/0-state/file-atoms.ts';
-import { seekAbs } from '@/editor/3-player/1-actions/player-actions.ts';
-import { currentCutSegAtom } from '@/editor/5-segments/0-state/segments-store.ts';
-import { darkModeAtom, getSegColorAtom } from '@/editor/5-segments/0-state/seg-ui-atoms.ts';
-import { setCutTime } from '@/editor/5-segments/1-actions/segment-actions.ts';
-import { cutTimeErrorAtoms, cutTimeManualAtoms } from '../../0-state/bottom-bar-atoms.ts';
+import { appStore } from '@/editor/0-core/9-state/store.ts';
+import { formatTimecodeAtom, parseTimecode } from '@/editor/0-core/9-state/timecode.ts';
+import { isExactDurationMatch } from '@/editor/0-core/8-lib/duration.ts';
+import { mainApi } from '@/editor/0-core/8-lib/main-api.ts';
+import { isFileOpenedAtom, startTimeOffsetAtom } from '@/editor/2-file/9-state/file-atoms.ts';
+import { seekAbs } from '@/editor/3-player/7-actions/player-actions.ts';
+import { currentCutSegAtom } from '@/editor/5-segments/9-state/segments-store.ts';
+import { darkModeAtom, getSegColorAtom } from '@/editor/5-segments/9-state/seg-ui-atoms.ts';
+import { setCutTime } from '@/editor/5-segments/7-actions/segment-actions.ts';
+import { cutTimeErrorAtoms, cutTimeManualAtoms } from '../../9-state/bottom-bar-atoms.ts';
 
 // Port of upstream BottomBar.tsx CutTimeInput
 

@@ -6,20 +6,20 @@ import i18n from 'i18next';
 import type { FFprobeStream } from '@shared/ffprobe';
 import type { AvoidNegativeTs, Html5ifyMode, PreserveMetadata } from '@shared/types';
 import { formatFfmpegNumber, getFixChannelLayoutFilter, getHwaccelArgs, hasCustomChannelLayout } from '@shared/util';
-import { appStore } from '@/editor/0-core/0-state/store.ts';
-import { userSettings } from '@/editor/0-core/0-state/user-settings.ts';
-import { mainApi } from '@/editor/0-core/2-lib/main-api.ts';
-import { join, resolve, dirname } from '@/editor/0-core/2-lib/node-shims.ts';
-import { getSuffixedOutPath, transferTimestamps, getOutFileExtension, getOutDir, getHtml5ifiedPath, unlinkWithRetry, getFrameDuration, isMac, html5ifiedPrefix, html5dummySuffix, assertFileExists } from '@/editor/0-core/2-lib/util.ts';
-import { isCuttingStart, isCuttingEnd, runFfmpegWithProgress, getFfCommandLine, getDuration, createChaptersFromSegments, readFileFfprobeMeta, getExperimentalArgs, getVideoTimescaleArgs, logStdoutStderr, runFfmpegConcat, RefuseOverwriteError, runFfmpeg } from '@/editor/0-core/2-lib/ffmpeg/ffmpeg.ts';
-import { getEffectiveAvoidNegativeTs, getMapStreamsArgs, getStreamIdsToCopy, isCopyingOnlyAudioStreams } from '@/editor/0-core/2-lib/ffmpeg/streams.ts';
-import { needsSmartCut, getCodecParams } from '@/editor/0-core/2-lib/ffmpeg/smartcut.ts';
-import { deleteDispositionValue, type AllFilesMeta, type Chapter, type CopyfileStreams, type LiteFFprobeStream, type ParamsByFile, type SegmentToExport } from '@/editor/0-core/2-lib/types.ts';
-import { UserFacingError } from '@/editor/0-core/2-lib/errors.ts';
-import { getGuaranteedSegments, isDurationValid } from '@/editor/5-segments/2-lib/segments.ts';
-import { encBitrateAtom, filePathAtom } from '@/editor/2-file/0-state/file-atoms.ts';
-import { outputPlaybackRateAtom } from '@/editor/3-player/0-state/player-atoms.ts';
-import { appendFfmpegCommandLog, appendLastCommandsLog, getLossyMode, isEncodingAtom } from '../0-state/export-atoms.ts';
+import { appStore } from '@/editor/0-core/9-state/store.ts';
+import { userSettings } from '@/editor/0-core/9-state/user-settings.ts';
+import { mainApi } from '@/editor/0-core/8-lib/main-api.ts';
+import { join, resolve, dirname } from '@/editor/0-core/8-lib/node-shims.ts';
+import { getSuffixedOutPath, transferTimestamps, getOutFileExtension, getOutDir, getHtml5ifiedPath, unlinkWithRetry, getFrameDuration, isMac, html5ifiedPrefix, html5dummySuffix, assertFileExists } from '@/editor/0-core/8-lib/util.ts';
+import { isCuttingStart, isCuttingEnd, runFfmpegWithProgress, getFfCommandLine, getDuration, createChaptersFromSegments, readFileFfprobeMeta, getExperimentalArgs, getVideoTimescaleArgs, logStdoutStderr, runFfmpegConcat, RefuseOverwriteError, runFfmpeg } from '@/editor/0-core/8-lib/ffmpeg/ffmpeg.ts';
+import { getEffectiveAvoidNegativeTs, getMapStreamsArgs, getStreamIdsToCopy, isCopyingOnlyAudioStreams } from '@/editor/0-core/8-lib/ffmpeg/streams.ts';
+import { needsSmartCut, getCodecParams } from '@/editor/0-core/8-lib/ffmpeg/smartcut.ts';
+import { deleteDispositionValue, type AllFilesMeta, type Chapter, type CopyfileStreams, type LiteFFprobeStream, type ParamsByFile, type SegmentToExport } from '@/editor/0-core/8-lib/types.ts';
+import { UserFacingError } from '@/editor/0-core/8-lib/errors.ts';
+import { getGuaranteedSegments, isDurationValid } from '@/editor/5-segments/8-lib/segments.ts';
+import { encBitrateAtom, filePathAtom } from '@/editor/2-file/9-state/file-atoms.ts';
+import { outputPlaybackRateAtom } from '@/editor/3-player/9-state/player-atoms.ts';
+import { appendFfmpegCommandLog, appendLastCommandsLog, getLossyMode, isEncodingAtom } from '../9-state/export-atoms.ts';
 
 // Port of upstream hooks/useFfmpegOperations.ts. The hook parameters are read from appStore/userSettings at call time.
 

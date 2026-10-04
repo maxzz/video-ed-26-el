@@ -1,18 +1,18 @@
 // Owner: 4-timeline port. Public API of the timeline feature.
-import { registerActions } from '@/editor/0-core/1-actions/actions-registry.ts';
-import { userSettings } from '@/editor/0-core/0-state/user-settings.ts';
-import * as tl from './1-actions/timeline-actions.ts';
-import { readAllKeyframes } from './1-actions/keyframes.ts';
-import { generateOverviewWaveform } from './1-actions/waveform.ts';
-import './1-actions/thumbnails.ts';
+import { registerActions } from '@/editor/0-core/7-actions/actions-registry.ts';
+import { userSettings } from '@/editor/0-core/9-state/user-settings.ts';
+import * as tl from './7-actions/timeline-actions.ts';
+import { readAllKeyframes } from './7-actions/keyframes.ts';
+import { generateOverviewWaveform } from './7-actions/waveform.ts';
+import './7-actions/thumbnails.ts';
 
-export { Timeline } from './3-ui/timeline.tsx';
-export { TimelineHosts } from './3-ui/timeline-hosts.tsx';
-export { BigWaveform } from './3-ui/big-waveform.tsx';
-export { bigWaveformEnabledAtom, zoomAtom, zoomedDurationAtom, zoomWindowStartTimeAtom, zoomWindowEndTimeAtom, neighbouringKeyFramesAtom } from './0-state/timeline-atoms.ts';
-export { areWeCuttingAtom } from './0-state/bottom-bar-atoms.ts';
-export { findNearestKeyFrameTime } from './1-actions/timeline-actions.ts';
-export { getModifierKeyNames, getModifier, keyMap } from './2-lib/modifier-keys.ts';
+export { Timeline } from './0-ui/timeline.tsx';
+export { TimelineHosts } from './0-ui/timeline-hosts.tsx';
+export { BigWaveform } from './0-ui/big-waveform.tsx';
+export { bigWaveformEnabledAtom, zoomAtom, zoomedDurationAtom, zoomWindowStartTimeAtom, zoomWindowEndTimeAtom, neighbouringKeyFramesAtom } from './9-state/timeline-atoms.ts';
+export { areWeCuttingAtom } from './9-state/bottom-bar-atoms.ts';
+export { findNearestKeyFrameTime } from './7-actions/timeline-actions.ts';
+export { getModifierKeyNames, getModifier, keyMap } from './8-lib/modifier-keys.ts';
 
 const seekKeyup = tl.resetSeekAcceleration;
 

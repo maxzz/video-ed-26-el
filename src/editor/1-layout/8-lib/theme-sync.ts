@@ -1,6 +1,6 @@
 import { subscribe } from 'valtio';
 import { appSettings } from '@/store/1-ui-settings';
-import { userSettings } from '@/editor/0-core/0-state/user-settings.ts';
+import { userSettings } from '@/editor/0-core/9-state/user-settings.ts';
 
 // The template theme (appSettings.theme) is the source of truth; LosslessCut's darkMode setting mirrors it
 // so ported code that reads userSettings.darkMode keeps working.

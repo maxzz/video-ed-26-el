@@ -1,8 +1,8 @@
 import { atom } from 'jotai';
 import i18n from 'i18next';
-import { DirectoryAccessDeclinedError, UnsupportedFileError } from '../2-lib/errors.ts';
-import { isAbortedError } from '../2-lib/util.ts';
-import { abortFfmpegs } from '../2-lib/ffmpeg/ff-remote.ts';
+import { DirectoryAccessDeclinedError, UnsupportedFileError } from '../8-lib/errors.ts';
+import { isAbortedError } from '../8-lib/util.ts';
+import { abortFfmpegs } from '../8-lib/ffmpeg/ff-remote.ts';
 import { appStore } from './store.ts';
 
 // Port of upstream useLoading + useErrorHandling

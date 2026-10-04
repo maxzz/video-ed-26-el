@@ -2,28 +2,28 @@ import i18n from 'i18next';
 import invariant from 'tiny-invariant';
 import sum from 'lodash/sum.js';
 import type { FFprobeStream } from '@shared/ffprobe';
-import { appStore } from '@/editor/0-core/0-state/store.ts';
-import { customOutDirAtom, userSettings } from '@/editor/0-core/0-state/user-settings.ts';
-import { isWorking, setProgress, setWorking } from '@/editor/0-core/0-state/working.ts';
-import { errorToast, showConcatFailedDialog, showDiskFull, showMuxNotSupported, showOutputNotWritable } from '@/editor/0-core/2-lib/app-dialogs.tsx';
-import { DirectoryAccessDeclinedError, UserFacingError } from '@/editor/0-core/2-lib/errors.ts';
-import { createChaptersFromSegments } from '@/editor/0-core/2-lib/ffmpeg/ffmpeg.ts';
-import { parsePath } from '@/editor/0-core/2-lib/node-shims.ts';
+import { appStore } from '@/editor/0-core/9-state/store.ts';
+import { customOutDirAtom, userSettings } from '@/editor/0-core/9-state/user-settings.ts';
+import { isWorking, setProgress, setWorking } from '@/editor/0-core/9-state/working.ts';
+import { errorToast, showConcatFailedDialog, showDiskFull, showMuxNotSupported, showOutputNotWritable } from '@/editor/0-core/8-lib/app-dialogs.tsx';
+import { DirectoryAccessDeclinedError, UserFacingError } from '@/editor/0-core/8-lib/errors.ts';
+import { createChaptersFromSegments } from '@/editor/0-core/8-lib/ffmpeg/ffmpeg.ts';
+import { parsePath } from '@/editor/0-core/8-lib/node-shims.ts';
 import {
     checkFileSizes, getOutDir, getOutPath, getStdioString, isAbortedError, isExecaError, isMuxNotSupported, isOutOfSpaceError,
     makeSourceFileAccessError, readFileSize, readFileSizes,
-} from '@/editor/0-core/2-lib/util.ts';
-import { batchFilePathsAtom, batchFilesAtom, detectedFileFormatAtom, fileFormatAtom } from '@/editor/2-file/0-state/file-atoms.ts';
+} from '@/editor/0-core/8-lib/util.ts';
+import { batchFilePathsAtom, batchFilesAtom, detectedFileFormatAtom, fileFormatAtom } from '@/editor/2-file/9-state/file-atoms.ts';
 import { closeBatch, ensureWritableOutDir, openFilesDialog, openSendReportDialog } from '@/editor/2-file/index.ts';
-import { concatDialogOpenAtom } from '@/editor/1-layout/0-state/panels-atoms.ts';
-import { concatFiles, maybeMkDeepOutDir, OutputNotWritableError } from '@/editor/7-export/2-lib/ffmpeg-operations.ts';
-import type { GeneratedOutFileNames } from '@/editor/7-export/2-lib/output-name-template.ts';
-import { showOsNotification } from '@/editor/0-core/2-lib/notifications.ts';
-import { openConcatFinishedDialog } from '@/editor/7-export/3-ui/finished-dialogs.tsx';
+import { concatDialogOpenAtom } from '@/editor/1-layout/9-state/panels-atoms.ts';
+import { concatFiles, maybeMkDeepOutDir, OutputNotWritableError } from '@/editor/7-export/8-lib/ffmpeg-operations.ts';
+import type { GeneratedOutFileNames } from '@/editor/7-export/8-lib/output-name-template.ts';
+import { showOsNotification } from '@/editor/0-core/8-lib/notifications.ts';
+import { openConcatFinishedDialog } from '@/editor/7-export/0-ui/finished-dialogs.tsx';
 import {
     concatClearBatchFilesAfterConcatAtom, concatEnableReadFileMetaAtom, concatFilesMetaAtom, concatFirstPathAtom, concatIncludeAllStreamsAtom,
     concatMergedFileTemplateAtom, concatOutputDirAtom, concatTempMergedFileTemplateAtom, generateConcatFileNames,
-} from '../0-state/concat-atoms.ts';
+} from '../9-state/concat-atoms.ts';
 
 // Port of upstream App.tsx userConcatFiles/concatBatch and the actions of components/ConcatDialog.tsx
 

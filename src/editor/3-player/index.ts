@@ -1,25 +1,25 @@
 // Public API of the player feature.
-import { registerActions } from '@/editor/0-core/1-actions/actions-registry.ts';
-import { goToTimecodeDirectArgsSchema } from '@/editor/0-core/2-lib/types.ts';
-import * as player from './1-actions/player-actions.ts';
-import { decreaseVolume, goToTimecode, goToTimecodeDirect, increaseVolume, toggleFullscreenVideo } from './1-actions/video-events.ts';
-import './1-actions/video-effects.ts';
-import './1-actions/subtitles.ts';
-import './1-actions/working-timer.ts';
+import { registerActions } from '@/editor/0-core/7-actions/actions-registry.ts';
+import { goToTimecodeDirectArgsSchema } from '@/editor/0-core/8-lib/types.ts';
+import * as player from './7-actions/player-actions.ts';
+import { decreaseVolume, goToTimecode, goToTimecodeDirect, increaseVolume, toggleFullscreenVideo } from './7-actions/video-events.ts';
+import './7-actions/video-effects.ts';
+import './7-actions/subtitles.ts';
+import './7-actions/working-timer.ts';
 
-export { PlayerView } from './3-ui/player-view.tsx';
-export { FileHosts } from './3-ui/file-hosts.tsx';
-export { NoFileLoaded } from './3-ui/no-file-loaded.tsx';
-export { VolumeControl } from './3-ui/volume-control.tsx';
-export { PlaybackStreamSelector } from './3-ui/playback-stream-selector.tsx';
-export { WorkingOverlay } from './3-ui/working-overlay.tsx';
-export { ErrorDialog } from './3-ui/error-dialog.tsx';
-export { MediaSourcePlayer } from './3-ui/media-source-player.tsx';
+export { PlayerView } from './0-ui/player-view.tsx';
+export { FileHosts } from './0-ui/file-hosts.tsx';
+export { NoFileLoaded } from './0-ui/no-file-loaded.tsx';
+export { VolumeControl } from './0-ui/volume-control.tsx';
+export { PlaybackStreamSelector } from './0-ui/playback-stream-selector.tsx';
+export { WorkingOverlay } from './0-ui/working-overlay.tsx';
+export { ErrorDialog } from './0-ui/error-dialog.tsx';
+export { MediaSourcePlayer } from './0-ui/media-source-player.tsx';
 export {
     onDurationChange, onVideoError, goToTimecode, goToTimecodeDirect, toggleFullscreenVideo, setPlaybackVolume, increaseVolume, decreaseVolume,
     incrementMediaSourceQuality,
-} from './1-actions/video-events.ts';
-export { loadSubtitle, onActiveSubtitleChange } from './1-actions/subtitles.ts';
+} from './7-actions/video-events.ts';
+export { loadSubtitle, onActiveSubtitleChange } from './7-actions/subtitles.ts';
 
 registerActions({
     togglePlayNoResetSpeed: () => player.togglePlay(),

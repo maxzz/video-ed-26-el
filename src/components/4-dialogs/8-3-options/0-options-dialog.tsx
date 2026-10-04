@@ -1,6 +1,6 @@
 import { useAtom, useSetAtom } from "jotai";
 import { SettingsIcon } from "lucide-react";
-import { settingsVisibleAtom } from "@/editor/1-layout/0-state/panels-atoms";
+import { settingsVisibleAtom } from "@/editor/1-layout/9-state/panels-atoms";
 import { Button } from "@/ui/shadcn/button";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/ui/shadcn/dialog";
 import { isOpenOptionsDialogAtom } from "./9-types-options";

@@ -4,15 +4,15 @@ import { useTranslation } from 'react-i18next';
 import invariant from 'tiny-invariant';
 import { AnimatePresence, motion } from 'motion/react';
 import { CheckIcon, ClipboardListIcon, ClipboardPasteIcon, InfoIcon, PencilIcon, PlusIcon, Trash2Icon, TriangleAlertIcon, Undo2Icon } from 'lucide-react';
-import { type SegmentTags, segmentTagsSchema } from '@/editor/0-core/2-lib/types.ts';
-import { mainApi } from '@/editor/0-core/2-lib/main-api.ts';
-import { errorToast } from '@/editor/0-core/2-lib/app-dialogs.tsx';
-import { CopyClipboardButton } from '@/editor/7-export/3-ui/controls.tsx';
+import { type SegmentTags, segmentTagsSchema } from '@/editor/0-core/8-lib/types.ts';
+import { mainApi } from '@/editor/0-core/8-lib/main-api.ts';
+import { errorToast } from '@/editor/0-core/8-lib/app-dialogs.tsx';
+import { CopyClipboardButton } from '@/editor/7-export/0-ui/controls.tsx';
 import { Button } from '@/ui/shadcn/button';
 import { Input } from '@/ui/shadcn/input';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/ui/shadcn/tooltip';
 import { cn } from '@/utils/classnames';
-import { useLocalProxy } from '../2-lib/use-local-proxy.ts';
+import { useLocalProxy } from '../8-lib/use-local-proxy.ts';
 
 // Port of upstream components/TagEditor.tsx
 

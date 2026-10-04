@@ -1,7 +1,7 @@
 import { useTranslation } from 'react-i18next';
-import { mainApi } from '@/editor/0-core/2-lib/main-api.ts';
-import { toast } from '@/editor/0-core/2-lib/toast.tsx';
-import { getAppReleaseUrl } from '../2-lib/versions.ts';
+import { mainApi } from '@/editor/0-core/8-lib/main-api.ts';
+import { toast } from '@/editor/0-core/8-lib/toast.tsx';
+import { getAppReleaseUrl } from '../8-lib/versions.ts';
 
 export function showNewVersionNotice(version: string) {
     toast.fire({ icon: 'info', title: <NewVersionTitle />, text: <NewVersionLink version={version} />, timer: 15000 });

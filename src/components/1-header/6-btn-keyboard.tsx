@@ -1,7 +1,7 @@
 import { useTranslation } from "react-i18next";
 import { CommandIcon, KeyboardIcon } from "lucide-react";
-import { isMac } from "@/editor/0-core/2-lib/main-api";
-import { toggleKeyboardShortcuts } from "@/editor/1-layout/0-state/panels-atoms";
+import { isMac } from "@/editor/0-core/8-lib/main-api";
+import { toggleKeyboardShortcuts } from "@/editor/1-layout/9-state/panels-atoms";
 import { toggleCommandPalette } from "@/editor/c-keyboard";
 import { Button } from "@/ui/shadcn/button";
 

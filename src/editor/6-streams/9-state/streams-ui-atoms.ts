@@ -1,6 +1,6 @@
 import { atom } from 'jotai';
-import { appStore } from '@/editor/0-core/0-state/store.ts';
-import { onFileReset } from '@/editor/0-core/1-actions/lifecycle.ts';
+import { appStore } from '@/editor/0-core/9-state/store.ts';
+import { onFileReset } from '@/editor/0-core/7-actions/lifecycle.ts';
 
 // State of the tracks editor (upstream StreamsSelector local state)
 

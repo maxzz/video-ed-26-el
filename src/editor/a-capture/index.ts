@@ -1,9 +1,9 @@
 // Owner: a-capture port. Public API of the frame capture feature.
-import { registerActions } from '@/editor/0-core/1-actions/actions-registry.ts';
-import * as capture from './1-actions/capture-actions.ts';
+import { registerActions } from '@/editor/0-core/7-actions/actions-registry.ts';
+import * as capture from './7-actions/capture-actions.ts';
 
-export { extractSegmentsFramesAsImages } from './1-actions/capture-actions.ts';
-export { CaptureFormatButton } from './3-ui/capture-format-button.tsx';
+export { extractSegmentsFramesAsImages } from './7-actions/capture-actions.ts';
+export { CaptureFormatButton } from './0-ui/capture-format-button.tsx';
 registerActions({
     captureSnapshot: capture.captureSnapshot,
     captureSnapshotAsCoverArt: capture.captureSnapshotAsCoverArt,

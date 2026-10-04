@@ -1,6 +1,6 @@
 import { atom } from 'jotai';
 import type { KeyboardAction } from '@shared/types.ts';
-import type { KeyboardLayoutMap } from '@/editor/0-core/2-lib/types.ts';
+import type { KeyboardLayoutMap } from '@/editor/0-core/8-lib/types.ts';
 
 /** Physical key code -> character on the user's keyboard layout. Undefined until loaded */
 export const keyboardLayoutMapAtom = atom<KeyboardLayoutMap | undefined>(undefined);

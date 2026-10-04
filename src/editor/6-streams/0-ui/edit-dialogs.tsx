@@ -3,18 +3,18 @@ import { useAtomValue } from 'jotai';
 import { useSnapshot } from 'valtio';
 import { useTranslation } from 'react-i18next';
 import type { FFprobeStream } from '@shared/ffprobe';
-import { appStore } from '@/editor/0-core/0-state/store.ts';
-import type { FileParams, StreamParams } from '@/editor/0-core/2-lib/types.ts';
-import { allFilesMetaAtom, filePathAtom, paramsByFileAtom } from '@/editor/2-file/0-state/file-atoms.ts';
+import { appStore } from '@/editor/0-core/9-state/store.ts';
+import type { FileParams, StreamParams } from '@/editor/0-core/8-lib/types.ts';
+import { allFilesMetaAtom, filePathAtom, paramsByFileAtom } from '@/editor/2-file/9-state/file-atoms.ts';
 import { Button } from '@/ui/shadcn/button';
 import { Input } from '@/ui/shadcn/input';
 import { Switch } from '@/ui/shadcn/switch';
 import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/ui/shadcn/dialog';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/ui/shadcn/tabs';
 import { cn } from '@/utils/classnames';
-import { editingFileAtom, editingStreamAtom, editingTagKeyAtom, setEditingFile, setEditingStream } from '../0-state/streams-ui-atoms.ts';
-import { updateFileParams, updateStreamParams } from '../1-actions/streams-actions.tsx';
-import { useLocalProxy } from '../2-lib/use-local-proxy.ts';
+import { editingFileAtom, editingStreamAtom, editingTagKeyAtom, setEditingFile, setEditingStream } from '../9-state/streams-ui-atoms.ts';
+import { updateFileParams, updateStreamParams } from '../7-actions/streams-actions.tsx';
+import { useLocalProxy } from '../8-lib/use-local-proxy.ts';
 import { TagEditor } from './tag-editor.tsx';
 
 // Port of upstream StreamsSelector.tsx EditFileDialog/EditStreamDialog

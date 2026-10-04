@@ -4,17 +4,17 @@ import { useTranslation } from 'react-i18next';
 import groupBy from 'lodash/groupBy.js';
 import { HammerIcon, MouseIcon, PlusIcon, RotateCcwIcon, Trash2Icon } from 'lucide-react';
 import type { KeyboardAction, ModifierKey } from '@shared/types.ts';
-import { appStore } from '@/editor/0-core/0-state/store.ts';
-import { userSettingsAtom } from '@/editor/0-core/0-state/user-settings.ts';
-import { runAction } from '@/editor/0-core/1-actions/actions-registry.ts';
-import { keyboardShortcutsVisibleAtom } from '@/editor/1-layout/0-state/panels-atoms.ts';
+import { appStore } from '@/editor/0-core/9-state/store.ts';
+import { userSettingsAtom } from '@/editor/0-core/9-state/user-settings.ts';
+import { runAction } from '@/editor/0-core/7-actions/actions-registry.ts';
+import { keyboardShortcutsVisibleAtom } from '@/editor/1-layout/9-state/panels-atoms.ts';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/ui/shadcn/dialog';
 import { Button } from '@/ui/shadcn/button';
 import { Input } from '@/ui/shadcn/input';
 import { Kbd } from '@/ui/shadcn/kbd';
-import { shortcutsSearchAtom } from '../0-state/keyboard-atoms.ts';
-import { deleteKeyBinding, resetKeyBindings, startCreatingBinding } from '../1-actions/key-bindings.ts';
-import { type ActionInfo, getActionCategories, getActionsMap, getModifier } from '../2-lib/actions-map.ts';
+import { shortcutsSearchAtom } from '../9-state/keyboard-atoms.ts';
+import { deleteKeyBinding, resetKeyBindings, startCreatingBinding } from '../7-actions/key-bindings.ts';
+import { type ActionInfo, getActionCategories, getActionsMap, getModifier } from '../8-lib/actions-map.ts';
 import { KeyCombo } from './key-combo.tsx';
 
 // Port of upstream components/KeyboardShortcuts.tsx

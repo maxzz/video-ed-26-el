@@ -1,16 +1,16 @@
 import { observe } from 'jotai-effect';
 import pMap from 'p-map';
 import invariant from 'tiny-invariant';
-import { appStore } from '@/editor/0-core/0-state/store.ts';
-import { getDefaultOutFormat, mapRecommendedDefaultFormat, readFileFfprobeMeta } from '@/editor/0-core/2-lib/ffmpeg/ffmpeg.ts';
-import { isAbortedError, readFileStats } from '@/editor/0-core/2-lib/util.ts';
-import { batchFilePathsAtom, detectedFileFormatAtom, fileFormatAtom } from '@/editor/2-file/0-state/file-atoms.ts';
-import { defaultMergedFileTemplate } from '@/editor/7-export/2-lib/output-name-template.ts';
+import { appStore } from '@/editor/0-core/9-state/store.ts';
+import { getDefaultOutFormat, mapRecommendedDefaultFormat, readFileFfprobeMeta } from '@/editor/0-core/8-lib/ffmpeg/ffmpeg.ts';
+import { isAbortedError, readFileStats } from '@/editor/0-core/8-lib/util.ts';
+import { batchFilePathsAtom, detectedFileFormatAtom, fileFormatAtom } from '@/editor/2-file/9-state/file-atoms.ts';
+import { defaultMergedFileTemplate } from '@/editor/7-export/8-lib/output-name-template.ts';
 import {
     type ConcatFileMeta, concatEnableReadFileMetaAtom, concatFilesMetaAtom, concatFirstPathAtom, concatGeneratedFileNamesAtom,
     concatMergedFileTemplateAtom, concatTempMergedFileTemplateAtom, concatUniqueSuffixAtom, generateConcatFileNames,
     isConcatDialogShownAtom, outFormatLockedAtom, simpleModeAtom,
-} from '../0-state/concat-atoms.ts';
+} from '../9-state/concat-atoms.ts';
 
 // Reactions of the merge dialog (upstream ConcatDialog useEffects)
 

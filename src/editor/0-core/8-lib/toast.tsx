@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react';
 import i18n from 'i18next';
 import { notice } from '@/ui/local-ui/7-toaster';
-import type { DialogIcon } from '../0-state/dialogs.ts';
+import type { DialogIcon } from '../9-state/dialogs.ts';
 
 interface ToastOptions {
     icon?: DialogIcon;

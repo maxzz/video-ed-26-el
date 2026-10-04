@@ -1,11 +1,11 @@
 import { atom } from 'jotai';
 import type { FFprobeStream } from '@shared/ffprobe';
-import type { ChromiumHTMLVideoElement, PlaybackMode } from '@/editor/0-core/2-lib/types.ts';
-import { audioStreamsAtom, isRotationSetAtom, mainAudioStreamAtom, mainVideoStreamAtom, rotationAtom, subtitleStreamsAtom, usingDummyVideoAtom, videoStreamsAtom } from '@/editor/2-file/0-state/file-atoms.ts';
-import { canHtml5PlayerPlayStreams } from '@/editor/0-core/2-lib/ffmpeg/streams.ts';
-import { appStore } from '@/editor/0-core/0-state/store.ts';
-import { userSettingsAtom } from '@/editor/0-core/0-state/user-settings.ts';
-import { onFileReset } from '@/editor/0-core/1-actions/lifecycle.ts';
+import type { ChromiumHTMLVideoElement, PlaybackMode } from '@/editor/0-core/8-lib/types.ts';
+import { audioStreamsAtom, isRotationSetAtom, mainAudioStreamAtom, mainVideoStreamAtom, rotationAtom, subtitleStreamsAtom, usingDummyVideoAtom, videoStreamsAtom } from '@/editor/2-file/9-state/file-atoms.ts';
+import { canHtml5PlayerPlayStreams } from '@/editor/0-core/8-lib/ffmpeg/streams.ts';
+import { appStore } from '@/editor/0-core/9-state/store.ts';
+import { userSettingsAtom } from '@/editor/0-core/9-state/user-settings.ts';
+import { onFileReset } from '@/editor/0-core/7-actions/lifecycle.ts';
 
 /** Set by the <video> ref callback */
 export const videoElementAtom = atom<ChromiumHTMLVideoElement | null>(null);

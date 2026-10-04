@@ -1,11 +1,11 @@
 import type { KeyBinding, KeyboardAction } from '@shared/types.ts';
-import { appStore } from '@/editor/0-core/0-state/store.ts';
-import { userSettingsAtom } from '@/editor/0-core/0-state/user-settings.ts';
-import { isAnyDialogOpenAtom } from '@/editor/0-core/0-state/dialogs.ts';
-import { getKeyupAction, hasAction, runAction } from '@/editor/0-core/1-actions/actions-registry.ts';
-import { allModifiers, altModifiers, controlModifiers, metaModifiers, shiftModifiers } from '@/editor/0-core/2-lib/util.ts';
-import { anyPanelOpenAtom, closeExportConfirm, commandPaletteOpenAtom, exportConfirmOpenAtom } from '@/editor/1-layout/0-state/panels-atoms.ts';
-import { creatingBindingAtom } from '../0-state/keyboard-atoms.ts';
+import { appStore } from '@/editor/0-core/9-state/store.ts';
+import { userSettingsAtom } from '@/editor/0-core/9-state/user-settings.ts';
+import { isAnyDialogOpenAtom } from '@/editor/0-core/9-state/dialogs.ts';
+import { getKeyupAction, hasAction, runAction } from '@/editor/0-core/7-actions/actions-registry.ts';
+import { allModifiers, altModifiers, controlModifiers, metaModifiers, shiftModifiers } from '@/editor/0-core/8-lib/util.ts';
+import { anyPanelOpenAtom, closeExportConfirm, commandPaletteOpenAtom, exportConfirmOpenAtom } from '@/editor/1-layout/9-state/panels-atoms.ts';
+import { creatingBindingAtom } from '../9-state/keyboard-atoms.ts';
 import { addRecordedKey, updateKeyboardLayout } from './key-bindings.ts';
 import { toggleCommandPalette } from './command-palette.ts';
 

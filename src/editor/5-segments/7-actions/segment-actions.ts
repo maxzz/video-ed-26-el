@@ -2,34 +2,34 @@ import i18n from 'i18next';
 import pMap from 'p-map';
 import invariant from 'tiny-invariant';
 import sortBy from 'lodash/sortBy.js';
-import type { DefiniteSegmentBase, SegmentBase, StateSegment } from '@/editor/0-core/2-lib/types.ts';
-import { appStore } from '@/editor/0-core/0-state/store.ts';
-import { userSettings } from '@/editor/0-core/0-state/user-settings.ts';
-import { maxLabelLengthAtom } from '@/editor/0-core/0-state/user-settings.ts';
-import { UserFacingError } from '@/editor/0-core/2-lib/errors.ts';
-import { getFileSize, shuffleArray } from '@/editor/0-core/2-lib/util.ts';
-import { maxSegmentsAllowed } from '@/editor/0-core/2-lib/constants.ts';
-import { handleError, isWorking, setWorking } from '@/editor/0-core/0-state/working.ts';
-import { parseTimecode, timecodePlaceholderAtom } from '@/editor/0-core/0-state/timecode.ts';
+import type { DefiniteSegmentBase, SegmentBase, StateSegment } from '@/editor/0-core/8-lib/types.ts';
+import { appStore } from '@/editor/0-core/9-state/store.ts';
+import { userSettings } from '@/editor/0-core/9-state/user-settings.ts';
+import { maxLabelLengthAtom } from '@/editor/0-core/9-state/user-settings.ts';
+import { UserFacingError } from '@/editor/0-core/8-lib/errors.ts';
+import { getFileSize, shuffleArray } from '@/editor/0-core/8-lib/util.ts';
+import { maxSegmentsAllowed } from '@/editor/0-core/8-lib/constants.ts';
+import { handleError, isWorking, setWorking } from '@/editor/0-core/9-state/working.ts';
+import { parseTimecode, timecodePlaceholderAtom } from '@/editor/0-core/9-state/timecode.ts';
 import {
     askForAlignSegments, askForSegmentDuration, createFixedByteSixedSegments as createFixedByteSixedSegmentsDialog,
     createNumSegments as createNumSegmentsDialog, createRandomSegments as createRandomSegmentsDialog, errorToast,
     labelSegmentDialog, selectSegmentsByLabelDialog, toastError,
-} from '@/editor/0-core/2-lib/app-dialogs.tsx';
-import { findKeyframeNearTime, mapTimesToSegments, readFrames } from '@/editor/0-core/2-lib/ffmpeg/ffmpeg.ts';
-import { fileDurationAtom, filePathAtom, mainFileMetaAtom } from '@/editor/2-file/0-state/file-atoms.ts';
-import { activeVideoStreamAtom } from '@/editor/3-player/0-state/player-atoms.ts';
-import { checkFileOpened, getRelevantTime } from '@/editor/3-player/1-actions/player-actions.ts';
+} from '@/editor/0-core/8-lib/app-dialogs.tsx';
+import { findKeyframeNearTime, mapTimesToSegments, readFrames } from '@/editor/0-core/8-lib/ffmpeg/ffmpeg.ts';
+import { fileDurationAtom, filePathAtom, mainFileMetaAtom } from '@/editor/2-file/9-state/file-atoms.ts';
+import { activeVideoStreamAtom } from '@/editor/3-player/9-state/player-atoms.ts';
+import { checkFileOpened, getRelevantTime } from '@/editor/3-player/7-actions/player-actions.ts';
 import {
     addSegmentColorIndex, combineOverlappingSegments as combineOverlappingSegments2, combineSelectedSegments as combineSelectedSegments2,
     createSegment, filterNonMarkers, invertSegments, isDurationValid, isInitialSegment, makeDurationSegments, sortSegments,
-} from '../2-lib/segments.ts';
+} from '../8-lib/segments.ts';
 import {
     commitSegments, currentCutSegAtom, currentCutSegOrWholeTimelineAtom, currentSegIndexAtom, currentSegIndexSafeAtom,
     cutSegmentsAtom, findSegmentsAtCursor, getCutSegments, resetSegmentsHistory, segColorCounterAtom, selectedSegmentsAtom,
-} from '../0-state/segments-store.ts';
+} from '../9-state/segments-store.ts';
 
-// Port of upstream useSegments (detection lives in b-detect, expression dialogs in 5-segments/3-ui)
+// Port of upstream useSegments (detection lives in b-detect, expression dialogs in 5-segments/0-ui)
 
 const offsetSegments = (segments: DefiniteSegmentBase[], offset: number) => segments.map((s) => ({ start: s.start + offset, end: s.end + offset }));
 

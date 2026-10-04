@@ -7,14 +7,14 @@ import { CircleCheckIcon, CircleIcon, SaveIcon } from 'lucide-react';
 import prettyBytes from 'pretty-bytes';
 import { cn } from '@/utils/classnames';
 import { ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuSeparator, ContextMenuTrigger } from '@/ui/shadcn/context-menu';
-import type { InverseCutSegment, StateSegment } from '@/editor/0-core/2-lib/types.ts';
-import { formatTimecodeAtom, getFrameCountAtom } from '@/editor/0-core/0-state/timecode.ts';
-import { runAction } from '@/editor/0-core/1-actions/actions-registry.ts';
-import { jumpSegEnd, jumpSegStart } from '@/editor/3-player/1-actions/player-actions.ts';
-import { getSegmentTags } from '../2-lib/segments.ts';
-import { darkModeAtom, getSegColorAtom, invertCutSegmentsAtom } from '../0-state/seg-ui-atoms.ts';
-import * as seg from '../1-actions/segment-actions.ts';
-import { editSegmentTags, mutateSegmentsByExpr, reorderSegmentDialog, selectSegmentsByExpr } from '../1-actions/segment-dialogs.tsx';
+import type { InverseCutSegment, StateSegment } from '@/editor/0-core/8-lib/types.ts';
+import { formatTimecodeAtom, getFrameCountAtom } from '@/editor/0-core/9-state/timecode.ts';
+import { runAction } from '@/editor/0-core/7-actions/actions-registry.ts';
+import { jumpSegEnd, jumpSegStart } from '@/editor/3-player/7-actions/player-actions.ts';
+import { getSegmentTags } from '../8-lib/segments.ts';
+import { darkModeAtom, getSegColorAtom, invertCutSegmentsAtom } from '../9-state/seg-ui-atoms.ts';
+import * as seg from '../7-actions/segment-actions.ts';
+import { editSegmentTags, mutateSegmentsByExpr, reorderSegmentDialog, selectSegmentsByExpr } from '../7-actions/segment-dialogs.tsx';
 
 // Port of upstream SegmentList.tsx Segment
 

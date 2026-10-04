@@ -1,13 +1,13 @@
 import { atom } from 'jotai';
 import type { ColorInstance } from 'color';
 import type { Transition } from 'motion/react';
-import type { InverseCutSegment, SegmentColorIndex, StateSegment } from '@/editor/0-core/2-lib/types.ts';
-import { appStore } from '@/editor/0-core/0-state/store.ts';
-import { prefersReducedMotionAtom, userSettingsAtom } from '@/editor/0-core/0-state/user-settings.ts';
-import { onFileReset } from '@/editor/0-core/1-actions/lifecycle.ts';
-import { getSegColor } from '@/editor/0-core/2-lib/colors.ts';
-import { commandedTimeAtom } from '@/editor/3-player/0-state/player-atoms.ts';
-import { isInitialSegment } from '../2-lib/segments.ts';
+import type { InverseCutSegment, SegmentColorIndex, StateSegment } from '@/editor/0-core/8-lib/types.ts';
+import { appStore } from '@/editor/0-core/9-state/store.ts';
+import { prefersReducedMotionAtom, userSettingsAtom } from '@/editor/0-core/9-state/user-settings.ts';
+import { onFileReset } from '@/editor/0-core/7-actions/lifecycle.ts';
+import { getSegColor } from '@/editor/0-core/8-lib/colors.ts';
+import { commandedTimeAtom } from '@/editor/3-player/9-state/player-atoms.ts';
+import { isInitialSegment } from '../8-lib/segments.ts';
 import { cutSegmentsAtom, findSegmentsAtCursor, inverseCutSegmentsAtom, segColorCounterAtom, selectedSegmentsAtom } from './segments-store.ts';
 
 // UI state shared by the timeline, the bottom bar and the segment list (upstream SegColorsContext + parts of useUserSettings)

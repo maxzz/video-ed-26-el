@@ -1,7 +1,7 @@
 import { atom } from 'jotai';
 import { observe } from 'jotai-effect';
-import { appStore } from '@/editor/0-core/0-state/store.ts';
-import { workingAtom } from '@/editor/0-core/0-state/working.ts';
+import { appStore } from '@/editor/0-core/9-state/store.ts';
+import { workingAtom } from '@/editor/0-core/9-state/working.ts';
 
 /**
  * Time since the current operation started. Reassures the user that the app is not frozen,

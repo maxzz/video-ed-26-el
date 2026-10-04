@@ -1,20 +1,20 @@
 import i18n from 'i18next';
 import invariant from 'tiny-invariant';
-import { appStore } from '@/editor/0-core/0-state/store.ts';
-import { customOutDirAtom, userSettings } from '@/editor/0-core/0-state/user-settings.ts';
-import { formatTimecode, parseTimecode, promptTimecode, timecodePlaceholderAtom } from '@/editor/0-core/0-state/timecode.ts';
-import { isWorking, setWorking } from '@/editor/0-core/0-state/working.ts';
-import { showPlaybackFailedMessage, toastError } from '@/editor/0-core/2-lib/app-dialogs.tsx';
-import { UserFacingError } from '@/editor/0-core/2-lib/errors.ts';
-import { toast } from '@/editor/0-core/2-lib/toast.tsx';
-import { mediaSourceQualities } from '@/editor/0-core/2-lib/util.ts';
-import { fullscreenAtom } from '@/editor/1-layout/0-state/panels-atoms.ts';
-import { fileDurationAtom, filePathAtom, hasAudioAtom, hasVideoAtom, usingPreviewFileAtom } from '@/editor/2-file/0-state/file-atoms.ts';
-import { html5ifyAndLoadWithPreferences } from '@/editor/2-file/1-actions/html5ify.ts';
-import { isFileDurationValid, showNotNativelySupportedMessage } from '@/editor/2-file/1-actions/load-media.ts';
-import { maybeCreateFullLengthSegment } from '@/editor/5-segments/1-actions/segment-actions.ts';
-import { isDurationValid } from '@/editor/5-segments/2-lib/segments.ts';
-import { commandedTimeAtom, mediaSourceQualityAtom, videoContainerElementAtom, videoElementAtom } from '../0-state/player-atoms.ts';
+import { appStore } from '@/editor/0-core/9-state/store.ts';
+import { customOutDirAtom, userSettings } from '@/editor/0-core/9-state/user-settings.ts';
+import { formatTimecode, parseTimecode, promptTimecode, timecodePlaceholderAtom } from '@/editor/0-core/9-state/timecode.ts';
+import { isWorking, setWorking } from '@/editor/0-core/9-state/working.ts';
+import { showPlaybackFailedMessage, toastError } from '@/editor/0-core/8-lib/app-dialogs.tsx';
+import { UserFacingError } from '@/editor/0-core/8-lib/errors.ts';
+import { toast } from '@/editor/0-core/8-lib/toast.tsx';
+import { mediaSourceQualities } from '@/editor/0-core/8-lib/util.ts';
+import { fullscreenAtom } from '@/editor/1-layout/9-state/panels-atoms.ts';
+import { fileDurationAtom, filePathAtom, hasAudioAtom, hasVideoAtom, usingPreviewFileAtom } from '@/editor/2-file/9-state/file-atoms.ts';
+import { html5ifyAndLoadWithPreferences } from '@/editor/2-file/7-actions/html5ify.ts';
+import { isFileDurationValid, showNotNativelySupportedMessage } from '@/editor/2-file/7-actions/load-media.ts';
+import { maybeCreateFullLengthSegment } from '@/editor/5-segments/7-actions/segment-actions.ts';
+import { isDurationValid } from '@/editor/5-segments/8-lib/segments.ts';
+import { commandedTimeAtom, mediaSourceQualityAtom, videoContainerElementAtom, videoElementAtom } from '../9-state/player-atoms.ts';
 import { seekAbs, seekRel } from './player-actions.ts';
 
 /** Some files report duration infinity first, then proper duration later. Sometimes after seeking to end of file, duration might change */

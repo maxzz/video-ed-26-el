@@ -1,10 +1,10 @@
 import i18n from 'i18next';
 import { CopyIcon } from 'lucide-react';
 import { discussionsUrl, githubUrl, publicBugReportUrl } from '@shared/constants';
-import { fireDialog } from '@/editor/0-core/0-state/dialogs.ts';
-import { getAppInfo, mainApi } from '@/editor/0-core/2-lib/main-api.ts';
-import { isExecaError } from '@/editor/0-core/2-lib/util.ts';
-import { toast } from '@/editor/0-core/2-lib/toast.tsx';
+import { fireDialog } from '@/editor/0-core/9-state/dialogs.ts';
+import { getAppInfo, mainApi } from '@/editor/0-core/8-lib/main-api.ts';
+import { isExecaError } from '@/editor/0-core/8-lib/util.ts';
+import { toast } from '@/editor/0-core/8-lib/toast.tsx';
 import { Button } from '@/ui/shadcn/button';
 
 function ExternalLink({ url, children }: { url: string; children: string; }) {

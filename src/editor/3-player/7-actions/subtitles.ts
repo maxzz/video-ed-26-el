@@ -2,11 +2,11 @@ import { observe } from 'jotai-effect';
 import i18n from 'i18next';
 import invariant from 'tiny-invariant';
 import type { FFprobeStream } from '@shared/ffprobe';
-import { appStore } from '@/editor/0-core/0-state/store.ts';
-import { isWorking, setWorking, withErrorHandling } from '@/editor/0-core/0-state/working.ts';
-import { extractSubtitleTrackVtt } from '@/editor/0-core/2-lib/ffmpeg/ffmpeg.ts';
-import { filePathAtom, subtitleStreamsAtom } from '@/editor/2-file/0-state/file-atoms.ts';
-import { activeSubtitleStreamIndexAtom, subtitlesByStreamIdAtom } from '../0-state/player-atoms.ts';
+import { appStore } from '@/editor/0-core/9-state/store.ts';
+import { isWorking, setWorking, withErrorHandling } from '@/editor/0-core/9-state/working.ts';
+import { extractSubtitleTrackVtt } from '@/editor/0-core/8-lib/ffmpeg/ffmpeg.ts';
+import { filePathAtom, subtitleStreamsAtom } from '@/editor/2-file/9-state/file-atoms.ts';
+import { activeSubtitleStreamIndexAtom, subtitlesByStreamIdAtom } from '../9-state/player-atoms.ts';
 
 // Port of upstream useSubtitles + onActiveSubtitleChange
 

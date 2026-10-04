@@ -1,6 +1,6 @@
 import { useSetAtom } from "jotai";
 import { useTranslation } from "react-i18next";
-import { settingsVisibleAtom } from "@/editor/1-layout/0-state/panels-atoms";
+import { settingsVisibleAtom } from "@/editor/1-layout/9-state/panels-atoms";
 import { Button } from "@/ui/shadcn/button";
 import { IconSliders } from "@/ui/icons/normal";
 

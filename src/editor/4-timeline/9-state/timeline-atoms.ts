@@ -1,17 +1,17 @@
 import { atom } from 'jotai';
 import sortBy from 'lodash/sortBy.js';
-import type { Frame } from '@/editor/0-core/2-lib/ffmpeg/ffmpeg.ts';
-import type { OverviewWaveform, Thumbnail, WaveformSlice } from '@/editor/0-core/2-lib/types.ts';
-import { appStore } from '@/editor/0-core/0-state/store.ts';
-import { userSettingsAtom } from '@/editor/0-core/0-state/user-settings.ts';
-import { getFrameCountAtom } from '@/editor/0-core/0-state/timecode.ts';
-import { onFileReset } from '@/editor/0-core/1-actions/lifecycle.ts';
-import { calcShouldShowKeyframes, calcShouldShowWaveform } from '@/editor/0-core/2-lib/util.ts';
-import { getFrameCountRaw } from '@/editor/9-edl/2-lib/edl-formats.ts';
-import { detectedFpsAtom, fileDurationAtom, hasAudioAtom, hasVideoAtom, isFileOpenedAtom, startTimeOffsetAtom } from '@/editor/2-file/0-state/file-atoms.ts';
-import { activeAudioStreamsAtom, commandedTimeAtom, playingAtom, relevantTimeAtom } from '@/editor/3-player/0-state/player-atoms.ts';
-import { hoveringTimeAtom } from '@/editor/1-layout/0-state/panels-atoms.ts';
-import { isDurationValid } from '@/editor/5-segments/2-lib/segments.ts';
+import type { Frame } from '@/editor/0-core/8-lib/ffmpeg/ffmpeg.ts';
+import type { OverviewWaveform, Thumbnail, WaveformSlice } from '@/editor/0-core/8-lib/types.ts';
+import { appStore } from '@/editor/0-core/9-state/store.ts';
+import { userSettingsAtom } from '@/editor/0-core/9-state/user-settings.ts';
+import { getFrameCountAtom } from '@/editor/0-core/9-state/timecode.ts';
+import { onFileReset } from '@/editor/0-core/7-actions/lifecycle.ts';
+import { calcShouldShowKeyframes, calcShouldShowWaveform } from '@/editor/0-core/8-lib/util.ts';
+import { getFrameCountRaw } from '@/editor/9-edl/8-lib/edl-formats.ts';
+import { detectedFpsAtom, fileDurationAtom, hasAudioAtom, hasVideoAtom, isFileOpenedAtom, startTimeOffsetAtom } from '@/editor/2-file/9-state/file-atoms.ts';
+import { activeAudioStreamsAtom, commandedTimeAtom, playingAtom, relevantTimeAtom } from '@/editor/3-player/9-state/player-atoms.ts';
+import { hoveringTimeAtom } from '@/editor/1-layout/9-state/panels-atoms.ts';
+import { isDurationValid } from '@/editor/5-segments/8-lib/segments.ts';
 
 // Zoom
 

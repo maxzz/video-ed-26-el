@@ -1,8 +1,8 @@
 import path from 'node:path';
 import { describe, expect, it } from 'vitest';
 
-import { formatDuration } from '@/editor/0-core/2-lib/duration.ts';
-import type { SegmentToExport } from '@/editor/0-core/2-lib/types.ts';
+import { formatDuration } from '@/editor/0-core/8-lib/duration.ts';
+import type { SegmentToExport } from '@/editor/0-core/8-lib/types.ts';
 import { defaultCutFileTemplate, generateCutFileNames, generateCutMergedFileNames, generateMergedFileNames, maxFileNameLength } from './output-name-template.ts';
 
 const outputDir = path.resolve('/videos');

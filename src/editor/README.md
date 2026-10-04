@@ -4,10 +4,10 @@ Port of [LosslessCut](https://github.com/mifi/lossless-cut) (GPL-2.0). Each feat
 
 ```
 src/editor/<n>-<feature>/
-  0-state/    Jotai atoms and Valtio proxies (no React)
-  1-actions/  plain functions that read/write `appStore` (no React)
-  2-lib/      pure helpers, ffmpeg arg builders, parsers
-  3-ui/       React components (shadcn), read state with useAtomValue/useSnapshot
+  9-state/    Jotai atoms and Valtio proxies (no React)
+  7-actions/  plain functions that read/write `appStore` (no React)
+  8-lib/      pure helpers, ffmpeg arg builders, parsers
+  0-ui/       React components (shadcn), read state with useAtomValue/useSnapshot
   index.ts    public API: exports UI entry points and calls registerActions()
 ```
 
@@ -32,7 +32,7 @@ src/editor/<n>-<feature>/
 ## Rules
 
 - No `useState` for app state, minimal `useEffect`/`useCallback`. Side effects that react to state use `observe()` from jotai-effect at module level.
-- Everything uses the single store `appStore` (`0-core/0-state/store.ts`); actions are plain functions, not hooks.
-- Per-file state registers its reset with `onFileReset()` (`0-core/1-actions/lifecycle.ts`).
+- Everything uses the single store `appStore` (`0-core/9-state/store.ts`); actions are plain functions, not hooks.
+- Per-file state registers its reset with `onFileReset()` (`0-core/7-actions/lifecycle.ts`).
 - Keyboard/menu actions are registered by name with `registerActions()` using the upstream LosslessCut action names, and invoked with `runAction(name)`. Cross-feature buttons call `runAction()` rather than importing another feature's internals.
 - New features: add a folder, an `index.ts`, and import it from `features.ts`.

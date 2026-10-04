@@ -1,21 +1,21 @@
 import i18n from 'i18next';
 import invariant from 'tiny-invariant';
-import { appStore } from '@/editor/0-core/0-state/store.ts';
-import { customOutDirAtom, userSettings } from '@/editor/0-core/0-state/user-settings.ts';
-import { isWorking, setWorking, withErrorHandling } from '@/editor/0-core/0-state/working.ts';
-import type { OpenFileResponse } from '@/editor/0-core/2-lib/app-dialogs.tsx';
-import { askForFileOpenAction, errorToast, promptDownloadMediaUrl, showOpenDialog } from '@/editor/0-core/2-lib/app-dialogs.tsx';
-import { mainApi } from '@/editor/0-core/2-lib/main-api.ts';
-import { basename, fs } from '@/editor/0-core/2-lib/node-shims.ts';
-import { getDownloadMediaOutPath, getImportProjectType, readDirRecursively, readVideoTs, resolvePathIfNeeded } from '@/editor/0-core/2-lib/util.ts';
-import { concatDialogOpenAtom, streamsSelectorShownAtom } from '@/editor/1-layout/0-state/panels-atoms.ts';
-import { checkFileOpened } from '@/editor/3-player/1-actions/player-actions.ts';
-import { loadEdlFile } from '@/editor/9-edl/1-actions/edl-actions.ts';
-import { alwaysConcatMultipleFilesAtom, batchFilesAtom, filePathAtom, isFileOpenedAtom, lastOpenedPathAtom } from '../0-state/file-atoms.ts';
-import { getDroppedFilePaths } from '../2-lib/drop.ts';
+import { appStore } from '@/editor/0-core/9-state/store.ts';
+import { customOutDirAtom, userSettings } from '@/editor/0-core/9-state/user-settings.ts';
+import { isWorking, setWorking, withErrorHandling } from '@/editor/0-core/9-state/working.ts';
+import type { OpenFileResponse } from '@/editor/0-core/8-lib/app-dialogs.tsx';
+import { askForFileOpenAction, errorToast, promptDownloadMediaUrl, showOpenDialog } from '@/editor/0-core/8-lib/app-dialogs.tsx';
+import { mainApi } from '@/editor/0-core/8-lib/main-api.ts';
+import { basename, fs } from '@/editor/0-core/8-lib/node-shims.ts';
+import { getDownloadMediaOutPath, getImportProjectType, readDirRecursively, readVideoTs, resolvePathIfNeeded } from '@/editor/0-core/8-lib/util.ts';
+import { concatDialogOpenAtom, streamsSelectorShownAtom } from '@/editor/1-layout/9-state/panels-atoms.ts';
+import { checkFileOpened } from '@/editor/3-player/7-actions/player-actions.ts';
+import { loadEdlFile } from '@/editor/9-edl/7-actions/edl-actions.ts';
+import { alwaysConcatMultipleFilesAtom, batchFilesAtom, filePathAtom, isFileOpenedAtom, lastOpenedPathAtom } from '../9-state/file-atoms.ts';
+import { getDroppedFilePaths } from '../8-lib/drop.ts';
 import { batchLoadPaths } from './batch-actions.ts';
 import { ensureWritableOutDir } from './directory-access.ts';
-import { addStreamSourceFile } from '@/editor/6-streams/1-actions/streams-actions.tsx';
+import { addStreamSourceFile } from '@/editor/6-streams/7-actions/streams-actions.tsx';
 import { loadMedia, userOpenSingleFile } from './load-media.ts';
 
 export async function userOpenFiles(newFilePathsIn?: string[]) {

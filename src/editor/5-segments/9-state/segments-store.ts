@@ -1,17 +1,17 @@
 import { atom } from 'jotai';
 import { snapshot, subscribe } from 'valtio';
 import { proxyWithHistory } from 'valtio-history';
-import type { DefiniteSegmentBase, SegmentToExport, StateSegment } from '@/editor/0-core/2-lib/types.ts';
-import { appStore } from '@/editor/0-core/0-state/store.ts';
-import { userSettingsAtom } from '@/editor/0-core/0-state/user-settings.ts';
-import { onFileReset } from '@/editor/0-core/1-actions/lifecycle.ts';
-import { fileDurationAtom, fileDurationNonZeroAtom } from '@/editor/2-file/0-state/file-atoms.ts';
-import { filterNonMarkers, invertSegments, isDurationValid, sortSegments } from '../2-lib/segments.ts';
+import type { DefiniteSegmentBase, SegmentToExport, StateSegment } from '@/editor/0-core/8-lib/types.ts';
+import { appStore } from '@/editor/0-core/9-state/store.ts';
+import { userSettingsAtom } from '@/editor/0-core/9-state/user-settings.ts';
+import { onFileReset } from '@/editor/0-core/7-actions/lifecycle.ts';
+import { fileDurationAtom, fileDurationNonZeroAtom } from '@/editor/2-file/9-state/file-atoms.ts';
+import { filterNonMarkers, invertSegments, isDurationValid, sortSegments } from '../8-lib/segments.ts';
 
 const maxHistory = 100;
 
 /**
- * Segments with undo/redo. Every change goes through setCutSegments() (see 1-actions), which
+ * Segments with undo/redo. Every change goes through setCutSegments() (see 7-actions), which
  * replaces the array and saves one history entry, so one user operation is one undo step.
  */
 export const segmentsHistory = proxyWithHistory<{ segments: StateSegment[]; }>({ segments: [] }, { skipSubscribe: true });

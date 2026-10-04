@@ -1,10 +1,10 @@
 import { atom } from 'jotai';
 import { observe } from 'jotai-effect';
-import { appStore } from '@/editor/0-core/0-state/store.ts';
-import { onFileReset } from '@/editor/0-core/1-actions/lifecycle.ts';
-import { currentCutSegAtom } from '@/editor/5-segments/0-state/segments-store.ts';
+import { appStore } from '@/editor/0-core/9-state/store.ts';
+import { onFileReset } from '@/editor/0-core/7-actions/lifecycle.ts';
+import { currentCutSegAtom } from '@/editor/5-segments/9-state/segments-store.ts';
 
-export { areWeCuttingAtom } from '@/editor/7-export/0-state/export-atoms.ts';
+export { areWeCuttingAtom } from '@/editor/7-export/9-state/export-atoms.ts';
 
 /** Text typed into the bottom bar cut time inputs, undefined when showing the segment time */
 export const cutTimeManualAtoms = {

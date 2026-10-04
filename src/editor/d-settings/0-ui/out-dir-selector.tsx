@@ -1,10 +1,10 @@
 import { useAtomValue } from 'jotai';
 import { useTranslation } from 'react-i18next';
 import { FileIcon, FolderIcon, FolderOpenIcon, HistoryIcon, XIcon } from 'lucide-react';
-import { customOutDirAtom, setCustomOutDir, userSettingsAtom } from '@/editor/0-core/0-state/user-settings.ts';
+import { customOutDirAtom, setCustomOutDir, userSettingsAtom } from '@/editor/0-core/9-state/user-settings.ts';
 import { Button } from '@/ui/shadcn/button';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/ui/shadcn/dropdown-menu';
-import { changeOutDir, clearRecentOutDirs } from '../1-actions/settings-actions.ts';
+import { changeOutDir, clearRecentOutDirs } from '../7-actions/settings-actions.ts';
 
 /** Working directory picker (upstream OutDirSelector) */
 export function OutDirSelector() {

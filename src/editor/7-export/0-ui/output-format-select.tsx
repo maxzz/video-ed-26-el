@@ -1,8 +1,8 @@
 import { useAtomValue } from 'jotai';
 import { useTranslation } from 'react-i18next';
-import { detectedFileFormatAtom, fileFormatAtom } from '@/editor/2-file/0-state/file-atoms.ts';
-import { onOutputFormatUserChange } from '../1-actions/export-actions.ts';
-import allOutFormats, { type FfmpegFormat } from '@/editor/0-core/2-lib/ffmpeg/out-formats.ts';
+import { detectedFileFormatAtom, fileFormatAtom } from '@/editor/2-file/9-state/file-atoms.ts';
+import { onOutputFormatUserChange } from '../7-actions/export-actions.ts';
+import allOutFormats, { type FfmpegFormat } from '@/editor/0-core/8-lib/ffmpeg/out-formats.ts';
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectSeparator, SelectTrigger, SelectValue } from '@/ui/shadcn/select';
 import { cn } from '@/utils/classnames';
 

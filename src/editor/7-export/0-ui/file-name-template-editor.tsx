@@ -6,8 +6,8 @@ import { useTranslation } from 'react-i18next';
 import { AnimatePresence, motion } from 'motion/react';
 import { ChevronUpIcon, CircleHelpIcon, EyeIcon, FileIcon, PencilIcon, TriangleAlertIcon, Undo2Icon } from 'lucide-react';
 import { exportedFileNameTemplateHelpUrl } from '@shared/constants';
-import { userSettings, userSettingsAtom } from '@/editor/0-core/0-state/user-settings.ts';
-import { mainApi } from '@/editor/0-core/2-lib/main-api.ts';
+import { userSettings, userSettingsAtom } from '@/editor/0-core/9-state/user-settings.ts';
+import { mainApi } from '@/editor/0-core/8-lib/main-api.ts';
 import { Button } from '@/ui/shadcn/button';
 import { Input } from '@/ui/shadcn/input';
 import { Switch } from '@/ui/shadcn/switch';
@@ -16,8 +16,8 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, Di
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/ui/shadcn/select';
 import {
     extVariable, type GeneratedOutFileNames, type GenerateOutFileNames, segNumIntVariable, segNumVariable, segSuffixVariable, segTagsVariable, selectedSegNumIntVariable, selectedSegNumVariable,
-} from '../2-lib/output-name-template.ts';
-import { toggleSafeOutputFileName } from '../1-actions/export-actions.ts';
+} from '../8-lib/output-name-template.ts';
+import { toggleSafeOutputFileName } from '../7-actions/export-actions.ts';
 import { HighlightedText } from './controls.tsx';
 
 export type FileNameTemplateEditorMode = 'separate' | 'merge-segments' | 'merge-files';

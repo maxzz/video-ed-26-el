@@ -11,7 +11,7 @@ import { fs } from './node-shims.ts';
 import { testFailFsOperation, trashFile, unlinkWithRetry } from './util.ts';
 import type { ParseTimecode } from './types.ts';
 import type { FindKeyframeMode } from './ffmpeg/ffmpeg.ts';
-import { fireDialog, openCustomDialog } from '../0-state/dialogs.ts';
+import { fireDialog, openCustomDialog } from '../9-state/dialogs.ts';
 import { toast } from './toast.tsx';
 import { DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/ui/shadcn/dialog';
 import { Button } from '@/ui/shadcn/button';

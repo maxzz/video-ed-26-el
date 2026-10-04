@@ -1,37 +1,37 @@
 import i18n from 'i18next';
 import invariant from 'tiny-invariant';
-import { appStore } from '@/editor/0-core/0-state/store.ts';
-import { customOutDirAtom, effectiveExportModeAtom, hideAllNotificationsAtom, prefersReducedMotionAtom, setCustomOutDir, userSettings } from '@/editor/0-core/0-state/user-settings.ts';
-import { isWorking, setProgress, setWorking, withErrorHandling } from '@/editor/0-core/0-state/working.ts';
-import { askForOutDir, type CleanupChoicesType, confirmDialog, deleteFiles, errorToast, showDiskFull, showExportFailedDialog, showMuxNotSupported, showOutputNotWritable, showRefuseToOverwrite } from '@/editor/0-core/2-lib/app-dialogs.tsx';
-import { UserFacingError } from '@/editor/0-core/2-lib/errors.ts';
-import { isIphoneHevc, isProblematicAvc1, RefuseOverwriteError } from '@/editor/0-core/2-lib/ffmpeg/ffmpeg.ts';
-import { isMatroska } from '@/editor/0-core/2-lib/ffmpeg/streams.ts';
-import { mainApi } from '@/editor/0-core/2-lib/main-api.ts';
-import type { Chapter, ExportMode } from '@/editor/0-core/2-lib/types.ts';
-import { DirectoryAccessDeclinedError } from '@/editor/0-core/2-lib/errors.ts';
-import { ensureWritableOutDir } from '@/editor/2-file/1-actions/directory-access.ts';
-import { getOutFileExtension, getOutPath, getStdioString, getSuffixedOutPath, isAbortedError, isExecaError, isMuxNotSupported, isOutOfSpaceError, transferTimestamps } from '@/editor/0-core/2-lib/util.ts';
-import { exportConfirmOpenAtom, streamsSelectorShownAtom } from '@/editor/1-layout/0-state/panels-atoms.ts';
+import { appStore } from '@/editor/0-core/9-state/store.ts';
+import { customOutDirAtom, effectiveExportModeAtom, hideAllNotificationsAtom, prefersReducedMotionAtom, setCustomOutDir, userSettings } from '@/editor/0-core/9-state/user-settings.ts';
+import { isWorking, setProgress, setWorking, withErrorHandling } from '@/editor/0-core/9-state/working.ts';
+import { askForOutDir, type CleanupChoicesType, confirmDialog, deleteFiles, errorToast, showDiskFull, showExportFailedDialog, showMuxNotSupported, showOutputNotWritable, showRefuseToOverwrite } from '@/editor/0-core/8-lib/app-dialogs.tsx';
+import { UserFacingError } from '@/editor/0-core/8-lib/errors.ts';
+import { isIphoneHevc, isProblematicAvc1, RefuseOverwriteError } from '@/editor/0-core/8-lib/ffmpeg/ffmpeg.ts';
+import { isMatroska } from '@/editor/0-core/8-lib/ffmpeg/streams.ts';
+import { mainApi } from '@/editor/0-core/8-lib/main-api.ts';
+import type { Chapter, ExportMode } from '@/editor/0-core/8-lib/types.ts';
+import { DirectoryAccessDeclinedError } from '@/editor/0-core/8-lib/errors.ts';
+import { ensureWritableOutDir } from '@/editor/2-file/7-actions/directory-access.ts';
+import { getOutFileExtension, getOutPath, getStdioString, getSuffixedOutPath, isAbortedError, isExecaError, isMuxNotSupported, isOutOfSpaceError, transferTimestamps } from '@/editor/0-core/8-lib/util.ts';
+import { exportConfirmOpenAtom, streamsSelectorShownAtom } from '@/editor/1-layout/9-state/panels-atoms.ts';
 import {
     allFilesMetaAtom, currentFileExportCountAtom, detectedFileFormatAtom, detectedFpsAtom, exportCountAtom, externalFilesMetaAtom, fileDurationAtom, fileFormatAtom, filePathAtom,
     isFileOpenedAtom, isRotationSetAtom, mainFileFormatDataAtom, mainStreamsAtom, outputDirAtom, paramsByFileAtom, previewFilePathAtom, rotationAtom, shortestFlagAtom,
-} from '@/editor/2-file/0-state/file-atoms.ts';
-import { batchListRemoveFile } from '@/editor/2-file/1-actions/batch-actions.ts';
-import { closeFile, loadMedia, runAndReloadFile, tryFixInvalidDuration } from '@/editor/2-file/1-actions/load-media.ts';
-import { projectFileSavePathAtom } from '@/editor/2-file/1-actions/project-auto-save.ts';
-import { openSendReportDialog } from '@/editor/2-file/3-ui/send-report-dialog.tsx';
-import { effectiveRotationAtom } from '@/editor/3-player/0-state/player-atoms.ts';
-import { checkFileOpened } from '@/editor/3-player/1-actions/player-actions.ts';
-import { cutSegmentsAtom, haveInvalidSegsAtom, segmentsOrInverseAtom, segmentsToExportAtom, selectedSegmentsAtom } from '@/editor/5-segments/0-state/segments-store.ts';
-import { convertSegmentsToChaptersWithGaps, hasAnySegmentOverlap, sortSegments } from '@/editor/5-segments/2-lib/segments.ts';
-import { copyFileStreamsAtom, copyStreamIdsByFileAtom, exportExtraStreamsAtom, mainCopiedStreamsAtom, nonCopiedExtraStreamsAtom, numStreamsToCopyAtom } from '@/editor/6-streams/0-state/streams-store.ts';
-import { formatTsvHuman } from '@/editor/9-edl/2-lib/edl-formats.ts';
-import { areWeCuttingAtom, cutFileTemplateOrDefaultAtom, cutMergedFileTemplateOrDefaultAtom, willMergeAtom } from '../0-state/export-atoms.ts';
-import { concatCutSegments, cutMultiple, decimate, extractStreams, fixInvalidDuration, OutputNotWritableError, tryDeleteFiles } from '../2-lib/ffmpeg-operations.ts';
-import { defaultCutFileTemplate } from '../2-lib/output-name-template.ts';
-import { showNotification, showOsNotification } from '@/editor/0-core/2-lib/notifications.ts';
-import { openCleanupFilesDialog, openCutFinishedDialog, openDecimateDialog, openExportFinishedDialog } from '../3-ui/finished-dialogs.tsx';
+} from '@/editor/2-file/9-state/file-atoms.ts';
+import { batchListRemoveFile } from '@/editor/2-file/7-actions/batch-actions.ts';
+import { closeFile, loadMedia, runAndReloadFile, tryFixInvalidDuration } from '@/editor/2-file/7-actions/load-media.ts';
+import { projectFileSavePathAtom } from '@/editor/2-file/7-actions/project-auto-save.ts';
+import { openSendReportDialog } from '@/editor/2-file/0-ui/send-report-dialog.tsx';
+import { effectiveRotationAtom } from '@/editor/3-player/9-state/player-atoms.ts';
+import { checkFileOpened } from '@/editor/3-player/7-actions/player-actions.ts';
+import { cutSegmentsAtom, haveInvalidSegsAtom, segmentsOrInverseAtom, segmentsToExportAtom, selectedSegmentsAtom } from '@/editor/5-segments/9-state/segments-store.ts';
+import { convertSegmentsToChaptersWithGaps, hasAnySegmentOverlap, sortSegments } from '@/editor/5-segments/8-lib/segments.ts';
+import { copyFileStreamsAtom, copyStreamIdsByFileAtom, exportExtraStreamsAtom, mainCopiedStreamsAtom, nonCopiedExtraStreamsAtom, numStreamsToCopyAtom } from '@/editor/6-streams/9-state/streams-store.ts';
+import { formatTsvHuman } from '@/editor/9-edl/8-lib/edl-formats.ts';
+import { areWeCuttingAtom, cutFileTemplateOrDefaultAtom, cutMergedFileTemplateOrDefaultAtom, willMergeAtom } from '../9-state/export-atoms.ts';
+import { concatCutSegments, cutMultiple, decimate, extractStreams, fixInvalidDuration, OutputNotWritableError, tryDeleteFiles } from '../8-lib/ffmpeg-operations.ts';
+import { defaultCutFileTemplate } from '../8-lib/output-name-template.ts';
+import { showNotification, showOsNotification } from '@/editor/0-core/8-lib/notifications.ts';
+import { openCleanupFilesDialog, openCutFinishedDialog, openDecimateDialog, openExportFinishedDialog } from '../0-ui/finished-dialogs.tsx';
 import { generateCutMergedOutFileNames, generateOutSegFileNames } from './out-file-names.ts';
 
 // Port of the export flow of upstream App.tsx

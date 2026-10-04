@@ -11,26 +11,26 @@ import { cn } from '@/utils/classnames';
 import { Button } from '@/ui/shadcn/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/ui/shadcn/select';
 import type { CaptureFormat } from '@shared/types.ts';
-import { appStore } from '@/editor/0-core/0-state/store.ts';
-import { userSettings, userSettingsAtom } from '@/editor/0-core/0-state/user-settings.ts';
-import { formatTimecodeAtom, getFrameCountAtom } from '@/editor/0-core/0-state/timecode.ts';
-import { hasAction, runAction } from '@/editor/0-core/1-actions/actions-registry.ts';
-import { askForPlaybackRate } from '@/editor/0-core/2-lib/app-dialogs.tsx';
-import { getSegColor as getSegColorRaw } from '@/editor/0-core/2-lib/colors.ts';
-import { exportConfirmOpenAtom } from '@/editor/1-layout/0-state/panels-atoms.ts';
-import { detectedFpsAtom, fileDurationNonZeroAtom, hasAudioAtom, hasVideoAtom, isFileOpenedAtom, isRotationSetAtom, rotationAtom } from '@/editor/2-file/0-state/file-atoms.ts';
-import { outputPlaybackRateAtom, playbackModeAtom, playbackRateAtom, playingAtom } from '@/editor/3-player/0-state/player-atoms.ts';
-import * as player from '@/editor/3-player/1-actions/player-actions.ts';
-import { currentCutSegAtom, segmentsToExportAtom, selectedSegmentsAtom } from '@/editor/5-segments/0-state/segments-store.ts';
-import { invertCutSegmentsAtom, simpleModeAtom } from '@/editor/5-segments/0-state/seg-ui-atoms.ts';
-import { setCutEnd, setCutStart } from '@/editor/5-segments/1-actions/segment-actions.ts';
-import { actionTitleAtom } from '../../0-state/action-title.ts';
-import { areWeCuttingAtom } from '../../0-state/bottom-bar-atoms.ts';
-import { currentFrameAtom, displayTimeAtom, isZoomedAtom, keyframesEnabledAtom, showThumbnailsAtom, waveformModeAtom, zoomAtom } from '../../0-state/timeline-atoms.ts';
+import { appStore } from '@/editor/0-core/9-state/store.ts';
+import { userSettings, userSettingsAtom } from '@/editor/0-core/9-state/user-settings.ts';
+import { formatTimecodeAtom, getFrameCountAtom } from '@/editor/0-core/9-state/timecode.ts';
+import { hasAction, runAction } from '@/editor/0-core/7-actions/actions-registry.ts';
+import { askForPlaybackRate } from '@/editor/0-core/8-lib/app-dialogs.tsx';
+import { getSegColor as getSegColorRaw } from '@/editor/0-core/8-lib/colors.ts';
+import { exportConfirmOpenAtom } from '@/editor/1-layout/9-state/panels-atoms.ts';
+import { detectedFpsAtom, fileDurationNonZeroAtom, hasAudioAtom, hasVideoAtom, isFileOpenedAtom, isRotationSetAtom, rotationAtom } from '@/editor/2-file/9-state/file-atoms.ts';
+import { outputPlaybackRateAtom, playbackModeAtom, playbackRateAtom, playingAtom } from '@/editor/3-player/9-state/player-atoms.ts';
+import * as player from '@/editor/3-player/7-actions/player-actions.ts';
+import { currentCutSegAtom, segmentsToExportAtom, selectedSegmentsAtom } from '@/editor/5-segments/9-state/segments-store.ts';
+import { invertCutSegmentsAtom, simpleModeAtom } from '@/editor/5-segments/9-state/seg-ui-atoms.ts';
+import { setCutEnd, setCutStart } from '@/editor/5-segments/7-actions/segment-actions.ts';
+import { actionTitleAtom } from '../../9-state/action-title.ts';
+import { areWeCuttingAtom } from '../../9-state/bottom-bar-atoms.ts';
+import { currentFrameAtom, displayTimeAtom, isZoomedAtom, keyframesEnabledAtom, showThumbnailsAtom, waveformModeAtom, zoomAtom } from '../../9-state/timeline-atoms.ts';
 import {
     increaseRotation, seekClosestKeyframe, timelineToggleComfortZoom, toggleExportConfirmEnabled, toggleInvertCutSegments, toggleShowKeyframes,
     toggleShowThumbnails, toggleSimpleMode, toggleWaveformMode, zoomAbs,
-} from '../../1-actions/timeline-actions.ts';
+} from '../../7-actions/timeline-actions.ts';
 import { CutTimeInput } from './cut-time-input.tsx';
 import { JumpSegmentButton, SegmentCutpointButton, SetCutpointButton } from './segment-buttons.tsx';
 

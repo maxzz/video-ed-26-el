@@ -5,20 +5,20 @@ import { TriangleIcon } from 'lucide-react';
 import { Button } from '@/ui/shadcn/button';
 import { ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuTrigger } from '@/ui/shadcn/context-menu';
 import { cn } from '@/utils/classnames';
-import type { RenderableWaveform } from '@/editor/0-core/2-lib/types.ts';
-import { userSettingsAtom } from '@/editor/0-core/0-state/user-settings.ts';
-import { calculateTimelinePercent } from '@/editor/0-core/2-lib/util.ts';
-import { fileDurationNonZeroAtom } from '@/editor/2-file/0-state/file-atoms.ts';
-import { commandedTimeAtom, playerTimeAtom } from '@/editor/3-player/0-state/player-atoms.ts';
-import { darkModeAtom, springAnimationAtom } from '@/editor/5-segments/0-state/seg-ui-atoms.ts';
+import type { RenderableWaveform } from '@/editor/0-core/8-lib/types.ts';
+import { userSettingsAtom } from '@/editor/0-core/9-state/user-settings.ts';
+import { calculateTimelinePercent } from '@/editor/0-core/8-lib/util.ts';
+import { fileDurationNonZeroAtom } from '@/editor/2-file/9-state/file-atoms.ts';
+import { commandedTimeAtom, playerTimeAtom } from '@/editor/3-player/9-state/player-atoms.ts';
+import { darkModeAtom, springAnimationAtom } from '@/editor/5-segments/9-state/seg-ui-atoms.ts';
 import {
     keyFramesInZoomWindowAtom, overviewWaveformAtom, shouldShowKeyframesAtom, shouldShowWaveformAtom, showThumbnailsAtom,
     thumbnailsSortedAtom, waveformEnabledAtom, waveformsAtom, zoomAtom,
-} from '../0-state/timeline-atoms.ts';
-import { onTimelineWheel } from '../1-actions/timeline-actions.ts';
-import { goToTimecode } from '@/editor/3-player/1-actions/video-events.ts';
-import { generateOverviewWaveform } from '../1-actions/waveform.ts';
-import { onTimelineMouseDown, onTimelineMouseMove, onTimelineMouseOut, onTimelineScroll, timelineScrollerRef, timelineWrapperRef } from '../1-actions/timeline-scroll.ts';
+} from '../9-state/timeline-atoms.ts';
+import { onTimelineWheel } from '../7-actions/timeline-actions.ts';
+import { goToTimecode } from '@/editor/3-player/7-actions/video-events.ts';
+import { generateOverviewWaveform } from '../7-actions/waveform.ts';
+import { onTimelineMouseDown, onTimelineMouseMove, onTimelineMouseOut, onTimelineScroll, timelineScrollerRef, timelineWrapperRef } from '../7-actions/timeline-scroll.ts';
 import { BetweenSegmentsList, TimelineSegments } from './timeline-seg.tsx';
 
 // Port of upstream Timeline.tsx. Leaf components subscribe to their own atoms so the time markers don't re-render the whole timeline

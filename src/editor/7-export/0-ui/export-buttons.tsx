@@ -2,15 +2,15 @@ import type { ComponentProps } from 'react';
 import { useAtomValue } from 'jotai';
 import { useTranslation } from 'react-i18next';
 import { FileOutputIcon, NotebookPenIcon, ScissorsIcon } from 'lucide-react';
-import { effectiveExportModeAtom, userSettingsAtom } from '@/editor/0-core/0-state/user-settings.ts';
-import type { ExportMode } from '@/editor/0-core/2-lib/types.ts';
-import { toggleExportConfirmEnabled } from '@/editor/4-timeline/1-actions/timeline-actions.ts';
-import { segmentsOrInverseAtom, segmentsToExportAtom } from '@/editor/5-segments/0-state/segments-store.ts';
+import { effectiveExportModeAtom, userSettingsAtom } from '@/editor/0-core/9-state/user-settings.ts';
+import type { ExportMode } from '@/editor/0-core/8-lib/types.ts';
+import { toggleExportConfirmEnabled } from '@/editor/4-timeline/7-actions/timeline-actions.ts';
+import { segmentsOrInverseAtom, segmentsToExportAtom } from '@/editor/5-segments/9-state/segments-store.ts';
 import { Button } from '@/ui/shadcn/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/ui/shadcn/select';
 import { cn } from '@/utils/classnames';
-import { areWeCuttingAtom } from '../0-state/export-atoms.ts';
-import { onExportPress, setExportMode } from '../1-actions/export-actions.ts';
+import { areWeCuttingAtom } from '../9-state/export-atoms.ts';
+import { onExportPress, setExportMode } from '../7-actions/export-actions.ts';
 
 export function ExportButton({ className, onClick = onExportPress, ...rest }: Omit<ComponentProps<typeof Button>, 'onClick'> & { onClick?: () => void; }) {
     const { t } = useTranslation();

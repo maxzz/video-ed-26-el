@@ -1,20 +1,20 @@
 import i18n from 'i18next';
 import invariant from 'tiny-invariant';
-import type { PlaybackMode } from '@/editor/0-core/2-lib/types.ts';
-import { appStore } from '@/editor/0-core/0-state/store.ts';
-import { userSettings } from '@/editor/0-core/0-state/user-settings.ts';
-import { showPlaybackFailedMessage } from '@/editor/0-core/2-lib/app-dialogs.tsx';
-import { toast } from '@/editor/0-core/2-lib/toast.tsx';
-import { adjustRate } from '@/editor/0-core/2-lib/rate-calculator.ts';
-import { getFrameCountRaw } from '@/editor/9-edl/2-lib/edl-formats.ts';
-import { enableAudioTrack, enableVideoTrack } from '@/editor/0-core/2-lib/ffmpeg/streams.ts';
-import { detectedFpsAtom, fileDurationAtom, filePathAtom, isFileOpenedAtom, previewFilePathAtom, usingDummyVideoAtom } from '@/editor/2-file/0-state/file-atoms.ts';
-import { cutSegmentsAtom, currentCutSegAtom, currentSegIndexAtom, findSegmentsAtCursor, selectedSegmentsAtom, currentSegIndexSafeAtom } from '@/editor/5-segments/0-state/segments-store.ts';
-import { filterNonMarkers, getPlaybackAction } from '@/editor/5-segments/2-lib/segments.ts';
+import type { PlaybackMode } from '@/editor/0-core/8-lib/types.ts';
+import { appStore } from '@/editor/0-core/9-state/store.ts';
+import { userSettings } from '@/editor/0-core/9-state/user-settings.ts';
+import { showPlaybackFailedMessage } from '@/editor/0-core/8-lib/app-dialogs.tsx';
+import { toast } from '@/editor/0-core/8-lib/toast.tsx';
+import { adjustRate } from '@/editor/0-core/8-lib/rate-calculator.ts';
+import { getFrameCountRaw } from '@/editor/9-edl/8-lib/edl-formats.ts';
+import { enableAudioTrack, enableVideoTrack } from '@/editor/0-core/8-lib/ffmpeg/streams.ts';
+import { detectedFpsAtom, fileDurationAtom, filePathAtom, isFileOpenedAtom, previewFilePathAtom, usingDummyVideoAtom } from '@/editor/2-file/9-state/file-atoms.ts';
+import { cutSegmentsAtom, currentCutSegAtom, currentSegIndexAtom, findSegmentsAtCursor, selectedSegmentsAtom, currentSegIndexSafeAtom } from '@/editor/5-segments/9-state/segments-store.ts';
+import { filterNonMarkers, getPlaybackAction } from '@/editor/5-segments/8-lib/segments.ts';
 import {
     activeAudioStreamIndexesAtom, activeVideoStreamIndexAtom, commandedTimeAtom, hideCompatPlayerAtom, outputPlaybackRateAtom,
     playbackModeAtom, playbackRateAtom, playerTimeAtom, playingAtom, videoElementAtom,
-} from '../0-state/player-atoms.ts';
+} from '../9-state/player-atoms.ts';
 
 const getVideo = () => appStore.get(videoElementAtom);
 

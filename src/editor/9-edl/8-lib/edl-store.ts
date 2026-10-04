@@ -6,12 +6,12 @@ import { ZodError } from 'zod';
 import type { ICueSheet } from 'cue-parser/lib/types';
 import { parseSrtToSegments, formatSrt, parseCuesheet, parseXmeml, parseFcpXml, parseCsv, parseCutlist, parsePbf, parseEdl, formatCsvHuman, formatTsvHuman, formatCsvFrames, formatCsvSeconds, parseCsvTime, getFrameValParser, parseDvAnalyzerSummaryTxt, parseOtio } from './edl-formats.ts';
 import { askForYouTubeInput } from './youtube-input.ts';
-import { getOutPath } from '@/editor/0-core/2-lib/util.ts';
-import type { EdlExportType, EdlFileType, EdlImportType, GetFrameCount, LlcProject, SegmentBase, StateSegment } from '@/editor/0-core/2-lib/types.ts';
-import { llcProjectV1Schema, llcProjectV2Schema } from '@/editor/0-core/2-lib/types.ts';
-import { mapSaveableSegments } from '@/editor/5-segments/2-lib/segments.ts';
-import { getAppInfo, mainApi } from '@/editor/0-core/2-lib/main-api.ts';
-import { basename } from '@/editor/0-core/2-lib/node-shims.ts';
+import { getOutPath } from '@/editor/0-core/8-lib/util.ts';
+import type { EdlExportType, EdlFileType, EdlImportType, GetFrameCount, LlcProject, SegmentBase, StateSegment } from '@/editor/0-core/8-lib/types.ts';
+import { llcProjectV1Schema, llcProjectV2Schema } from '@/editor/0-core/8-lib/types.ts';
+import { mapSaveableSegments } from '@/editor/5-segments/8-lib/segments.ts';
+import { getAppInfo, mainApi } from '@/editor/0-core/8-lib/main-api.ts';
+import { basename } from '@/editor/0-core/8-lib/node-shims.ts';
 
 const readFile = async (path: string, _encoding: 'utf8') => mainApi.readTextFile(path);
 const writeFile = async (path: string, text: string) => mainApi.writeTextFile(path, text);

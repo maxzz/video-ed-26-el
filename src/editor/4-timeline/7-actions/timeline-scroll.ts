@@ -2,17 +2,17 @@ import type { MouseEvent as ReactMouseEvent } from 'react';
 import { observe } from 'jotai-effect';
 import { animate, type AnimationPlaybackControls } from 'motion/react';
 import debounce from 'lodash/debounce.js';
-import { appStore } from '@/editor/0-core/0-state/store.ts';
-import { prefersReducedMotionAtom, userSettings } from '@/editor/0-core/0-state/user-settings.ts';
-import { calculateTimelinePos } from '@/editor/0-core/2-lib/util.ts';
-import { fileDurationNonZeroAtom } from '@/editor/2-file/0-state/file-atoms.ts';
-import { hoveringTimeAtom } from '@/editor/1-layout/0-state/panels-atoms.ts';
-import { commandedTimeAtom, relevantTimeAtom } from '@/editor/3-player/0-state/player-atoms.ts';
-import { seekAbs } from '@/editor/3-player/1-actions/player-actions.ts';
-import { currentCutSegAtom } from '@/editor/5-segments/0-state/segments-store.ts';
-import { setCutTime } from '@/editor/5-segments/1-actions/segment-actions.ts';
-import { isModifierPressed } from '../2-lib/modifier-keys.ts';
-import { timelineScrollerElementAtom, timelineWrapperElementAtom, zoomAtom, zoomWindowStartTimeAtom } from '../0-state/timeline-atoms.ts';
+import { appStore } from '@/editor/0-core/9-state/store.ts';
+import { prefersReducedMotionAtom, userSettings } from '@/editor/0-core/9-state/user-settings.ts';
+import { calculateTimelinePos } from '@/editor/0-core/8-lib/util.ts';
+import { fileDurationNonZeroAtom } from '@/editor/2-file/9-state/file-atoms.ts';
+import { hoveringTimeAtom } from '@/editor/1-layout/9-state/panels-atoms.ts';
+import { commandedTimeAtom, relevantTimeAtom } from '@/editor/3-player/9-state/player-atoms.ts';
+import { seekAbs } from '@/editor/3-player/7-actions/player-actions.ts';
+import { currentCutSegAtom } from '@/editor/5-segments/9-state/segments-store.ts';
+import { setCutTime } from '@/editor/5-segments/7-actions/segment-actions.ts';
+import { isModifierPressed } from '../8-lib/modifier-keys.ts';
+import { timelineScrollerElementAtom, timelineWrapperElementAtom, zoomAtom, zoomWindowStartTimeAtom } from '../9-state/timeline-atoms.ts';
 
 // Port of the imperative parts of upstream Timeline.tsx: auto scroll, zoom centering and mouse seeking/segment resizing
 

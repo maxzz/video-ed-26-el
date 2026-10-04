@@ -3,16 +3,16 @@ import { observe } from 'jotai-effect';
 import debounce from 'lodash/debounce';
 import isEqual from 'lodash/isEqual';
 import i18n from 'i18next';
-import type { StateSegment } from '@/editor/0-core/2-lib/types.ts';
-import { appStore } from '@/editor/0-core/0-state/store.ts';
-import { customOutDirAtom, userSettingsAtom } from '@/editor/0-core/0-state/user-settings.ts';
-import { errorToast } from '@/editor/0-core/2-lib/app-dialogs.tsx';
-import { getAppInfo } from '@/editor/0-core/2-lib/main-api.ts';
-import { getSuffixedOutPath } from '@/editor/0-core/2-lib/util.ts';
-import { cutSegmentsAtom } from '@/editor/5-segments/0-state/segments-store.ts';
-import { mapSaveableSegments } from '@/editor/5-segments/2-lib/segments.ts';
-import { saveLlcProject } from '@/editor/9-edl/2-lib/edl-store.ts';
-import { filePathAtom } from '../0-state/file-atoms.ts';
+import type { StateSegment } from '@/editor/0-core/8-lib/types.ts';
+import { appStore } from '@/editor/0-core/9-state/store.ts';
+import { customOutDirAtom, userSettingsAtom } from '@/editor/0-core/9-state/user-settings.ts';
+import { errorToast } from '@/editor/0-core/8-lib/app-dialogs.tsx';
+import { getAppInfo } from '@/editor/0-core/8-lib/main-api.ts';
+import { getSuffixedOutPath } from '@/editor/0-core/8-lib/util.ts';
+import { cutSegmentsAtom } from '@/editor/5-segments/9-state/segments-store.ts';
+import { mapSaveableSegments } from '@/editor/5-segments/8-lib/segments.ts';
+import { saveLlcProject } from '@/editor/9-edl/8-lib/edl-store.ts';
+import { filePathAtom } from '../9-state/file-atoms.ts';
 
 // Port of upstream useSegmentsAutoSave
 

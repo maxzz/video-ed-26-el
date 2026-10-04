@@ -2,9 +2,9 @@ import type { ComponentProps, ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
 import { motion, useAnimate } from 'motion/react';
 import { CircleHelpIcon, ClipboardIcon } from 'lucide-react';
-import { mainApi } from '@/editor/0-core/2-lib/main-api.ts';
-import { toast } from '@/editor/0-core/2-lib/toast.tsx';
-import type { DialogIcon } from '@/editor/0-core/0-state/dialogs.ts';
+import { mainApi } from '@/editor/0-core/8-lib/main-api.ts';
+import { toast } from '@/editor/0-core/8-lib/toast.tsx';
+import type { DialogIcon } from '@/editor/0-core/9-state/dialogs.ts';
 import { cn } from '@/utils/classnames';
 
 export function showHelpText({ icon = 'info', timer = 10000, text }: { icon?: DialogIcon; timer?: number; text: string; }) {

@@ -9,19 +9,19 @@ import { Label } from '@/ui/shadcn/label';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/ui/shadcn/dialog';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/ui/shadcn/table';
 import { cn } from '@/utils/classnames';
-import { setCustomOutDir, userSettings } from '@/editor/0-core/0-state/user-settings.ts';
-import { askForOutDir } from '@/editor/0-core/2-lib/app-dialogs.tsx';
-import { isMov } from '@/editor/0-core/2-lib/ffmpeg/streams.ts';
-import { basename } from '@/editor/0-core/2-lib/node-shims.ts';
-import { alwaysConcatMultipleFilesAtom, batchFilePathsAtom, detectedFileFormatAtom, fileFormatAtom } from '@/editor/2-file/0-state/file-atoms.ts';
+import { setCustomOutDir, userSettings } from '@/editor/0-core/9-state/user-settings.ts';
+import { askForOutDir } from '@/editor/0-core/8-lib/app-dialogs.tsx';
+import { isMov } from '@/editor/0-core/8-lib/ffmpeg/streams.ts';
+import { basename } from '@/editor/0-core/8-lib/node-shims.ts';
+import { alwaysConcatMultipleFilesAtom, batchFilePathsAtom, detectedFileFormatAtom, fileFormatAtom } from '@/editor/2-file/9-state/file-atoms.ts';
 import {
     concatClearBatchFilesAfterConcatAtom, concatEnableReadFileMetaAtom, concatFilesMetaAtom, concatIncludeAllStreamsAtom, concatMismatchesPathAtom,
     concatOptionsOpenAtom, concatOutputDirAtom, concatProblemsByFileAtom, concatShowMismatchAlertAtom, isConcatDialogShownAtom, simpleModeAtom,
-} from '../0-state/concat-atoms.ts';
-import { closeConcatDialog, onConcatClick, setConcatEnableReadFileMeta } from '../1-actions/concat-actions.ts';
-import { onOutputFormatUserChange } from '@/editor/7-export/1-actions/export-actions.ts';
+} from '../9-state/concat-atoms.ts';
+import { closeConcatDialog, onConcatClick, setConcatEnableReadFileMeta } from '../7-actions/concat-actions.ts';
+import { onOutputFormatUserChange } from '@/editor/7-export/7-actions/export-actions.ts';
 import { MergedFileNameEditor } from './merged-file-name-editor.tsx';
-import { OutputFormatSelect } from '@/editor/7-export/3-ui/output-format-select.tsx';
+import { OutputFormatSelect } from '@/editor/7-export/0-ui/output-format-select.tsx';
 
 /** Port of upstream components/ConcatDialog.tsx */
 export function ConcatDialog() {

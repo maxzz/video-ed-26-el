@@ -1,12 +1,12 @@
 // Owner: 5-segments port. Public API of the segments feature.
-import { registerActions } from '@/editor/0-core/1-actions/actions-registry.ts';
-import { redoSegments, undoSegments } from './0-state/segments-store.ts';
-import * as seg from './1-actions/segment-actions.ts';
-import { editCurrentSegmentTags, mutateSegmentsByExpr, selectSegmentsByExpr, shiftAllSegmentTimes } from './1-actions/segment-dialogs.tsx';
+import { registerActions } from '@/editor/0-core/7-actions/actions-registry.ts';
+import { redoSegments, undoSegments } from './9-state/segments-store.ts';
+import * as seg from './7-actions/segment-actions.ts';
+import { editCurrentSegmentTags, mutateSegmentsByExpr, selectSegmentsByExpr, shiftAllSegmentTimes } from './7-actions/segment-dialogs.tsx';
 
-export { SegmentList } from './3-ui/segment-list.tsx';
-export { SegmentTagsDialog } from './3-ui/segment-tags-dialog.tsx';
-export { editSegmentTags } from './1-actions/segment-dialogs.tsx';
+export { SegmentList } from './0-ui/segment-list.tsx';
+export { SegmentTagsDialog } from './0-ui/segment-tags-dialog.tsx';
+export { editSegmentTags } from './7-actions/segment-dialogs.tsx';
 
 registerActions({
     setCutStart: seg.setCutStart,

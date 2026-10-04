@@ -42,10 +42,10 @@ Every feature folder in `src/editor/` follows the same layout:
 
 ```
 <n>-<feature>/
-  0-state/      Jotai atoms and/or Valtio proxies
-  1-actions/    write-only Jotai action atoms (commands)
-  2-lib/        pure logic + tests (no React)
-  3-ui/         shadcn-based components
+  9-state/      Jotai atoms and/or Valtio proxies
+  7-actions/    write-only Jotai action atoms (commands)
+  8-lib/        pure logic + tests (no React)
+  0-ui/         shadcn-based components
   index.ts      public API of the feature
 ```
 
@@ -53,4 +53,4 @@ State rules:
 
 - Valtio holds large mutable objects: user settings (synced to the main-process config store) and segments (with undo/redo through `valtio-history`).
 - Jotai holds everything else: primitive atoms for UI state, derived atoms, and write-only action atoms for commands.
-- All commands are registered in the actions registry (`src/editor/0-core/actions-registry.ts`), which is used by keyboard shortcuts, the native menu, the HTTP API and the command palette (Ctrl/Cmd+Shift+P).
+- All commands are registered in the actions registry (`src/editor/0-core/7-actions/actions-registry.ts`), which is used by keyboard shortcuts, the native menu, the HTTP API and the command palette (Ctrl/Cmd+Shift+P).

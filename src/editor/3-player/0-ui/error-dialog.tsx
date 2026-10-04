@@ -1,8 +1,8 @@
 import { useAtomValue } from 'jotai';
 import { useTranslation } from 'react-i18next';
 import { TriangleAlertIcon } from 'lucide-react';
-import { appStore } from '@/editor/0-core/0-state/store.ts';
-import { genericErrorAtom } from '@/editor/0-core/0-state/working.ts';
+import { appStore } from '@/editor/0-core/9-state/store.ts';
+import { genericErrorAtom } from '@/editor/0-core/9-state/working.ts';
 import { Button } from '@/ui/shadcn/button';
 import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/ui/shadcn/dialog';
 

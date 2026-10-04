@@ -1,12 +1,12 @@
 import { atom } from 'jotai';
 import { observe } from 'jotai-effect';
-import { appStore } from '@/editor/0-core/0-state/store.ts';
-import { userSettingsAtom } from '@/editor/0-core/0-state/user-settings.ts';
-import { progressAtom, workingAtom } from '@/editor/0-core/0-state/working.ts';
-import { mainApi } from '@/editor/0-core/2-lib/main-api.ts';
-import { setDocumentTitle } from '@/editor/0-core/2-lib/util.ts';
-import { canRedoAtom, canUndoAtom, cutSegmentsAtom } from '@/editor/5-segments/0-state/segments-store.ts';
-import { filePathAtom, isFileOpenedAtom } from '../0-state/file-atoms.ts';
+import { appStore } from '@/editor/0-core/9-state/store.ts';
+import { userSettingsAtom } from '@/editor/0-core/9-state/user-settings.ts';
+import { progressAtom, workingAtom } from '@/editor/0-core/9-state/working.ts';
+import { mainApi } from '@/editor/0-core/8-lib/main-api.ts';
+import { setDocumentTitle } from '@/editor/0-core/8-lib/util.ts';
+import { canRedoAtom, canUndoAtom, cutSegmentsAtom } from '@/editor/5-segments/9-state/segments-store.ts';
+import { filePathAtom, isFileOpenedAtom } from '../9-state/file-atoms.ts';
 import { initProjectAutoSave } from './project-auto-save.ts';
 import { applyCustomFfPath } from './startup-check.ts';
 

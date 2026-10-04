@@ -1,16 +1,16 @@
 import i18n from 'i18next';
-import type { EdlExportType, EdlFileType, EdlImportType, StateSegment } from '@/editor/0-core/2-lib/types.ts';
-import { appStore } from '@/editor/0-core/0-state/store.ts';
-import { customOutDirAtom } from '@/editor/0-core/0-state/user-settings.ts';
-import { getFrameCount } from '@/editor/0-core/0-state/timecode.ts';
-import { withErrorHandling } from '@/editor/0-core/0-state/working.ts';
-import { openYouTubeChaptersDialog } from '@/editor/0-core/2-lib/app-dialogs.tsx';
-import { detectedFpsAtom, fileDurationAtom, filePathAtom } from '@/editor/2-file/0-state/file-atoms.ts';
-import { checkFileOpened } from '@/editor/3-player/1-actions/player-actions.ts';
-import { cutSegmentsAtom, selectedSegmentsAtom } from '@/editor/5-segments/0-state/segments-store.ts';
-import { loadCutSegments } from '@/editor/5-segments/1-actions/segment-actions.ts';
-import { askForEdlImport, exportEdlFile, readEdlFile } from '../2-lib/edl-store.ts';
-import { formatYouTube } from '../2-lib/edl-formats.ts';
+import type { EdlExportType, EdlFileType, EdlImportType, StateSegment } from '@/editor/0-core/8-lib/types.ts';
+import { appStore } from '@/editor/0-core/9-state/store.ts';
+import { customOutDirAtom } from '@/editor/0-core/9-state/user-settings.ts';
+import { getFrameCount } from '@/editor/0-core/9-state/timecode.ts';
+import { withErrorHandling } from '@/editor/0-core/9-state/working.ts';
+import { openYouTubeChaptersDialog } from '@/editor/0-core/8-lib/app-dialogs.tsx';
+import { detectedFpsAtom, fileDurationAtom, filePathAtom } from '@/editor/2-file/9-state/file-atoms.ts';
+import { checkFileOpened } from '@/editor/3-player/7-actions/player-actions.ts';
+import { cutSegmentsAtom, selectedSegmentsAtom } from '@/editor/5-segments/9-state/segments-store.ts';
+import { loadCutSegments } from '@/editor/5-segments/7-actions/segment-actions.ts';
+import { askForEdlImport, exportEdlFile, readEdlFile } from '../8-lib/edl-store.ts';
+import { formatYouTube } from '../8-lib/edl-formats.ts';
 
 export async function loadEdlFile({ path, type, append = false }: { path: string; type: EdlFileType; append?: boolean; }) {
     console.log('Loading EDL file', type, path, append);

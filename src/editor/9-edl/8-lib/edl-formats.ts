@@ -9,11 +9,11 @@ import sortBy from 'lodash/sortBy';
 import type { ICueSheet, ITrack } from 'cue-parser/lib/types';
 import { z } from 'zod';
 
-import { formatDuration } from '@/editor/0-core/2-lib/duration.ts';
-import { invertSegments, sortSegments } from '@/editor/5-segments/2-lib/segments.ts';
-import type { GetFrameCount, SegmentBase, SegmentTags } from '@/editor/0-core/2-lib/types.ts';
+import { formatDuration } from '@/editor/0-core/8-lib/duration.ts';
+import { invertSegments, sortSegments } from '@/editor/5-segments/8-lib/segments.ts';
+import type { GetFrameCount, SegmentBase, SegmentTags } from '@/editor/0-core/8-lib/types.ts';
 import parseCmx3600 from './cmx3600.ts';
-import { UserFacingError } from '@/editor/0-core/2-lib/errors.ts';
+import { UserFacingError } from '@/editor/0-core/8-lib/errors.ts';
 
 
 export const getTimeFromFrameNum = (detectedFps: number, frameNum: number) => frameNum / detectedFps;

@@ -1,11 +1,11 @@
 import i18n from 'i18next';
 import type { KeyBinding, KeyboardAction } from '@shared/types.ts';
-import { appStore } from '@/editor/0-core/0-state/store.ts';
-import { resetUserSetting, userSettings } from '@/editor/0-core/0-state/user-settings.ts';
-import { confirmDialog } from '@/editor/0-core/2-lib/app-dialogs.tsx';
-import type { KeyboardLayoutMap } from '@/editor/0-core/2-lib/types.ts';
-import { creatingBindingAtom, keyboardLayoutMapAtom, recordedKeysAtom } from '../0-state/keyboard-atoms.ts';
-import { getActionsMap } from '../2-lib/actions-map.ts';
+import { appStore } from '@/editor/0-core/9-state/store.ts';
+import { resetUserSetting, userSettings } from '@/editor/0-core/9-state/user-settings.ts';
+import { confirmDialog } from '@/editor/0-core/8-lib/app-dialogs.tsx';
+import type { KeyboardLayoutMap } from '@/editor/0-core/8-lib/types.ts';
+import { creatingBindingAtom, keyboardLayoutMapAtom, recordedKeysAtom } from '../9-state/keyboard-atoms.ts';
+import { getActionsMap } from '../8-lib/actions-map.ts';
 
 type NavigatorWithKeyboard = Navigator & { keyboard?: { getLayoutMap(): Promise<KeyboardLayoutMap>; }; };
 

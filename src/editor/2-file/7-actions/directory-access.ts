@@ -1,11 +1,11 @@
 import i18n from 'i18next';
 import invariant from 'tiny-invariant';
-import { setCustomOutDir } from '@/editor/0-core/0-state/user-settings.ts';
-import { askForOutDir, errorToast, showOpenDialog } from '@/editor/0-core/2-lib/app-dialogs.tsx';
-import { DirectoryAccessDeclinedError } from '@/editor/0-core/2-lib/errors.ts';
-import { mainApi } from '@/editor/0-core/2-lib/main-api.ts';
-import { fs } from '@/editor/0-core/2-lib/node-shims.ts';
-import { checkDirWriteAccess, getFileDir, getOutDir } from '@/editor/0-core/2-lib/util.ts';
+import { setCustomOutDir } from '@/editor/0-core/9-state/user-settings.ts';
+import { askForOutDir, errorToast, showOpenDialog } from '@/editor/0-core/8-lib/app-dialogs.tsx';
+import { DirectoryAccessDeclinedError } from '@/editor/0-core/8-lib/errors.ts';
+import { mainApi } from '@/editor/0-core/8-lib/main-api.ts';
+import { fs } from '@/editor/0-core/8-lib/node-shims.ts';
+import { checkDirWriteAccess, getFileDir, getOutDir } from '@/editor/0-core/8-lib/util.ts';
 
 // Port of upstream useDirectoryAccess.
 // The MacOS App Store sandbox only allows access to user selected paths. We are never a MAS build,

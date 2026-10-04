@@ -4,9 +4,9 @@ import type { Config } from '@shared/types.ts';
 import { Button } from '@/ui/shadcn/button';
 import { Slider } from '@/ui/shadcn/slider';
 import { Switch } from '@/ui/shadcn/switch';
-import { appStore } from '@/editor/0-core/0-state/store.ts';
-import { userSettings, userSettingsAtom } from '@/editor/0-core/0-state/user-settings.ts';
-import { tunerVisibleAtom } from '@/editor/1-layout/0-state/panels-atoms.ts';
+import { appStore } from '@/editor/0-core/9-state/store.ts';
+import { userSettings, userSettingsAtom } from '@/editor/0-core/9-state/user-settings.ts';
+import { tunerVisibleAtom } from '@/editor/1-layout/9-state/panels-atoms.ts';
 
 // Port of upstream ValueTuners.tsx + ValueTuner.tsx
 

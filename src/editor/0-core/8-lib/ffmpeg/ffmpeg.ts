@@ -9,9 +9,9 @@ import z from 'zod';
 
 import { pcmAudioCodecs, isMov } from './streams.ts';
 import { isExecaError } from '../util.ts';
-import { isDurationValid } from '@/editor/5-segments/2-lib/segments.ts';
+import { isDurationValid } from '@/editor/5-segments/8-lib/segments.ts';
 import type { FFprobeChapter, FFprobeFormat, FFprobeProbeResult, FFprobeStream } from '@shared/ffprobe';
-import { parseSrt, parseSrtToSegments } from '@/editor/9-edl/2-lib/edl-formats.ts';
+import { parseSrt, parseSrtToSegments } from '@/editor/9-edl/8-lib/edl-formats.ts';
 import { UnsupportedFileError, UserFacingError } from '../errors.ts';
 import { mainApi } from '../main-api.ts';
 import { parseFfprobeDuration } from '@shared/util';

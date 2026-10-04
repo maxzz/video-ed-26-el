@@ -5,7 +5,7 @@ import { Button } from '@/ui/shadcn/button';
 import { Input } from '@/ui/shadcn/input';
 import { Label } from '@/ui/shadcn/label';
 import { DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/ui/shadcn/dialog';
-import { openCustomDialog } from '@/editor/0-core/0-state/dialogs.ts';
+import { openCustomDialog } from '@/editor/0-core/9-state/dialogs.ts';
 
 // Port of upstream openShiftSegmentsDialog (GenericDialog.tsx)
 

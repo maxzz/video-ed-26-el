@@ -4,15 +4,15 @@ import { useSnapshot } from 'valtio';
 import { useTranslation } from 'react-i18next';
 import { MouseIcon } from 'lucide-react';
 import type { ModifierKey } from '@shared/types';
-import { appStore } from '@/editor/0-core/0-state/store.ts';
-import { userSettings } from '@/editor/0-core/0-state/user-settings.ts';
-import { runAction } from '@/editor/0-core/1-actions/actions-registry.ts';
-import { getKeyDisplayName, getMetaKeyName, splitKeyboardKeys } from '@/editor/0-core/2-lib/util.ts';
+import { appStore } from '@/editor/0-core/9-state/store.ts';
+import { userSettings } from '@/editor/0-core/9-state/user-settings.ts';
+import { runAction } from '@/editor/0-core/7-actions/actions-registry.ts';
+import { getKeyDisplayName, getMetaKeyName, splitKeyboardKeys } from '@/editor/0-core/8-lib/util.ts';
 import { Button } from '@/ui/shadcn/button';
 import { Kbd } from '@/ui/shadcn/kbd';
 import { cn } from '@/utils/classnames';
-import { MifiLink } from '@/editor/f-platform/3-ui/mifi-link.tsx';
-import { draggingOverDropZoneAtom } from '../0-state/player-atoms.ts';
+import { MifiLink } from '@/editor/f-platform/0-ui/mifi-link.tsx';
+import { draggingOverDropZoneAtom } from '../9-state/player-atoms.ts';
 
 const emptyLayoutMap = new Map<string, string>();
 

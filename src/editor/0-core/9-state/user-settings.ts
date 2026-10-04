@@ -3,7 +3,7 @@ import { proxy, snapshot, subscribe } from 'valtio';
 import i18n from 'i18next';
 import type { Config } from '@shared/types.ts';
 import { defaultConfig } from '@shared/default-config.ts';
-import { mainApi } from '../2-lib/main-api.ts';
+import { mainApi } from '../8-lib/main-api.ts';
 import { appStore } from './store.ts';
 
 /**
@@ -28,7 +28,7 @@ async function flush() {
             await mainApi.configSet(key, JSON.parse(JSON.stringify(userSettings[key] ?? null)));
         } catch (err) {
             console.error('Failed to set config', key, err);
-            const { toastError } = await import('../2-lib/toast.tsx');
+            const { toastError } = await import('../8-lib/toast.tsx');
             toastError(i18n.t('Unable to save your preferences. Try to disable any anti-virus'));
         }
     }

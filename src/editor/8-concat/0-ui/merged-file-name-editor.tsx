@@ -3,9 +3,9 @@ import { useTranslation } from 'react-i18next';
 import { TriangleAlertIcon, UndoIcon } from 'lucide-react';
 import { Button } from '@/ui/shadcn/button';
 import { Input } from '@/ui/shadcn/input';
-import { defaultMergedFileTemplate, extVariable } from '@/editor/7-export/2-lib/output-name-template.ts';
-import { concatGeneratedFileNamesAtom, concatMergedFileTemplateAtom } from '../0-state/concat-atoms.ts';
-import { setConcatMergedFileTemplate } from '../1-actions/concat-actions.ts';
+import { defaultMergedFileTemplate, extVariable } from '@/editor/7-export/8-lib/output-name-template.ts';
+import { concatGeneratedFileNamesAtom, concatMergedFileTemplateAtom } from '../9-state/concat-atoms.ts';
+import { setConcatMergedFileTemplate } from '../7-actions/concat-actions.ts';
 
 // Merge-files mode of upstream components/FileNameTemplateEditor.tsx
 

@@ -3,9 +3,9 @@ import { useSnapshot } from 'valtio';
 import { useTranslation } from 'react-i18next';
 import { ImageIcon } from 'lucide-react';
 import { Button } from '@/ui/shadcn/button';
-import { userSettings } from '@/editor/0-core/0-state/user-settings.ts';
-import { withBlur } from '@/editor/0-core/2-lib/util.ts';
-import { toggleCaptureFormat } from '../1-actions/capture-actions.ts';
+import { userSettings } from '@/editor/0-core/9-state/user-settings.ts';
+import { withBlur } from '@/editor/0-core/8-lib/util.ts';
+import { toggleCaptureFormat } from '../7-actions/capture-actions.ts';
 
 /** Port of upstream CaptureFormatButton: cycles jpeg/png/webp */
 export function CaptureFormatButton({ showIcon = false, ...rest }: { showIcon?: boolean; } & ComponentProps<typeof Button>) {
