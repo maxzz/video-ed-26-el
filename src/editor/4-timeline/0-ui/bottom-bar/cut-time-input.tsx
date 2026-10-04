@@ -1,4 +1,4 @@
-import type { ClipboardEvent, FormEvent } from 'react';
+import type { ClipboardEvent, SubmitEvent } from 'react';
 import { useAtomValue } from 'jotai';
 import { useTranslation } from 'react-i18next';
 import { cn } from '@/utils/classnames';
@@ -49,7 +49,7 @@ function parseAndSetCutTime(side: Side, text: string) {
     setTime(side, timeWithOffset);
 }
 
-function handleSubmit(side: Side, e: FormEvent<HTMLFormElement>) {
+function handleSubmit(side: Side, e: SubmitEvent<HTMLFormElement>) {
     e.preventDefault();
     const cutTimeManual = appStore.get(cutTimeManualAtoms[side]);
     try {
@@ -127,7 +127,7 @@ export function CutTimeInput({ side }: { side: Side; }) {
                 type="text"
                 disabled={!isFileOpened}
                 className={cn(
-                    'px-1 py-px w-23.5 font-mono text-[13px] text-center bg-muted outline-none rounded-[5px] tracking-[-.05em]',
+                    'px-1 py-px w-23.5 font-mono text-[13px] text-center bg-muted outline-none rounded-[5px] tracking-tighter',
                     isStart ? 'mr-1.25' : 'ml-1.25',
                     error ? 'text-destructive' : (cutTimeManual !== undefined ? 'text-foreground' : 'text-muted-foreground'),
                 )}
