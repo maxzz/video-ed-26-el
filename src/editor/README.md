@@ -34,5 +34,5 @@ src/editor/<n>-<feature>/
 - No `useState` for app state, minimal `useEffect`/`useCallback`. Side effects that react to state use `observe()` from jotai-effect at module level.
 - Everything uses the single store `appStore` (`0-core/9-state/store.ts`); actions are plain functions, not hooks.
 - Per-file state registers its reset with `onFileReset()` (`0-core/7-actions/lifecycle.ts`).
-- Keyboard/menu actions are registered by name with `registerActions()` using the upstream LosslessCut action names, and invoked with `runAction(name)`. Cross-feature buttons call `runAction()` rather than importing another feature's internals.
+- Keyboard actions, the command palette, and the HTTP API are registered by name with `registerActions()` using the upstream LosslessCut action names, and invoked with `runAction(name)`. The application menu calls `runMenuAction()` in `0-core/menu-actions/`, which calls those same feature functions or the Electron host catalog. Cross-feature buttons call `runAction()` rather than importing another feature's internals.
 - New features: add a folder, an `index.ts`, and import it from `features.ts`.

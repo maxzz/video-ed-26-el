@@ -5,19 +5,12 @@ import { userSettingsAtom } from '@/editor/0-core/9-state/user-settings.ts';
 import { progressAtom, workingAtom } from '@/editor/0-core/9-state/working.ts';
 import { mainApi } from '@/editor/0-core/8-lib/main-api.ts';
 import { setDocumentTitle } from '@/editor/0-core/8-lib/util.ts';
-import { canRedoAtom, canUndoAtom, cutSegmentsAtom } from '@/editor/5-segments/9-state/segments-store.ts';
 import { filePathAtom, isFileOpenedAtom } from '../9-state/file-atoms.ts';
 import { initProjectAutoSave } from './project-auto-save.ts';
 import { applyCustomFfPath } from './startup-check.ts';
 
 const askBeforeCloseAtom = atom((get) => get(userSettingsAtom).askBeforeClose && get(isFileOpenedAtom));
 const customFfPathAtom = atom((get) => get(userSettingsAtom).customFfPath);
-const menuStateAtom = atom((get) => ({
-    isFileOpened: get(isFileOpenedAtom),
-    hasSegments: get(cutSegmentsAtom).length > 0,
-    canUndo: get(canUndoAtom),
-    canRedo: get(canRedoAtom),
-}));
 
 let initialized = false;
 
@@ -39,10 +32,6 @@ export function initFileEffects() {
 
     observe((get) => {
         mainApi.setAskBeforeClose(get(askBeforeCloseAtom));
-    }, appStore);
-
-    observe((get) => {
-        mainApi.setMenuState(get(menuStateAtom));
     }, appStore);
 
     observe((get) => {

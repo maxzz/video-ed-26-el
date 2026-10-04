@@ -8,7 +8,7 @@ import * as configStore from './config-store.ts';
 import { appState } from './app-state.ts';
 import { emitToRenderer } from './events.ts';
 import { createWindow } from './window.ts';
-import { updateMenu } from './menu.ts';
+import { installSystemMenu } from './menu.ts';
 import { registerIpcHandlers } from './ipc/handlers.ts';
 import { registerMediaSchemes, handleMediaProtocols } from './protocol-media.ts';
 import { setCustomFfPath } from './ffmpeg/paths.ts';
@@ -144,12 +144,11 @@ async function init() {
         // https://www.electronjs.org/docs/latest/api/app#appsetaboutpaneloptionsoptions
         i18n.on('languageChanged', () => app.setAboutPanelOptions(getAboutPanelOptions()));
         createWindow();
-        updateMenu();
+        installSystemMenu();
 
         if (!appState.disableNetworking && configStore.get('enableUpdateCheck') && !isDev && !isStoreBuild) {
             appState.newVersion = await checkNewVersion();
             if (appState.newVersion) {
-                updateMenu();
                 emitToRenderer('newVersionAvailable', appState.newVersion);
             }
         }

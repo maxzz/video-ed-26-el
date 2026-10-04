@@ -107,13 +107,18 @@ export interface CompatStreamParams {
     ffmpegHwaccel: FfmpegHwAccel;
 }
 
-/** Native menu state the renderer pushes to main so menu items can be enabled/checked */
-export interface MenuState {
-    isFileOpened: boolean;
-    hasSegments: boolean;
-    canUndo: boolean;
-    canRedo: boolean;
-}
+/** Commands the main process runs for the in-app menu. `what` selects the command; other fields are its parameters. */
+export type HostMenuAction =
+    | { what: 'quit'; }
+    | { what: 'minimize'; }
+    | { what: 'toggleMaximize'; }
+    | { what: 'toggleFullscreen'; }
+    | { what: 'toggleDevTools'; }
+    | { what: 'showAbout'; }
+    | { what: 'zoom'; direction: 'in' | 'out' | 'reset'; }
+    | { what: 'openExternal'; url: string; }
+    | { what: 'showItemInFolder'; path: string; }
+    | { what: 'openPath'; path: string; };
 
 /**
  * Every function the renderer can call in the main process.
@@ -130,7 +135,8 @@ export interface MainApi {
     openExternal(url: string): Promise<void>;
     setAskBeforeClose(value: boolean): Promise<void>;
     setLanguage(language: string | null): Promise<void>;
-    setMenuState(state: MenuState): Promise<void>;
+    /** In-app menu commands that must run in the main process. See electron/main/menu-actions/. */
+    performHostAction(action: HostMenuAction): Promise<void>;
     apiActionResponse(id: number): Promise<void>;
     emitAppEvent(event: AppEvent): Promise<void>;
     toggleFullscreen(): Promise<void>;
@@ -242,7 +248,7 @@ export interface PreloadEnv {
 /** Method names, used by the preload to build window.mainApi without a Proxy (contextBridge can't clone a Proxy) */
 export const mainApiMethods = [
     'getAppInfo', 'rendererReady', 'quitApp', 'focusWindow', 'setProgressBar', 'sendOsNotification', 'openExternal',
-    'setAskBeforeClose', 'setLanguage', 'setMenuState', 'apiActionResponse', 'emitAppEvent', 'toggleFullscreen', 'toggleDevTools',
+    'setAskBeforeClose', 'setLanguage', 'performHostAction', 'apiActionResponse', 'emitAppEvent', 'toggleFullscreen', 'toggleDevTools',
     'configGetAll', 'configSet', 'configReset',
     'showOpenDialog', 'showSaveDialog', 'showMessageBox',
     'pathExists', 'stat', 'lstat', 'access', 'readTextFile', 'readBinaryFile', 'parseCueSheet', 'writeTextFile', 'writeBinaryFile', 'readdir', 'mkdir',

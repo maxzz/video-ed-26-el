@@ -4,22 +4,22 @@ overview: Replace the Electron application menu with a shadcn menubar in the web
 todos:
   - id: host-action-contract
     content: Add HostMenuAction and performHostAction, with the Electron catalog in electron/main/menu-actions/ calling window, shell, and about implementations.
-    status: pending
+    status: completed
   - id: remove-native-menu
     content: Remove the custom Electron menu, hide the bar on Windows/Linux, keep a minimal macOS app menu, and drop setMenuState.
-    status: pending
+    status: completed
   - id: run-menu-action
     content: Add src/editor/0-core/menu-actions/ with a listing file and sibling entry files that call feature implementations or the Electron catalog.
-    status: pending
+    status: completed
   - id: shadcn-menubar
     content: Build the shadcn AppMenu from the current menu tree and mount it in the app header.
-    status: pending
+    status: completed
   - id: menu-shortcuts
     content: Move menu accelerators into the renderer keyboard listener so they call runMenuAction.
-    status: pending
+    status: completed
   - id: verify-menu
     content: Verify menu clicks and the moved shortcuts in the running app, including a host action and an editor action.
-    status: pending
+    status: completed
 isProject: false
 ---
 

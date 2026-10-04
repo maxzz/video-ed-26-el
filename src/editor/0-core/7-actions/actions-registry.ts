@@ -3,7 +3,7 @@ import { appStore } from '../9-state/store.ts';
 import { handleError } from '../9-state/working.ts';
 
 /**
- * Single dispatch point for keyboard shortcuts, the native menu, the HTTP API and the command palette.
+ * Single dispatch point for keyboard shortcuts, the HTTP API and the command palette.
  * Features register their actions from their index.ts with registerActions().
  * Names of keyboard actions must stay compatible with upstream (users have bound keys by these names).
  */
