@@ -377,7 +377,7 @@ function TunerSetting({ text, onClick }: { text: string; onClick: () => void; })
     );
 }
 
-/** Template application options (theme, welcome page, footer) */
+/** Template application options (theme, welcome page) */
 function AppOptionsSection() {
     return (<>
         <SectionHeader title="Application" />

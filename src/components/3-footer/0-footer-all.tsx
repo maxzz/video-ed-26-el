@@ -2,6 +2,7 @@ import { type HTMLAttributes } from "react";
 import { classNames, envBuildVersion, envModifiedDate } from "@/utils";
 import { IconSunnyvale } from "@/ui/icons/normal";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/ui/shadcn/tooltip";
+
 export function Section3_Footer({ className, ...rest }: HTMLAttributes<HTMLDivElement>) {
     return (
         <div className={classNames("h-12 text-xs text-foreground bg-background border-t border-border flex items-center justify-center gap-2", className)} {...rest}>
