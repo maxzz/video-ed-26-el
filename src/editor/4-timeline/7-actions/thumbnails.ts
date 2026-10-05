@@ -52,16 +52,18 @@ function startThumbnails(params: { zoomedDuration: number | undefined; filePath:
     });
 }
 
-// debounced like upstream (300ms)
-observe((get) => {
-    const params = {
-        zoomedDuration: get(zoomedDurationAtom),
-        filePath: get(filePathAtom),
-        zoomWindowStartTime: get(zoomWindowStartTimeAtom),
-        showThumbnails: get(showThumbnailsAtom),
-    };
-    const timer = setTimeout(() => startThumbnails(params), 300);
-    return () => clearTimeout(timer);
-}, appStore);
+export function initThumbnails() {
+    // debounced like upstream (300ms)
+    observe((get) => {
+        const params = {
+            zoomedDuration: get(zoomedDurationAtom),
+            filePath: get(filePathAtom),
+            zoomWindowStartTime: get(zoomWindowStartTimeAtom),
+            showThumbnails: get(showThumbnailsAtom),
+        };
+        const timer = setTimeout(() => startThumbnails(params), 300);
+        return () => clearTimeout(timer);
+    }, appStore);
 
-onFileReset(stopThumbnails);
+    onFileReset(stopThumbnails);
+}

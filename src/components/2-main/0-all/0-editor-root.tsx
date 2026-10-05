@@ -1,4 +1,3 @@
-import '../../../editor/features.ts';
 import { useAtomValue } from 'jotai';
 import { MotionConfig } from 'motion/react';
 import { prefersReducedMotionAtom } from '@/editor/0-core/9-state/user-settings.ts';

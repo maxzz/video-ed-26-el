@@ -40,16 +40,18 @@ export async function onActiveSubtitleChange(index?: number) {
     }
 }
 
-// Cleanup removed subtitles
-let previousSubtitles: Record<number, { url: string; lang?: string | undefined; }> = {};
-observe((get) => {
-    const subtitlesByStreamId = get(subtitlesByStreamIdAtom);
-    const current = Object.values(subtitlesByStreamId);
-    Object.values(previousSubtitles).forEach(({ url, lang }) => {
-        if (!current.some((existingSubtitle) => existingSubtitle.url === url)) {
-            console.log('Cleanup subtitle', lang);
-            URL.revokeObjectURL(url);
-        }
-    });
-    previousSubtitles = subtitlesByStreamId;
-}, appStore);
+export function initSubtitleEffects() {
+    // Cleanup removed subtitles
+    let previousSubtitles: Record<number, { url: string; lang?: string | undefined; }> = {};
+    observe((get) => {
+        const subtitlesByStreamId = get(subtitlesByStreamIdAtom);
+        const current = Object.values(subtitlesByStreamId);
+        Object.values(previousSubtitles).forEach(({ url, lang }) => {
+            if (!current.some((existingSubtitle) => existingSubtitle.url === url)) {
+                console.log('Cleanup subtitle', lang);
+                URL.revokeObjectURL(url);
+            }
+        });
+        previousSubtitles = subtitlesByStreamId;
+    }, appStore);
+}

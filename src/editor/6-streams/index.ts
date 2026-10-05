@@ -10,15 +10,19 @@ export { GpsMap } from './0-ui/gps-map.tsx';
 export { Json5Dialog } from './0-ui/json-dialog.tsx';
 export { addStreamSourceFile, updateStreamParams, updateFileParams, removeExternalFile, showIncludeExternalStreamsDialog, changeEnabledStreamsFilter, showStreamsSelector } from './7-actions/streams-actions.tsx';
 
-registerActions({
-    toggleStreamsSelector,
-    showStreamsSelector,
-    showIncludeExternalStreamsDialog,
-    toggleStripAudio,
-    toggleStripVideo,
-    toggleStripSubtitle,
-    toggleStripThumbnail,
-    toggleStripAll,
-    toggleStripCurrentFilter,
-    changeEnabledStreamsFilter,
-});
+function register() {
+    registerActions({
+        toggleStreamsSelector,
+        showStreamsSelector,
+        showIncludeExternalStreamsDialog,
+        toggleStripAudio,
+        toggleStripVideo,
+        toggleStripSubtitle,
+        toggleStripThumbnail,
+        toggleStripAll,
+        toggleStripCurrentFilter,
+        changeEnabledStreamsFilter,
+    });
+}
+
+export { register as "6-streams-register" };

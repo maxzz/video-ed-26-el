@@ -4,7 +4,9 @@ import { toggleDarkMode } from './utils/local-utils/theme-sync.ts';
 
 export { initThemeSync } from './utils/local-utils/theme-sync.ts';
 
-registerActions({
-    toggleSegmentsList,
-    toggleDarkMode,
-});
+export function registerToggleActions() {
+    registerActions({
+        toggleSegmentsList,
+        toggleDarkMode,
+    });
+}

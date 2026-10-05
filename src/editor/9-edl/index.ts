@@ -5,8 +5,12 @@ import { exportYouTube, importEdlFile, tryExportEdlFile } from './7-actions/edl-
 
 export { loadEdlFile, importEdlFile, tryExportEdlFile, exportYouTube } from './7-actions/edl-actions.ts';
 
-registerActions({
-    importEdlFile: (type: EdlImportType) => importEdlFile(type),
-    exportEdlFile: (type: EdlExportType | 'youtube') => tryExportEdlFile(type),
-    exportYouTube,
-});
+function register() {
+    registerActions({
+        importEdlFile: (type: EdlImportType) => importEdlFile(type),
+        exportEdlFile: (type: EdlExportType | 'youtube') => tryExportEdlFile(type),
+        exportYouTube,
+    });
+}
+
+export { register as "9-edl-register" };

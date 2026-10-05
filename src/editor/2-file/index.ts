@@ -32,27 +32,31 @@ export { openSendReportDialog } from './0-ui/send-report-dialog.tsx';
 export { askForHtml5ifySpeed } from './0-ui/html5ify-dialog.tsx';
 export { getDroppedFilePaths } from './8-lib/drop.ts';
 
-registerActions({
-    openFiles: async (...args: unknown[]) => openFiles(...openFilesActionArgsSchema.parse(args)),
-    openFilesDialog,
-    openDirDialog,
-    promptDownloadMediaUrl: promptDownloadMediaUrlWrapper,
-    closeCurrentFile: () => { closeFileWithConfirm(); },
-    closeBatch,
-    batchPreviousFile: () => batchFileJump(-1, false),
-    batchNextFile: () => batchFileJump(1, false),
-    batchOpenPreviousFile: () => batchFileJump(-1, true),
-    batchOpenNextFile: () => batchFileJump(1, true),
-    batchOpenSelectedFile,
-    convertFormatCurrentFile: () => userHtml5ifyCurrentFile(),
-    html5ify: () => userHtml5ifyCurrentFile({ ignoreRememberedValue: true }),
-    convertFormatBatch,
-    setStartTimeOffset: askStartTimeOffset,
-    makeCursorTimeZero,
-    reloadFile,
-    fixInvalidDuration: tryFixInvalidDuration,
-    openSendReportDialog: (err?: unknown) => { openSendReportDialogWithState(err); },
-    quit: () => mainApi.quitApp(),
-});
+function register() {
+    registerActions({
+        openFiles: async (...args: unknown[]) => openFiles(...openFilesActionArgsSchema.parse(args)),
+        openFilesDialog,
+        openDirDialog,
+        promptDownloadMediaUrl: promptDownloadMediaUrlWrapper,
+        closeCurrentFile: () => { closeFileWithConfirm(); },
+        closeBatch,
+        batchPreviousFile: () => batchFileJump(-1, false),
+        batchNextFile: () => batchFileJump(1, false),
+        batchOpenPreviousFile: () => batchFileJump(-1, true),
+        batchOpenNextFile: () => batchFileJump(1, true),
+        batchOpenSelectedFile,
+        convertFormatCurrentFile: () => userHtml5ifyCurrentFile(),
+        html5ify: () => userHtml5ifyCurrentFile({ ignoreRememberedValue: true }),
+        convertFormatBatch,
+        setStartTimeOffset: askStartTimeOffset,
+        makeCursorTimeZero,
+        reloadFile,
+        fixInvalidDuration: tryFixInvalidDuration,
+        openSendReportDialog: (err?: unknown) => { openSendReportDialogWithState(err); },
+        quit: () => mainApi.quitApp(),
+    });
 
-onAppReady(initFileEffects);
+    onAppReady(initFileEffects);
+}
+
+export { register as "2-file-register" };

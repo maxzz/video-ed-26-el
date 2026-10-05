@@ -19,12 +19,16 @@ export { OutDirSelector } from './0-ui/out-dir-selector.tsx';
 export { FileNameTemplateEditor } from './0-ui/file-name-template-editor.tsx';
 export { CopyClipboardButton } from './0-ui/controls.tsx';
 
-registerActions({
-    export: onExportPress,
-    toggleLastCommands,
-    cleanupFilesDialog,
-    extractAllStreams,
-    toggleKeyframeCutMode: () => toggleKeyframeCut(true),
-    decimate: tryDecimate,
-    copySegmentsToClipboard,
-});
+function register() {
+    registerActions({
+        export: onExportPress,
+        toggleLastCommands,
+        cleanupFilesDialog,
+        extractAllStreams,
+        toggleKeyframeCutMode: () => toggleKeyframeCut(true),
+        decimate: tryDecimate,
+        copySegmentsToClipboard,
+    });
+}
+
+export { register as "7-export-register" };

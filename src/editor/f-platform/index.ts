@@ -7,4 +7,8 @@ export { openWhatsNewDialog } from './0-ui/whats-new-dialog.tsx';
 export { MifiLink } from './0-ui/mifi-link.tsx';
 export { newVersionAtom, mifiLinkAtom } from './9-state/platform.ts';
 
-onAppReady(initPlatform);
+function register() {
+    onAppReady(initPlatform);
+}
+
+export { register as "f-platform-register" };

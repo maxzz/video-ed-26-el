@@ -11,10 +11,12 @@ export const workingElapsedMsAtom = atom(0);
 
 const isWorkingAtom = atom((get) => get(workingAtom) != null);
 
-observe((get) => {
-    if (!get(isWorkingAtom)) return undefined;
-    const startedAt = Date.now();
-    appStore.set(workingElapsedMsAtom, 0);
-    const interval = setInterval(() => appStore.set(workingElapsedMsAtom, Date.now() - startedAt), 100);
-    return () => clearInterval(interval);
-}, appStore);
+export function initWorkingTimer() {
+    observe((get) => {
+        if (!get(isWorkingAtom)) return undefined;
+        const startedAt = Date.now();
+        appStore.set(workingElapsedMsAtom, 0);
+        const interval = setInterval(() => appStore.set(workingElapsedMsAtom, Date.now() - startedAt), 100);
+        return () => clearInterval(interval);
+    }, appStore);
+}

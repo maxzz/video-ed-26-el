@@ -12,15 +12,19 @@ export { keyboardLayoutMapAtom } from './9-state/keyboard-atoms.ts';
 export { toggleCommandPalette } from './7-actions/command-palette.ts';
 export { getActionsMap, getModifier, getModifierKeyNames } from './8-lib/actions-map.ts';
 
-registerActions({
-    toggleKeyboardShortcuts,
-    toggleCommandPalette,
-});
+function register() {
+    registerActions({
+        toggleKeyboardShortcuts,
+        toggleCommandPalette,
+    });
 
-initKeyboard();
+    initKeyboard();
 
-observe((get) => {
-    if (!get(keyboardShortcutsVisibleAtom)) return;
-    updateKeyboardLayout();
-    removeInvalidKeyBindings();
-}, appStore);
+    observe((get) => {
+        if (!get(keyboardShortcutsVisibleAtom)) return;
+        updateKeyboardLayout();
+        removeInvalidKeyBindings();
+    }, appStore);
+}
+
+export { register as "c-keyboard-register" };

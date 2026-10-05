@@ -6,8 +6,12 @@ import { detectBlackScenes, detectSceneChanges, detectSilentScenes } from './7-a
 export { detectBlackScenes, detectSceneChanges, detectSilentScenes };
 export { showParametersDialog } from './0-ui/parameters-dialog.tsx';
 
-registerActions({
-    detectBlackScenes,
-    detectSilentScenes,
-    detectSceneChanges,
-});
+function register() {
+    registerActions({
+        detectBlackScenes,
+        detectSilentScenes,
+        detectSceneChanges,
+    });
+}
+
+export { register as "b-detect-register" };

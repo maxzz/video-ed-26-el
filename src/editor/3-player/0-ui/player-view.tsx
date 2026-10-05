@@ -20,8 +20,6 @@ import {
 } from '../9-state/player-atoms.ts';
 import { handleHideCompatPlayerClick, onSeeked, onStartPlaying, onStopPlaying, onTimeUpdate, onVideoAbort, togglePlay } from '../7-actions/player-actions.ts';
 import { incrementMediaSourceQuality, onDurationChange, onVideoError, toggleFullscreenVideo } from '../7-actions/video-events.ts';
-import '../7-actions/video-effects.ts';
-import '../7-actions/subtitles.ts';
 import { MediaSourcePlayer } from './media-source-player.tsx';
 import { NoFileLoaded } from './no-file-loaded.tsx';
 import { PlaybackStreamSelector } from './playback-stream-selector.tsx';

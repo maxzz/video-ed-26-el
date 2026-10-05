@@ -4,6 +4,10 @@ import { toggleSettings } from '@/editor/1-layout/9-state/panels-atoms.ts';
 export { SettingsHosts } from './0-ui/settings-hosts.tsx';
 export { openSettings } from './7-actions/settings-actions.ts';
 
-registerActions({
-    toggleSettings,
-});
+function register() {
+    registerActions({
+        toggleSettings,
+    });
+}
+
+export { register as "d-settings-register" };

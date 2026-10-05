@@ -8,7 +8,7 @@ src/editor/<n>-<feature>/
   7-actions/  plain functions that read/write `appStore` (no React)
   8-lib/      pure helpers, ffmpeg arg builders, parsers
   0-ui/       React components (shadcn), read state with useAtomValue/useSnapshot
-  index.ts    public API: exports UI entry points and calls registerActions()
+  index.ts    public API: exports UI entry points and a `<folder>-register` function (called from main.tsx)
 ```
 
 | Folder | Feature |
@@ -35,4 +35,4 @@ src/editor/<n>-<feature>/
 - Everything uses the single store `appStore` (`0-core/9-state/store.ts`); actions are plain functions, not hooks.
 - Per-file state registers its reset with `onFileReset()` (`0-core/7-actions/lifecycle.ts`).
 - Keyboard actions, the command palette, and the HTTP API are registered by name with `registerActions()` using the upstream LosslessCut action names, and invoked with `runAction(name)`. The application menu calls `runMenuAction()` in `0-core/menu-actions/`, which calls those same feature functions or the Electron host catalog. Cross-feature buttons call `runAction()` rather than importing another feature's internals.
-- New features: add a folder, an `index.ts`, and import it from `features.ts`.
+- New features: add a folder, an `index.ts` that exports `<folder>-register`, and call that function from `main.tsx`.
