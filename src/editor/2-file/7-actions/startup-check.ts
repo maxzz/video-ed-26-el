@@ -4,7 +4,7 @@ import { handleError } from '@/editor/0-core/9-state/working.ts';
 import { runFfmpegStartupCheck } from '@/editor/0-core/8-lib/ffmpeg/ffmpeg.ts';
 import { mainApi } from '@/editor/0-core/8-lib/main-api.ts';
 import { ffmpegInfoAtom } from '../9-state/file-atoms.ts';
-import { openSendReportDialog } from '../0-ui/send-report-dialog.tsx';
+import { dialog_SendReport_open } from '../0-ui/dlg-send-report.tsx';
 
 // Port of upstream mifi.ts runStartupCheck
 
@@ -52,7 +52,7 @@ export async function runStartupCheck({ customFfPath }: { customFfPath: string |
             }
         }
 
-        openSendReportDialog({ message: i18n.t('FFmpeg is non-functional'), err });
+        dialog_SendReport_open({ message: i18n.t('FFmpeg is non-functional'), err });
         return undefined;
     }
 }

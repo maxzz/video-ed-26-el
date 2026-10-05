@@ -7,7 +7,7 @@ import { DirectoryAccessDeclinedError } from '@/editor/0-core/8-lib/errors.ts';
 import { toast } from '@/editor/0-core/8-lib/toast.tsx';
 import { html5ify } from '@/editor/7-export/8-lib/ffmpeg-operations.ts';
 import { batchFilesAtom, filePathAtom, hasAudioAtom, hasVideoAtom, previewFilePathAtom, rememberConvertToSupportedFormatAtom, usingDummyVideoAtom } from '../9-state/file-atoms.ts';
-import { askForHtml5ifySpeed } from '../0-ui/html5ify-dialog.tsx';
+import { dialogAsync_askForHtml5ifySpeed } from '../0-ui/dlg-html5ify.tsx';
 import { ensureWritableOutDir } from './directory-access.ts';
 
 // Port of upstream useHtml5ify
@@ -39,7 +39,7 @@ export async function userHtml5ifyCurrentFile({ ignoreRememberedValue }: { ignor
         else if (hasVideo) allowedOptions = ['fastest', 'fast', 'slow', 'slowest'];
         if (allowedOptions.length === 0) return;
 
-        const userResponse = await askForHtml5ifySpeed({ allowedOptions, showRemember: true, initialOption: selectedOption });
+        const userResponse = await dialogAsync_askForHtml5ifySpeed({ allowedOptions, showRemember: true, initialOption: selectedOption });
         console.log('Choice', userResponse);
         if (userResponse == null) return;
         ({ selectedOption } = userResponse);
@@ -62,7 +62,7 @@ export async function convertFormatBatch() {
     const batchFiles = appStore.get(batchFilesAtom);
     if (batchFiles.length === 0) return;
 
-    const response = await askForHtml5ifySpeed({ allowedOptions: ['fast-audio-remux', 'fast-audio', 'fast', 'slow', 'slow-audio', 'slowest'] });
+    const response = await dialogAsync_askForHtml5ifySpeed({ allowedOptions: ['fast-audio-remux', 'fast-audio', 'fast', 'slow', 'slow-audio', 'slowest'] });
     if (response == null) return;
     const { selectedOption: speed } = response;
 

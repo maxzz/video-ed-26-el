@@ -6,7 +6,7 @@ import { getKeyupAction, hasAction, runAction } from '@/editor/0-core/7-actions/
 import { isWindows } from '@/editor/0-core/8-lib/main-api.ts';
 import { runMenuAction, type MenuAction } from '@/editor/0-core/menu-actions/index.ts';
 import { allModifiers, altModifiers, controlModifiers, metaModifiers, shiftModifiers } from '@/editor/0-core/8-lib/util.ts';
-import { anyPanelOpenAtom, closeExportConfirm, commandPaletteOpenAtom, exportConfirmOpenAtom } from '@/editor/1-layout/9-state/panels-atoms.ts';
+import { anyPanelOpenAtom, closeExportConfirm, commandPaletteOpenAtom, exportConfirmOpenAtom } from '@/components/2-main/0-all/a-panels-atoms.ts';
 import { creatingBindingAtom } from '../9-state/keyboard-atoms.ts';
 import { addRecordedKey, updateKeyboardLayout } from './key-bindings.ts';
 import { toggleCommandPalette } from './command-palette.ts';

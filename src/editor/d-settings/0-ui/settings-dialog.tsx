@@ -7,7 +7,7 @@ import type { CaptureFormat, Config, EnableImportChapters, ModifierKey, Timecode
 import { defaultConfig } from '@shared/default-config.ts';
 import { userSettings } from '@/editor/0-core/9-state/user-settings.ts';
 import { getEnableImportChaptersOptions, isStoreBuild } from '@/editor/0-core/8-lib/util.ts';
-import { settingsVisibleAtom, showAdvancedSettingsAtom, toggleKeyboardShortcuts } from '@/editor/1-layout/9-state/panels-atoms.ts';
+import { settingsVisibleAtom, showAdvancedSettingsAtom, toggleKeyboardShortcuts } from '@/components/2-main/0-all/a-panels-atoms.ts';
 import { getModifierKeyNames } from '@/editor/c-keyboard/index.ts';
 import { AppOptions } from '@/components/4-dialogs/8-3-options/1-app-options';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/ui/shadcn/dialog';

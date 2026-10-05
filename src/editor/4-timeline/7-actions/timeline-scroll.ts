@@ -6,7 +6,7 @@ import { appStore } from '@/editor/0-core/9-state/store.ts';
 import { prefersReducedMotionAtom, userSettings } from '@/editor/0-core/9-state/user-settings.ts';
 import { calculateTimelinePos } from '@/editor/0-core/8-lib/util.ts';
 import { fileDurationNonZeroAtom } from '@/editor/2-file/9-state/file-atoms.ts';
-import { hoveringTimeAtom } from '@/editor/1-layout/9-state/panels-atoms.ts';
+import { hoveringTimeAtom } from '@/components/2-main/0-all/a-panels-atoms.ts';
 import { commandedTimeAtom, relevantTimeAtom } from '@/editor/3-player/9-state/player-atoms.ts';
 import { seekAbs } from '@/editor/3-player/7-actions/player-actions.ts';
 import { currentCutSegAtom } from '@/editor/5-segments/9-state/segments-store.ts';

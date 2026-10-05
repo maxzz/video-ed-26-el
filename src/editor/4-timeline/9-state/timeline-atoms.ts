@@ -10,7 +10,7 @@ import { calcShouldShowKeyframes, calcShouldShowWaveform } from '@/editor/0-core
 import { getFrameCountRaw } from '@/editor/9-edl/8-lib/edl-formats.ts';
 import { detectedFpsAtom, fileDurationAtom, hasAudioAtom, hasVideoAtom, isFileOpenedAtom, startTimeOffsetAtom } from '@/editor/2-file/9-state/file-atoms.ts';
 import { activeAudioStreamsAtom, commandedTimeAtom, playingAtom, relevantTimeAtom } from '@/editor/3-player/9-state/player-atoms.ts';
-import { hoveringTimeAtom } from '@/editor/1-layout/9-state/panels-atoms.ts';
+import { hoveringTimeAtom } from '@/components/2-main/0-all/a-panels-atoms';
 import { isDurationValid } from '@/editor/5-segments/8-lib/segments.ts';
 
 // Zoom

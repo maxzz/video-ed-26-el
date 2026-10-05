@@ -1,4 +1,4 @@
-import { toggleKeyboardShortcuts as toggleKeyboardShortcutsImpl } from '@/editor/1-layout/9-state/panels-atoms.ts';
+import { toggleKeyboardShortcuts as toggleKeyboardShortcutsImpl } from '@/components/2-main/0-all/a-panels-atoms';
 import { openSendReportDialogWithState } from '@/editor/2-file/7-actions/load-media.ts';
 
 export function toggleKeyboardShortcuts() {

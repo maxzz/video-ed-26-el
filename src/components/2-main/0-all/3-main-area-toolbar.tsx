@@ -9,15 +9,15 @@ import { mainApi, preloadEnv } from '@/editor/0-core/8-lib/main-api.ts';
 
 import { customOutDirAtom, setCustomOutDir, userSettingsAtom } from '@/editor/0-core/9-state/user-settings.ts';
 import { runAction } from '@/editor/0-core/7-actions/kbd-actions.ts';
-import { settingsVisibleAtom, streamsSelectorShownAtom } from '@/editor/1-layout/9-state/panels-atoms.ts';
+import { settingsVisibleAtom, streamsSelectorShownAtom } from '@/components/2-main/0-all/a-panels-atoms';
 import { filePathAtom, isCustomFormatSelectedAtom, numStreamsTotalAtom } from '@/editor/2-file/9-state/file-atoms.ts';
 import { toggleSimpleMode } from '@/editor/4-timeline/7-actions/timeline-actions.ts';
 import { enabledStreamsFilterAtom, numStreamsToCopyAtom } from '@/editor/6-streams/9-state/streams-store.ts';
 import { changeEnabledStreamsFilter, toggleStripCurrentFilter } from '@/editor/6-streams/7-actions/streams-actions.tsx';
-import { toggleOutFormatLocked } from '../../../7-export/7-actions/export-actions.ts';
-import { ExportModeButton } from '../../../7-export/0-ui/export-buttons.tsx';
-import { OutDirSelector } from '../../../7-export/0-ui/out-dir-selector.tsx';
-import { CurrentFileOutputFormatSelect } from '../../../7-export/0-ui/output-format-select.tsx';
+import { toggleOutFormatLocked } from '@/editor/7-export/7-actions/export-actions.ts';
+import { ExportModeButton } from '@/editor/7-export/0-ui/export-buttons.tsx';
+import { OutDirSelector } from '@/editor/7-export/0-ui/out-dir-selector.tsx';
+import { CurrentFileOutputFormatSelect } from '@/editor/7-export/0-ui/output-format-select.tsx';
 
 // Port of upstream TopMenu.tsx
 

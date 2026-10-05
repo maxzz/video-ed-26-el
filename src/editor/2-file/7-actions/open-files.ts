@@ -8,7 +8,7 @@ import { askForFileOpenAction, errorToast, promptDownloadMediaUrl, showOpenDialo
 import { mainApi } from '@/editor/0-core/8-lib/main-api.ts';
 import { basename, fs } from '@/editor/0-core/8-lib/node-shims.ts';
 import { getDownloadMediaOutPath, getImportProjectType, readDirRecursively, readVideoTs, resolvePathIfNeeded } from '@/editor/0-core/8-lib/util.ts';
-import { concatDialogOpenAtom, streamsSelectorShownAtom } from '@/editor/1-layout/9-state/panels-atoms.ts';
+import { concatDialogOpenAtom, streamsSelectorShownAtom } from '@/components/2-main/0-all/a-panels-atoms.ts';
 import { checkFileOpened } from '@/editor/3-player/7-actions/player-actions.ts';
 import { loadEdlFile } from '@/editor/9-edl/7-actions/edl-actions.ts';
 import { alwaysConcatMultipleFilesAtom, batchFilesAtom, filePathAtom, isFileOpenedAtom, lastOpenedPathAtom } from '../9-state/file-atoms.ts';

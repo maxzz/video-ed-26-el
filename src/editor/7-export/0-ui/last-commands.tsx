@@ -1,7 +1,7 @@
 import { useAtomValue } from 'jotai';
 import { useTranslation } from 'react-i18next';
 import { appStore } from '@/editor/0-core/9-state/store.ts';
-import { lastCommandsVisibleAtom, toggleLastCommands } from '@/editor/1-layout/9-state/panels-atoms.ts';
+import { lastCommandsVisibleAtom, toggleLastCommands } from '@/components/2-main/0-all/a-panels-atoms.ts';
 import { ffmpegCommandLogAtom } from '@/editor/2-file/9-state/file-atoms.ts';
 import { Button } from '@/ui/shadcn/button';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/ui/shadcn/dialog';

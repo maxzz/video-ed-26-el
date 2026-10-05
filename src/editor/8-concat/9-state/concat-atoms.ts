@@ -6,7 +6,7 @@ import { customOutDirAtom, maxLabelLengthAtom, userSettingsAtom } from '@/editor
 import { getOutDir } from '@/editor/0-core/8-lib/util.ts';
 import { parseRatio } from '@shared/util';
 import { batchFilePathsAtom, batchFilesAtom, exportCountAtom, fileFormatAtom, isCustomFormatSelectedAtom } from '@/editor/2-file/9-state/file-atoms.ts';
-import { concatDialogOpenAtom } from '@/editor/1-layout/9-state/panels-atoms.ts';
+import { concatDialogOpenAtom } from '@/components/2-main/0-all/a-panels-atoms';
 import { defaultMergedFileTemplate, generateMergedFileNames, type GeneratedOutFileNames } from '@/editor/7-export/8-lib/output-name-template.ts';
 
 // Merge files dialog (upstream ConcatDialog). All state here is preserved when the dialog is closed, except the files meta.

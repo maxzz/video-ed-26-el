@@ -1,56 +1,16 @@
-import i18n from 'i18next';
 import { CopyIcon } from 'lucide-react';
-import { discussionsUrl, githubUrl, publicBugReportUrl } from '@shared/constants';
-import { fireDialog } from '@/editor/0-core/9-state/dialogs.ts';
-import { getAppInfo, mainApi } from '@/editor/0-core/8-lib/main-api.ts';
-import { isExecaError } from '@/editor/0-core/8-lib/util.ts';
 import { toast } from '@/editor/0-core/8-lib/toast.tsx';
 import { Button } from '@/ui/shadcn/button';
+import i18n from 'i18next';
 
-function ExternalLink({ url, children }: { url: string; children: string; }) {
-    return (
-        <button type="button" className="text-primary hover:underline cursor-pointer" onClick={() => mainApi.openExternal(url)}>
-            {children}
-        </button>
-    );
-}
-
-function getErrorText(err: unknown) {
-    if (err == null) return 'No error occurred.';
-    return err instanceof Error ? err.stack : String(err);
-}
+import { fireDialog } from '@/editor/0-core/9-state/dialogs.ts';
+import { discussionsUrl, githubUrl, publicBugReportUrl } from '@shared/constants';
+import { getAppInfo, mainApi } from '@/editor/0-core/8-lib/main-api.ts';
+import { isExecaError } from '@/editor/0-core/8-lib/util.ts';
 
 /** Port of upstream reporting.tsx openSendReportDialog */
-export function openSendReportDialog({ err, message, state }: { err?: unknown; message?: string | undefined; state?: unknown; } = {}) {
-    let appInfo: ReturnType<typeof getAppInfo> | undefined;
-    try {
-        appInfo = getAppInfo();
-    } catch {
-        appInfo = undefined;
-    }
-
-    const jsonReport = JSON.stringify({
-        err: isExecaError(err) && {
-            code: err.code,
-            isTerminated: err.isTerminated,
-            failed: err.failed,
-            timedOut: err.timedOut,
-            isCanceled: err.isCanceled,
-            exitCode: err.exitCode,
-        },
-        state,
-        platform: appInfo?.platform,
-        arch: appInfo?.arch,
-        version: appInfo?.version,
-    }, null, 2);
-
-    const text = [
-        ...(message != null ? [message] : []),
-        getErrorText(err),
-        '',
-        'App state:',
-        jsonReport,
-    ].join('\n');
+export function dialog_SendReport_open({ err, message, state }: { err?: unknown; message?: string | undefined; state?: unknown; } = {}) {
+    const text = getReportText({ err, message, state });
 
     async function copyText() {
         await mainApi.writeClipboardText(text);
@@ -87,4 +47,49 @@ export function openSendReportDialog({ err, message, state }: { err?: unknown; m
             </div>
         ),
     });
+}
+
+function ExternalLink({ url, children }: { url: string; children: string; }) {
+    return (
+        <button type="button" className="text-primary hover:underline cursor-pointer" onClick={() => mainApi.openExternal(url)}>
+            {children}
+        </button>
+    );
+}
+
+function getReportText({ err, message, state }: { err?: unknown; message?: string | undefined; state?: unknown; }) {
+    let appInfo: ReturnType<typeof getAppInfo> | undefined;
+    try {
+        appInfo = getAppInfo();
+    } catch {
+        appInfo = undefined;
+    }
+
+    const jsonReport = JSON.stringify({
+        err: isExecaError(err) && {
+            code: err.code,
+            isTerminated: err.isTerminated,
+            failed: err.failed,
+            timedOut: err.timedOut,
+            isCanceled: err.isCanceled,
+            exitCode: err.exitCode,
+        },
+        state,
+        platform: appInfo?.platform,
+        arch: appInfo?.arch,
+        version: appInfo?.version,
+    }, null, 2);
+
+    return [
+        ...(message != null ? [message] : []),
+        getErrorText(err),
+        '',
+        'App state:',
+        jsonReport,
+    ].join('\n');
+}
+
+function getErrorText(err: unknown) {
+    if (err == null) return 'No error occurred.';
+    return err instanceof Error ? err.stack : String(err);
 }

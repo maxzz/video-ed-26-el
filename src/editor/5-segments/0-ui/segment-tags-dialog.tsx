@@ -12,7 +12,7 @@ import { segmentTagsSchema } from '@/editor/0-core/8-lib/types.ts';
 import { appStore } from '@/editor/0-core/9-state/store.ts';
 import { mainApi } from '@/editor/0-core/8-lib/main-api.ts';
 import { errorToast } from '@/editor/0-core/8-lib/app-dialogs.tsx';
-import { editingSegmentTagsAtom, editingSegmentTagsSegmentIndexAtom } from '@/editor/1-layout/9-state/panels-atoms.ts';
+import { editingSegmentTagsAtom, editingSegmentTagsSegmentIndexAtom } from '@/components/2-main/0-all/a-panels-atoms.ts';
 import { closeSegmentTagsEditor, saveSegmentTags } from '../7-actions/segment-dialogs.tsx';
 
 // Upstream SegmentList "Edit segment tags" dialog with a port of TagEditor (for segment tags there are no existing tags, only custom ones)

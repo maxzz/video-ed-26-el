@@ -29,7 +29,7 @@ import {
     cacheBusterAtom, detectedFileFormatAtom, detectedFpsAtom, externalFilesMetaAtom, ffmpegInfoAtom, fileFormatAtom, filePathAtom, isFileOpenedAtom,
     mainFileMetaAtom, mainStreamsAtom, allFilesMetaAtom, previewFilePathAtom, rotationAtom, shortestFlagAtom, startTimeOffsetAtom, usingDummyVideoAtom,
 } from '../9-state/file-atoms.ts';
-import { openSendReportDialog } from '../0-ui/send-report-dialog.tsx';
+import { dialog_SendReport_open } from '../0-ui/dlg-send-report.tsx';
 import { ensureAccessToSourceDir, ensureWritableOutDir } from './directory-access.ts';
 import { html5ifyAndLoadWithPreferences } from './html5ify.ts';
 import { getEdlFilePath } from './project-auto-save.ts';
@@ -339,7 +339,7 @@ export function openSendReportDialogWithState(err?: unknown) {
         effectiveExportMode: appStore.get(effectiveExportModeAtom),
     };
 
-    openSendReportDialog({ err, state });
+    dialog_SendReport_open({ err, state });
 }
 
 export function isFileDurationValid() {

@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import groupBy from 'lodash/groupBy.js';
 import { userSettingsAtom } from '@/editor/0-core/9-state/user-settings.ts';
 import { actionsVersionAtom, getActionNames, hasAction } from '@/editor/0-core/7-actions/kbd-actions.ts';
-import { commandPaletteOpenAtom } from '@/editor/1-layout/9-state/panels-atoms.ts';
+import { commandPaletteOpenAtom } from '@/components/2-main/0-all/a-panels-atoms.ts';
 import { Dialog, DialogContent, DialogDescription, DialogTitle } from '@/ui/shadcn/dialog';
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList, CommandShortcut } from '@/ui/shadcn/command';
 import { runPaletteAction, setCommandPaletteOpen } from '../7-actions/command-palette.ts';

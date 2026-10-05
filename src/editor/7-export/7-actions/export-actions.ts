@@ -12,7 +12,7 @@ import type { Chapter, ExportMode } from '@/editor/0-core/8-lib/types.ts';
 import { DirectoryAccessDeclinedError } from '@/editor/0-core/8-lib/errors.ts';
 import { ensureWritableOutDir } from '@/editor/2-file/7-actions/directory-access.ts';
 import { getOutFileExtension, getOutPath, getStdioString, getSuffixedOutPath, isAbortedError, isExecaError, isMuxNotSupported, isOutOfSpaceError, transferTimestamps } from '@/editor/0-core/8-lib/util.ts';
-import { exportConfirmOpenAtom, streamsSelectorShownAtom } from '@/editor/1-layout/9-state/panels-atoms.ts';
+import { exportConfirmOpenAtom, streamsSelectorShownAtom } from '@/components/2-main/0-all/a-panels-atoms.ts';
 import {
     allFilesMetaAtom, currentFileExportCountAtom, detectedFileFormatAtom, detectedFpsAtom, exportCountAtom, externalFilesMetaAtom, fileDurationAtom, fileFormatAtom, filePathAtom,
     isFileOpenedAtom, isRotationSetAtom, mainFileFormatDataAtom, mainStreamsAtom, outputDirAtom, paramsByFileAtom, previewFilePathAtom, rotationAtom, shortestFlagAtom,
@@ -20,7 +20,7 @@ import {
 import { batchListRemoveFile } from '@/editor/2-file/7-actions/batch-actions.ts';
 import { closeFile, loadMedia, runAndReloadFile, tryFixInvalidDuration } from '@/editor/2-file/7-actions/load-media.ts';
 import { projectFileSavePathAtom } from '@/editor/2-file/7-actions/project-auto-save.ts';
-import { openSendReportDialog } from '@/editor/2-file/0-ui/send-report-dialog.tsx';
+import { dialog_SendReport_open } from '@/editor/2-file/0-ui/dlg-send-report.tsx';
 import { effectiveRotationAtom } from '@/editor/3-player/9-state/player-atoms.ts';
 import { checkFileOpened } from '@/editor/3-player/7-actions/player-actions.ts';
 import { cutSegmentsAtom, haveInvalidSegsAtom, segmentsOrInverseAtom, segmentsToExportAtom, selectedSegmentsAtom } from '@/editor/5-segments/9-state/segments-store.ts';
@@ -57,7 +57,7 @@ function getReportState() {
 
 export async function handleExportFailed(err: unknown) {
     const sendErrorReport = await showExportFailedDialog({ fileFormat: appStore.get(fileFormatAtom), safeOutputFileName: userSettings.safeOutputFileName });
-    if (sendErrorReport) openSendReportDialog({ err, state: getReportState() });
+    if (sendErrorReport) dialog_SendReport_open({ err, state: getReportState() });
 }
 
 /** Shows the dialog matching a failed ffmpeg operation. Returns false if the error was not handled */

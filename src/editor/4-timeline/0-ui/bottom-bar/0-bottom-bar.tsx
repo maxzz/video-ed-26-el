@@ -17,7 +17,7 @@ import { formatTimecodeAtom, getFrameCountAtom } from '@/editor/0-core/9-state/t
 import { hasAction, runAction } from '@/editor/0-core/7-actions/kbd-actions.ts';
 import { askForPlaybackRate } from '@/editor/0-core/8-lib/app-dialogs.tsx';
 import { getSegColor as getSegColorRaw } from '@/editor/0-core/8-lib/colors.ts';
-import { exportConfirmOpenAtom } from '@/editor/1-layout/9-state/panels-atoms.ts';
+import { exportConfirmOpenAtom } from '@/components/2-main/0-all/a-panels-atoms.ts';
 import { detectedFpsAtom, fileDurationNonZeroAtom, hasAudioAtom, hasVideoAtom, isFileOpenedAtom, isRotationSetAtom, rotationAtom } from '@/editor/2-file/9-state/file-atoms.ts';
 import { outputPlaybackRateAtom, playbackModeAtom, playbackRateAtom, playingAtom } from '@/editor/3-player/9-state/player-atoms.ts';
 import * as player from '@/editor/3-player/7-actions/player-actions.ts';

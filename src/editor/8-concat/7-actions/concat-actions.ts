@@ -15,7 +15,7 @@ import {
 } from '@/editor/0-core/8-lib/util.ts';
 import { batchFilePathsAtom, batchFilesAtom, detectedFileFormatAtom, fileFormatAtom } from '@/editor/2-file/9-state/file-atoms.ts';
 import { closeBatch, ensureWritableOutDir, openFilesDialog, openSendReportDialog } from '@/editor/2-file/index.ts';
-import { concatDialogOpenAtom } from '@/editor/1-layout/9-state/panels-atoms.ts';
+import { concatDialogOpenAtom } from '@/components/2-main/0-all/a-panels-atoms.ts';
 import { concatFiles, maybeMkDeepOutDir, OutputNotWritableError } from '@/editor/7-export/8-lib/ffmpeg-operations.ts';
 import type { GeneratedOutFileNames } from '@/editor/7-export/8-lib/output-name-template.ts';
 import { showOsNotification } from '@/editor/0-core/8-lib/notifications.ts';

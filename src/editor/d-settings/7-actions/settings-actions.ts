@@ -2,7 +2,7 @@ import type { SupportedLanguage } from '@shared/i18n.ts';
 import { appStore } from '@/editor/0-core/9-state/store.ts';
 import { customOutDirAtom, setCustomOutDir, userSettings } from '@/editor/0-core/9-state/user-settings.ts';
 import { askForFfPath, askForOutDir } from '@/editor/0-core/8-lib/app-dialogs.tsx';
-import { settingsVisibleAtom, showAdvancedSettingsAtom, tunerVisibleAtom, type TunerType } from '@/editor/1-layout/9-state/panels-atoms.ts';
+import { settingsVisibleAtom, showAdvancedSettingsAtom, tunerVisibleAtom, type TunerType } from '@/components/2-main/0-all/a-panels-atoms';
 import { changeLanguage } from '@/editor/e-i18n/i18n.ts';
 
 export { toggleExportConfirmEnabled } from '@/editor/0-core/7-actions/settings-toggles.ts';

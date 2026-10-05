@@ -8,7 +8,7 @@ import { showPlaybackFailedMessage, toastError } from '@/editor/0-core/8-lib/app
 import { UserFacingError } from '@/editor/0-core/8-lib/errors.ts';
 import { toast } from '@/editor/0-core/8-lib/toast.tsx';
 import { mediaSourceQualities } from '@/editor/0-core/8-lib/util.ts';
-import { fullscreenAtom } from '@/editor/1-layout/9-state/panels-atoms.ts';
+import { fullscreenAtom } from '@/components/2-main/0-all/a-panels-atoms.ts';
 import { fileDurationAtom, filePathAtom, hasAudioAtom, hasVideoAtom, usingPreviewFileAtom } from '@/editor/2-file/9-state/file-atoms.ts';
 import { html5ifyAndLoadWithPreferences } from '@/editor/2-file/7-actions/html5ify.ts';
 import { isFileDurationValid, showNotNativelySupportedMessage } from '@/editor/2-file/7-actions/load-media.ts';

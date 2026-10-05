@@ -16,6 +16,5 @@ export { html5ifyAndLoadWithPreferences, userHtml5ifyCurrentFile, convertFormatB
 export { ensureWritableOutDir, ensureAccessToSourceDir } from './7-actions/directory-access.ts';
 export { getEdlFilePath, getProjectFileSavePath, projectFileSavePathAtom } from './7-actions/project-auto-save.ts';
 export { runStartupCheck } from './7-actions/startup-check.ts';
-export { openSendReportDialog } from './0-ui/send-report-dialog.tsx';
-export { askForHtml5ifySpeed } from './0-ui/html5ify-dialog.tsx';
+export { dialog_SendReport_open as openSendReportDialog } from './0-ui/dlg-send-report.tsx';
 export { getDroppedFilePaths } from './8-lib/drop.ts';

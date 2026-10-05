@@ -1,4 +1,4 @@
-import { toggleLastCommands as toggleLastCommandsImpl } from '@/editor/1-layout/9-state/panels-atoms.ts';
+import { toggleLastCommands as toggleLastCommandsImpl } from '@/components/2-main/0-all/a-panels-atoms';
 import { askStartTimeOffset } from '@/editor/2-file/7-actions/load-media.ts';
 import { readAllKeyframes as readAllKeyframesImpl } from '@/editor/4-timeline/7-actions/keyframes.ts';
 import { createSegmentsFromKeyframes as createSegmentsFromKeyframesImpl } from '@/editor/5-segments/7-actions/segment-actions.ts';

@@ -11,7 +11,7 @@ import { effectiveExportModeAtom, userSettings, userSettingsAtom } from '@/edito
 import { mainApi } from '@/editor/0-core/8-lib/main-api.ts';
 import { findNearestKeyFrameTime } from '@/editor/0-core/8-lib/ffmpeg/ffmpeg.ts';
 import { isMov as ffmpegIsMov } from '@/editor/0-core/8-lib/ffmpeg/streams.ts';
-import { closeExportConfirm, exportConfirmOpenAtom, settingsVisibleAtom, streamsSelectorShownAtom } from '@/editor/1-layout/9-state/panels-atoms.ts';
+import { closeExportConfirm, exportConfirmOpenAtom, settingsVisibleAtom, streamsSelectorShownAtom } from '@/components/2-main/0-all/a-panels-atoms.ts';
 import { encBitrateAtom, fileFormatAtom, numStreamsTotalAtom, outputDirAtom } from '@/editor/2-file/9-state/file-atoms.ts';
 import { outputPlaybackRateAtom } from '@/editor/3-player/9-state/player-atoms.ts';
 import { neighbouringKeyFramesAtom } from '@/editor/4-timeline/9-state/timeline-atoms.ts';
