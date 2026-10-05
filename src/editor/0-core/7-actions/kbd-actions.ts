@@ -7,7 +7,7 @@ import { handleError } from '../9-state/working.ts';
 
 /**
  * Single dispatch point for keyboard shortcuts, the HTTP API and the command palette.
- * Features register their actions from the `<folder>-register` function that main.tsx calls at startup.
+ * Features register their actions from `src/views-load-side-effects`, which main.tsx runs at startup.
  * Names of keyboard actions must stay compatible with upstream (users have bound keys by these names).
  */
 
