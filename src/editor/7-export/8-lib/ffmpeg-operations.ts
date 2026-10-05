@@ -6,16 +6,16 @@ import i18n from 'i18next';
 import type { FFprobeStream } from '@shared/ffprobe';
 import type { AvoidNegativeTs, Html5ifyMode, PreserveMetadata } from '@shared/types';
 import { formatFfmpegNumber, getFixChannelLayoutFilter, getHwaccelArgs, hasCustomChannelLayout } from '@shared/util';
-import { appStore } from '@/components/4-dialogs/7-0-dialogs/store.ts';
+import { jotaiDefaultStore } from '@/utils/local-utils/9-jotai-default-store.ts';
 import { userSettings } from '@/editor/0-core/9-state/user-settings.ts';
-import { mainApi } from '@/editor/0-core/8-lib/main-api.ts';
+import { mainApi } from '@/editor/0-core/7-actions/0-main-api.ts';
 import { join, resolve, dirname } from '@/editor/0-core/8-lib/node-shims.ts';
 import { getSuffixedOutPath, transferTimestamps, getOutFileExtension, getOutDir, getHtml5ifiedPath, unlinkWithRetry, getFrameDuration, isMac, html5ifiedPrefix, html5dummySuffix, assertFileExists } from '@/editor/0-core/8-lib/util.ts';
 import { isCuttingStart, isCuttingEnd, runFfmpegWithProgress, getFfCommandLine, getDuration, createChaptersFromSegments, readFileFfprobeMeta, getExperimentalArgs, getVideoTimescaleArgs, logStdoutStderr, runFfmpegConcat, RefuseOverwriteError, runFfmpeg } from '@/editor/0-core/8-lib/ffmpeg/ffmpeg.ts';
 import { getEffectiveAvoidNegativeTs, getMapStreamsArgs, getStreamIdsToCopy, isCopyingOnlyAudioStreams } from '@/editor/0-core/8-lib/ffmpeg/streams.ts';
 import { needsSmartCut, getCodecParams } from '@/editor/0-core/8-lib/ffmpeg/smartcut.ts';
 import { deleteDispositionValue, type AllFilesMeta, type Chapter, type CopyfileStreams, type LiteFFprobeStream, type ParamsByFile, type SegmentToExport } from '@/editor/0-core/8-lib/types.ts';
-import { UserFacingError } from '@/editor/0-core/8-lib/errors.ts';
+import { UserFacingError } from '@/editor/0-core/8-lib/9-error-types.ts';
 import { getGuaranteedSegments, isDurationValid } from '@/editor/5-segments/8-lib/segments.ts';
 import { encBitrateAtom, filePathAtom } from '@/editor/2-file/9-state/a-file-atoms.ts';
 import { outputPlaybackRateAtom } from '@/editor/3-player/9-state/player-atoms.ts';
@@ -30,7 +30,7 @@ export class OutputNotWritableError extends Error {
     }
 }
 
-const getFilePath = () => appStore.get(filePathAtom);
+const getFilePath = () => jotaiDefaultStore.get(filePathAtom);
 
 function getTimestampOptions() {
     const { treatInputFileModifiedTimeAsStart, treatOutputFileModifiedTimeAsStart } = userSettings;
@@ -118,7 +118,7 @@ export async function shouldSkipExistingFile(path: string) {
 }
 
 function getOutputPlaybackRateArgs() {
-    const outputPlaybackRate = appStore.get(outputPlaybackRateAtom);
+    const outputPlaybackRate = jotaiDefaultStore.get(outputPlaybackRateAtom);
     return outputPlaybackRate !== 1 ? ['-itsscale', String(1 / outputPlaybackRate)] : [];
 }
 
@@ -574,9 +574,9 @@ export async function cutMultiple({
     console.log('paramsByFile', paramsByFile);
 
     const filePath = getFilePath();
-    const isEncoding = appStore.get(isEncodingAtom);
+    const isEncoding = jotaiDefaultStore.get(isEncodingAtom);
     const lossyMode = getLossyMode();
-    const encCustomBitrate = appStore.get(encBitrateAtom);
+    const encCustomBitrate = jotaiDefaultStore.get(encBitrateAtom);
 
     const segments = getGuaranteedSegments(segmentsIn, fileDuration);
 

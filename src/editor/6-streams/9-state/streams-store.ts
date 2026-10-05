@@ -2,9 +2,9 @@ import { atom } from 'jotai';
 import pMap from 'p-map';
 import invariant from 'tiny-invariant';
 import type { FFprobeStream } from '@shared/ffprobe';
-import { appStore } from '@/components/4-dialogs/7-0-dialogs/store';
+import { jotaiDefaultStore } from '@/utils/local-utils/9-jotai-default-store';
 import { userSettingsAtom } from '@/editor/0-core/9-state/user-settings.ts';
-import { onFileReset } from '@/editor/0-core/7-actions/lifecycle.ts';
+import { onFileReset } from '@/editor/0-core/7-actions/2-lifecycle';
 import { isStreamThumbnail, shouldCopyStreamByDefault } from '@/editor/0-core/8-lib/ffmpeg/streams.ts';
 import safeishEval from '@/editor/0-core/8-lib/eval/eval.ts';
 import { externalFilesMetaAtom, filePathAtom, mainStreamsAtom } from '@/editor/2-file/9-state/a-file-atoms';
@@ -18,14 +18,14 @@ export const copyStreamIdsByFileAtom = atom<CopyStreamIdsByFile>({});
 /** Remembered between files */
 export const enabledStreamsFilterAtom = atom<string | undefined>(undefined);
 
-onFileReset(() => appStore.set(copyStreamIdsByFileAtom, {}));
+onFileReset(() => jotaiDefaultStore.set(copyStreamIdsByFileAtom, {}));
 
 export function isCopyingStreamIdIn(copyStreamIdsByFile: CopyStreamIdsByFile, path: string | undefined, streamId: number) {
     return !!((path != null && copyStreamIdsByFile[path]) || {})[streamId];
 }
 
 export function isCopyingStreamId(path: string | undefined, streamId: number) {
-    return isCopyingStreamIdIn(appStore.get(copyStreamIdsByFileAtom), path, streamId);
+    return isCopyingStreamIdIn(jotaiDefaultStore.get(copyStreamIdsByFileAtom), path, streamId);
 }
 
 export const mainCopiedStreamsAtom = atom((get) => {
@@ -57,11 +57,11 @@ export const copyFileStreamsAtom = atom((get) => Object.entries(get(copyStreamId
 export const numStreamsToCopyAtom = atom((get) => get(copyFileStreamsAtom).reduce((acc, { streamIds }) => acc + streamIds.length, 0));
 
 export function setCopyStreamIdsByFile(value: CopyStreamIdsByFile) {
-    appStore.set(copyStreamIdsByFileAtom, value);
+    jotaiDefaultStore.set(copyStreamIdsByFileAtom, value);
 }
 
 export function setCopyStreamIdsForPath(path: string, cb: (old: CopyStreamIds) => CopyStreamIds) {
-    appStore.set(copyStreamIdsByFileAtom, (old) => ({ ...old, [path]: cb(old[path] || {}) }));
+    jotaiDefaultStore.set(copyStreamIdsByFileAtom, (old) => ({ ...old, [path]: cb(old[path] || {}) }));
 }
 
 function toggleCopyStreamIdsInternal(path: string, streams: FFprobeStream[]) {
@@ -75,38 +75,38 @@ function toggleCopyStreamIdsInternal(path: string, streams: FFprobeStream[]) {
 }
 
 export function toggleCopyStreamIds(path: string, filter: (a: FFprobeStream) => boolean) {
-    const streams = path === appStore.get(filePathAtom) ? appStore.get(mainStreamsAtom) : appStore.get(externalFilesMetaAtom)[path]?.streams;
+    const streams = path === jotaiDefaultStore.get(filePathAtom) ? jotaiDefaultStore.get(mainStreamsAtom) : jotaiDefaultStore.get(externalFilesMetaAtom)[path]?.streams;
     if (!streams) return;
     toggleCopyStreamIdsInternal(path, streams.filter((stream) => filter(stream)));
 }
 
 export async function filterEnabledStreams(expr: string) {
-    return (await pMap(appStore.get(mainStreamsAtom), async (stream) => (
+    return (await pMap(jotaiDefaultStore.get(mainStreamsAtom), async (stream) => (
         (await safeishEval(expr, { track: stream })) === true ? [stream] : []
     ), { concurrency: 5 })).flat();
 }
 
-export async function applyEnabledStreamsFilter(expr = appStore.get(enabledStreamsFilterAtom)) {
+export async function applyEnabledStreamsFilter(expr = jotaiDefaultStore.get(enabledStreamsFilterAtom)) {
     if (expr == null) return;
-    const filePath = appStore.get(filePathAtom);
+    const filePath = jotaiDefaultStore.get(filePathAtom);
     invariant(filePath != null);
     toggleCopyStreamIdsInternal(filePath, await filterEnabledStreams(expr));
 }
 
 function toggleStripCodecType(codecType: FFprobeStream['codec_type']) {
-    toggleCopyStreamIds(appStore.get(filePathAtom)!, (stream) => stream.codec_type === codecType);
+    toggleCopyStreamIds(jotaiDefaultStore.get(filePathAtom)!, (stream) => stream.codec_type === codecType);
 }
 
 export const toggleStripAudio = () => toggleStripCodecType('audio');
 export const toggleStripVideo = () => toggleStripCodecType('video');
 export const toggleStripSubtitle = () => toggleStripCodecType('subtitle');
-export const toggleStripThumbnail = () => toggleCopyStreamIds(appStore.get(filePathAtom)!, isStreamThumbnail);
+export const toggleStripThumbnail = () => toggleCopyStreamIds(jotaiDefaultStore.get(filePathAtom)!, isStreamThumbnail);
 export const toggleCopyAllStreamsForPath = (path: string) => toggleCopyStreamIds(path, () => true);
 
 export function toggleStripAll() {
-    const filePath = appStore.get(filePathAtom);
+    const filePath = jotaiDefaultStore.get(filePathAtom);
     invariant(filePath != null);
-    const mainStreams = appStore.get(mainStreamsAtom);
+    const mainStreams = jotaiDefaultStore.get(mainStreamsAtom);
     setCopyStreamIdsForPath(filePath, (old) => {
         const someSelected = mainStreams.some(({ index }) => old[index]);
         return {

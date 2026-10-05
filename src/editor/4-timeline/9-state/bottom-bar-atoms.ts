@@ -1,7 +1,7 @@
 import { atom } from 'jotai';
 import { observe } from 'jotai-effect';
-import { appStore } from '@/components/4-dialogs/7-0-dialogs/store';
-import { onFileReset } from '@/editor/0-core/7-actions/lifecycle.ts';
+import { jotaiDefaultStore } from '@/utils/local-utils/9-jotai-default-store';
+import { onFileReset } from '@/editor/0-core/7-actions/2-lifecycle';
 import { currentCutSegAtom } from '@/editor/5-segments/9-state/segments-store.ts';
 
 export { areWeCuttingAtom } from '@/editor/7-export/9-state/export-atoms.ts';
@@ -19,8 +19,8 @@ export const cutTimeErrorAtoms = {
 
 export function clearCutTimeManual() {
     for (const side of ['start', 'end'] as const) {
-        appStore.set(cutTimeManualAtoms[side], undefined);
-        appStore.set(cutTimeErrorAtoms[side], false);
+        jotaiDefaultStore.set(cutTimeManualAtoms[side], undefined);
+        jotaiDefaultStore.set(cutTimeErrorAtoms[side], false);
     }
 }
 
@@ -33,6 +33,6 @@ const currentCutSegTimesAtom = atom((get) => {
 observe((get) => {
     get(currentCutSegTimesAtom);
     clearCutTimeManual();
-}, appStore);
+}, jotaiDefaultStore);
 
 onFileReset(clearCutTimeManual);

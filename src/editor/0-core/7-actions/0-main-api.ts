@@ -1,7 +1,8 @@
-import type { AppInfo, MainApi, MainEventsApi, NodePathApi, PreloadEnv } from '@shared/ipc-contract.ts';
+import { type AppInfo, type MainApi, type MainEventsApi, type NodePathApi, type PreloadEnv } from '@shared/ipc-contract.ts';
+import { type FfCommand } from '@shared/ipc-contract.ts';
+
+import { createWebMockMainApi, webMockEnv, webMockEvents, webMockPath } from './1-web-mock.ts';
 import { getFfCommandLine as getFfCommandLineShared } from '@shared/ff-command-line.ts';
-import type { FfCommand } from '@shared/ipc-contract.ts';
-import { createWebMockMainApi, webMockEnv, webMockEvents, webMockPath } from './web-mock.ts';
 
 export const isElectron = window.mainApi != null;
 

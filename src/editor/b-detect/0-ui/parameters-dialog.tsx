@@ -7,7 +7,7 @@ import { Input } from '@/ui/shadcn/input';
 import { Label } from '@/ui/shadcn/label';
 import { DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/ui/shadcn/dialog';
 import { openCustomDialog } from '@/components/4-dialogs/7-0-dialogs/dialogs.ts';
-import { mainApi } from '@/editor/0-core/8-lib/main-api.ts';
+import { mainApi } from '@/editor/0-core/7-actions/0-main-api.ts';
 import { type FfmpegDialog, getHint, getLabel } from '@/editor/0-core/8-lib/ffmpeg/ffmpeg-parameters.ts';
 import type { ParameterDialogParameters } from '../9-state/detect-atoms.ts';
 

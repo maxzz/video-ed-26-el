@@ -1,8 +1,8 @@
 import i18n from 'i18next';
-import { appStore } from '@/components/4-dialogs/7-0-dialogs/store.ts';
+import { jotaiDefaultStore } from '@/utils/local-utils/9-jotai-default-store.ts';
 import { handleError } from '@/editor/0-core/9-state/working.ts';
 import { runFfmpegStartupCheck } from '@/editor/0-core/8-lib/ffmpeg/ffmpeg.ts';
-import { mainApi } from '@/editor/0-core/8-lib/main-api.ts';
+import { mainApi } from '@/editor/0-core/7-actions/0-main-api.ts';
 import { ffmpegInfoAtom } from '../9-state/a-file-atoms.ts';
 import { dialog_SendReport_open } from '../0-ui/dlg-send-report.tsx';
 
@@ -72,5 +72,5 @@ export async function applyCustomFfPath(customFfPath: string | undefined) {
         console.error('Failed to set custom FFmpeg path', err);
     }
 
-    appStore.set(ffmpegInfoAtom, await runStartupCheck({ customFfPath }));
+    jotaiDefaultStore.set(ffmpegInfoAtom, await runStartupCheck({ customFfPath }));
 }

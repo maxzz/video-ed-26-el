@@ -1,8 +1,8 @@
 import { observe } from 'jotai-effect';
 import debounce from 'lodash/debounce';
 import type { AudioStreamInfo, FfmpegHwAccel } from '@shared/types';
-import { appStore } from '@/components/4-dialogs/7-0-dialogs/store.ts';
-import { getAppInfo, mainApi } from '@/editor/0-core/8-lib/main-api.ts';
+import { jotaiDefaultStore } from '@/utils/local-utils/9-jotai-default-store.ts';
+import { getAppInfo, mainApi } from '@/editor/0-core/7-actions/0-main-api.ts';
 import { getFrameDuration } from '@/editor/0-core/8-lib/util.ts';
 import { filePathAtom } from '@/editor/2-file/9-state/a-file-atoms.ts';
 import {
@@ -313,8 +313,8 @@ observe((get) => {
         canvas.width = slaveVideo.videoWidth;
         canvas.height = slaveVideo.videoHeight;
         canvas.getContext('2d')?.drawImage(slaveVideo, 0, 0, canvas.width, canvas.height);
-        appStore.set(compatShowCanvasAtom, true);
-        appStore.set(compatLoadingAtom, true);
+        jotaiDefaultStore.set(compatShowCanvasAtom, true);
+        jotaiDefaultStore.set(compatLoadingAtom, true);
 
         const seekTo = masterVideo.currentTime;
 
@@ -341,15 +341,15 @@ observe((get) => {
                 fps,
                 rotate,
                 onCanPlay: () => {
-                    appStore.set(compatLoadingAtom, false);
-                    appStore.set(compatShowCanvasAtom, false);
+                    jotaiDefaultStore.set(compatLoadingAtom, false);
+                    jotaiDefaultStore.set(compatShowCanvasAtom, false);
                 },
                 onResetNeeded: () => {
                     abortController.abort();
                     startDebounced();
                 },
                 onWaiting: () => {
-                    appStore.set(compatLoadingAtom, true);
+                    jotaiDefaultStore.set(compatLoadingAtom, true);
                 },
                 ffmpegHwaccel,
             });
@@ -366,9 +366,9 @@ observe((get) => {
         startDebounced.cancel();
         abortController.abort();
     };
-}, appStore);
+}, jotaiDefaultStore);
 
 // Reset the user preference when we go from not having compat player to having it
 observe((get) => {
-    if (get(compatPlayerEnabledAtom)) appStore.set(hideCompatPlayerAtom, false);
-}, appStore);
+    if (get(compatPlayerEnabledAtom)) jotaiDefaultStore.set(hideCompatPlayerAtom, false);
+}, jotaiDefaultStore);

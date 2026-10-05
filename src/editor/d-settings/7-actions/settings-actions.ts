@@ -1,5 +1,5 @@
 import type { SupportedLanguage } from '@shared/i18n.ts';
-import { appStore } from '@/components/4-dialogs/7-0-dialogs/store';
+import { jotaiDefaultStore } from '@/utils/local-utils/9-jotai-default-store';
 import { customOutDirAtom, setCustomOutDir, userSettings } from '@/editor/0-core/9-state/user-settings.ts';
 import { askForFfPath, askForOutDir } from '@/editor/0-core/8-lib/app-dialogs.tsx';
 import { settingsVisibleAtom, showAdvancedSettingsAtom, tunerVisibleAtom, type TunerType } from '@/components/2-main/0-all/a-panels-atoms';
@@ -8,11 +8,11 @@ import { changeLanguage } from '@/editor/e-i18n/i18n.ts';
 export { toggleExportConfirmEnabled } from '@/editor/0-core/7-actions/settings-toggles.ts';
 
 export function openSettings() {
-    appStore.set(settingsVisibleAtom, true);
+    jotaiDefaultStore.set(settingsVisibleAtom, true);
 }
 
 export function setShowAdvancedSettings(value: boolean) {
-    appStore.set(showAdvancedSettingsAtom, value);
+    jotaiDefaultStore.set(showAdvancedSettingsAtom, value);
 }
 
 export async function setLanguage(language: SupportedLanguage | null) {
@@ -31,7 +31,7 @@ export function clearCustomFfPath() {
 }
 
 export async function changeOutDir() {
-    const newOutDir = await askForOutDir(appStore.get(customOutDirAtom));
+    const newOutDir = await askForOutDir(jotaiDefaultStore.get(customOutDirAtom));
     if (newOutDir) setCustomOutDir(newOutDir);
 }
 
@@ -44,6 +44,6 @@ export function toggleStoreProjectInWorkingDir() {
 }
 
 export function requestTuner(type: TunerType) {
-    appStore.set(settingsVisibleAtom, false);
-    appStore.set(tunerVisibleAtom, type);
+    jotaiDefaultStore.set(settingsVisibleAtom, false);
+    jotaiDefaultStore.set(tunerVisibleAtom, type);
 }

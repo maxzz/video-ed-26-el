@@ -1,7 +1,7 @@
 import i18n from 'i18next';
-import { appStore } from '@/components/4-dialogs/7-0-dialogs/store.ts';
+import { jotaiDefaultStore } from '@/utils/local-utils/9-jotai-default-store.ts';
 import { userSettings } from '@/editor/0-core/9-state/user-settings.ts';
-import { getAppInfo, mainEvents } from '@/editor/0-core/8-lib/main-api.ts';
+import { getAppInfo, mainEvents } from '@/editor/0-core/7-actions/0-main-api.ts';
 import { isStoreBuild } from '@/editor/0-core/8-lib/util.ts';
 import { mifiLinkAtom, newVersionAtom } from '../9-state/platform.ts';
 import { parseMifiLink, shouldShowWhatsNew } from '../8-lib/versions.ts';
@@ -14,10 +14,10 @@ const mifiConfigUrl = 'https://losslesscut.mifi.no/config.json';
 const noticeDelayMs = 3000;
 
 function setNewVersion(version: string | undefined) {
-    if (!version || appStore.get(newVersionAtom) === version) {
+    if (!version || jotaiDefaultStore.get(newVersionAtom) === version) {
         return;
     }
-    appStore.set(newVersionAtom, version);
+    jotaiDefaultStore.set(newVersionAtom, version);
     setTimeout(() => showNewVersionNotice(version), noticeDelayMs);
 }
 
@@ -27,7 +27,7 @@ async function loadMifiLink() {
         if (!res.ok) {
             throw new Error(`HTTP ${res.status}`);
         }
-        appStore.set(mifiLinkAtom, parseMifiLink(await res.json()));
+        jotaiDefaultStore.set(mifiLinkAtom, parseMifiLink(await res.json()));
     } catch (err) {
         if (getAppInfo().isDev) console.error('Failed to load mifi link', err);
     }

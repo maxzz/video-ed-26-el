@@ -3,7 +3,7 @@ import { observe } from 'jotai-effect';
 import sortBy from 'lodash/sortBy.js';
 import type { Frame } from '@/editor/0-core/8-lib/ffmpeg/ffmpeg.ts';
 import { readFrames, readFramesAroundTime } from '@/editor/0-core/8-lib/ffmpeg/ffmpeg.ts';
-import { appStore } from '@/components/4-dialogs/7-0-dialogs/store.ts';
+import { jotaiDefaultStore } from '@/utils/local-utils/9-jotai-default-store.ts';
 import { handleError, setWorking } from '@/editor/0-core/9-state/working.ts';
 import { ffmpegExtractWindow } from '@/editor/0-core/8-lib/constants.ts';
 import { filePathAtom } from '@/editor/2-file/9-state/a-file-atoms.ts';
@@ -22,7 +22,7 @@ observe((get, set) => {
     get(filePathAtom);
     get(activeVideoStreamAtom);
     set(neighbouringKeyFramesMapAtom, {});
-}, appStore);
+}, jotaiDefaultStore);
 
 // Read keyframes around the commanded time (debounced). We still want to read them even if they are not shown,
 // because maybe we want to be able to step to the closest keyframe
@@ -42,7 +42,7 @@ observe((get) => {
             const newFrames = await readFramesAroundTime({ filePath, aroundTime: commandedTime, streamIndex: videoStream.index, window: ffmpegExtractWindow });
             if (aborted) return;
             const newKeyFrames = newFrames.filter((frame) => frame.keyframe);
-            appStore.set(neighbouringKeyFramesMapAtom, (existingKeyFramesMap) => {
+            jotaiDefaultStore.set(neighbouringKeyFramesMapAtom, (existingKeyFramesMap) => {
                 let existingFrames = Object.values(existingKeyFramesMap);
                 if (existingFrames.length >= maxKeyframes) {
                     existingFrames = sortBy(existingFrames, 'createdAt').slice(newKeyFrames.length);
@@ -63,19 +63,19 @@ observe((get) => {
         aborted = true;
         clearTimeout(timer);
     };
-}, appStore);
+}, jotaiDefaultStore);
 
 export async function readAllKeyframes() {
-    const { start, end } = appStore.get(currentCutSegOrWholeTimelineAtom);
-    const filePath = appStore.get(filePathAtom);
-    const videoStream = appStore.get(activeVideoStreamAtom);
+    const { start, end } = jotaiDefaultStore.get(currentCutSegOrWholeTimelineAtom);
+    const filePath = jotaiDefaultStore.get(filePathAtom);
+    const videoStream = jotaiDefaultStore.get(activeVideoStreamAtom);
     if (!filePath || !videoStream) return;
     try {
         setWorking({ text: i18n.t('Reading all keyframes') });
         const newFrames = await readFrames({ filePath, from: start, to: end, streamIndex: videoStream.index });
         const newKeyFrames = newFrames.filter((frame) => frame.keyframe);
-        appStore.set(neighbouringKeyFramesMapAtom, toObj(newKeyFrames));
-        appStore.set(maxKeyframesAtom, newKeyFrames.length);
+        jotaiDefaultStore.set(neighbouringKeyFramesMapAtom, toObj(newKeyFrames));
+        jotaiDefaultStore.set(maxKeyframesAtom, newKeyFrames.length);
     } catch (err) {
         handleError({ err });
     } finally {

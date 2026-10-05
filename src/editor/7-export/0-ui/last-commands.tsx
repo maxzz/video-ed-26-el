@@ -1,6 +1,6 @@
 import { useAtomValue } from 'jotai';
 import { useTranslation } from 'react-i18next';
-import { appStore } from '@/components/4-dialogs/7-0-dialogs/store.ts';
+import { jotaiDefaultStore } from '@/utils/local-utils/9-jotai-default-store.ts';
 import { lastCommandsVisibleAtom, toggleLastCommands } from '@/components/2-main/0-all/a-panels-atoms.ts';
 import { ffmpegCommandLogAtom } from '@/editor/2-file/9-state/a-file-atoms.ts';
 import { Button } from '@/ui/shadcn/button';
@@ -27,7 +27,7 @@ export function LastCommands() {
                 {sorted.length > 0 && (
                     <div className="min-h-0 flex flex-col gap-2">
                         <div>
-                            <Button variant="outline" size="sm" onClick={() => appStore.set(ffmpegCommandLogAtom, [])}>{t('Clear')}</Button>
+                            <Button variant="outline" size="sm" onClick={() => jotaiDefaultStore.set(ffmpegCommandLogAtom, [])}>{t('Clear')}</Button>
                         </div>
 
                         <div className="min-h-0 overflow-auto">

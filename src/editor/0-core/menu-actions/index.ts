@@ -5,10 +5,10 @@ import * as help from './help.ts';
 import * as host from './host.ts';
 import * as segments from './segments.ts';
 import * as tools from './tools.ts';
-import type { MenuAction } from './types.ts';
+import type { MenuAction } from './type-menu-action.ts';
 import * as view from './view.ts';
 
-export type { MenuAction } from './types.ts';
+export type { MenuAction } from './type-menu-action.ts';
 
 /** Every application-menu command. Callers use only this function. */
 export function runMenuAction(action: MenuAction) {

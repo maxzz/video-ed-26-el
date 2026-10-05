@@ -4,10 +4,10 @@ import { useSnapshot } from 'valtio';
 import { useTranslation } from 'react-i18next';
 import { MouseIcon } from 'lucide-react';
 import type { ModifierKey } from '@shared/types';
-import { appStore } from '@/components/4-dialogs/7-0-dialogs/store.ts';
+import { jotaiDefaultStore } from '@/utils/local-utils/9-jotai-default-store.ts';
 import { userSettings } from '@/editor/0-core/9-state/user-settings.ts';
 import { runAction } from '@/editor/0-core/7-actions/kbd-actions.ts';
-import { getKeyDisplayName, getMetaKeyName, splitKeyboardKeys } from '@/editor/0-core/8-lib/util.ts';
+import { getKeyDisplayName, getMetaKeyName, splitKeyboardKeys } from '@/editor/0-core/8-lib/utils-kbd.ts';
 import { Button } from '@/ui/shadcn/button';
 import { Kbd } from '@/ui/shadcn/kbd';
 import { cn } from '@/utils/classnames';
@@ -34,7 +34,7 @@ function getModifierName(key: ModifierKey) {
     return getMetaKeyName();
 }
 
-const setDragging = (dragging: boolean) => appStore.set(draggingOverDropZoneAtom, dragging);
+const setDragging = (dragging: boolean) => jotaiDefaultStore.set(draggingOverDropZoneAtom, dragging);
 
 function onDragOver(e: DragEvent) {
     e.preventDefault();

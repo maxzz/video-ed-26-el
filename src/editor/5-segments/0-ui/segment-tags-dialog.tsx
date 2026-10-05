@@ -9,8 +9,8 @@ import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '
 import { cn } from '@/utils/classnames';
 import type { SegmentTags } from '@/editor/0-core/8-lib/types.ts';
 import { segmentTagsSchema } from '@/editor/0-core/8-lib/types.ts';
-import { appStore } from '@/components/4-dialogs/7-0-dialogs/store.ts';
-import { mainApi } from '@/editor/0-core/8-lib/main-api.ts';
+import { jotaiDefaultStore } from '@/utils/local-utils/9-jotai-default-store.ts';
+import { mainApi } from '@/editor/0-core/7-actions/0-main-api.ts';
 import { errorToast } from '@/editor/0-core/8-lib/app-dialogs.tsx';
 import { editingSegmentTagsAtom, editingSegmentTagsSegmentIndexAtom } from '@/components/2-main/0-all/a-panels-atoms.ts';
 import { closeSegmentTagsEditor, saveSegmentTags } from '../7-actions/segment-dialogs.tsx';
@@ -31,14 +31,14 @@ function resetEditor() {
     editor.newTagKeyInput = '';
 }
 
-const getTags = () => appStore.get(editingSegmentTagsAtom) ?? {};
+const getTags = () => jotaiDefaultStore.get(editingSegmentTagsAtom) ?? {};
 
 function onTagsChange(keyValues: SegmentTags) {
-    appStore.set(editingSegmentTagsAtom, (existingTags) => ({ ...existingTags, ...keyValues }));
+    jotaiDefaultStore.set(editingSegmentTagsAtom, (existingTags) => ({ ...existingTags, ...keyValues }));
 }
 
 function onTagReset(tag: string) {
-    appStore.set(editingSegmentTagsAtom, (tags) => {
+    jotaiDefaultStore.set(editingSegmentTagsAtom, (tags) => {
         const { [tag]: _deleted, ...rest } = tags ?? {};
         return rest;
     });

@@ -1,6 +1,6 @@
 import { atom, type Getter } from 'jotai';
 import invariant from 'tiny-invariant';
-import { appStore } from '@/components/4-dialogs/7-0-dialogs/store.ts';
+import { jotaiDefaultStore } from '@/utils/local-utils/9-jotai-default-store.ts';
 import { maxLabelLengthAtom, userSettings, userSettingsAtom } from '@/editor/0-core/9-state/user-settings.ts';
 import { formatTimecode, formatTimecodeAtom } from '@/editor/0-core/9-state/timecode.ts';
 import { currentFileExportCountAtom, exportCountAtom, fileDurationAtom, fileFormatAtom, filePathAtom, isCustomFormatSelectedAtom, mainFileMetaAtom, outputDirAtom } from '@/editor/2-file/9-state/a-file-atoms.ts';
@@ -10,43 +10,43 @@ import { generateCutFileNames, generateCutMergedFileNames, generateMergedFileNam
 // Upstream App.tsx generateCutFileNames/generateCutMergedFileNames/generateMergedFileNames bound to the current state
 
 export async function generateOutSegFileNames(template: string) {
-    const fileFormat = appStore.get(fileFormatAtom);
-    const outputDir = appStore.get(outputDirAtom);
-    const filePath = appStore.get(filePathAtom);
+    const fileFormat = jotaiDefaultStore.get(fileFormatAtom);
+    const outputDir = jotaiDefaultStore.get(outputDirAtom);
+    const filePath = jotaiDefaultStore.get(filePathAtom);
     invariant(fileFormat != null && outputDir != null && filePath != null);
     return generateCutFileNames({
-        fileDuration: appStore.get(fileDurationAtom),
-        exportCount: appStore.get(exportCountAtom),
-        currentFileExportCount: appStore.get(currentFileExportCountAtom),
-        segmentsToExport: appStore.get(segmentsToExportAtom),
+        fileDuration: jotaiDefaultStore.get(fileDurationAtom),
+        exportCount: jotaiDefaultStore.get(exportCountAtom),
+        currentFileExportCount: jotaiDefaultStore.get(currentFileExportCountAtom),
+        segmentsToExport: jotaiDefaultStore.get(segmentsToExportAtom),
         template,
         formatTimecode,
-        isCustomFormatSelected: appStore.get(isCustomFormatSelectedAtom),
+        isCustomFormatSelected: jotaiDefaultStore.get(isCustomFormatSelectedAtom),
         fileFormat,
-        sourceFile: { path: filePath, ...appStore.get(mainFileMetaAtom) },
+        sourceFile: { path: filePath, ...jotaiDefaultStore.get(mainFileMetaAtom) },
         outputDir,
         safeOutputFileName: userSettings.safeOutputFileName,
-        maxLabelLength: appStore.get(maxLabelLengthAtom),
+        maxLabelLength: jotaiDefaultStore.get(maxLabelLengthAtom),
         outputFileNameMinZeroPadding: userSettings.outputFileNameMinZeroPadding,
     });
 }
 
 export async function generateCutMergedOutFileNames(template: string) {
-    const fileFormat = appStore.get(fileFormatAtom);
-    const outputDir = appStore.get(outputDirAtom);
-    const filePath = appStore.get(filePathAtom);
+    const fileFormat = jotaiDefaultStore.get(fileFormatAtom);
+    const outputDir = jotaiDefaultStore.get(outputDirAtom);
+    const filePath = jotaiDefaultStore.get(filePathAtom);
     invariant(fileFormat != null && outputDir != null && filePath != null);
     return generateCutMergedFileNames({
         template,
-        isCustomFormatSelected: appStore.get(isCustomFormatSelectedAtom),
+        isCustomFormatSelected: jotaiDefaultStore.get(isCustomFormatSelectedAtom),
         fileFormat,
-        sourceFile: { path: filePath, ...appStore.get(mainFileMetaAtom) },
+        sourceFile: { path: filePath, ...jotaiDefaultStore.get(mainFileMetaAtom) },
         outputDir,
         safeOutputFileName: userSettings.safeOutputFileName,
-        maxLabelLength: appStore.get(maxLabelLengthAtom),
-        exportCount: appStore.get(exportCountAtom),
-        currentFileExportCount: appStore.get(currentFileExportCountAtom),
-        segLabels: appStore.get(segmentsToExportAtom).map((seg) => seg.name ?? ''),
+        maxLabelLength: jotaiDefaultStore.get(maxLabelLengthAtom),
+        exportCount: jotaiDefaultStore.get(exportCountAtom),
+        currentFileExportCount: jotaiDefaultStore.get(currentFileExportCountAtom),
+        segLabels: jotaiDefaultStore.get(segmentsToExportAtom).map((seg) => seg.name ?? ''),
     });
 }
 
@@ -79,9 +79,9 @@ export const generateCutMergedOutFileNamesFnAtom = atom((get) => {
 export async function generateMergedOutFileNames(params: GenerateMergedOutFileNamesParams) {
     return generateMergedFileNames({
         ...params,
-        isCustomFormatSelected: appStore.get(isCustomFormatSelectedAtom),
+        isCustomFormatSelected: jotaiDefaultStore.get(isCustomFormatSelectedAtom),
         safeOutputFileName: userSettings.safeOutputFileName,
-        maxLabelLength: appStore.get(maxLabelLengthAtom),
-        exportCount: appStore.get(exportCountAtom),
+        maxLabelLength: jotaiDefaultStore.get(maxLabelLengthAtom),
+        exportCount: jotaiDefaultStore.get(exportCountAtom),
     });
 }

@@ -3,9 +3,9 @@ import type { FFprobeStream } from '@shared/ffprobe';
 import type { ChromiumHTMLVideoElement, PlaybackMode } from '@/editor/0-core/8-lib/types.ts';
 import { audioStreamsAtom, isRotationSetAtom, mainAudioStreamAtom, mainVideoStreamAtom, rotationAtom, subtitleStreamsAtom, usingDummyVideoAtom, videoStreamsAtom } from '@/editor/2-file/9-state/a-file-atoms';
 import { canHtml5PlayerPlayStreams } from '@/editor/0-core/8-lib/ffmpeg/streams.ts';
-import { appStore } from '@/components/4-dialogs/7-0-dialogs/store';
+import { jotaiDefaultStore } from '@/utils/local-utils/9-jotai-default-store';
 import { userSettingsAtom } from '@/editor/0-core/9-state/user-settings.ts';
-import { onFileReset } from '@/editor/0-core/7-actions/lifecycle.ts';
+import { onFileReset } from '@/editor/0-core/7-actions/2-lifecycle';
 
 /** Set by the <video> ref callback */
 export const videoElementAtom = atom<ChromiumHTMLVideoElement | null>(null);
@@ -97,16 +97,16 @@ export const compatPlayerEnabledAtom = atom((get) => (
 ));
 
 onFileReset(() => {
-    appStore.set(commandedTimeAtom, 0);
-    const video = appStore.get(videoElementAtom);
+    jotaiDefaultStore.set(commandedTimeAtom, 0);
+    const video = jotaiDefaultStore.get(videoElementAtom);
     if (video) video.currentTime = 0;
-    appStore.set(playbackRateAtom, 1);
-    appStore.set(playingAtom, false);
-    appStore.set(playbackModeAtom, undefined);
-    appStore.set(subtitlesByStreamIdAtom, {});
-    appStore.set(activeAudioStreamIndexesAtom, new Set<number>());
-    appStore.set(activeVideoStreamIndexAtom, undefined);
-    appStore.set(activeSubtitleStreamIndexAtom, undefined);
-    appStore.set(hideCompatPlayerAtom, false);
-    appStore.set(outputPlaybackRateAtom, 1);
+    jotaiDefaultStore.set(playbackRateAtom, 1);
+    jotaiDefaultStore.set(playingAtom, false);
+    jotaiDefaultStore.set(playbackModeAtom, undefined);
+    jotaiDefaultStore.set(subtitlesByStreamIdAtom, {});
+    jotaiDefaultStore.set(activeAudioStreamIndexesAtom, new Set<number>());
+    jotaiDefaultStore.set(activeVideoStreamIndexAtom, undefined);
+    jotaiDefaultStore.set(activeSubtitleStreamIndexAtom, undefined);
+    jotaiDefaultStore.set(hideCompatPlayerAtom, false);
+    jotaiDefaultStore.set(outputPlaybackRateAtom, 1);
 });

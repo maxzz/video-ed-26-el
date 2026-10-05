@@ -1,6 +1,6 @@
 import type { WheelEvent } from 'react';
 import i18n from 'i18next';
-import { appStore } from '@/components/4-dialogs/7-0-dialogs/store.ts';
+import { jotaiDefaultStore } from '@/utils/local-utils/9-jotai-default-store.ts';
 import { userSettings } from '@/editor/0-core/9-state/user-settings.ts';
 import { showNotification } from '@/editor/0-core/8-lib/notifications.ts';
 import { zoomMax } from '@/editor/0-core/8-lib/constants.ts';
@@ -20,13 +20,13 @@ export { showNotification };
 // Zoom
 
 export function zoomAbs(fn: (zoom: number) => number) {
-    appStore.set(zoomUnroundedAtom, (z) => Math.min(Math.max(fn(z), 1), zoomMax));
+    jotaiDefaultStore.set(zoomUnroundedAtom, (z) => Math.min(Math.max(fn(z), 1), zoomMax));
 }
 
 export const zoomRel = (rel: number) => zoomAbs((z) => z + (rel * (1 + (z / 10))));
 
 export function timelineToggleComfortZoom() {
-    const comfortZoom = appStore.get(comfortZoomAtom);
+    const comfortZoom = jotaiDefaultStore.get(comfortZoomAtom);
     if (!comfortZoom) return;
     zoomAbs((prevZoom) => (prevZoom === 1 ? comfortZoom : 1));
 }
@@ -34,25 +34,25 @@ export function timelineToggleComfortZoom() {
 // Seek
 
 export function seekRelAccelerated(amount: number) {
-    const acceleration = appStore.get(seekAccelerationAtom);
+    const acceleration = jotaiDefaultStore.get(seekAccelerationAtom);
     seekRel(acceleration * amount);
-    appStore.set(seekAccelerationAtom, acceleration * userSettings.keyboardSeekAccFactor);
+    jotaiDefaultStore.set(seekAccelerationAtom, acceleration * userSettings.keyboardSeekAccFactor);
 }
 
-export const resetSeekAcceleration = () => appStore.set(seekAccelerationAtom, 1);
+export const resetSeekAcceleration = () => jotaiDefaultStore.set(seekAccelerationAtom, 1);
 
 export function seekRelPercent(val: number) {
-    const zoomedDuration = appStore.get(zoomedDurationAtom);
+    const zoomedDuration = jotaiDefaultStore.get(zoomedDurationAtom);
     if (!isDurationValid(zoomedDuration)) return;
     seekRel(val * zoomedDuration);
 }
 
 export function findNearestKeyFrameTime({ time, direction }: { time: number; direction: number; }) {
-    return ffmpegFindNearestKeyFrameTime({ frames: appStore.get(neighbouringKeyFramesAtom), time, direction });
+    return ffmpegFindNearestKeyFrameTime({ frames: jotaiDefaultStore.get(neighbouringKeyFramesAtom), time, direction });
 }
 
 export function seekClosestKeyframe(direction: number) {
-    const detectedFps = appStore.get(detectedFpsAtom);
+    const detectedFps = jotaiDefaultStore.get(detectedFpsAtom);
     const sigma = detectedFps ? (1 / detectedFps) : 0.1; // because we don't want it to find the keyframe we're currently at.
     const time = findNearestKeyFrameTime({ time: getRelevantTime() + direction * sigma, direction });
     if (time == null) return;
@@ -82,10 +82,10 @@ export function onTimelineWheel(wheelEvent: WheelEvent<Element>) {
 // Rotation
 
 export function increaseRotation() {
-    appStore.set(rotationAtom, (r) => (r + 90) % 450);
-    appStore.set(hideCompatPlayerAtom, false);
+    jotaiDefaultStore.set(rotationAtom, (r) => (r + 90) % 450);
+    jotaiDefaultStore.set(hideCompatPlayerAtom, false);
     // Matroska is known not to work, so we warn user. See https://github.com/mifi/lossless-cut/discussions/661
-    if (isMatroska(appStore.get(fileFormatAtom))) {
+    if (isMatroska(jotaiDefaultStore.get(fileFormatAtom))) {
         showNotification({ text: i18n.t('Lossless rotation might not work with this file format. You may try changing to MP4') });
     }
 }
@@ -93,7 +93,7 @@ export function increaseRotation() {
 // Timeline display toggles
 
 export function toggleWaveformMode() {
-    if (appStore.get(forceBigWaveformAtom)) return;
+    if (jotaiDefaultStore.get(forceBigWaveformAtom)) return;
     const { waveformMode } = userSettings;
     if (waveformMode === 'waveform') {
         userSettings.waveformMode = 'big-waveform';
@@ -111,7 +111,7 @@ export function toggleShowThumbnails() {
 
 export function toggleShowKeyframes() {
     const enabled = !userSettings.keyframesEnabled;
-    if (enabled && !calcShouldShowKeyframes(appStore.get(zoomedDurationAtom))) {
+    if (enabled && !calcShouldShowKeyframes(jotaiDefaultStore.get(zoomedDurationAtom))) {
         showNotification({ text: i18n.t('Key frames will show on the timeline. You need to zoom in to view them') });
     }
     userSettings.keyframesEnabled = enabled;

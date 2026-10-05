@@ -1,9 +1,9 @@
 import { atom } from 'jotai';
 import { observe } from 'jotai-effect';
-import { appStore } from '@/components/4-dialogs/7-0-dialogs/store.ts';
+import { jotaiDefaultStore } from '@/utils/local-utils/9-jotai-default-store.ts';
 import { userSettingsAtom } from '@/editor/0-core/9-state/user-settings.ts';
 import { progressAtom, workingAtom } from '@/editor/0-core/9-state/working.ts';
-import { mainApi } from '@/editor/0-core/8-lib/main-api.ts';
+import { mainApi } from '@/editor/0-core/7-actions/0-main-api.ts';
 import { setDocumentTitle } from '@/editor/0-core/8-lib/util.ts';
 import { filePathAtom, isFileOpenedAtom } from '../9-state/a-file-atoms.ts';
 import { initProjectAutoSave } from './project-auto-save.ts';
@@ -24,19 +24,19 @@ export function initFileEffects() {
 
     observe((get) => {
         setDocumentTitle({ filePath: get(filePathAtom), working: get(workingAtom)?.text, progress: get(progressAtom) });
-    }, appStore);
+    }, jotaiDefaultStore);
 
     observe((get) => {
         mainApi.setProgressBar(get(progressAtom) ?? -1);
-    }, appStore);
+    }, jotaiDefaultStore);
 
     observe((get) => {
         mainApi.setAskBeforeClose(get(askBeforeCloseAtom));
-    }, appStore);
+    }, jotaiDefaultStore);
 
     observe((get) => {
         applyCustomFfPath(get(customFfPathAtom));
-    }, appStore);
+    }, jotaiDefaultStore);
 
     initProjectAutoSave();
 }

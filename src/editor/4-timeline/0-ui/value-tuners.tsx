@@ -4,7 +4,7 @@ import type { Config } from '@shared/types.ts';
 import { Button } from '@/ui/shadcn/button';
 import { Slider } from '@/ui/shadcn/slider';
 import { Switch } from '@/ui/shadcn/switch';
-import { appStore } from '@/components/4-dialogs/7-0-dialogs/store';
+import { jotaiDefaultStore } from '@/utils/local-utils/9-jotai-default-store';
 import { userSettings, userSettingsAtom } from '@/editor/0-core/9-state/user-settings.ts';
 import { tunerVisibleAtom } from '@/components/2-main/0-all/a-panels-atoms';
 
@@ -35,8 +35,8 @@ const getTunerDefs = (t: (key: string) => string): Record<TunerKey, TunerDef> =>
 const tunerZoomAtom = atom<{ min: number; max: number; } | undefined>(undefined);
 
 function closeTuner() {
-    appStore.set(tunerVisibleAtom, undefined);
-    appStore.set(tunerZoomAtom, undefined);
+    jotaiDefaultStore.set(tunerVisibleAtom, undefined);
+    jotaiDefaultStore.set(tunerZoomAtom, undefined);
 }
 
 function setValue(key: TunerKey, value: number) {
@@ -66,16 +66,16 @@ function ValueTuner({ type }: { type: TunerKey; }) {
 
     function toggleZoom() {
         if (tunerZoom != null) {
-            appStore.set(tunerZoomAtom, undefined);
+            jotaiDefaultStore.set(tunerZoomAtom, undefined);
         } else {
             const zoomWindow = (def.max - def.min) / 100;
-            appStore.set(tunerZoomAtom, { min: Math.max(def.min, value - zoomWindow), max: Math.min(def.max, value + zoomWindow) });
+            jotaiDefaultStore.set(tunerZoomAtom, { min: Math.max(def.min, value - zoomWindow), max: Math.min(def.max, value + zoomWindow) });
         }
     }
 
     function resetToDefault() {
         setValue(type, def.default);
-        appStore.set(tunerZoomAtom, undefined);
+        jotaiDefaultStore.set(tunerZoomAtom, undefined);
     }
 
     return (

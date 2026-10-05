@@ -1,28 +1,28 @@
 import i18n from 'i18next';
 import invariant from 'tiny-invariant';
 import type { BatchFile } from '@/editor/0-core/8-lib/types.ts';
-import { appStore } from '@/components/4-dialogs/7-0-dialogs/store.ts';
+import { jotaiDefaultStore } from '@/utils/local-utils/9-jotai-default-store.ts';
 import { userSettings } from '@/editor/0-core/9-state/user-settings.ts';
 import { isWorking, setWorking, withErrorHandling } from '@/editor/0-core/9-state/working.ts';
 import { confirmDialog } from '@/editor/0-core/8-lib/app-dialogs.tsx';
-import { mainApi } from '@/editor/0-core/8-lib/main-api.ts';
+import { mainApi } from '@/editor/0-core/7-actions/0-main-api.ts';
 import { basename } from '@/editor/0-core/8-lib/node-shims.ts';
 import { batchFilesAtom, filePathAtom, selectedBatchFilesAtom } from '../9-state/a-file-atoms.ts';
-import { getDroppedFilePaths } from '../../../utils/local-utils/drop-full-path.ts';
+import { getDroppedFilePaths } from '../../../utils/local-utils/8-drop-full-path.ts';
 import { userOpenSingleFile } from './load-media.ts';
 
 const mapPathsToFiles = (paths: string[]): BatchFile[] => paths.map((path) => ({ path, name: basename(path) }));
 
 export function setBatchFiles(files: BatchFile[] | ((old: BatchFile[]) => BatchFile[])) {
-    appStore.set(batchFilesAtom, files);
+    jotaiDefaultStore.set(batchFilesAtom, files);
 }
 
 export function setSelectedBatchFiles(paths: string[]) {
-    appStore.set(selectedBatchFilesAtom, paths);
+    jotaiDefaultStore.set(selectedBatchFilesAtom, paths);
 }
 
 export function batchLoadPaths(newPaths: string[], append?: boolean) {
-    const existingFiles = appStore.get(batchFilesAtom);
+    const existingFiles = jotaiDefaultStore.get(batchFilesAtom);
     if (append) {
         const newUniquePaths = newPaths.filter((newPath) => !existingFiles.some(({ path: existingPath }) => newPath === existingPath));
         const [firstNewUniquePath] = newUniquePaths;
@@ -42,7 +42,7 @@ export const addFileToBatch = (paths: string[]) => batchLoadPaths(paths, true);
 
 export async function batchOpenSingleFile(path: string) {
     if (isWorking()) return;
-    if (appStore.get(filePathAtom) === path) return;
+    if (jotaiDefaultStore.get(filePathAtom) === path) return;
     setWorking({ text: i18n.t('Loading file') });
     try {
         await withErrorHandling(async () => {
@@ -54,8 +54,8 @@ export async function batchOpenSingleFile(path: string) {
 }
 
 export function batchFileJump(direction: number, alsoOpen: boolean) {
-    const batchFiles = appStore.get(batchFilesAtom);
-    const selectedBatchFiles = appStore.get(selectedBatchFilesAtom);
+    const batchFiles = jotaiDefaultStore.get(batchFilesAtom);
+    const selectedBatchFiles = jotaiDefaultStore.get(selectedBatchFilesAtom);
     if (batchFiles.length === 0) return;
 
     let newSelectedBatchFiles: [string];
@@ -75,14 +75,14 @@ export function batchFileJump(direction: number, alsoOpen: boolean) {
 }
 
 export function batchOpenSelectedFile() {
-    const [firstSelectedBatchFile] = appStore.get(selectedBatchFilesAtom);
+    const [firstSelectedBatchFile] = jotaiDefaultStore.get(selectedBatchFilesAtom);
     if (firstSelectedBatchFile == null) return;
     batchOpenSingleFile(firstSelectedBatchFile);
 }
 
 /** Click on a batch list item: first click selects, second click opens */
 export function onBatchFileSelect(path: string) {
-    if (appStore.get(selectedBatchFilesAtom).includes(path)) batchOpenSingleFile(path);
+    if (jotaiDefaultStore.get(selectedBatchFilesAtom).includes(path)) batchOpenSingleFile(path);
     else setSelectedBatchFiles([path]);
 }
 
@@ -93,7 +93,7 @@ export async function closeBatch() {
 }
 
 export function batchListRemoveFile(path: string | undefined) {
-    const existingBatch = appStore.get(batchFilesAtom);
+    const existingBatch = jotaiDefaultStore.get(batchFilesAtom);
     const index = existingBatch.findIndex((existingFile) => existingFile.path === path);
     if (index === -1) return;
     const newBatch = [...existingBatch];

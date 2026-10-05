@@ -12,8 +12,8 @@ import { isExecaError } from '../util.ts';
 import { isDurationValid } from '@/editor/5-segments/8-lib/segments.ts';
 import type { FFprobeChapter, FFprobeFormat, FFprobeProbeResult, FFprobeStream } from '@shared/ffprobe';
 import { parseSrt, parseSrtToSegments } from '@/editor/9-edl/8-lib/edl-formats.ts';
-import { UnsupportedFileError, UserFacingError } from '../errors.ts';
-import { mainApi } from '../main-api.ts';
+import { UnsupportedFileError, UserFacingError } from '../9-error-types.ts';
+import { mainApi } from '../../7-actions/0-main-api.ts';
 import { parseFfprobeDuration } from '@shared/util';
 import { renderWaveformPng, mapTimesToSegments, detectSceneChanges, captureFrames, captureFrameToFile, captureFrameToClipboard, getFfCommandLine, runFfmpegConcat, runFfmpegWithProgress, getDuration, abortFfmpegs, runFfmpeg, runFfprobe } from './ff-remote.ts';
 

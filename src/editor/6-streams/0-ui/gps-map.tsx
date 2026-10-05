@@ -4,7 +4,7 @@ import i18n from 'i18next';
 import { CircleMarker, MapContainer, Popup, TileLayer } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import { handleError } from '@/editor/0-core/9-state/working.ts';
-import { UserFacingError } from '@/editor/0-core/8-lib/errors.ts';
+import { UserFacingError } from '@/editor/0-core/8-lib/9-error-types';
 import { extractSrtGpsTrack } from '@/editor/0-core/8-lib/ffmpeg/ffmpeg.ts';
 import { parseDjiGps1, parseDjiGps2 } from '@/editor/9-edl/8-lib/edl-formats.ts';
 

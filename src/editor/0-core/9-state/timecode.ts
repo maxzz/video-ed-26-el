@@ -1,13 +1,14 @@
 import { atom } from 'jotai';
 import i18n from 'i18next';
+import { jotaiDefaultStore } from '../../../utils/local-utils/9-jotai-default-store.ts';
+import { fireDialog } from '../../../components/4-dialogs/7-0-dialogs/dialogs.ts';
+
 import type { FormatTimecode, ParseTimecode } from '../8-lib/types.ts';
 import { getFrameCountRaw } from '@/editor/9-edl/8-lib/edl-formats.ts';
 import { getFrameDuration } from '../8-lib/util.ts';
 import { formatDuration, parseDuration } from '../8-lib/duration.ts';
 import { detectedFpsAtom } from '@/editor/2-file/9-state/a-file-atoms.ts';
 import { userSettingsAtom } from './user-settings.ts';
-import { appStore } from '../../../components/4-dialogs/7-0-dialogs/store.ts';
-import { fireDialog } from '../../../components/4-dialogs/7-0-dialogs/dialogs.ts';
 
 // Port of upstream useTimecode: the functions are derived atoms, so they change when fps or format changes
 
@@ -20,6 +21,7 @@ export const formatTimecodeAtom = atom<FormatTimecode>((get) => {
     const detectedFps = get(detectedFpsAtom);
     const { timecodeFormat } = get(userSettingsAtom);
     const getFrameCount = get(getFrameCountAtom);
+
     return ({ seconds, shorten, fileNameFriendly }) => {
         if (timecodeFormat === 'frameCount') {
             const frameCount = getFrameCount(seconds);
@@ -54,9 +56,9 @@ export const parseTimecodeAtom = atom<ParseTimecode>((get) => {
     };
 });
 
-export const formatTimecode: FormatTimecode = (args) => appStore.get(formatTimecodeAtom)(args);
-export const parseTimecode: ParseTimecode = (val) => appStore.get(parseTimecodeAtom)(val);
-export const getFrameCount = (sec: number) => appStore.get(getFrameCountAtom)(sec);
+export const formatTimecode: FormatTimecode = (args) => jotaiDefaultStore.get(formatTimecodeAtom)(args);
+export const parseTimecode: ParseTimecode = (val) => jotaiDefaultStore.get(parseTimecodeAtom)(val);
+export const getFrameCount = (sec: number) => jotaiDefaultStore.get(getFrameCountAtom)(sec);
 
 export async function promptTimecode({ initialValue, title, description, inputPlaceholder, allowRelative = false }: {
     initialValue?: string | undefined;

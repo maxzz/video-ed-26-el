@@ -3,7 +3,7 @@ import { atom, useAtomValue } from 'jotai';
 import { observe } from 'jotai-effect';
 import { CircleAlertIcon, LoaderCircleIcon } from 'lucide-react';
 import { cn } from '@/utils/classnames';
-import { appStore } from '@/components/4-dialogs/7-0-dialogs/store.ts';
+import { jotaiDefaultStore } from '@/utils/local-utils/9-jotai-default-store.ts';
 import { ffmpegExtractWindow } from '@/editor/0-core/8-lib/constants.ts';
 import { fileDurationNonZeroAtom } from '@/editor/2-file/9-state/a-file-atoms.ts';
 import { playingAtom, relevantTimeAtom } from '@/editor/3-player/9-state/player-atoms.ts';
@@ -28,13 +28,13 @@ observe((get, set) => {
     let raf = 0;
     function render() {
         raf = window.requestAnimationFrame(() => {
-            appStore.set(smoothTimeAtom, relevantTime + (Date.now() - startTime) / 1000);
+            jotaiDefaultStore.set(smoothTimeAtom, relevantTime + (Date.now() - startTime) / 1000);
             render();
         });
     }
     render();
     return () => window.cancelAnimationFrame(raf);
-}, appStore);
+}, jotaiDefaultStore);
 
 const effectiveTimeAtom = atom((get) => get(smoothTimeAtom) ?? get(relevantTimeAtom));
 
@@ -50,7 +50,7 @@ let containerElement: HTMLDivElement | null = null;
 
 function scaleToTime(v: number) {
     const width = containerElement?.getBoundingClientRect().width || 1;
-    return ((v / width) * windowSize) / appStore.get(zoomUnroundedAtom);
+    return ((v / width) * windowSize) / jotaiDefaultStore.get(zoomUnroundedAtom);
 }
 
 function handleMouseDown(e: MouseEvent<HTMLDivElement>) {

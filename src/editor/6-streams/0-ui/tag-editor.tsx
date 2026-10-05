@@ -5,7 +5,7 @@ import invariant from 'tiny-invariant';
 import { AnimatePresence, motion } from 'motion/react';
 import { CheckIcon, ClipboardListIcon, ClipboardPasteIcon, InfoIcon, PencilIcon, PlusIcon, Trash2Icon, TriangleAlertIcon, Undo2Icon } from 'lucide-react';
 import { type SegmentTags, segmentTagsSchema } from '@/editor/0-core/8-lib/types.ts';
-import { mainApi } from '@/editor/0-core/8-lib/main-api.ts';
+import { mainApi } from '@/editor/0-core/7-actions/0-main-api.ts';
 import { errorToast } from '@/editor/0-core/8-lib/app-dialogs.tsx';
 import { CopyClipboardButton } from '@/editor/7-export/0-ui/controls.tsx';
 import { Button } from '@/ui/shadcn/button';

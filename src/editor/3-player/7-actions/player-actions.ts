@@ -1,10 +1,10 @@
 import i18n from 'i18next';
 import invariant from 'tiny-invariant';
 import type { PlaybackMode } from '@/editor/0-core/8-lib/types.ts';
-import { appStore } from '@/components/4-dialogs/7-0-dialogs/store.ts';
+import { jotaiDefaultStore } from '@/utils/local-utils/9-jotai-default-store.ts';
 import { userSettings } from '@/editor/0-core/9-state/user-settings.ts';
 import { showPlaybackFailedMessage } from '@/editor/0-core/8-lib/app-dialogs.tsx';
-import { toast } from '@/editor/0-core/8-lib/toast.tsx';
+import { toast } from '@/components/4-dialogs/7-0-dialogs/toast.tsx';
 import { adjustRate } from '@/editor/0-core/8-lib/rate-calculator.ts';
 import { getFrameCountRaw } from '@/editor/9-edl/8-lib/edl-formats.ts';
 import { enableAudioTrack, enableVideoTrack } from '@/editor/0-core/8-lib/ffmpeg/streams.ts';
@@ -16,22 +16,22 @@ import {
     playbackModeAtom, playbackRateAtom, playerTimeAtom, playingAtom, videoElementAtom,
 } from '../9-state/player-atoms.ts';
 
-const getVideo = () => appStore.get(videoElementAtom);
+const getVideo = () => jotaiDefaultStore.get(videoElementAtom);
 
 export function setPlaybackRate(rate: number) {
     const video = getVideo();
     if (video) video.playbackRate = rate;
-    appStore.set(playbackRateAtom, rate);
+    jotaiDefaultStore.set(playbackRateAtom, rate);
 }
 
 export function setOutputPlaybackRate(rate: number) {
-    appStore.set(outputPlaybackRateAtom, rate);
+    jotaiDefaultStore.set(outputPlaybackRateAtom, rate);
     const video = getVideo();
     if (video) video.playbackRate = rate;
 }
 
 export function setPlaybackMode(mode: PlaybackMode | undefined) {
-    appStore.set(playbackModeAtom, mode);
+    jotaiDefaultStore.set(playbackModeAtom, mode);
 }
 
 // https://kitchen.vibbio.com/blog/optimizing-html5-video-scrubbing/
@@ -64,11 +64,11 @@ export function onSeeked() {
 }
 
 export function setCommandedTime(time: number) {
-    appStore.set(commandedTimeAtom, time);
+    jotaiDefaultStore.set(commandedTimeAtom, time);
 }
 
 export function seekAbs(val: number | undefined) {
-    if (appStore.get(filePathAtom) == null) return;
+    if (jotaiDefaultStore.get(filePathAtom) == null) return;
     const video = getVideo();
     if (video == null || val == null || Number.isNaN(val)) return;
     let outVal = val;
@@ -81,7 +81,7 @@ export function seekAbs(val: number | undefined) {
 
 /** Current time without subscribing to per-frame updates */
 export function getRelevantTime() {
-    return (appStore.get(playingAtom) ? getVideo()?.currentTime : appStore.get(commandedTimeAtom)) || 0;
+    return (jotaiDefaultStore.get(playingAtom) ? getVideo()?.currentTime : jotaiDefaultStore.get(commandedTimeAtom)) || 0;
 }
 
 export function seekRel(val: number) {
@@ -89,7 +89,7 @@ export function seekRel(val: number) {
 }
 
 function onPlayingChange(val: boolean) {
-    appStore.set(playingAtom, val);
+    jotaiDefaultStore.set(playingAtom, val);
     const video = getVideo();
     if (!val && video) setCommandedTime(video.currentTime);
 }
@@ -98,18 +98,18 @@ export const onStartPlaying = () => onPlayingChange(true);
 export const onStopPlaying = () => onPlayingChange(false);
 
 export function onVideoAbort() {
-    appStore.set(playingAtom, false); // we want to preserve current time https://github.com/mifi/lossless-cut/issues/1674#issuecomment-1658937716
+    jotaiDefaultStore.set(playingAtom, false); // we want to preserve current time https://github.com/mifi/lossless-cut/issues/1674#issuecomment-1658937716
     setPlaybackMode(undefined);
 }
 
 export function pause() {
-    if (!appStore.get(filePathAtom) || !appStore.get(playingAtom)) return;
+    if (!jotaiDefaultStore.get(filePathAtom) || !jotaiDefaultStore.get(playingAtom)) return;
     getVideo()?.pause();
 }
 
 export function play(resetPlaybackRate?: boolean) {
-    if (!appStore.get(filePathAtom) || appStore.get(playingAtom)) return;
-    if (resetPlaybackRate) setPlaybackRate(appStore.get(outputPlaybackRateAtom));
+    if (!jotaiDefaultStore.get(filePathAtom) || jotaiDefaultStore.get(playingAtom)) return;
+    if (resetPlaybackRate) setPlaybackRate(jotaiDefaultStore.get(outputPlaybackRateAtom));
     getVideo()?.play().catch((err: unknown) => {
         if (err instanceof Error && err.name === 'AbortError' && 'code' in err && err.code === 20) { // "The play() request was interrupted by a call to pause()."
             console.error(err);
@@ -120,25 +120,25 @@ export function play(resetPlaybackRate?: boolean) {
 }
 
 function segmentAtCursor() {
-    const cutSegments = appStore.get(cutSegmentsAtom);
-    const [index] = findSegmentsAtCursor(cutSegments, appStore.get(commandedTimeAtom));
+    const cutSegments = jotaiDefaultStore.get(cutSegmentsAtom);
+    const [index] = findSegmentsAtCursor(cutSegments, jotaiDefaultStore.get(commandedTimeAtom));
     return index != null ? cutSegments[index] : undefined;
 }
 
 export function togglePlay({ resetPlaybackRate, requestPlaybackMode }: { resetPlaybackRate?: boolean; requestPlaybackMode?: PlaybackMode; } = {}) {
     setPlaybackMode(requestPlaybackMode);
 
-    if (appStore.get(playingAtom)) {
+    if (jotaiDefaultStore.get(playingAtom)) {
         pause();
         return;
     }
 
     // If we are using a special playback mode, we might need to do more:
-    const playbackMode = appStore.get(playbackModeAtom);
+    const playbackMode = jotaiDefaultStore.get(playbackModeAtom);
     if (playbackMode != null) {
-        const cutSegments = appStore.get(cutSegmentsAtom);
-        const commandedTime = appStore.get(commandedTimeAtom);
-        const selectedSegmentsWithoutMarkers = filterNonMarkers(appStore.get(selectedSegmentsAtom));
+        const cutSegments = jotaiDefaultStore.get(cutSegmentsAtom);
+        const commandedTime = jotaiDefaultStore.get(commandedTimeAtom);
+        const selectedSegmentsWithoutMarkers = filterNonMarkers(jotaiDefaultStore.get(selectedSegmentsAtom));
         const selectedSegmentAtCursor = selectedSegmentsWithoutMarkers.find((s) => s.segId === segmentAtCursor()?.segId);
         const isSomeSegmentAtCursor = selectedSegmentAtCursor != null && selectedSegmentAtCursor.end != null && selectedSegmentAtCursor.end - commandedTime > 0.1;
         if (!isSomeSegmentAtCursor) { // if a segment is already at cursor, don't do anything
@@ -147,11 +147,11 @@ export function togglePlay({ resetPlaybackRate, requestPlaybackMode }: { resetPl
                 const firstSelectedSegment = selectedSegmentsWithoutMarkers[0];
                 if (firstSelectedSegment != null) {
                     const index = cutSegments.findIndex((segment) => segment.segId === firstSelectedSegment.segId);
-                    if (index !== -1) appStore.set(currentSegIndexAtom, index);
+                    if (index !== -1) jotaiDefaultStore.set(currentSegIndexAtom, index);
                     seekAbs(firstSelectedSegment.start);
                 }
             } else {
-                const currentCutSeg = appStore.get(currentCutSegAtom);
+                const currentCutSeg = jotaiDefaultStore.get(currentCutSegAtom);
                 // for all other playback modes, seek to start of current segment
                 if (currentCutSeg != null) seekAbs(currentCutSeg.start);
             }
@@ -163,13 +163,13 @@ export function togglePlay({ resetPlaybackRate, requestPlaybackMode }: { resetPl
 const getNewJumpIndex = (oldIndex: number, direction: -1 | 1) => Math.max(oldIndex + direction, 0);
 
 export function onTimeUpdate(currentTime: number) {
-    if (appStore.get(playerTimeAtom) === currentTime) return;
-    appStore.set(playerTimeAtom, currentTime);
+    if (jotaiDefaultStore.get(playerTimeAtom) === currentTime) return;
+    jotaiDefaultStore.set(playerTimeAtom, currentTime);
 
-    const playbackMode = appStore.get(playbackModeAtom);
-    if (playbackMode == null || !appStore.get(playingAtom)) return;
+    const playbackMode = jotaiDefaultStore.get(playbackModeAtom);
+    if (playbackMode == null || !jotaiDefaultStore.get(playingAtom)) return;
 
-    const cutSegments = appStore.get(cutSegmentsAtom);
+    const cutSegments = jotaiDefaultStore.get(cutSegmentsAtom);
     const playingSegment = segmentAtCursor();
     if (!playingSegment || playingSegment.end == null) return;
 
@@ -182,7 +182,7 @@ export function onTimeUpdate(currentTime: number) {
     };
 
     if (nextAction.nextSegment) {
-        const selectedSegmentsWithoutMarkers = filterNonMarkers(appStore.get(selectedSegmentsAtom));
+        const selectedSegmentsWithoutMarkers = filterNonMarkers(jotaiDefaultStore.get(selectedSegmentsAtom));
         const index = selectedSegmentsWithoutMarkers.findIndex((s) => s.segId === playingSegment.segId);
         let newSelectedSegmentIndex = getNewJumpIndex(index !== -1 ? index : 0, 1);
         if (newSelectedSegmentIndex > selectedSegmentsWithoutMarkers.length - 1) {
@@ -194,7 +194,7 @@ export function onTimeUpdate(currentTime: number) {
         if (nextSelectedSegment != null) {
             seekAbs(nextSelectedSegment.start);
             const newIndex = cutSegments.findIndex((segment) => segment.segId === nextSelectedSegment.segId);
-            if (newIndex !== -1) appStore.set(currentSegIndexAtom, newIndex);
+            if (newIndex !== -1) jotaiDefaultStore.set(currentSegIndexAtom, newIndex);
         }
     }
     if (nextAction.seekTo != null) seekAbs(nextAction.seekTo);
@@ -208,7 +208,7 @@ export function shortStep(direction: number) {
     const video = getVideo();
     if (!video) return;
     // If we don't know fps, just assume 30 (for example if unknown audio file)
-    const fps = appStore.get(detectedFpsAtom) || 30;
+    const fps = jotaiDefaultStore.get(detectedFpsAtom) || 30;
     // try to align with frame
     const currentTimeNearestFrameNumber = getFrameCountRaw(fps, video.currentTime);
     invariant(currentTimeNearestFrameNumber != null);
@@ -216,32 +216,32 @@ export function shortStep(direction: number) {
 }
 
 export function jumpSegStart(index: number) {
-    const seg = appStore.get(cutSegmentsAtom)[index];
+    const seg = jotaiDefaultStore.get(cutSegmentsAtom)[index];
     if (seg != null) seekAbs(seg.start);
 }
 
 export function jumpSegEnd(index: number) {
-    const seg = appStore.get(cutSegmentsAtom)[index];
+    const seg = jotaiDefaultStore.get(cutSegmentsAtom)[index];
     if (seg?.end != null) seekAbs(seg.end);
 }
 
-export const jumpCutStart = () => jumpSegStart(appStore.get(currentSegIndexSafeAtom));
-export const jumpCutEnd = () => jumpSegEnd(appStore.get(currentSegIndexSafeAtom));
+export const jumpCutStart = () => jumpSegStart(jotaiDefaultStore.get(currentSegIndexSafeAtom));
+export const jumpCutEnd = () => jumpSegEnd(jotaiDefaultStore.get(currentSegIndexSafeAtom));
 export const jumpTimelineStart = () => seekAbs(0);
-export const jumpTimelineEnd = () => seekAbs(appStore.get(fileDurationAtom));
+export const jumpTimelineEnd = () => seekAbs(jotaiDefaultStore.get(fileDurationAtom));
 
 export function jumpSeg(params: ({ abs: number; } | { rel: -1 | 1; }) & { seek?: true; }) {
-    const cutSegments = appStore.get(cutSegmentsAtom);
+    const cutSegments = jotaiDefaultStore.get(cutSegmentsAtom);
     const clamp = (v: number) => Math.max(0, Math.min(v, cutSegments.length - 1));
-    const index = 'abs' in params ? clamp(params.abs) : clamp(getNewJumpIndex(appStore.get(currentSegIndexAtom), params.rel));
-    appStore.set(currentSegIndexAtom, index);
+    const index = 'abs' in params ? clamp(params.abs) : clamp(getNewJumpIndex(jotaiDefaultStore.get(currentSegIndexAtom), params.rel));
+    jotaiDefaultStore.set(currentSegIndexAtom, index);
     if (params.seek && cutSegments[index]) seekAbs(cutSegments[index].start);
 }
 
 export function userChangePlaybackRate(dir: number, rateMultiplier?: number) {
     const video = getVideo();
     if (!video) return;
-    if (!appStore.get(playingAtom)) {
+    if (!jotaiDefaultStore.get(playingAtom)) {
         play();
     } else {
         setPlaybackRate(adjustRate(video.playbackRate, dir, rateMultiplier));
@@ -249,7 +249,7 @@ export function userChangePlaybackRate(dir: number, rateMultiplier?: number) {
 }
 
 export function checkFileOpened() {
-    if (appStore.get(isFileOpenedAtom)) return true;
+    if (jotaiDefaultStore.get(isFileOpenedAtom)) return true;
     toast.fire({ icon: 'info', title: i18n.t('You need to open a media file first') });
     return false;
 }
@@ -269,21 +269,21 @@ export function toggleMuted() {
 export function onActiveVideoStreamChange(videoStreamIndex?: number) {
     const video = getVideo();
     invariant(video);
-    appStore.set(hideCompatPlayerAtom, false);
+    jotaiDefaultStore.set(hideCompatPlayerAtom, false);
     enableVideoTrack(video, videoStreamIndex);
-    appStore.set(activeVideoStreamIndexAtom, videoStreamIndex);
+    jotaiDefaultStore.set(activeVideoStreamIndexAtom, videoStreamIndex);
 }
 
 export function onActiveAudioStreamsChange(audioStreamIndexes: Set<number>) {
     const video = getVideo();
     invariant(video);
-    appStore.set(hideCompatPlayerAtom, false);
+    jotaiDefaultStore.set(hideCompatPlayerAtom, false);
     enableAudioTrack(video, [...audioStreamIndexes][0]);
-    appStore.set(activeAudioStreamIndexesAtom, audioStreamIndexes);
+    jotaiDefaultStore.set(activeAudioStreamIndexesAtom, audioStreamIndexes);
 }
 
 export function handleHideCompatPlayerClick() {
-    appStore.set(hideCompatPlayerAtom, true);
-    appStore.set(previewFilePathAtom, undefined);
-    appStore.set(usingDummyVideoAtom, false);
+    jotaiDefaultStore.set(hideCompatPlayerAtom, true);
+    jotaiDefaultStore.set(previewFilePathAtom, undefined);
+    jotaiDefaultStore.set(usingDummyVideoAtom, false);
 }

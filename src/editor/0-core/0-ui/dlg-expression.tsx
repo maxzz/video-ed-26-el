@@ -7,8 +7,7 @@ import { DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTit
 import { openCustomDialog } from '../../../components/4-dialogs/7-0-dialogs/dialogs.ts';
 
 export interface ExpressionDialogOptions {
-    /** Return `{ error }` to keep the dialog open, undefined on success */
-    onSubmit: (value: string) => Promise<{ error: string; } | undefined>;
+    onSubmit: (value: string) => Promise<{ error: string; } | undefined>; // Return `{ error }` to keep the dialog open, undefined on success
     examples: { name: string; code: string; }[];
     title: ReactNode;
     description?: ReactNode;
@@ -18,19 +17,22 @@ export interface ExpressionDialogOptions {
 }
 
 /** JavaScript expression prompt (upstream ExpressionDialog). Resolves true when submitted successfully */
-export function openExpressionDialog(options: ExpressionDialogOptions) {
+export function openExpressionDialog(options: ExpressionDialogOptions): Promise<boolean | undefined> {
     const state = proxy({ value: options.inputValue ?? '', error: undefined as string | undefined, busy: false });
-    return openCustomDialog<boolean>((close) => <ExpressionDialogContent options={options} state={state} close={close} />);
+
+    return openCustomDialog<boolean>(
+        (close) => <ExpressionDlgBody options={options} state={state} close={close} />
+    );
 }
 
-function ExpressionDialogContent({ options, state, close }: {
+function ExpressionDlgBody({ options, state, close }: {
     options: ExpressionDialogOptions;
     state: { value: string; error: string | undefined; busy: boolean; };
     close: (value?: boolean) => void;
 }) {
-    const { t } = useTranslation();
     const snap = useSnapshot(state, { sync: true });
     const { title, description, variables, examples, confirmButtonText } = options;
+    const { t } = useTranslation();
 
     async function submit(e: FormEvent) {
         e.preventDefault();
@@ -47,24 +49,36 @@ function ExpressionDialogContent({ options, state, close }: {
     return (
         <DialogContent className="sm:max-w-[80vw]">
             <DialogHeader>
-                <DialogTitle>{title}</DialogTitle>
-                {description && <DialogDescription asChild><div>{description}</div></DialogDescription>}
+                <DialogTitle>
+                    {title}
+                </DialogTitle>
+                {description && <DialogDescription asChild>
+                    <div>
+                        {description}
+                    </div>
+                </DialogDescription>}
             </DialogHeader>
 
             {variables && (
                 <div className="text-sm flex flex-wrap items-center gap-1">
                     {t('Variables')}:
-                    {variables.map((v) => <code key={v} className="px-1 text-xs font-mono bg-muted rounded">{v}</code>)}
+                    {variables.map(
+                        (v) => <code key={v} className="px-1 text-xs font-mono bg-muted rounded">{v}</code>
+                    )}
                 </div>
             )}
 
             <div className="text-sm flex flex-col items-start gap-0.5">
-                <b>{t('Examples')}:</b>
-                {examples.map(({ name, code }) => (
-                    <button key={code} type="button" className="text-primary hover:underline" onClick={() => { state.value = code; }}>
-                        {name}
-                    </button>
-                ))}
+                <b>
+                    {t('Examples')}:
+                </b>
+                {examples.map(
+                    ({ name, code }) => (
+                        <button key={code} type="button" className="text-primary hover:underline" onClick={() => { state.value = code; }}>
+                            {name}
+                        </button>
+                    )
+                )}
             </div>
 
             <form className="flex flex-col gap-3" onSubmit={submit}>
@@ -79,8 +93,12 @@ function ExpressionDialogContent({ options, state, close }: {
                 {snap.error != null && <div className="text-sm font-bold text-destructive">{snap.error}</div>}
 
                 <DialogFooter>
-                    <Button type="button" variant="outline" onClick={() => close(false)}>{t('Cancel')}</Button>
-                    <Button type="submit" disabled={snap.busy}>{confirmButtonText ?? t('Confirm')}</Button>
+                    <Button type="button" variant="outline" onClick={() => close(false)}>
+                        {t('Cancel')}
+                    </Button>
+                    <Button type="submit" disabled={snap.busy}>
+                        {confirmButtonText ?? t('Confirm')}
+                    </Button>
                 </DialogFooter>
             </form>
         </DialogContent>

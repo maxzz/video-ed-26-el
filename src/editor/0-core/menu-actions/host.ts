@@ -1,5 +1,5 @@
 import type { HostMenuAction } from '@shared/ipc-contract.ts';
-import { mainApi } from '@/editor/0-core/8-lib/main-api.ts';
+import { mainApi } from '@/editor/0-core/7-actions/0-main-api';
 
 type ZoomDirection = Extract<HostMenuAction, { what: 'zoom'; }>['direction'];
 

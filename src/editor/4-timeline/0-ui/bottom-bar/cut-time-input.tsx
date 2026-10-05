@@ -2,10 +2,10 @@ import type { ClipboardEvent, SubmitEvent } from 'react';
 import { useAtomValue } from 'jotai';
 import { useTranslation } from 'react-i18next';
 import { cn } from '@/utils/classnames';
-import { appStore } from '@/components/4-dialogs/7-0-dialogs/store.ts';
+import { jotaiDefaultStore } from '@/utils/local-utils/9-jotai-default-store.ts';
 import { formatTimecodeAtom, parseTimecode } from '@/editor/0-core/9-state/timecode.ts';
 import { isExactDurationMatch } from '@/editor/0-core/8-lib/duration.ts';
-import { mainApi } from '@/editor/0-core/8-lib/main-api.ts';
+import { mainApi } from '@/editor/0-core/7-actions/0-main-api.ts';
 import { isFileOpenedAtom, startTimeOffsetAtom } from '@/editor/2-file/9-state/a-file-atoms.ts';
 import { seekAbs } from '@/editor/3-player/7-actions/player-actions.ts';
 import { currentCutSegAtom } from '@/editor/5-segments/9-state/segments-store.ts';
@@ -18,8 +18,8 @@ import { cutTimeErrorAtoms, cutTimeManualAtoms } from '../../9-state/bottom-bar-
 type Side = 'start' | 'end';
 
 function setManual(side: Side, text: string | undefined, error = false) {
-    appStore.set(cutTimeManualAtoms[side], text);
-    appStore.set(cutTimeErrorAtoms[side], error);
+    jotaiDefaultStore.set(cutTimeManualAtoms[side], text);
+    jotaiDefaultStore.set(cutTimeErrorAtoms[side], error);
 }
 
 // Note: If we get an error from setCutTime, remain in the editing state (cutTimeManual)
@@ -30,7 +30,7 @@ function setTime(side: Side, timeWithOffset: number | undefined) {
         setManual(side, undefined);
         return;
     }
-    const timeWithoutOffset = Math.max(timeWithOffset - appStore.get(startTimeOffsetAtom), 0);
+    const timeWithoutOffset = Math.max(timeWithOffset - jotaiDefaultStore.get(startTimeOffsetAtom), 0);
     setCutTime(side, timeWithoutOffset);
     seekAbs(timeWithoutOffset);
     setManual(side, undefined);
@@ -51,7 +51,7 @@ function parseAndSetCutTime(side: Side, text: string) {
 
 function handleSubmit(side: Side, e: SubmitEvent<HTMLFormElement>) {
     e.preventDefault();
-    const cutTimeManual = appStore.get(cutTimeManualAtoms[side]);
+    const cutTimeManual = jotaiDefaultStore.get(cutTimeManualAtoms[side]);
     try {
         if (isEmptyEndTime(side, cutTimeManual)) {
             setTime(side, undefined);
@@ -73,20 +73,20 @@ function handleCutTimeInput(side: Side, text: string) {
         }
     } catch (err) {
         console.warn(err);
-        appStore.set(cutTimeErrorAtoms[side], true);
+        jotaiDefaultStore.set(cutTimeErrorAtoms[side], true);
     }
     // else or if error, just set manual value, to make sure it doesn't jump to end https://github.com/mifi/lossless-cut/issues/988#issuecomment-3475870072
-    appStore.set(cutTimeManualAtoms[side], text);
+    jotaiDefaultStore.set(cutTimeManualAtoms[side], text);
 }
 
 function setFromText(side: Side, text: string) {
     try {
-        appStore.set(cutTimeManualAtoms[side], text);
+        jotaiDefaultStore.set(cutTimeManualAtoms[side], text);
         parseAndSetCutTime(side, text);
-        appStore.set(cutTimeErrorAtoms[side], false);
+        jotaiDefaultStore.set(cutTimeErrorAtoms[side], false);
     } catch (err) {
         console.warn(err);
-        appStore.set(cutTimeErrorAtoms[side], true);
+        jotaiDefaultStore.set(cutTimeErrorAtoms[side], true);
     }
 }
 

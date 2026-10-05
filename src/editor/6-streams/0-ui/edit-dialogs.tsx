@@ -3,7 +3,7 @@ import { useAtomValue } from 'jotai';
 import { useSnapshot } from 'valtio';
 import { useTranslation } from 'react-i18next';
 import type { FFprobeStream } from '@shared/ffprobe';
-import { appStore } from '@/components/4-dialogs/7-0-dialogs/store.ts';
+import { jotaiDefaultStore } from '@/utils/local-utils/9-jotai-default-store.ts';
 import type { FileParams, StreamParams } from '@/editor/0-core/8-lib/types.ts';
 import { allFilesMetaAtom, filePathAtom, paramsByFileAtom } from '@/editor/2-file/9-state/a-file-atoms.ts';
 import { Button } from '@/ui/shadcn/button';
@@ -19,7 +19,7 @@ import { TagEditor } from './tag-editor.tsx';
 
 // Port of upstream StreamsSelector.tsx EditFileDialog/EditStreamDialog
 
-const setEditingTagKey = (key: string | undefined) => appStore.set(editingTagKeyAtom, key);
+const setEditingTagKey = (key: string | undefined) => jotaiDefaultStore.set(editingTagKeyAtom, key);
 
 function KeyValue({ name, value }: { name: ReactNode; value: ReactNode; }) {
     return (

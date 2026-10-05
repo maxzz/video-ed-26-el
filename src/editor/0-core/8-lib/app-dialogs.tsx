@@ -6,13 +6,13 @@ import pMap from 'p-map';
 import { ArrowRightIcon, CircleHelpIcon, InfoIcon, TriangleAlertIcon } from 'lucide-react';
 import type { OpenDialogOptions } from '@shared/ipc-contract.ts';
 import { formatDuration } from './duration.ts';
-import { isWindows, mainApi } from './main-api.ts';
+import { isWindows, mainApi } from '../7-actions/0-main-api.ts';
 import { fs } from './node-shims.ts';
 import { testFailFsOperation, trashFile, unlinkWithRetry } from './util.ts';
 import type { ParseTimecode } from './types.ts';
 import type { FindKeyframeMode } from './ffmpeg/ffmpeg.ts';
 import { fireDialog, openCustomDialog } from '../../../components/4-dialogs/7-0-dialogs/dialogs.ts';
-import { toast } from './toast.tsx';
+import { toast } from '../../../components/4-dialogs/7-0-dialogs/toast.tsx';
 import { DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/ui/shadcn/dialog';
 import { Button } from '@/ui/shadcn/button';
 
@@ -439,7 +439,7 @@ export async function deleteFiles({ paths, deleteIfTrashFails, signal }: { paths
     await pMap(failedToTrashFiles, async (path) => unlinkWithRetry(path, { signal }), { concurrency: 5 });
 }
 
-export { toastError } from './toast.tsx';
+export { toastError } from '../../../components/4-dialogs/7-0-dialogs/toast.tsx';
 
 export function errorToast(text: string) {
     toast.fire({ icon: 'error', text });

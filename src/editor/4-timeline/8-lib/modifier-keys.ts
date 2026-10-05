@@ -1,6 +1,6 @@
 import i18n from 'i18next';
 import type { ModifierKey } from '@shared/types.ts';
-import { getMetaKeyName } from '@/editor/0-core/8-lib/util.ts';
+import { getMetaKeyName } from '@/editor/0-core/8-lib/utils-kbd.ts';
 
 // Port of upstream useTimelineScroll helpers
 

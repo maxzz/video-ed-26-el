@@ -1,5 +1,5 @@
 import { observe } from 'jotai-effect';
-import { appStore } from '@/components/4-dialogs/7-0-dialogs/store';
+import { jotaiDefaultStore } from '@/utils/local-utils/9-jotai-default-store';
 import { registerActions } from '@/editor/0-core/7-actions/kbd-actions.ts';
 import { keyboardShortcutsVisibleAtom, toggleKeyboardShortcuts } from '@/components/2-main/0-all/a-panels-atoms';
 import { initKeyboard } from '@/editor/c-keyboard/7-actions/keyboard-listener.ts';
@@ -18,5 +18,5 @@ export function register_c_keyboard() {
         if (!get(keyboardShortcutsVisibleAtom)) return;
         updateKeyboardLayout();
         removeInvalidKeyBindings();
-    }, appStore);
+    }, jotaiDefaultStore);
 }

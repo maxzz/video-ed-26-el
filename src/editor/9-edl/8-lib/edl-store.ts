@@ -10,7 +10,7 @@ import { getOutPath } from '@/editor/0-core/8-lib/util.ts';
 import type { EdlExportType, EdlFileType, EdlImportType, GetFrameCount, LlcProject, SegmentBase, StateSegment } from '@/editor/0-core/8-lib/types.ts';
 import { llcProjectV1Schema, llcProjectV2Schema } from '@/editor/0-core/8-lib/types.ts';
 import { mapSaveableSegments } from '@/editor/5-segments/8-lib/segments.ts';
-import { getAppInfo, mainApi } from '@/editor/0-core/8-lib/main-api.ts';
+import { getAppInfo, mainApi } from '@/editor/0-core/7-actions/0-main-api.ts';
 import { basename } from '@/editor/0-core/8-lib/node-shims.ts';
 
 const readFile = async (path: string, _encoding: 'utf8') => mainApi.readTextFile(path);

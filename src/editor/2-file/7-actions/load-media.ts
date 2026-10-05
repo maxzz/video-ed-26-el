@@ -2,19 +2,19 @@ import i18n from 'i18next';
 import invariant from 'tiny-invariant';
 import type { FFprobeChapter } from '@shared/ffprobe';
 import { parseFfprobeDuration } from '@shared/util';
-import { appStore } from '@/components/4-dialogs/7-0-dialogs/store.ts';
+import { jotaiDefaultStore } from '@/utils/local-utils/9-jotai-default-store.ts';
 import { customOutDirAtom, effectiveExportModeAtom, hideAllNotificationsAtom, userSettings } from '@/editor/0-core/9-state/user-settings.ts';
 import { formatTimecode, promptTimecode, timecodePlaceholderAtom } from '@/editor/0-core/9-state/timecode.ts';
 import { isWorking, setProgress, setWorking, withErrorHandling } from '@/editor/0-core/9-state/working.ts';
-import { resetAllFileState } from '@/editor/0-core/7-actions/lifecycle.ts';
+import { resetAllFileState } from '@/editor/0-core/7-actions/2-lifecycle.ts';
 import { askForImportChapters, confirmDialog, errorToast } from '@/editor/0-core/8-lib/app-dialogs.tsx';
-import { DirectoryAccessDeclinedError } from '@/editor/0-core/8-lib/errors.ts';
+import { DirectoryAccessDeclinedError } from '@/editor/0-core/8-lib/9-error-types.ts';
 import { getDefaultOutFormat, getStreamFps, getTimecodeFromStreams, mapRecommendedDefaultFormat, readFileFfprobeMeta, tryMapChaptersToEdl } from '@/editor/0-core/8-lib/ffmpeg/ffmpeg.ts';
 import { doesPlayerSupportHevcPlayback, getAudioStreams, getRealVideoStreams, isAudioDefinitelyNotSupported, shouldCopyStreamByDefault, willPlayerProperlyHandleVideo } from '@/editor/0-core/8-lib/ffmpeg/streams.ts';
-import { mainApi } from '@/editor/0-core/8-lib/main-api.ts';
+import { mainApi } from '@/editor/0-core/7-actions/0-main-api.ts';
 import { basename, dirname, join } from '@/editor/0-core/8-lib/node-shims.ts';
 import { showNotification } from '@/editor/0-core/8-lib/notifications.ts';
-import { toast } from '@/editor/0-core/8-lib/toast.tsx';
+import { toast } from '@/components/4-dialogs/7-0-dialogs/toast.tsx';
 import { findExistingHtml5FriendlyFile, getOutFileExtension, getPathReadAccessError, getSuffixedOutPath, havePermissionToReadFile, readFileStats, transferTimestamps } from '@/editor/0-core/8-lib/util.ts';
 import { checkFileOpened } from '@/editor/3-player/7-actions/player-actions.ts';
 import { fixInvalidDuration } from '@/editor/7-export/8-lib/ffmpeg-operations.ts';
@@ -54,7 +54,7 @@ export function closeFile() {
 }
 
 export async function closeFileWithConfirm() {
-    if (!appStore.get(isFileOpenedAtom) || isWorking()) return;
+    if (!jotaiDefaultStore.get(isFileOpenedAtom) || isWorking()) return;
     if (userSettings.askBeforeClose && !(await confirmDialog({ description: i18n.t('Are you sure you want to close the current file?') }))) return;
     closeFile();
 }
@@ -133,7 +133,7 @@ export async function loadMedia({ filePath: fp, projectPath }: { filePath: strin
         const hevcPlaybackSupported = enableNativeHevc && await hevcPlaybackSupportedPromise;
 
         // need to ensure we have access to write to working directory
-        const cod = await ensureWritableOutDir({ inputPath: fp, outDir: appStore.get(customOutDirAtom) });
+        const cod = await ensureWritableOutDir({ inputPath: fp, outDir: jotaiDefaultStore.get(customOutDirAtom) });
 
         // if storeProjectInSourceDir is true, we will be writing project file to input path's dir, so ensure that one too
         if (storeProjectInSourceDir) await ensureAccessToSourceDir(fp);
@@ -151,8 +151,8 @@ export async function loadMedia({ filePath: fp, projectPath }: { filePath: strin
 
         if (existingHtml5FriendlyFile) {
             console.log('Found existing html5 friendly file', existingHtml5FriendlyFile.path);
-            appStore.set(usingDummyVideoAtom, existingHtml5FriendlyFile.usingDummyVideo);
-            appStore.set(previewFilePathAtom, existingHtml5FriendlyFile.path);
+            jotaiDefaultStore.set(usingDummyVideoAtom, existingHtml5FriendlyFile.usingDummyVideo);
+            jotaiDefaultStore.set(previewFilePathAtom, existingHtml5FriendlyFile.path);
         }
 
         if (needsAutoHtml5ify) {
@@ -173,20 +173,20 @@ export async function loadMedia({ filePath: fp, projectPath }: { filePath: strin
             return undefined;
         }
 
-        if (timecode) appStore.set(startTimeOffsetAtom, timecode);
-        appStore.set(detectedFpsAtom, getFps());
-        appStore.set(mainFileMetaAtom, {
+        if (timecode) jotaiDefaultStore.set(startTimeOffsetAtom, timecode);
+        jotaiDefaultStore.set(detectedFpsAtom, getFps());
+        jotaiDefaultStore.set(mainFileMetaAtom, {
             ffprobeMeta,
             stats: { size: fileStats.size, atime: fileStats.atimeMs, mtime: fileStats.mtimeMs, ctime: fileStats.ctime.getTime(), birthtime: fileStats.birthtime.getTime() },
         });
         setCopyStreamIdsForPath(fp, () => copyStreamIdsForPathNew);
-        appStore.set(detectedFileFormatAtom, fileFormatNew);
+        jotaiDefaultStore.set(detectedFileFormatAtom, fileFormatNew);
         if (outFormatLocked) {
-            appStore.set(fileFormatAtom, outFormatLocked);
+            jotaiDefaultStore.set(fileFormatAtom, outFormatLocked);
         } else {
             const recommendedDefaultFormat = mapRecommendedDefaultFormat({ sourceFormat: fileFormatNew, streams: ffprobeMeta.streams });
             if (recommendedDefaultFormat.message) showNotification({ icon: 'info', text: recommendedDefaultFormat.message });
-            appStore.set(fileFormatAtom, recommendedDefaultFormat.format);
+            jotaiDefaultStore.set(fileFormatAtom, recommendedDefaultFormat.format);
         }
 
         // only show one toast, or else we will only show the last one
@@ -203,7 +203,7 @@ export async function loadMedia({ filePath: fp, projectPath }: { filePath: strin
         // This needs to be last, because it triggers <video> to load the video
         // If not, onVideoError might be triggered before setWorking() has been cleared.
         // https://github.com/mifi/lossless-cut/issues/515
-        appStore.set(filePathAtom, fp);
+        jotaiDefaultStore.set(filePathAtom, fp);
     } catch (err) {
         if (err instanceof DirectoryAccessDeclinedError) return;
         closeFile();
@@ -256,12 +256,12 @@ export async function runAndReloadFile({ operation, loadingText, errorText = i18
         setWorking({ text: loadingText });
         setProgress(0);
         await withErrorHandling(async () => {
-            const fileFormat = appStore.get(fileFormatAtom);
-            const filePath = appStore.get(filePathAtom);
+            const fileFormat = jotaiDefaultStore.get(fileFormatAtom);
+            const filePath = jotaiDefaultStore.get(filePathAtom);
             invariant(fileFormat != null);
             invariant(filePath != null);
             const ext = getOutFileExtension({ outFormat: fileFormat, filePath });
-            const outPath = getSuffixedOutPath({ customOutDir: appStore.get(customOutDirAtom), filePath, nameSuffix: `${nameSuffix}${ext}` });
+            const outPath = getSuffixedOutPath({ customOutDir: jotaiDefaultStore.get(customOutDirAtom), filePath, nameSuffix: `${nameSuffix}${ext}` });
             const newPath = await operation({ filePath, outPath });
             await transferTimestamps({
                 inPath: filePath,
@@ -293,20 +293,20 @@ export async function tryFixInvalidDuration() {
 
 /** Reloads the <video> element (e.g. after the file was modified on disk) */
 export function reloadFile() {
-    appStore.set(cacheBusterAtom, (v) => v + 1);
+    jotaiDefaultStore.set(cacheBusterAtom, (v) => v + 1);
 }
 
 export function setStartTimeOffset(offset: number) {
-    appStore.set(startTimeOffsetAtom, offset);
+    jotaiDefaultStore.set(startTimeOffsetAtom, offset);
 }
 
 export async function askStartTimeOffset() {
-    const startTimeOffset = appStore.get(startTimeOffsetAtom);
+    const startTimeOffset = jotaiDefaultStore.get(startTimeOffsetAtom);
     const newStartTimeOffset = await promptTimecode({
         initialValue: formatTimecode({ seconds: startTimeOffset }),
         title: i18n.t('Set custom start time offset'),
         description: i18n.t('Instead of video apparently starting at 0, you can offset by a specified value. This only applies to the preview inside LosslessCut and does not modify the file in any way. (Useful for viewing/cutting videos according to timecodes)'),
-        inputPlaceholder: appStore.get(timecodePlaceholderAtom),
+        inputPlaceholder: jotaiDefaultStore.get(timecodePlaceholderAtom),
         allowRelative: true,
     });
 
@@ -317,7 +317,7 @@ export async function askStartTimeOffset() {
 }
 
 export function makeCursorTimeZero() {
-    setStartTimeOffset(-appStore.get(commandedTimeAtom));
+    setStartTimeOffset(-jotaiDefaultStore.get(commandedTimeAtom));
 }
 
 /** Port of upstream openSendReportDialogWithState */
@@ -325,23 +325,23 @@ export function openSendReportDialogWithState(err?: unknown) {
     const { keyBindings: _keyBindings, ...settings } = userSettings;
     const state = {
         ...settings,
-        ffmpegVersion: appStore.get(ffmpegInfoAtom)?.program_version.version,
+        ffmpegVersion: jotaiDefaultStore.get(ffmpegInfoAtom)?.program_version.version,
 
-        filePath: appStore.get(filePathAtom),
-        fileFormat: appStore.get(fileFormatAtom),
-        externalFilesMeta: appStore.get(externalFilesMetaAtom),
-        mainStreams: appStore.get(mainStreamsAtom),
-        copyStreamIdsByFile: appStore.get(copyStreamIdsByFileAtom),
-        cutSegments: appStore.get(cutSegmentsAtom).map((s) => ({ start: s.start, end: s.end })),
-        mainFileFormat: appStore.get(mainFileMetaAtom)?.ffprobeMeta.format,
-        rotation: appStore.get(rotationAtom),
-        shortestFlag: appStore.get(shortestFlagAtom),
-        effectiveExportMode: appStore.get(effectiveExportModeAtom),
+        filePath: jotaiDefaultStore.get(filePathAtom),
+        fileFormat: jotaiDefaultStore.get(fileFormatAtom),
+        externalFilesMeta: jotaiDefaultStore.get(externalFilesMetaAtom),
+        mainStreams: jotaiDefaultStore.get(mainStreamsAtom),
+        copyStreamIdsByFile: jotaiDefaultStore.get(copyStreamIdsByFileAtom),
+        cutSegments: jotaiDefaultStore.get(cutSegmentsAtom).map((s) => ({ start: s.start, end: s.end })),
+        mainFileFormat: jotaiDefaultStore.get(mainFileMetaAtom)?.ffprobeMeta.format,
+        rotation: jotaiDefaultStore.get(rotationAtom),
+        shortestFlag: jotaiDefaultStore.get(shortestFlagAtom),
+        effectiveExportMode: jotaiDefaultStore.get(effectiveExportModeAtom),
     };
 
     dialog_SendReport_open({ err, state });
 }
 
 export function isFileDurationValid() {
-    return isDurationValid(parseFfprobeDuration(appStore.get(mainFileMetaAtom)?.ffprobeMeta.format.duration));
+    return isDurationValid(parseFfprobeDuration(jotaiDefaultStore.get(mainFileMetaAtom)?.ffprobeMeta.format.duration));
 }

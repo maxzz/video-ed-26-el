@@ -4,11 +4,11 @@ import debounce from 'lodash/debounce';
 import isEqual from 'lodash/isEqual';
 import i18n from 'i18next';
 
-import { appStore } from '@/components/4-dialogs/7-0-dialogs/store.ts';
+import { jotaiDefaultStore } from '@/utils/local-utils/9-jotai-default-store.ts';
 import { type StateSegment } from '@/editor/0-core/8-lib/types.ts';
 import { customOutDirAtom, userSettingsAtom } from '@/editor/0-core/9-state/user-settings.ts';
 import { errorToast } from '@/editor/0-core/8-lib/app-dialogs.tsx';
-import { getAppInfo } from '@/editor/0-core/8-lib/main-api.ts';
+import { getAppInfo } from '@/editor/0-core/7-actions/0-main-api.ts';
 import { getSuffixedOutPath } from '@/editor/0-core/8-lib/util.ts';
 import { cutSegmentsAtom } from '@/editor/5-segments/9-state/segments-store.ts';
 import { mapSaveableSegments } from '@/editor/5-segments/8-lib/segments.ts';
@@ -25,7 +25,7 @@ export function getEdlFilePath(fp?: string, cod?: string) {
 const projectSuffix = 'proj.llc';
 
 export function getProjectFileSavePath(storeProjectInWorkingDir: boolean) {
-    return getEdlFilePath(appStore.get(filePathAtom), storeProjectInWorkingDir ? appStore.get(customOutDirAtom) : undefined);
+    return getEdlFilePath(jotaiDefaultStore.get(filePathAtom), storeProjectInWorkingDir ? jotaiDefaultStore.get(customOutDirAtom) : undefined);
 }
 
 const storeProjectInWorkingDirAtom = atom((get) => get(userSettingsAtom).storeProjectInWorkingDir);
@@ -52,7 +52,7 @@ export function initProjectAutoSave() {
                 autoSaveProjectFile: get(autoSaveProjectFileAtom),
             });
         },
-        appStore);
+        jotaiDefaultStore);
 }
 
 const autoSaveProjectFileAtom = atom((get) => get(userSettingsAtom).autoSaveProjectFile);

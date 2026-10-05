@@ -1,4 +1,4 @@
-import { mainApi, mainEvents } from '../8-lib/main-api.ts';
+import { mainApi, mainEvents } from './0-main-api.ts';
 import { runAction } from './kbd-actions.ts';
 
 let initialized = false;

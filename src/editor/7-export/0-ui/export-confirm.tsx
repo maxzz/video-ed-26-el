@@ -6,9 +6,9 @@ import { motion } from 'motion/react';
 import { CircleCheckIcon, InfoIcon, SettingsIcon, TriangleAlertIcon } from 'lucide-react';
 import type { AvoidNegativeTs, PreserveMetadata } from '@shared/types';
 import { troubleshootingUrl } from '@shared/constants';
-import { appStore } from '@/components/4-dialogs/7-0-dialogs/store.ts';
+import { jotaiDefaultStore } from '@/utils/local-utils/9-jotai-default-store.ts';
 import { effectiveExportModeAtom, userSettings, userSettingsAtom } from '@/editor/0-core/9-state/user-settings.ts';
-import { mainApi } from '@/editor/0-core/8-lib/main-api.ts';
+import { mainApi } from '@/editor/0-core/7-actions/0-main-api.ts';
 import { findNearestKeyFrameTime } from '@/editor/0-core/8-lib/ffmpeg/ffmpeg.ts';
 import { isMov as ffmpegIsMov } from '@/editor/0-core/8-lib/ffmpeg/streams.ts';
 import { closeExportConfirm, exportConfirmOpenAtom, settingsVisibleAtom, streamsSelectorShownAtom } from '@/components/2-main/0-all/a-panels-atoms.ts';
@@ -258,7 +258,7 @@ function ExportConfirmContent() {
                     notice={specific.problematicStreams}
                     help={() => showHelpText({ text: i18n.t('Not all formats support all track types, and LosslessCut is unable to properly cut some track types, so you may have to sacrifice some tracks by disabling them in order to get correct result.') })}
                 >
-                    <HighlightedText onClick={() => appStore.set(streamsSelectorShownAtom, true)}><Trans>Keeping {{ numStreamsToCopy }} tracks</Trans></HighlightedText>
+                    <HighlightedText onClick={() => jotaiDefaultStore.set(streamsSelectorShownAtom, true)}><Trans>Keeping {{ numStreamsToCopy }} tracks</Trans></HighlightedText>
                 </Row>
 
                 <Row label={t('Save output to path:')}>
@@ -293,7 +293,7 @@ function ExportConfirmContent() {
                 <div className="py-1 text-xs text-muted-foreground">{t('Depending on your specific file/player, you may have to try different options for best results.')}</div>
 
                 <Row label={t('Show advanced options')}>
-                    <Switch checked={showAdvanced} onCheckedChange={(v) => appStore.set(exportShowAdvancedAtom, v)} />
+                    <Switch checked={showAdvanced} onCheckedChange={(v) => jotaiDefaultStore.set(exportShowAdvancedAtom, v)} />
                 </Row>
 
                 {showAdvanced && (
@@ -398,7 +398,7 @@ function ExportConfirmContent() {
                         </Row>
 
                         <Row animated label={t('More settings')}>
-                            <Button variant="ghost" size="icon-sm" title={t('Settings')} onClick={() => appStore.set(settingsVisibleAtom, true)}><SettingsIcon /></Button>
+                            <Button variant="ghost" size="icon-sm" title={t('Settings')} onClick={() => jotaiDefaultStore.set(settingsVisibleAtom, true)}><SettingsIcon /></Button>
                         </Row>
                     </>
                 )}

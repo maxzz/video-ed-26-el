@@ -2,10 +2,10 @@ import { atom } from 'jotai';
 import sortBy from 'lodash/sortBy.js';
 import type { Frame } from '@/editor/0-core/8-lib/ffmpeg/ffmpeg.ts';
 import type { OverviewWaveform, Thumbnail, WaveformSlice } from '@/editor/0-core/8-lib/types.ts';
-import { appStore } from '@/components/4-dialogs/7-0-dialogs/store';
+import { jotaiDefaultStore } from '@/utils/local-utils/9-jotai-default-store';
 import { userSettingsAtom } from '@/editor/0-core/9-state/user-settings.ts';
 import { getFrameCountAtom } from '@/editor/0-core/9-state/timecode.ts';
-import { onFileReset } from '@/editor/0-core/7-actions/lifecycle.ts';
+import { onFileReset } from '@/editor/0-core/7-actions/2-lifecycle';
 import { calcShouldShowKeyframes, calcShouldShowWaveform } from '@/editor/0-core/8-lib/util.ts';
 import { getFrameCountRaw } from '@/editor/9-edl/8-lib/edl-formats.ts';
 import { detectedFpsAtom, fileDurationAtom, hasAudioAtom, hasVideoAtom, isFileOpenedAtom, startTimeOffsetAtom } from '@/editor/2-file/9-state/a-file-atoms';
@@ -107,7 +107,7 @@ export const timelineScrollerElementAtom = atom<HTMLDivElement | null>(null);
 export const timelineWrapperElementAtom = atom<HTMLDivElement | null>(null);
 
 onFileReset(() => {
-    appStore.set(zoomUnroundedAtom, 1);
-    appStore.set(zoomWindowStartTimeAtom, 0);
-    appStore.set(seekAccelerationAtom, 1);
+    jotaiDefaultStore.set(zoomUnroundedAtom, 1);
+    jotaiDefaultStore.set(zoomWindowStartTimeAtom, 0);
+    jotaiDefaultStore.set(seekAccelerationAtom, 1);
 });

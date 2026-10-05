@@ -4,8 +4,8 @@ import { useTranslation } from 'react-i18next';
 import { Button } from '@/ui/shadcn/button';
 import { cn } from '@/utils/classnames';
 import { BabyIcon, FilterIcon, ListIcon, LockIcon, MoonIcon, PanelRightIcon, SettingsIcon, SunIcon, UnlockIcon } from 'lucide-react';
-import { appStore } from '@/components/4-dialogs/7-0-dialogs/store';
-import { mainApi, preloadEnv } from '@/editor/0-core/8-lib/main-api.ts';
+import { jotaiDefaultStore } from '@/utils/local-utils/9-jotai-default-store';
+import { mainApi, preloadEnv } from '@/editor/0-core/7-actions/0-main-api';
 
 import { customOutDirAtom, setCustomOutDir, userSettingsAtom } from '@/editor/0-core/9-state/user-settings.ts';
 import { runAction } from '@/editor/0-core/7-actions/kbd-actions.ts';
@@ -37,7 +37,7 @@ export function MainArea_Toolbar() {
     return (
         <div className="px-1.5 py-1 min-h-9 text-xs bg-muted/40 border-b flex flex-wrap items-center justify-between gap-1.5">
             {filePath && (<>
-                <Button variant="outline" size="xs" onClick={() => appStore.set(streamsSelectorShownAtom, true)}>
+                <Button variant="outline" size="xs" onClick={() => jotaiDefaultStore.set(streamsSelectorShownAtom, true)}>
                     <ListIcon />
                     {t('Tracks')} ({numStreamsToCopy}/{numStreamsTotal})
                 </Button>
@@ -86,7 +86,7 @@ export function MainArea_Toolbar() {
                 <PanelRightIcon />
             </Button>
 
-            <Button variant="outline" size="icon-xs" title={t('Settings')} onClick={() => appStore.set(settingsVisibleAtom, true)}>
+            <Button variant="outline" size="icon-xs" title={t('Settings')} onClick={() => jotaiDefaultStore.set(settingsVisibleAtom, true)}>
                 <SettingsIcon />
             </Button>
         </div>

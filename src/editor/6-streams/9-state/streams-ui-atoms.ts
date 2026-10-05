@@ -1,6 +1,6 @@
 import { atom } from 'jotai';
-import { appStore } from '@/components/4-dialogs/7-0-dialogs/store';
-import { onFileReset } from '@/editor/0-core/7-actions/lifecycle.ts';
+import { jotaiDefaultStore } from '@/utils/local-utils/9-jotai-default-store';
+import { onFileReset } from '@/editor/0-core/7-actions/2-lifecycle';
 
 // State of the tracks editor (upstream StreamsSelector local state)
 
@@ -16,17 +16,17 @@ export const editingStreamAtom = atom<EditingStream | undefined>(undefined);
 export const editingTagKeyAtom = atom<string | undefined>(undefined);
 
 export function setEditingFile(path: string | undefined) {
-    appStore.set(editingFileAtom, path);
-    appStore.set(editingTagKeyAtom, undefined);
+    jotaiDefaultStore.set(editingFileAtom, path);
+    jotaiDefaultStore.set(editingTagKeyAtom, undefined);
 }
 
 export function setEditingStream(stream: EditingStream | undefined) {
-    appStore.set(editingStreamAtom, stream);
-    appStore.set(editingTagKeyAtom, undefined);
+    jotaiDefaultStore.set(editingStreamAtom, stream);
+    jotaiDefaultStore.set(editingTagKeyAtom, undefined);
 }
 
 onFileReset(() => {
-    appStore.set(editingFileAtom, undefined);
-    appStore.set(editingStreamAtom, undefined);
-    appStore.set(editingTagKeyAtom, undefined);
+    jotaiDefaultStore.set(editingFileAtom, undefined);
+    jotaiDefaultStore.set(editingStreamAtom, undefined);
+    jotaiDefaultStore.set(editingTagKeyAtom, undefined);
 });

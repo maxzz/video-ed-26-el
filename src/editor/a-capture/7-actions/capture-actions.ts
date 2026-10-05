@@ -2,7 +2,7 @@ import i18n from 'i18next';
 import invariant from 'tiny-invariant';
 import type { CaptureFormat } from '@shared/types.ts';
 import type { SegmentBase } from '@/editor/0-core/8-lib/types.ts';
-import { appStore } from '@/components/4-dialogs/7-0-dialogs/store.ts';
+import { jotaiDefaultStore } from '@/utils/local-utils/9-jotai-default-store.ts';
 import { customOutDirAtom, userSettings } from '@/editor/0-core/9-state/user-settings.ts';
 import { handleError, isWorking, setProgress, setWorking, withErrorHandling } from '@/editor/0-core/9-state/working.ts';
 import { getFrameCount } from '@/editor/0-core/9-state/timecode.ts';
@@ -22,35 +22,35 @@ const hideAllNotifications = () => userSettings.hideNotifications === 'all';
 
 function captureCurrentFrameWithFfmpeg(filePath: string) {
     return captureFrameFromFfmpeg({
-        customOutDir: appStore.get(customOutDirAtom),
+        customOutDir: jotaiDefaultStore.get(customOutDirAtom),
         filePath,
         time: getRelevantTime(),
         captureFormat: userSettings.captureFormat,
         quality: userSettings.captureFrameQuality,
-        fileDuration: appStore.get(fileDurationAtom),
+        fileDuration: jotaiDefaultStore.get(fileDurationAtom),
     });
 }
 
 export async function captureSnapshot() {
-    const filePath = appStore.get(filePathAtom);
+    const filePath = jotaiDefaultStore.get(filePathAtom);
     if (!filePath || isWorking()) return;
     try {
         setWorking({ text: i18n.t('Exporting') });
 
         await withErrorHandling(async () => {
-            const video = appStore.get(videoElementAtom);
+            const video = jotaiDefaultStore.get(videoElementAtom);
             invariant(video != null);
-            const usingFfmpeg = appStore.get(usingPreviewFileAtom) || userSettings.captureFrameMethod === 'ffmpeg';
+            const usingFfmpeg = jotaiDefaultStore.get(usingPreviewFileAtom) || userSettings.captureFrameMethod === 'ffmpeg';
             const outPath = usingFfmpeg
                 ? await captureCurrentFrameWithFfmpeg(filePath)
                 : await captureFrameFromTag({
-                    customOutDir: appStore.get(customOutDirAtom),
+                    customOutDir: jotaiDefaultStore.get(customOutDirAtom),
                     filePath,
                     time: getRelevantTime(),
                     captureFormat: userSettings.captureFormat,
                     quality: userSettings.captureFrameQuality,
                     video,
-                    fileDuration: appStore.get(fileDurationAtom),
+                    fileDuration: jotaiDefaultStore.get(fileDurationAtom),
                 });
 
             if (!hideAllNotifications()) openExportFinishedDialog({ filePath: outPath, children: `${i18n.t('Screenshot captured to:')} ${outPath}` });
@@ -61,7 +61,7 @@ export async function captureSnapshot() {
 }
 
 export async function captureSnapshotToClipboard() {
-    const filePath = appStore.get(filePathAtom);
+    const filePath = jotaiDefaultStore.get(filePathAtom);
     if (!filePath || isWorking()) return;
     try {
         setWorking({ text: i18n.t('Exporting') });
@@ -76,7 +76,7 @@ export async function captureSnapshotToClipboard() {
 }
 
 function setStreamDispositionAttachedPic(fileId: string, streamId: number) {
-    appStore.set(paramsByFileAtom, (old) => {
+    jotaiDefaultStore.set(paramsByFileAtom, (old) => {
         const next = new Map(old);
         const fileParams = next.get(fileId) ?? { metadata: {}, paramsByStream: new Map() };
         const paramsByStream = new Map(fileParams.paramsByStream);
@@ -87,7 +87,7 @@ function setStreamDispositionAttachedPic(fileId: string, streamId: number) {
 }
 
 export async function captureSnapshotAsCoverArt() {
-    const filePath = appStore.get(filePathAtom);
+    const filePath = jotaiDefaultStore.get(filePathAtom);
     if (!filePath) return;
     await withErrorHandling(async () => {
         const path = await captureCurrentFrameWithFfmpeg(filePath);
@@ -100,8 +100,8 @@ export async function captureSnapshotAsCoverArt() {
 }
 
 export async function extractSegmentsFramesAsImages(segments: SegmentBase[]) {
-    const filePath = appStore.get(filePathAtom);
-    const detectedFps = appStore.get(detectedFpsAtom);
+    const filePath = jotaiDefaultStore.get(filePathAtom);
+    const detectedFps = jotaiDefaultStore.get(detectedFpsAtom);
     if (!filePath || detectedFps == null || isWorking() || segments.length === 0) return;
     const segmentsNumFrames = segments.reduce((acc, { start, end }) => acc + (end == null ? 1 : (getFrameCount(end - start) ?? 0)), 0);
     // If all segments are markers, we shall export every marker as a file and therefore we don't have to ask user
@@ -130,7 +130,7 @@ export async function extractSegmentsFramesAsImages(segments: SegmentBase[]) {
         for (const [index, segment] of segments.entries()) {
             const { start, end } = segment;
             lastOutPath = await captureFramesRange({
-                customOutDir: appStore.get(customOutDirAtom),
+                customOutDir: jotaiDefaultStore.get(customOutDirAtom),
                 filePath,
                 fps: detectedFps,
                 fromTime: start,
@@ -145,7 +145,7 @@ export async function extractSegmentsFramesAsImages(segments: SegmentBase[]) {
         }
         if (!hideAllNotifications() && lastOutPath != null) {
             showOsNotification(i18n.t('Frames have been extracted'));
-            openExportFinishedDialog({ filePath: lastOutPath, children: i18n.t('Frames extracted to: {{path}}', { path: appStore.get(outputDirAtom) }) });
+            openExportFinishedDialog({ filePath: lastOutPath, children: i18n.t('Frames extracted to: {{path}}', { path: jotaiDefaultStore.get(outputDirAtom) }) });
         }
     } catch (err) {
         showOsNotification(i18n.t('Failed to extract frames'));
@@ -157,12 +157,12 @@ export async function extractSegmentsFramesAsImages(segments: SegmentBase[]) {
 }
 
 export function extractCurrentSegmentFramesAsImages() {
-    const currentCutSeg = appStore.get(currentCutSegAtom);
+    const currentCutSeg = jotaiDefaultStore.get(currentCutSegAtom);
     if (currentCutSeg != null) return extractSegmentsFramesAsImages([currentCutSeg]);
     return undefined;
 }
 
-export const extractSelectedSegmentsFramesAsImages = () => extractSegmentsFramesAsImages(appStore.get(selectedSegmentsAtom));
+export const extractSelectedSegmentsFramesAsImages = () => extractSegmentsFramesAsImages(jotaiDefaultStore.get(selectedSegmentsAtom));
 
 const captureFormats: CaptureFormat[] = ['jpeg', 'png', 'webp'];
 

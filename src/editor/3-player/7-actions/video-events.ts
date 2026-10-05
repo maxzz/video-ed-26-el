@@ -1,12 +1,12 @@
 import i18n from 'i18next';
 import invariant from 'tiny-invariant';
-import { appStore } from '@/components/4-dialogs/7-0-dialogs/store.ts';
+import { jotaiDefaultStore } from '@/utils/local-utils/9-jotai-default-store.ts';
 import { customOutDirAtom, userSettings } from '@/editor/0-core/9-state/user-settings.ts';
 import { formatTimecode, parseTimecode, promptTimecode, timecodePlaceholderAtom } from '@/editor/0-core/9-state/timecode.ts';
 import { isWorking, setWorking } from '@/editor/0-core/9-state/working.ts';
 import { showPlaybackFailedMessage, toastError } from '@/editor/0-core/8-lib/app-dialogs.tsx';
-import { UserFacingError } from '@/editor/0-core/8-lib/errors.ts';
-import { toast } from '@/editor/0-core/8-lib/toast.tsx';
+import { UserFacingError } from '@/editor/0-core/8-lib/9-error-types.ts';
+import { toast } from '@/components/4-dialogs/7-0-dialogs/toast.tsx';
 import { mediaSourceQualities } from '@/editor/0-core/8-lib/util.ts';
 import { fullscreenAtom } from '@/components/2-main/0-all/a-panels-atoms.ts';
 import { fileDurationAtom, filePathAtom, hasAudioAtom, hasVideoAtom, usingPreviewFileAtom } from '@/editor/2-file/9-state/a-file-atoms.ts';
@@ -21,7 +21,7 @@ import { seekAbs, seekRel } from './player-actions.ts';
 export function onDurationChange(durationNew: number) {
     console.log('onDurationChange', durationNew);
     if (isDurationValid(durationNew)) {
-        appStore.set(fileDurationAtom, durationNew);
+        jotaiDefaultStore.set(fileDurationAtom, durationNew);
         maybeCreateFullLengthSegment(durationNew);
     }
 }
@@ -31,13 +31,13 @@ const PIPELINE_ERROR_DECODE = 3; // This usually happens when the user presses p
 const MEDIA_ERR_SRC_NOT_SUPPORTED = 4; // Test: issue-668-3.20.1.m2ts - NOTE: DEMUXER_ERROR_COULD_NOT_OPEN and DEMUXER_ERROR_NO_SUPPORTED_STREAMS is also 4
 
 export async function onVideoError() {
-    const error = appStore.get(videoElementAtom)?.error;
+    const error = jotaiDefaultStore.get(videoElementAtom)?.error;
     if (!error) return;
 
     console.error('onVideoError', error.message, error.code);
 
     try {
-        const filePath = appStore.get(filePathAtom);
+        const filePath = jotaiDefaultStore.get(filePathAtom);
         const isCouldNotParse = error.code === MEDIA_ERR_SRC_NOT_SUPPORTED && error.message?.startsWith('DEMUXER_ERROR_COULD_NOT_PARSE');
         if (
             // MEDIA_ERR_SRC_NOT_SUPPORTED generally means we need to convert to supported format,
@@ -45,7 +45,7 @@ export async function onVideoError() {
             // but in that case we also get: "DEMUXER_ERROR_COULD_NOT_PARSE: FFmpegDemuxer: PTS is not defined 4"
             // and we don't want to auto convert in that case:
             ((error.code === MEDIA_ERR_SRC_NOT_SUPPORTED && !isCouldNotParse) || error.code === PIPELINE_ERROR_DECODE)
-            && !appStore.get(usingPreviewFileAtom) // if we are already using preview file, we shouldn't try to do it again
+            && !jotaiDefaultStore.get(usingPreviewFileAtom) // if we are already using preview file, we shouldn't try to do it again
             && filePath
         ) {
             if (isWorking()) return;
@@ -59,10 +59,10 @@ export async function onVideoError() {
                     throw new UserFacingError(i18n.t('Invalid duration'));
                 }
 
-                const hasVideo = appStore.get(hasVideoAtom);
-                const hasAudio = appStore.get(hasAudioAtom);
+                const hasVideo = jotaiDefaultStore.get(hasVideoAtom);
+                const hasAudio = jotaiDefaultStore.get(hasAudioAtom);
                 if (hasVideo || hasAudio) {
-                    await html5ifyAndLoadWithPreferences(appStore.get(customOutDirAtom), filePath, 'fastest', hasVideo, hasAudio);
+                    await html5ifyAndLoadWithPreferences(jotaiDefaultStore.get(customOutDirAtom), filePath, 'fastest', hasVideo, hasAudio);
                     showNotNativelySupportedMessage();
                 }
             } catch (err) {
@@ -81,13 +81,13 @@ export async function onVideoError() {
 }
 
 export async function goToTimecode() {
-    if (!appStore.get(filePathAtom)) return;
+    if (!jotaiDefaultStore.get(filePathAtom)) return;
     const timecode = await promptTimecode({
-        initialValue: formatTimecode({ seconds: appStore.get(commandedTimeAtom) }),
+        initialValue: formatTimecode({ seconds: jotaiDefaultStore.get(commandedTimeAtom) }),
         title: i18n.t('Seek to timecode'),
         description: i18n.t('Use + and - for relative seek'),
         allowRelative: true,
-        inputPlaceholder: appStore.get(timecodePlaceholderAtom),
+        inputPlaceholder: jotaiDefaultStore.get(timecodePlaceholderAtom),
     });
 
     if (timecode === undefined) return;
@@ -97,7 +97,7 @@ export async function goToTimecode() {
 }
 
 export function goToTimecodeDirect({ time: timeStr }: { time: string; }) {
-    if (!appStore.get(filePathAtom)) return;
+    if (!jotaiDefaultStore.get(filePathAtom)) return;
     invariant(timeStr != null);
     const timecode = parseTimecode(timeStr);
     invariant(timecode != null);
@@ -110,11 +110,11 @@ export async function toggleFullscreenVideo() {
         return;
     }
     try {
-        if (appStore.get(videoElementAtom) == null) {
+        if (jotaiDefaultStore.get(videoElementAtom) == null) {
             console.warn('No video tag to full screen');
             return;
         }
-        const container = appStore.get(videoContainerElementAtom);
+        const container = jotaiDefaultStore.get(videoContainerElementAtom);
         invariant(container != null);
         if (document.fullscreenElement) await document.exitFullscreen();
         else await container.requestFullscreen({ navigationUI: 'hide' });
@@ -123,7 +123,7 @@ export async function toggleFullscreenVideo() {
     }
 }
 
-document.addEventListener('fullscreenchange', () => appStore.set(fullscreenAtom, document.fullscreenElement != null));
+document.addEventListener('fullscreenchange', () => jotaiDefaultStore.set(fullscreenAtom, document.fullscreenElement != null));
 
 export function setPlaybackVolume(volume: number) {
     userSettings.playbackVolume = Math.min(1, Math.max(0, volume));
@@ -133,5 +133,5 @@ export const increaseVolume = () => setPlaybackVolume(userSettings.playbackVolum
 export const decreaseVolume = () => setPlaybackVolume(userSettings.playbackVolume - 0.07);
 
 export function incrementMediaSourceQuality() {
-    appStore.set(mediaSourceQualityAtom, (v) => (v + 1) % mediaSourceQualities.length);
+    jotaiDefaultStore.set(mediaSourceQualityAtom, (v) => (v + 1) % mediaSourceQualities.length);
 }

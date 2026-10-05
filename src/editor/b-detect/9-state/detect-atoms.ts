@@ -1,5 +1,5 @@
 import { atom } from 'jotai';
-import { appStore } from '@/components/4-dialogs/7-0-dialogs/store';
+import { jotaiDefaultStore } from '@/utils/local-utils/9-jotai-default-store';
 import { type FfmpegDialog, parameters as allFfmpegParameters } from '@/editor/0-core/8-lib/ffmpeg/ffmpeg-parameters.ts';
 
 export type ParameterDialogParameters = Record<string, string>;
@@ -12,8 +12,8 @@ export const ffmpegParametersAtom = atom<Record<FfmpegDialog, ParameterDialogPar
     ])) as Record<FfmpegDialog, ParameterDialogParameters>,
 );
 
-export const getFfmpegParameters = (dialogType: FfmpegDialog) => appStore.get(ffmpegParametersAtom)[dialogType];
+export const getFfmpegParameters = (dialogType: FfmpegDialog) => jotaiDefaultStore.get(ffmpegParametersAtom)[dialogType];
 
 export function setFfmpegParametersForDialog(dialogType: FfmpegDialog, newParams: ParameterDialogParameters) {
-    appStore.set(ffmpegParametersAtom, (existing) => ({ ...existing, [dialogType]: { ...existing[dialogType], ...newParams } }));
+    jotaiDefaultStore.set(ffmpegParametersAtom, (existing) => ({ ...existing, [dialogType]: { ...existing[dialogType], ...newParams } }));
 }

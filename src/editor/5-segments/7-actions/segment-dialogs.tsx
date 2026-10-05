@@ -5,13 +5,13 @@ import invariant from 'tiny-invariant';
 import type { StateSegment } from '@/editor/0-core/8-lib/types.ts';
 import { segmentTagsSchema } from '@/editor/0-core/8-lib/types.ts';
 import { editSegmentByExpressionHelpUrl, selectSegmentByExpressionHelpUrl } from '@shared/constants.ts';
-import { appStore } from '@/components/4-dialogs/7-0-dialogs/store.ts';
+import { jotaiDefaultStore } from '@/utils/local-utils/9-jotai-default-store.ts';
 import { fireDialog } from '@/components/4-dialogs/7-0-dialogs/dialogs.ts';
 import { parseTimecode, timecodePlaceholderAtom } from '@/editor/0-core/9-state/timecode.ts';
-import { UserFacingError } from '@/editor/0-core/8-lib/errors.ts';
-import { mainApi } from '@/editor/0-core/8-lib/main-api.ts';
+import { UserFacingError } from '@/editor/0-core/8-lib/9-error-types.ts';
+import { mainApi } from '@/editor/0-core/7-actions/0-main-api.ts';
 import safeishEval from '@/editor/0-core/8-lib/eval/eval.ts';
-import { openExpressionDialog } from '@/editor/0-core/0-ui/expression-dialog.tsx';
+import { openExpressionDialog } from '@/editor/0-core/0-ui/dlg-expression.tsx';
 import { editingSegmentTagsAtom, editingSegmentTagsSegmentIndexAtom } from '@/components/2-main/0-all/a-panels-atoms.ts';
 import { fileDurationAtom } from '@/editor/2-file/9-state/a-file-atoms.ts';
 import { getSegmentTags } from '../8-lib/segments.ts';
@@ -119,7 +119,7 @@ export async function mutateSegmentsByExpr() {
                 ...seg,
                 ...(seg.selected && await mutateSegment(seg, index, value)),
             }), { concurrency: 5 });
-            setCutSegments(mutated, appStore.get(fileDurationAtom));
+            setCutSegments(mutated, jotaiDefaultStore.get(fileDurationAtom));
             return undefined;
         } catch (err) {
             return expressionError(err);
@@ -150,21 +150,21 @@ export async function mutateSegmentsByExpr() {
 export function editSegmentTags(index: number) {
     const seg = getCutSegments()[index];
     if (seg == null) return;
-    appStore.set(editingSegmentTagsSegmentIndexAtom, index);
-    appStore.set(editingSegmentTagsAtom, getSegmentTags(seg));
+    jotaiDefaultStore.set(editingSegmentTagsSegmentIndexAtom, index);
+    jotaiDefaultStore.set(editingSegmentTagsAtom, getSegmentTags(seg));
 }
 
 export const editCurrentSegmentTags = () => editSegmentTags(getCurrentSegIndexSafe());
 
 export function closeSegmentTagsEditor() {
-    appStore.set(editingSegmentTagsSegmentIndexAtom, undefined);
-    appStore.set(editingSegmentTagsAtom, undefined);
+    jotaiDefaultStore.set(editingSegmentTagsSegmentIndexAtom, undefined);
+    jotaiDefaultStore.set(editingSegmentTagsAtom, undefined);
 }
 
 export function saveSegmentTags() {
-    const index = appStore.get(editingSegmentTagsSegmentIndexAtom);
+    const index = jotaiDefaultStore.get(editingSegmentTagsSegmentIndexAtom);
     invariant(index != null);
-    updateSegAtIndex(index, { tags: appStore.get(editingSegmentTagsAtom) });
+    updateSegAtIndex(index, { tags: jotaiDefaultStore.get(editingSegmentTagsAtom) });
     closeSegmentTagsEditor();
 }
 
@@ -190,7 +190,7 @@ export async function reorderSegmentDialog(index: number) {
 // Shift
 
 export async function shiftAllSegmentTimes() {
-    const shift = await openShiftSegmentsDialog({ inputPlaceholder: appStore.get(timecodePlaceholderAtom), parseTimecode });
+    const shift = await openShiftSegmentsDialog({ inputPlaceholder: jotaiDefaultStore.get(timecodePlaceholderAtom), parseTimecode });
     if (shift == null) return;
     const { startShift, endShift } = shift;
     await modifySelectedSegmentTimes((segment) => {

@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import type { FFprobeStream } from '@shared/ffprobe.ts';
-import { mainApi } from '../main-api.ts';
+import { mainApi } from '../../7-actions/0-main-api.ts';
 import { resetMainApiMocks } from '@/editor/f-platform/test/main-api-mock.ts';
 import { getCodecParams, needsSmartCut } from './smartcut.ts';
 

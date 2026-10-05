@@ -2,11 +2,11 @@ import i18n from 'i18next';
 import invariant from 'tiny-invariant';
 import sum from 'lodash/sum.js';
 import type { FFprobeStream } from '@shared/ffprobe';
-import { appStore } from '@/components/4-dialogs/7-0-dialogs/store.ts';
+import { jotaiDefaultStore } from '@/utils/local-utils/9-jotai-default-store.ts';
 import { customOutDirAtom, userSettings } from '@/editor/0-core/9-state/user-settings.ts';
 import { isWorking, setProgress, setWorking } from '@/editor/0-core/9-state/working.ts';
 import { errorToast, showConcatFailedDialog, showDiskFull, showMuxNotSupported, showOutputNotWritable } from '@/editor/0-core/8-lib/app-dialogs.tsx';
-import { DirectoryAccessDeclinedError, UserFacingError } from '@/editor/0-core/8-lib/errors.ts';
+import { DirectoryAccessDeclinedError, UserFacingError } from '@/editor/0-core/8-lib/9-error-types.ts';
 import { createChaptersFromSegments } from '@/editor/0-core/8-lib/ffmpeg/ffmpeg.ts';
 import { parsePath } from '@/editor/0-core/8-lib/node-shims.ts';
 import {
@@ -29,24 +29,24 @@ import {
 
 /** Opens the merge dialog, or the open files dialog if there is nothing to merge yet */
 export function concatBatch() {
-    if (appStore.get(batchFilesAtom).length < 2) {
+    if (jotaiDefaultStore.get(batchFilesAtom).length < 2) {
         openFilesDialog();
         return;
     }
-    appStore.set(concatDialogOpenAtom, true);
+    jotaiDefaultStore.set(concatDialogOpenAtom, true);
 }
 
 export function closeConcatDialog() {
-    appStore.set(concatDialogOpenAtom, false);
+    jotaiDefaultStore.set(concatDialogOpenAtom, false);
 }
 
 export function setConcatEnableReadFileMeta(checked: boolean) {
-    appStore.set(concatEnableReadFileMetaAtom, checked);
-    appStore.set(concatFilesMetaAtom, {});
+    jotaiDefaultStore.set(concatEnableReadFileMetaAtom, checked);
+    jotaiDefaultStore.set(concatFilesMetaAtom, {});
 }
 
 export function setConcatMergedFileTemplate(template: string) {
-    if (userSettings.simpleMode) appStore.set(concatTempMergedFileTemplateAtom, template);
+    if (userSettings.simpleMode) jotaiDefaultStore.set(concatTempMergedFileTemplateAtom, template);
     else userSettings.mergedFileTemplate = template;
 }
 
@@ -56,7 +56,7 @@ function getSettingsForReport() {
 }
 
 async function handleConcatFailed(err: unknown, reportState: object) {
-    const sendErrorReport = await showConcatFailedDialog({ fileFormat: appStore.get(fileFormatAtom) });
+    const sendErrorReport = await showConcatFailedDialog({ fileFormat: jotaiDefaultStore.get(fileFormatAtom) });
     if (sendErrorReport) openSendReportDialog({ err, state: { ...getSettingsForReport(), ...reportState } });
 }
 
@@ -73,7 +73,7 @@ export async function userConcatFiles({ paths, includeAllStreams, streams, fileF
     const firstPath = paths[0];
     if (!firstPath) return;
 
-    const customOutDir = appStore.get(customOutDirAtom);
+    const customOutDir = jotaiDefaultStore.get(customOutDirAtom);
 
     try {
         // need to ensure the output dir is writable, because the user might not yet have opened a file, and so MAS might not yet have access to write the dir
@@ -184,23 +184,23 @@ export async function userConcatFiles({ paths, includeAllStreams, streams, fileF
 
 /** Merge button of the dialog (upstream ConcatDialog onConcatClick) */
 export async function onConcatClick() {
-    const firstPath = appStore.get(concatFirstPathAtom);
-    const fileFormat = appStore.get(fileFormatAtom);
+    const firstPath = jotaiDefaultStore.get(concatFirstPathAtom);
+    const fileFormat = jotaiDefaultStore.get(fileFormatAtom);
     invariant(firstPath != null);
     invariant(fileFormat != null);
-    invariant(appStore.get(concatOutputDirAtom) != null);
-    const firstFileMeta = appStore.get(concatFilesMetaAtom)[firstPath];
+    invariant(jotaiDefaultStore.get(concatOutputDirAtom) != null);
+    const firstFileMeta = jotaiDefaultStore.get(concatFilesMetaAtom)[firstPath];
     invariant(firstFileMeta != null);
 
-    const generatedFileNames = await generateConcatFileNames(appStore.get, appStore.get(concatMergedFileTemplateAtom));
+    const generatedFileNames = await generateConcatFileNames(jotaiDefaultStore.get, jotaiDefaultStore.get(concatMergedFileTemplateAtom));
     invariant(generatedFileNames != null);
 
     await userConcatFiles({
-        paths: appStore.get(batchFilePathsAtom),
-        includeAllStreams: appStore.get(concatIncludeAllStreamsAtom),
+        paths: jotaiDefaultStore.get(batchFilePathsAtom),
+        includeAllStreams: jotaiDefaultStore.get(concatIncludeAllStreamsAtom),
         streams: firstFileMeta.ffprobeMeta.streams,
         fileFormat,
-        clearBatchFilesAfterConcat: appStore.get(concatClearBatchFilesAfterConcatAtom),
+        clearBatchFilesAfterConcat: jotaiDefaultStore.get(concatClearBatchFilesAfterConcatAtom),
         generatedFileNames,
     });
 }

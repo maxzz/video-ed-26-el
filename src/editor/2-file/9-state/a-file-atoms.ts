@@ -8,9 +8,9 @@ import { getAudioStreams, getRealVideoStreams, getSubtitleStreams } from '@/edit
 import { isDurationValid } from '@/editor/5-segments/8-lib/segments.ts';
 import { getOutDir } from '@/editor/0-core/8-lib/util.ts';
 import { customOutDirAtom } from '@/editor/0-core/9-state/user-settings.ts';
-import { appStore } from '@/components/4-dialogs/7-0-dialogs/store';
+import { jotaiDefaultStore } from '@/utils/local-utils/9-jotai-default-store';
 import { setProgress } from '@/editor/0-core/9-state/working.ts';
-import { onFileReset } from '@/editor/0-core/7-actions/lifecycle.ts';
+import { onFileReset } from '@/editor/0-core/7-actions/2-lifecycle';
 
 // Per project (per opened file) state. Reset by resetAllFileState() (see 0-core/7-actions/lifecycle.ts).
 
@@ -91,18 +91,18 @@ export const isRotationSetAtom = atom((get) => get(rotationAtom) !== 360);
 export const outputDirAtom = atom((get) => getOutDir(get(customOutDirAtom), get(filePathAtom)));
 
 onFileReset(() => {
-    appStore.set(previewFilePathAtom, undefined);
-    appStore.set(usingDummyVideoAtom, false);
-    appStore.set(fileDurationAtom, undefined);
-    appStore.set(detectedFileFormatAtom, undefined);
-    appStore.set(rotationAtom, 360);
+    jotaiDefaultStore.set(previewFilePathAtom, undefined);
+    jotaiDefaultStore.set(usingDummyVideoAtom, false);
+    jotaiDefaultStore.set(fileDurationAtom, undefined);
+    jotaiDefaultStore.set(detectedFileFormatAtom, undefined);
+    jotaiDefaultStore.set(rotationAtom, 360);
     setProgress(undefined);
-    appStore.set(startTimeOffsetAtom, 0);
-    appStore.set(filePathAtom, undefined);
-    appStore.set(externalFilesMetaAtom, {});
-    appStore.set(paramsByFileAtom, new Map());
-    appStore.set(detectedFpsAtom, undefined);
-    appStore.set(mainFileMetaAtom, undefined);
-    appStore.set(shortestFlagAtom, false);
-    appStore.set(currentFileExportCountAtom, 0);
+    jotaiDefaultStore.set(startTimeOffsetAtom, 0);
+    jotaiDefaultStore.set(filePathAtom, undefined);
+    jotaiDefaultStore.set(externalFilesMetaAtom, {});
+    jotaiDefaultStore.set(paramsByFileAtom, new Map());
+    jotaiDefaultStore.set(detectedFpsAtom, undefined);
+    jotaiDefaultStore.set(mainFileMetaAtom, undefined);
+    jotaiDefaultStore.set(shortestFlagAtom, false);
+    jotaiDefaultStore.set(currentFileExportCountAtom, 0);
 });

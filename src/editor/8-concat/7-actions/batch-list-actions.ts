@@ -1,6 +1,6 @@
 import type { DragEndEvent, DragStartEvent } from '@dnd-kit/core';
 import { arrayMove } from '@dnd-kit/sortable';
-import { appStore } from '@/components/4-dialogs/7-0-dialogs/store.ts';
+import { jotaiDefaultStore } from '@/utils/local-utils/9-jotai-default-store.ts';
 import { batchFilesAtom } from '@/editor/2-file/9-state/a-file-atoms.ts';
 import { setBatchFiles } from '@/editor/2-file/index.ts';
 import { batchDraggingIdAtom, batchSortDescAtom } from '../9-state/concat-atoms.ts';
@@ -8,22 +8,22 @@ import { batchDraggingIdAtom, batchSortDescAtom } from '../9-state/concat-atoms.
 // Port of the handlers of upstream components/BatchFilesList.tsx
 
 export function sortBatchFiles() {
-    const sortDesc = appStore.get(batchSortDescAtom);
+    const sortDesc = jotaiDefaultStore.get(batchSortDescAtom);
     const newSortDesc = sortDesc == null ? false : !sortDesc;
     const order = newSortDesc ? -1 : 1;
     // natural language sort (numeric) https://github.com/mifi/lossless-cut/issues/844
-    setBatchFiles([...appStore.get(batchFilesAtom)].sort((a, b) => order * a.name.localeCompare(b.name, 'en-US', { numeric: true })));
-    appStore.set(batchSortDescAtom, newSortDesc);
+    setBatchFiles([...jotaiDefaultStore.get(batchFilesAtom)].sort((a, b) => order * a.name.localeCompare(b.name, 'en-US', { numeric: true })));
+    jotaiDefaultStore.set(batchSortDescAtom, newSortDesc);
 }
 
 export function onBatchDragStart(event: DragStartEvent) {
-    appStore.set(batchDraggingIdAtom, event.active.id);
+    jotaiDefaultStore.set(batchDraggingIdAtom, event.active.id);
 }
 
 export function onBatchDragEnd({ active, over }: DragEndEvent) {
-    appStore.set(batchDraggingIdAtom, undefined);
+    jotaiDefaultStore.set(batchDraggingIdAtom, undefined);
     if (over == null || active.id === over.id) return;
-    const batchFiles = appStore.get(batchFilesAtom);
+    const batchFiles = jotaiDefaultStore.get(batchFilesAtom);
     const ids = batchFiles.map((f) => f.path);
     const oldIndex = ids.indexOf(active.id as string);
     const newIndex = ids.indexOf(over.id as string);
@@ -32,5 +32,5 @@ export function onBatchDragEnd({ active, over }: DragEndEvent) {
 }
 
 export function onBatchDragCancel() {
-    appStore.set(batchDraggingIdAtom, undefined);
+    jotaiDefaultStore.set(batchDraggingIdAtom, undefined);
 }

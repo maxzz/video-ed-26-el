@@ -11,7 +11,7 @@ import { cn } from '@/utils/classnames';
 import { Button } from '@/ui/shadcn/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/ui/shadcn/select';
 import type { CaptureFormat } from '@shared/types.ts';
-import { appStore } from '@/components/4-dialogs/7-0-dialogs/store.ts';
+import { jotaiDefaultStore } from '@/utils/local-utils/9-jotai-default-store.ts';
 import { userSettings, userSettingsAtom } from '@/editor/0-core/9-state/user-settings.ts';
 import { formatTimecodeAtom, getFrameCountAtom } from '@/editor/0-core/9-state/timecode.ts';
 import { hasAction, runAction } from '@/editor/0-core/7-actions/kbd-actions.ts';
@@ -321,7 +321,7 @@ function PlaybackRateIndicator() {
 }
 
 async function handleChangePlaybackRateClick() {
-    const newRate = await askForPlaybackRate({ detectedFps: appStore.get(detectedFpsAtom), outputPlaybackRate: appStore.get(outputPlaybackRateAtom) });
+    const newRate = await askForPlaybackRate({ detectedFps: jotaiDefaultStore.get(detectedFpsAtom), outputPlaybackRate: jotaiDefaultStore.get(outputPlaybackRateAtom) });
     if (newRate != null) player.setOutputPlaybackRate(newRate);
 }
 
@@ -458,7 +458,7 @@ function ToggleExportConfirm() {
 
 function onExportPress() {
     if (hasAction('export')) void runAction('export');
-    else appStore.set(exportConfirmOpenAtom, true);
+    else jotaiDefaultStore.set(exportConfirmOpenAtom, true);
 }
 
 function ExportButton() {

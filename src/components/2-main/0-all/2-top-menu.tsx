@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 
 import { type EdlExportType, type EdlImportType } from '@/editor/0-core/8-lib/types.ts';
 import { appName, faqUrl, featureRequestUrl, getReleaseUrl, githubUrl, homepageUrl, licensesUrl, thanksUrl, troubleshootingUrl, usageUrl } from '@shared/constants.ts';
-import { getAppInfo } from '@/editor/0-core/8-lib/main-api.ts';
+import { getAppInfo } from '@/editor/0-core/7-actions/0-main-api.ts';
 import { newVersionAtom } from '@/editor/f-platform/9-state/platform.ts';
 import { canRedoAtom, canUndoAtom } from '@/editor/5-segments/9-state/segments-store.ts';
 import { MenuActionItem, modShortcut } from './8-menu-item.tsx';

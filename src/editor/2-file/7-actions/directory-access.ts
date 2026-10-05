@@ -2,8 +2,8 @@ import i18n from 'i18next';
 import invariant from 'tiny-invariant';
 import { setCustomOutDir } from '@/editor/0-core/9-state/user-settings.ts';
 import { askForOutDir, errorToast, showOpenDialog } from '@/editor/0-core/8-lib/app-dialogs.tsx';
-import { DirectoryAccessDeclinedError } from '@/editor/0-core/8-lib/errors.ts';
-import { mainApi } from '@/editor/0-core/8-lib/main-api.ts';
+import { DirectoryAccessDeclinedError } from '@/editor/0-core/8-lib/9-error-types';
+import { mainApi } from '@/editor/0-core/7-actions/0-main-api';
 import { fs } from '@/editor/0-core/8-lib/node-shims.ts';
 import { checkDirWriteAccess, getFileDir, getOutDir } from '@/editor/0-core/8-lib/util.ts';
 

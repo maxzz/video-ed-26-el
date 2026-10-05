@@ -1,7 +1,7 @@
 import { useAtomValue } from 'jotai';
 import { MotionConfig } from 'motion/react';
 import { prefersReducedMotionAtom } from '@/editor/0-core/9-state/user-settings.ts';
-import { DialogHost } from '@/editor/0-core/0-ui/dialog-host.tsx';
+import { Dialog_GenericHost } from '@/components/4-dialogs/7-0-dialogs/generic-dialog-host.tsx';
 import { batchFilesAtom } from '@/editor/2-file/9-state/a-file-atoms.ts';
 import { showRightBarAtom } from './a-layout-atoms.ts';
 import { MainArea_Toolbar } from './3-main-area-toolbar.tsx';
@@ -40,7 +40,7 @@ export function EditorRoot() {
             <ConcatHosts />
             <KeyboardHosts />
             <SettingsHosts />
-            <DialogHost />
+            <Dialog_GenericHost />
         </MotionConfig>
     );
 }

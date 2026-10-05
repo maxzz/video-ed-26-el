@@ -1,10 +1,10 @@
 import i18n from 'i18next';
 import type { Html5ifyMode } from '@shared/types';
-import { appStore } from '@/components/4-dialogs/7-0-dialogs/store.ts';
+import { jotaiDefaultStore } from '@/utils/local-utils/9-jotai-default-store.ts';
 import { customOutDirAtom, userSettings } from '@/editor/0-core/9-state/user-settings.ts';
 import { isWorking, setProgress, setWorking, withErrorHandling } from '@/editor/0-core/9-state/working.ts';
-import { DirectoryAccessDeclinedError } from '@/editor/0-core/8-lib/errors.ts';
-import { toast } from '@/editor/0-core/8-lib/toast.tsx';
+import { DirectoryAccessDeclinedError } from '@/editor/0-core/8-lib/9-error-types.ts';
+import { toast } from '@/components/4-dialogs/7-0-dialogs/toast.tsx';
 import { html5ify } from '@/editor/7-export/8-lib/ffmpeg-operations.ts';
 import { batchFilesAtom, filePathAtom, hasAudioAtom, hasVideoAtom, previewFilePathAtom, rememberConvertToSupportedFormatAtom, usingDummyVideoAtom } from '../9-state/a-file-atoms.ts';
 import { dialogAsync_askForHtml5ifySpeed } from '../0-ui/dlg-html5ify.tsx';
@@ -18,20 +18,20 @@ async function html5ifyAndLoad(cod: string | undefined, fp: string, speed: Html5
         const path = await html5ify({ customOutDir: cod, filePath: fp, speed, hasAudio: ha, hasVideo: hv, onProgress: setProgress });
         if (!path) return;
 
-        appStore.set(previewFilePathAtom, path);
-        appStore.set(usingDummyVideoAtom, speed === 'fastest');
+        jotaiDefaultStore.set(previewFilePathAtom, path);
+        jotaiDefaultStore.set(usingDummyVideoAtom, speed === 'fastest');
     } finally {
         setProgress(undefined);
     }
 }
 
 export async function userHtml5ifyCurrentFile({ ignoreRememberedValue }: { ignoreRememberedValue?: boolean; } = {}) {
-    const filePath = appStore.get(filePathAtom);
+    const filePath = jotaiDefaultStore.get(filePathAtom);
     if (!filePath) return;
-    const hasAudio = appStore.get(hasAudioAtom);
-    const hasVideo = appStore.get(hasVideoAtom);
+    const hasAudio = jotaiDefaultStore.get(hasAudioAtom);
+    const hasVideo = jotaiDefaultStore.get(hasVideoAtom);
 
-    let selectedOption = appStore.get(rememberConvertToSupportedFormatAtom);
+    let selectedOption = jotaiDefaultStore.get(rememberConvertToSupportedFormatAtom);
     if (selectedOption == null || ignoreRememberedValue) {
         let allowedOptions: Html5ifyMode[] = [];
         if (hasAudio && hasVideo) allowedOptions = ['fastest', 'fast-audio-remux', 'fast-audio', 'fast', 'slow', 'slow-audio', 'slowest'];
@@ -44,14 +44,14 @@ export async function userHtml5ifyCurrentFile({ ignoreRememberedValue }: { ignor
         if (userResponse == null) return;
         ({ selectedOption } = userResponse);
 
-        appStore.set(rememberConvertToSupportedFormatAtom, userResponse.rememberChoice ? selectedOption : undefined);
+        jotaiDefaultStore.set(rememberConvertToSupportedFormatAtom, userResponse.rememberChoice ? selectedOption : undefined);
     }
 
     if (isWorking()) return;
     try {
         setWorking({ text: i18n.t('Converting to supported format') });
         await withErrorHandling(async () => {
-            await html5ifyAndLoad(appStore.get(customOutDirAtom), filePath, selectedOption, hasVideo, hasAudio);
+            await html5ifyAndLoad(jotaiDefaultStore.get(customOutDirAtom), filePath, selectedOption, hasVideo, hasAudio);
         }, i18n.t('Failed to convert file. Try a different conversion'));
     } finally {
         setWorking(undefined);
@@ -59,7 +59,7 @@ export async function userHtml5ifyCurrentFile({ ignoreRememberedValue }: { ignor
 }
 
 export async function convertFormatBatch() {
-    const batchFiles = appStore.get(batchFilesAtom);
+    const batchFiles = jotaiDefaultStore.get(batchFilesAtom);
     if (batchFiles.length === 0) return;
 
     const response = await dialogAsync_askForHtml5ifySpeed({ allowedOptions: ['fast-audio-remux', 'fast-audio', 'fast', 'slow', 'slow-audio', 'slowest'] });
@@ -72,7 +72,7 @@ export async function convertFormatBatch() {
     setProgress(0);
 
     const filePaths = batchFiles.map((f) => f.path);
-    const customOutDir = appStore.get(customOutDirAtom);
+    const customOutDir = jotaiDefaultStore.get(customOutDirAtom);
 
     const failedFiles: string[] = [];
     let i = 0;
@@ -106,5 +106,5 @@ export async function convertFormatBatch() {
 export async function html5ifyAndLoadWithPreferences(cod: string | undefined, fp: string, speed: Html5ifyMode, hv: boolean, ha: boolean) {
     if (!userSettings.enableAutoHtml5ify) return;
     setWorking({ text: i18n.t('Converting to supported format') });
-    await html5ifyAndLoad(cod, fp, appStore.get(rememberConvertToSupportedFormatAtom) || speed, hv, ha);
+    await html5ifyAndLoad(cod, fp, jotaiDefaultStore.get(rememberConvertToSupportedFormatAtom) || speed, hv, ha);
 }

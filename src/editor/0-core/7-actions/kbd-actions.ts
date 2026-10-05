@@ -1,5 +1,5 @@
 import { atom } from 'jotai';
-import { appStore } from '../../../components/4-dialogs/7-0-dialogs/store.ts';
+import { jotaiDefaultStore } from '../../../utils/local-utils/9-jotai-default-store.ts';
 import { handleError } from '../9-state/working.ts';
 
 //---------------------------------------------------------------------------
@@ -31,7 +31,7 @@ export function registerActions(actions: Record<string, ActionFn | ActionDef>) {
         registry.set(name, typeof fnOrDef === 'function' ? { run: fnOrDef } : fnOrDef);
     }
 
-    appStore.set(actionsVersionAtom, (v) => v + 1);
+    jotaiDefaultStore.set(actionsVersionAtom, (v) => v + 1);
 }
 
 //---------------------------------------------------------------------------

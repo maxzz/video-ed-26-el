@@ -2,7 +2,7 @@ import type { MouseEvent as ReactMouseEvent } from 'react';
 import { observe } from 'jotai-effect';
 import { animate, type AnimationPlaybackControls } from 'motion/react';
 import debounce from 'lodash/debounce.js';
-import { appStore } from '@/components/4-dialogs/7-0-dialogs/store.ts';
+import { jotaiDefaultStore } from '@/utils/local-utils/9-jotai-default-store.ts';
 import { prefersReducedMotionAtom, userSettings } from '@/editor/0-core/9-state/user-settings.ts';
 import { calculateTimelinePos } from '@/editor/0-core/8-lib/util.ts';
 import { fileDurationNonZeroAtom } from '@/editor/2-file/9-state/a-file-atoms.ts';
@@ -28,7 +28,7 @@ let scrollAnimation: AnimationPlaybackControls | undefined;
 
 function animateScrollLeft(scroller: HTMLDivElement, target: number) {
     scrollAnimation?.stop();
-    if (appStore.get(prefersReducedMotionAtom)) {
+    if (jotaiDefaultStore.get(prefersReducedMotionAtom)) {
         scroller.scrollLeft = target;
         return;
     }
@@ -43,10 +43,10 @@ function animateScrollLeft(scroller: HTMLDivElement, target: number) {
 }
 
 export function onTimelineScroll() {
-    const scroller = appStore.get(timelineScrollerElementAtom);
+    const scroller = jotaiDefaultStore.get(timelineScrollerElementAtom);
     if (!scroller) return;
-    const zoom = appStore.get(zoomAtom);
-    appStore.set(zoomWindowStartTimeAtom, (scroller.scrollLeft / (scroller.offsetWidth * zoom)) * appStore.get(fileDurationNonZeroAtom));
+    const zoom = jotaiDefaultStore.get(zoomAtom);
+    jotaiDefaultStore.set(zoomWindowStartTimeAtom, (scroller.scrollLeft / (scroller.offsetWidth * zoom)) * jotaiDefaultStore.get(fileDurationNonZeroAtom));
 }
 
 // Pan timeline when cursor moves out of timeline window. https://github.com/mifi/lossless-cut/issues/676
@@ -69,28 +69,28 @@ observe((get) => {
         const scrollLeft = timeOfInterestPosPixels - (scroller.offsetWidth * 0.9);
         animateScrollLeft(scroller, Math.max(scrollLeft, 0));
     }
-}, appStore);
+}, jotaiDefaultStore);
 
 // Hover time is only valid until the playback position changes
 observe((get, set) => {
     get(relevantTimeAtom);
     set(hoveringTimeAtom, undefined);
-}, appStore);
+}, jotaiDefaultStore);
 
 let lastZoom = 1;
 
 /** Keep cursor in middle while zooming. Called after the wrapper got its new (zoomed) width */
 function onWrapperResize() {
-    const zoom = appStore.get(zoomAtom);
+    const zoom = jotaiDefaultStore.get(zoomAtom);
     if (zoom === lastZoom) return;
     lastZoom = zoom;
 
     suppressScrollerEvents();
-    const scroller = appStore.get(timelineScrollerElementAtom);
+    const scroller = jotaiDefaultStore.get(timelineScrollerElementAtom);
     if (!scroller) return;
     if (zoom > 1) {
         const zoomedTargetWidth = scroller.offsetWidth * zoom;
-        const scrollLeft = Math.max((appStore.get(commandedTimeAtom) / appStore.get(fileDurationNonZeroAtom)) * zoomedTargetWidth - scroller.offsetWidth / 2, 0);
+        const scrollLeft = Math.max((jotaiDefaultStore.get(commandedTimeAtom) / jotaiDefaultStore.get(fileDurationNonZeroAtom)) * zoomedTargetWidth - scroller.offsetWidth / 2, 0);
         scrollAnimation?.stop();
         scroller.scrollLeft = scrollLeft;
     }
@@ -99,34 +99,34 @@ function onWrapperResize() {
 
 export function timelineScrollerRef(el: HTMLDivElement | null) {
     if (!el) return undefined;
-    appStore.set(timelineScrollerElementAtom, el);
+    jotaiDefaultStore.set(timelineScrollerElementAtom, el);
     const cancelWheel = (event: WheelEvent) => event.preventDefault();
     el.addEventListener('wheel', cancelWheel, { passive: false });
     return () => {
         el.removeEventListener('wheel', cancelWheel);
-        appStore.set(timelineScrollerElementAtom, null);
+        jotaiDefaultStore.set(timelineScrollerElementAtom, null);
     };
 }
 
 export function timelineWrapperRef(el: HTMLDivElement | null) {
     if (!el) return undefined;
-    appStore.set(timelineWrapperElementAtom, el);
+    jotaiDefaultStore.set(timelineWrapperElementAtom, el);
     const resizeObserver = new ResizeObserver(onWrapperResize);
     resizeObserver.observe(el);
     return () => {
         resizeObserver.disconnect();
-        appStore.set(timelineWrapperElementAtom, null);
+        jotaiDefaultStore.set(timelineWrapperElementAtom, null);
     };
 }
 
 // Mouse
 
 function getMouseTimelinePos(e: MouseEvent) {
-    const target = appStore.get(timelineWrapperElementAtom);
+    const target = jotaiDefaultStore.get(timelineWrapperElementAtom);
     if (!target) return 0;
     const rect = target.getBoundingClientRect();
     const relX = e.pageX - (rect.left + document.body.scrollLeft);
-    return (relX / target.offsetWidth) * appStore.get(fileDurationNonZeroAtom);
+    return (relX / target.offsetWidth) * jotaiDefaultStore.get(fileDurationNonZeroAtom);
 }
 
 let mouseDown = false;
@@ -138,11 +138,11 @@ export function onTimelineMouseDown(e: ReactMouseEvent<HTMLElement>) {
     const mouseTimelinePos = getMouseTimelinePos(e.nativeEvent);
     seekAbs(mouseTimelinePos);
 
-    const currentCutSeg = appStore.get(currentCutSegAtom);
-    const fileDurationNonZero = appStore.get(fileDurationNonZeroAtom);
+    const currentCutSeg = jotaiDefaultStore.get(currentCutSegAtom);
+    const fileDurationNonZero = jotaiDefaultStore.get(fileDurationNonZeroAtom);
 
     // start/end handles 1.5% of visible timeline
-    const threshold = ((0.01 / 2) * fileDurationNonZero) / appStore.get(zoomAtom);
+    const threshold = ((0.01 / 2) * fileDurationNonZero) / jotaiDefaultStore.get(zoomAtom);
 
     if (currentCutSeg != null && currentCutSeg.selected && isModifierPressed(e, userSettings.segmentMouseModifierKey)) {
         if (Math.abs(mouseTimelinePos - currentCutSeg.start) < threshold) {
@@ -186,10 +186,10 @@ export function onTimelineMouseDown(e: ReactMouseEvent<HTMLElement>) {
 }
 
 export function onTimelineMouseMove(e: ReactMouseEvent<HTMLDivElement>) {
-    if (!mouseDown) appStore.set(hoveringTimeAtom, getMouseTimelinePos(e.nativeEvent));
+    if (!mouseDown) jotaiDefaultStore.set(hoveringTimeAtom, getMouseTimelinePos(e.nativeEvent));
     e.preventDefault();
 }
 
 export function onTimelineMouseOut() {
-    appStore.set(hoveringTimeAtom, undefined);
+    jotaiDefaultStore.set(hoveringTimeAtom, undefined);
 }

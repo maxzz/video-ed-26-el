@@ -2,7 +2,7 @@ import { type ComponentProps, type ReactNode } from 'react';
 import { MenubarItem, MenubarShortcut } from '@/ui/shadcn/menubar';
 
 import { type MenuAction, runMenuAction } from '@/editor/0-core/menu-actions/index.ts';
-import { getAppInfo } from '@/editor/0-core/8-lib/main-api.ts';
+import { getAppInfo } from '@/editor/0-core/7-actions/0-main-api';
 
 export function modShortcut(key: string, shift = false) {
     const { isMac } = getAppInfo();

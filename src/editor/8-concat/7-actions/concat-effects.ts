@@ -1,7 +1,7 @@
 import { observe } from 'jotai-effect';
 import pMap from 'p-map';
 import invariant from 'tiny-invariant';
-import { appStore } from '@/components/4-dialogs/7-0-dialogs/store.ts';
+import { jotaiDefaultStore } from '@/utils/local-utils/9-jotai-default-store.ts';
 import { getDefaultOutFormat, mapRecommendedDefaultFormat, readFileFfprobeMeta } from '@/editor/0-core/8-lib/ffmpeg/ffmpeg.ts';
 import { isAbortedError, readFileStats } from '@/editor/0-core/8-lib/util.ts';
 import { batchFilePathsAtom, detectedFileFormatAtom, fileFormatAtom } from '@/editor/2-file/9-state/a-file-atoms.ts';
@@ -40,7 +40,7 @@ export function initConcatEffects() {
 
         (async () => {
             const pathsToFetchMetaFrom = enableReadFileMeta ? paths : [firstPath];
-            const existingMeta = appStore.get(concatFilesMetaAtom);
+            const existingMeta = jotaiDefaultStore.get(concatFilesMetaAtom);
 
             const newMetaEntries = await pMap(pathsToFetchMetaFrom, async (path) => {
                 abortController.signal.throwIfAborted();
@@ -53,17 +53,17 @@ export function initConcatEffects() {
 
             abortController.signal.throwIfAborted();
 
-            appStore.set(detectedFileFormatAtom, fileFormatNew);
-            appStore.set(fileFormatAtom, outFormatLocked || mapRecommendedDefaultFormat({ sourceFormat: fileFormatNew, streams: firstFileMeta.ffprobeMeta.streams }).format);
-            appStore.set(concatFilesMetaAtom, (existing) => ({ ...existing, ...Object.fromEntries(newMetaEntries) }));
-            appStore.set(concatUniqueSuffixAtom, Date.now());
+            jotaiDefaultStore.set(detectedFileFormatAtom, fileFormatNew);
+            jotaiDefaultStore.set(fileFormatAtom, outFormatLocked || mapRecommendedDefaultFormat({ sourceFormat: fileFormatNew, streams: firstFileMeta.ffprobeMeta.streams }).format);
+            jotaiDefaultStore.set(concatFilesMetaAtom, (existing) => ({ ...existing, ...Object.fromEntries(newMetaEntries) }));
+            jotaiDefaultStore.set(concatUniqueSuffixAtom, Date.now());
         })().catch((err: unknown) => {
             if (isAbortedError(err)) return;
             console.error(err);
         });
 
         return () => abortController.abort();
-    }, appStore);
+    }, jotaiDefaultStore);
 
     /** In simple mode, use a name generated from the first file as the template, so users don't *have to* deal with variables */
     observe((get) => {
@@ -71,18 +71,18 @@ export function initConcatEffects() {
         let canceled = false;
         generateConcatFileNames(get, defaultMergedFileTemplate).then((generated) => {
             const [fileName] = generated?.fileNames ?? [];
-            if (!canceled && fileName != null) appStore.set(concatTempMergedFileTemplateAtom, fileName);
+            if (!canceled && fileName != null) jotaiDefaultStore.set(concatTempMergedFileTemplateAtom, fileName);
         }).catch(console.error);
         return () => { canceled = true; };
-    }, appStore);
+    }, jotaiDefaultStore);
 
     /** Output file name preview of the template editor */
     observe((get) => {
         if (!get(isConcatDialogShownAtom)) return undefined;
         let canceled = false;
         generateConcatFileNames(get, get(concatMergedFileTemplateAtom)).then((generated) => {
-            if (!canceled) appStore.set(concatGeneratedFileNamesAtom, generated);
+            if (!canceled) jotaiDefaultStore.set(concatGeneratedFileNamesAtom, generated);
         }).catch(console.error);
         return () => { canceled = true; };
-    }, appStore);
+    }, jotaiDefaultStore);
 }

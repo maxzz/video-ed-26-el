@@ -1,15 +1,15 @@
 import i18n from 'i18next';
 import invariant from 'tiny-invariant';
-import { appStore } from '@/components/4-dialogs/7-0-dialogs/store.ts';
+import { jotaiDefaultStore } from '@/utils/local-utils/9-jotai-default-store.ts';
 import { customOutDirAtom, effectiveExportModeAtom, hideAllNotificationsAtom, prefersReducedMotionAtom, setCustomOutDir, userSettings } from '@/editor/0-core/9-state/user-settings.ts';
 import { isWorking, setProgress, setWorking, withErrorHandling } from '@/editor/0-core/9-state/working.ts';
 import { askForOutDir, type CleanupChoicesType, confirmDialog, deleteFiles, errorToast, showDiskFull, showExportFailedDialog, showMuxNotSupported, showOutputNotWritable, showRefuseToOverwrite } from '@/editor/0-core/8-lib/app-dialogs.tsx';
-import { UserFacingError } from '@/editor/0-core/8-lib/errors.ts';
+import { UserFacingError } from '@/editor/0-core/8-lib/9-error-types.ts';
 import { isIphoneHevc, isProblematicAvc1, RefuseOverwriteError } from '@/editor/0-core/8-lib/ffmpeg/ffmpeg.ts';
 import { isMatroska } from '@/editor/0-core/8-lib/ffmpeg/streams.ts';
-import { mainApi } from '@/editor/0-core/8-lib/main-api.ts';
+import { mainApi } from '@/editor/0-core/7-actions/0-main-api.ts';
 import type { Chapter, ExportMode } from '@/editor/0-core/8-lib/types.ts';
-import { DirectoryAccessDeclinedError } from '@/editor/0-core/8-lib/errors.ts';
+import { DirectoryAccessDeclinedError } from '@/editor/0-core/8-lib/9-error-types.ts';
 import { ensureWritableOutDir } from '@/editor/2-file/7-actions/directory-access.ts';
 import { getOutFileExtension, getOutPath, getStdioString, getSuffixedOutPath, isAbortedError, isExecaError, isMuxNotSupported, isOutOfSpaceError, transferTimestamps } from '@/editor/0-core/8-lib/util.ts';
 import { exportConfirmOpenAtom, streamsSelectorShownAtom } from '@/components/2-main/0-all/a-panels-atoms.ts';
@@ -42,21 +42,21 @@ function getReportState() {
     const { keyBindings: _keyBindings, ...settings } = userSettings;
     return {
         ...settings,
-        filePath: appStore.get(filePathAtom),
-        fileFormat: appStore.get(fileFormatAtom),
-        externalFilesMeta: appStore.get(externalFilesMetaAtom),
-        mainStreams: appStore.get(mainStreamsAtom),
-        copyStreamIdsByFile: appStore.get(copyStreamIdsByFileAtom),
-        cutSegments: appStore.get(cutSegmentsAtom).map((s) => ({ start: s.start, end: s.end })),
-        mainFileFormat: appStore.get(mainFileFormatDataAtom),
-        rotation: appStore.get(rotationAtom),
-        shortestFlag: appStore.get(shortestFlagAtom),
-        effectiveExportMode: appStore.get(effectiveExportModeAtom),
+        filePath: jotaiDefaultStore.get(filePathAtom),
+        fileFormat: jotaiDefaultStore.get(fileFormatAtom),
+        externalFilesMeta: jotaiDefaultStore.get(externalFilesMetaAtom),
+        mainStreams: jotaiDefaultStore.get(mainStreamsAtom),
+        copyStreamIdsByFile: jotaiDefaultStore.get(copyStreamIdsByFileAtom),
+        cutSegments: jotaiDefaultStore.get(cutSegmentsAtom).map((s) => ({ start: s.start, end: s.end })),
+        mainFileFormat: jotaiDefaultStore.get(mainFileFormatDataAtom),
+        rotation: jotaiDefaultStore.get(rotationAtom),
+        shortestFlag: jotaiDefaultStore.get(shortestFlagAtom),
+        effectiveExportMode: jotaiDefaultStore.get(effectiveExportModeAtom),
     };
 }
 
 export async function handleExportFailed(err: unknown) {
-    const sendErrorReport = await showExportFailedDialog({ fileFormat: appStore.get(fileFormatAtom), safeOutputFileName: userSettings.safeOutputFileName });
+    const sendErrorReport = await showExportFailedDialog({ fileFormat: jotaiDefaultStore.get(fileFormatAtom), safeOutputFileName: userSettings.safeOutputFileName });
     if (sendErrorReport) dialog_SendReport_open({ err, state: getReportState() });
 }
 
@@ -92,9 +92,9 @@ export function handleFfmpegFailure(err: unknown) {
 export async function cleanupFiles(cleanupChoices2: CleanupChoicesType) {
     // Store paths before we reset state
     const savedPaths = {
-        previewFilePath: appStore.get(previewFilePathAtom),
-        sourceFilePath: appStore.get(filePathAtom),
-        projectFilePath: appStore.get(projectFileSavePathAtom),
+        previewFilePath: jotaiDefaultStore.get(previewFilePathAtom),
+        sourceFilePath: jotaiDefaultStore.get(filePathAtom),
+        projectFilePath: jotaiDefaultStore.get(projectFileSavePathAtom),
     };
 
     if (cleanupChoices2.closeFile) {
@@ -123,7 +123,7 @@ export async function askForCleanupChoices() {
 }
 
 export async function cleanupFilesDialog() {
-    if (!appStore.get(isFileOpenedAtom) || isWorking()) return;
+    if (!jotaiDefaultStore.get(isFileOpenedAtom) || isWorking()) return;
 
     try {
         const { cleanupChoices } = userSettings;
@@ -138,23 +138,23 @@ export async function cleanupFilesDialog() {
 // Export
 
 export async function onExportConfirm() {
-    const filePath = appStore.get(filePathAtom);
-    const outputDir = appStore.get(outputDirAtom);
+    const filePath = jotaiDefaultStore.get(filePathAtom);
+    const outputDir = jotaiDefaultStore.get(outputDirAtom);
     invariant(filePath != null && outputDir != null);
     emitEvent({ eventName: 'export-start', path: filePath });
 
-    if (appStore.get(numStreamsToCopyAtom) === 0) {
+    if (jotaiDefaultStore.get(numStreamsToCopyAtom) === 0) {
         errorToast(i18n.t('No tracks selected for export'));
         return;
     }
 
-    if (appStore.get(haveInvalidSegsAtom)) {
+    if (jotaiDefaultStore.get(haveInvalidSegsAtom)) {
         errorToast(i18n.t('Start time must be before end time'));
         return;
     }
 
-    appStore.set(streamsSelectorShownAtom, false);
-    appStore.set(exportConfirmOpenAtom, false);
+    jotaiDefaultStore.set(streamsSelectorShownAtom, false);
+    jotaiDefaultStore.set(exportConfirmOpenAtom, false);
 
     if (isWorking()) return;
 
@@ -162,11 +162,11 @@ export async function onExportConfirm() {
         segmentsToChaptersOnly, autoDeleteMergedSegments, keyframeCut, ffmpegExperimental, preserveMetadata, preserveMetadataOnMerge, preserveMovData, preserveChapters,
         movFastStart, avoidNegativeTs, enableOverwriteOutput, exportConfirmEnabled, segmentsToChapters, invertCutSegments, simpleMode, cleanupChoices,
     } = userSettings;
-    const customOutDir = appStore.get(customOutDirAtom);
-    const fileFormat = appStore.get(fileFormatAtom);
-    const segmentsToExport = appStore.get(segmentsToExportAtom);
-    const willMerge = appStore.get(willMergeAtom);
-    const mainStreams = appStore.get(mainStreamsAtom);
+    const customOutDir = jotaiDefaultStore.get(customOutDirAtom);
+    const fileFormat = jotaiDefaultStore.get(fileFormatAtom);
+    const segmentsToExport = jotaiDefaultStore.get(segmentsToExportAtom);
+    const willMerge = jotaiDefaultStore.get(willMergeAtom);
+    const mainStreams = jotaiDefaultStore.get(mainStreamsAtom);
 
     try {
         setWorking({ text: i18n.t('Exporting') });
@@ -174,7 +174,7 @@ export async function onExportConfirm() {
         // Special segments-to-chapters mode:
         let chaptersToAdd: Chapter[] | undefined;
         if (segmentsToChaptersOnly) {
-            const sortedSegments = sortSegments(appStore.get(segmentsOrInverseAtom).selected);
+            const sortedSegments = sortSegments(jotaiDefaultStore.get(segmentsOrInverseAtom).selected);
             if (hasAnySegmentOverlap(sortedSegments)) {
                 errorToast(i18n.t('Make sure you have no overlapping segments.'));
                 return;
@@ -183,7 +183,7 @@ export async function onExportConfirm() {
             chaptersToAdd = isMatroska(fileFormat) ? sortedSegments : convertSegmentsToChaptersWithGaps(sortedSegments);
         }
 
-        const cutFileTemplateOrDefault = appStore.get(cutFileTemplateOrDefaultAtom);
+        const cutFileTemplateOrDefault = jotaiDefaultStore.get(cutFileTemplateOrDefaultAtom);
         console.log('cutFileTemplate', cutFileTemplateOrDefault);
 
         const notices = new Set<string>();
@@ -209,15 +209,15 @@ export async function onExportConfirm() {
             outputDir,
             customOutDir,
             outFormat: fileFormat,
-            fileDuration: appStore.get(fileDurationAtom),
-            rotation: appStore.get(isRotationSetAtom) ? appStore.get(effectiveRotationAtom) : undefined,
-            copyFileStreams: appStore.get(copyFileStreamsAtom),
-            allFilesMeta: appStore.get(allFilesMetaAtom),
+            fileDuration: jotaiDefaultStore.get(fileDurationAtom),
+            rotation: jotaiDefaultStore.get(isRotationSetAtom) ? jotaiDefaultStore.get(effectiveRotationAtom) : undefined,
+            copyFileStreams: jotaiDefaultStore.get(copyFileStreamsAtom),
+            allFilesMeta: jotaiDefaultStore.get(allFilesMetaAtom),
             keyframeCut,
             segments: segmentsToExport,
             cutFileNames,
             onProgress: setProgress,
-            shortestFlag: appStore.get(shortestFlagAtom),
+            shortestFlag: jotaiDefaultStore.get(shortestFlagAtom),
             ffmpegExperimental,
             preserveMetadata,
             preserveMetadataOnMerge,
@@ -225,15 +225,15 @@ export async function onExportConfirm() {
             preserveChapters,
             movFastStart,
             avoidNegativeTs,
-            paramsByFile: appStore.get(paramsByFileAtom),
+            paramsByFile: jotaiDefaultStore.get(paramsByFileAtom),
             chapters: chaptersToAdd,
-            detectedFps: appStore.get(detectedFpsAtom),
+            detectedFps: jotaiDefaultStore.get(detectedFpsAtom),
         });
 
         let mergedOutFilePath: string | undefined;
 
         if (willMerge) {
-            const cutMergedFileTemplateOrDefault = appStore.get(cutMergedFileTemplateOrDefaultAtom);
+            const cutMergedFileTemplateOrDefault = jotaiDefaultStore.get(cutMergedFileTemplateOrDefaultAtom);
             console.log('cutMergedFileTemplateOrDefault', cutMergedFileTemplateOrDefault);
 
             setProgress(0);
@@ -274,7 +274,7 @@ export async function onExportConfirm() {
 
         if (!exportConfirmEnabled) notices.add(i18n.t('Export options are not shown. You can enable export options by clicking the icon right next to the export button.'));
 
-        const mainFileFormat = appStore.get(mainFileFormatDataAtom);
+        const mainFileFormat = jotaiDefaultStore.get(mainFileFormatDataAtom);
         invariant(mainFileFormat != null);
         // https://github.com/mifi/lossless-cut/issues/329
         if (isIphoneHevc(mainFileFormat, mainStreams)) warnings.add(i18n.t('There is a known issue with cutting iPhone HEVC videos. The output file may not work in all players.'));
@@ -282,8 +282,8 @@ export async function onExportConfirm() {
         // https://github.com/mifi/lossless-cut/issues/280
         if (!ffmpegExperimental && isProblematicAvc1(fileFormat, mainStreams)) warnings.add(i18n.t('There is a known problem with this file type, and the output might not be playable. You can work around this problem by enabling the "Experimental flag" under Settings.'));
 
-        if (appStore.get(exportExtraStreamsAtom)) {
-            const nonCopiedExtraStreams = appStore.get(nonCopiedExtraStreamsAtom);
+        if (jotaiDefaultStore.get(exportExtraStreamsAtom)) {
+            const nonCopiedExtraStreams = jotaiDefaultStore.get(nonCopiedExtraStreamsAtom);
             try {
                 setProgress(undefined); // If extracting extra streams takes a long time, prevent loader from being stuck at 100%
                 setWorking({ text: i18n.t('Extracting {{count}} unprocessable tracks', { count: nonCopiedExtraStreams.length }) });
@@ -295,9 +295,9 @@ export async function onExportConfirm() {
             }
         }
 
-        if (appStore.get(areWeCuttingAtom)) notices.add(i18n.t('Cutpoints may be inaccurate.'));
+        if (jotaiDefaultStore.get(areWeCuttingAtom)) notices.add(i18n.t('Cutpoints may be inaccurate.'));
 
-        if (simpleMode && !appStore.get(prefersReducedMotionAtom)) showNotification({ icon: 'success', text: i18n.t('Export is done!') });
+        if (simpleMode && !jotaiDefaultStore.get(prefersReducedMotionAtom)) showNotification({ icon: 'success', text: i18n.t('Export is done!') });
 
         if (cleanupChoices.cleanupAfterExport) {
             const newCleanupChoices = cleanupChoices.askForCleanup ? await askForCleanupChoices() : cleanupChoices;
@@ -309,7 +309,7 @@ export async function onExportConfirm() {
         const exportedPaths = willMerge && mergedOutFilePath != null ? [mergedOutFilePath] : outFiles.map((f) => f.path);
         const [revealPath] = exportedPaths;
         invariant(revealPath != null);
-        if (!appStore.get(hideAllNotificationsAtom)) {
+        if (!jotaiDefaultStore.get(hideAllNotificationsAtom)) {
             showOsNotification(i18n.t('Export finished'));
             openCutFinishedDialog({ filePath: revealPath, warnings: [...warnings], notices: [...notices] });
         }
@@ -334,18 +334,18 @@ export async function onExportConfirm() {
 }
 
 export function increaseExportCount() {
-    appStore.set(exportCountAtom, (c) => c + 1);
-    appStore.set(currentFileExportCountAtom, (c) => c + 1);
+    jotaiDefaultStore.set(exportCountAtom, (c) => c + 1);
+    jotaiDefaultStore.set(currentFileExportCountAtom, (c) => c + 1);
 }
 
 export async function onExportPress() {
-    if (!appStore.get(filePathAtom)) return;
+    if (!jotaiDefaultStore.get(filePathAtom)) return;
 
-    if (!userSettings.exportConfirmEnabled || appStore.get(exportConfirmOpenAtom)) {
+    if (!userSettings.exportConfirmEnabled || jotaiDefaultStore.get(exportConfirmOpenAtom)) {
         await onExportConfirm();
     } else {
-        appStore.set(exportConfirmOpenAtom, true);
-        appStore.set(streamsSelectorShownAtom, false);
+        jotaiDefaultStore.set(exportConfirmOpenAtom, true);
+        jotaiDefaultStore.set(streamsSelectorShownAtom, false);
     }
 }
 
@@ -367,14 +367,14 @@ export function toggleSafeOutputFileName() {
 }
 
 export async function changeOutDir() {
-    const newOutDir = await askForOutDir(appStore.get(outputDirAtom));
+    const newOutDir = await askForOutDir(jotaiDefaultStore.get(outputDirAtom));
     if (newOutDir) setCustomOutDir(newOutDir);
 }
 
 /** Selects a recent/custom working dir (undefined = same as input) after checking that it is writable */
 export async function setOutputDir(newOutDir: string | undefined) {
     try {
-        await ensureWritableOutDir({ inputPath: appStore.get(filePathAtom), outDir: newOutDir });
+        await ensureWritableOutDir({ inputPath: jotaiDefaultStore.get(filePathAtom), outDir: newOutDir });
         setCustomOutDir(newOutDir);
     } catch (err) {
         if (err instanceof DirectoryAccessDeclinedError) return;
@@ -383,14 +383,14 @@ export async function setOutputDir(newOutDir: string | undefined) {
 }
 
 export function onOutputFormatUserChange(newFormat: string) {
-    appStore.set(fileFormatAtom, newFormat);
+    jotaiDefaultStore.set(fileFormatAtom, newFormat);
     if (userSettings.outFormatLocked) {
-        userSettings.outFormatLocked = newFormat === appStore.get(detectedFileFormatAtom) ? undefined : newFormat;
+        userSettings.outFormatLocked = newFormat === jotaiDefaultStore.get(detectedFileFormatAtom) ? undefined : newFormat;
     }
 }
 
 export function toggleOutFormatLocked() {
-    userSettings.outFormatLocked = userSettings.outFormatLocked ? undefined : appStore.get(fileFormatAtom);
+    userSettings.outFormatLocked = userSettings.outFormatLocked ? undefined : jotaiDefaultStore.get(fileFormatAtom);
 }
 
 export function setExportMode(newMode: ExportMode) {
@@ -410,8 +410,8 @@ async function extractStreamsWithFeedback({ streams, workingText, successText, o
 }) {
     try {
         setWorking({ text: workingText });
-        const [firstExtractedPath] = await extractStreams({ customOutDir: appStore.get(customOutDirAtom), streams });
-        if (!appStore.get(hideAllNotificationsAtom) && firstExtractedPath != null) {
+        const [firstExtractedPath] = await extractStreams({ customOutDir: jotaiDefaultStore.get(customOutDirAtom), streams });
+        if (!jotaiDefaultStore.get(hideAllNotificationsAtom) && firstExtractedPath != null) {
             showOsNotification(osSuccessText);
             openExportFinishedDialog({ filePath: firstExtractedPath, children: successText });
         }
@@ -432,14 +432,14 @@ async function extractStreamsWithFeedback({ streams, workingText, successText, o
 }
 
 export async function extractAllStreams() {
-    if (!appStore.get(filePathAtom)) return;
+    if (!jotaiDefaultStore.get(filePathAtom)) return;
 
     if (!(await confirmDialog({ description: i18n.t('Please confirm that you want to extract all tracks as separate files'), confirmButtonText: i18n.t('Extract all tracks') }))) return;
 
     if (isWorking()) return;
-    appStore.set(streamsSelectorShownAtom, false);
+    jotaiDefaultStore.set(streamsSelectorShownAtom, false);
     await extractStreamsWithFeedback({
-        streams: appStore.get(mainCopiedStreamsAtom),
+        streams: jotaiDefaultStore.get(mainCopiedStreamsAtom),
         workingText: i18n.t('Extracting all streams'),
         successText: i18n.t('All streams have been extracted as separate files'),
         osSuccessText: i18n.t('All tracks have been extracted'),
@@ -448,9 +448,9 @@ export async function extractAllStreams() {
 }
 
 export async function extractSingleStream(index: number) {
-    if (!appStore.get(filePathAtom) || isWorking()) return;
+    if (!jotaiDefaultStore.get(filePathAtom) || isWorking()) return;
     await extractStreamsWithFeedback({
-        streams: appStore.get(mainStreamsAtom).filter((s) => s.index === index),
+        streams: jotaiDefaultStore.get(mainStreamsAtom).filter((s) => s.index === index),
         workingText: i18n.t('Extracting track'),
         successText: i18n.t('Track has been extracted'),
         osSuccessText: i18n.t('Track has been extracted'),
@@ -474,7 +474,7 @@ export async function tryDecimate() {
 }
 
 export async function copySegmentsToClipboard() {
-    const selectedSegments = appStore.get(selectedSegmentsAtom);
-    if (!appStore.get(isFileOpenedAtom) || selectedSegments.length === 0) return;
+    const selectedSegments = jotaiDefaultStore.get(selectedSegmentsAtom);
+    if (!jotaiDefaultStore.get(isFileOpenedAtom) || selectedSegments.length === 0) return;
     await mainApi.writeClipboardText(formatTsvHuman(selectedSegments));
 }

@@ -1,13 +1,13 @@
 import type { CSSProperties, FocusEvent } from 'react';
 import { useAtomValue } from 'jotai';
 import { VideoIcon } from 'lucide-react';
-import { appStore } from '@/components/4-dialogs/7-0-dialogs/store.ts';
+import { jotaiDefaultStore } from '@/utils/local-utils/9-jotai-default-store.ts';
 import { cn } from '@/utils/classnames';
 import { compatCanvasElementAtom, compatLoadingAtom, compatShowCanvasAtom, compatVideoElementAtom, effectiveRotationAtom } from '../9-state/player-atoms.ts';
 import '../7-actions/compat-player.ts';
 
-const setCompatVideo = (el: HTMLVideoElement | null) => { appStore.set(compatVideoElementAtom, el); };
-const setCompatCanvas = (el: HTMLCanvasElement | null) => { appStore.set(compatCanvasElementAtom, el); };
+const setCompatVideo = (el: HTMLVideoElement | null) => { jotaiDefaultStore.set(compatVideoElementAtom, el); };
+const setCompatCanvas = (el: HTMLCanvasElement | null) => { jotaiDefaultStore.set(compatCanvasElementAtom, el); };
 
 // prevent video element from stealing focus in fullscreen mode https://github.com/mifi/lossless-cut/issues/543#issuecomment-1868167775
 const blurOnFocus = (e: FocusEvent<HTMLVideoElement>) => e.target.blur();

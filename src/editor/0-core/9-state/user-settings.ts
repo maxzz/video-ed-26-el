@@ -3,8 +3,8 @@ import { proxy, snapshot, subscribe } from 'valtio';
 import i18n from 'i18next';
 import type { Config } from '@shared/types.ts';
 import { defaultConfig } from '@shared/default-config.ts';
-import { mainApi } from '../8-lib/main-api.ts';
-import { appStore } from '../../../components/4-dialogs/7-0-dialogs/store.ts';
+import { mainApi } from '../7-actions/0-main-api.ts';
+import { jotaiDefaultStore } from '../../../utils/local-utils/9-jotai-default-store.ts';
 
 /**
  * User settings (electron-store `Config`). Mutate directly: `userSettings.keyframeCut = true`.
@@ -28,14 +28,14 @@ async function flush() {
             await mainApi.configSet(key, JSON.parse(JSON.stringify(userSettings[key] ?? null)));
         } catch (err) {
             console.error('Failed to set config', key, err);
-            const { toastError } = await import('../8-lib/toast.tsx');
+            const { toastError } = await import('../../../components/4-dialogs/7-0-dialogs/toast.tsx');
             toastError(i18n.t('Unable to save your preferences. Try to disable any anti-virus'));
         }
     }
 }
 
 subscribe(userSettings, (ops) => {
-    appStore.set(userSettingsAtom, snapshot(userSettings) as Config);
+    jotaiDefaultStore.set(userSettingsAtom, snapshot(userSettings) as Config);
     if (!loaded) return;
     for (const [, path] of ops) {
         const key = path[0];
@@ -52,7 +52,7 @@ export async function loadUserSettings() {
     } catch (err) {
         console.error('Failed to load config', err);
     }
-    appStore.set(userSettingsAtom, snapshot(userSettings) as Config);
+    jotaiDefaultStore.set(userSettingsAtom, snapshot(userSettings) as Config);
     // let the initial assignment pass through valtio's batched notification before enabling persistence
     await Promise.resolve();
     loaded = true;

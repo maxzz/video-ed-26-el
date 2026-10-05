@@ -4,7 +4,7 @@ import { getRealVideoStreams, getVideoTimebase } from './streams.ts';
 
 import { readKeyframesAroundTime, findNextKeyframe, findKeyframeAtExactTime } from './ffmpeg.ts';
 import type { FFprobeStream } from '@shared/ffprobe';
-import { UserFacingError } from '../errors.ts';
+import { UserFacingError } from '../9-error-types.ts';
 import { readFileSize } from '../util.ts';
 
 

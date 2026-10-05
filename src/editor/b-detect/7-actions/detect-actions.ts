@@ -1,7 +1,7 @@
 import i18n from 'i18next';
 import invariant from 'tiny-invariant';
 import type { DetectedSegment } from '@shared/ipc-contract.ts';
-import { appStore } from '@/components/4-dialogs/7-0-dialogs/store.ts';
+import { jotaiDefaultStore } from '@/utils/local-utils/9-jotai-default-store.ts';
 import { userSettings } from '@/editor/0-core/9-state/user-settings.ts';
 import { handleError, isWorking, setProgress, setWorking } from '@/editor/0-core/9-state/working.ts';
 import { isAbortedError } from '@/editor/0-core/8-lib/util.ts';
@@ -31,7 +31,7 @@ async function detectSegments({ name, workingText, errorText, fn }: {
     errorText: string;
     fn: (params: DetectFnParams) => Promise<{ ffmpegCommand: string; }>;
 }) {
-    const filePath = appStore.get(filePathAtom);
+    const filePath = jotaiDefaultStore.get(filePathAtom);
     if (!filePath || isWorking()) return;
     const abortController = new AbortController();
     try {
@@ -43,7 +43,7 @@ async function detectSegments({ name, workingText, errorText, fn }: {
             signal: abortController.signal,
             onSegmentDetected: (detectedSegment) => {
                 console.log('Detected', name, detectedSegment);
-                loadCutSegments({ segments: [detectedSegment], append: true, getNextCurrentSegIndex: (edl) => edl.length - 1, clampDuration: appStore.get(fileDurationAtom) });
+                loadCutSegments({ segments: [detectedSegment], append: true, getNextCurrentSegIndex: (edl) => edl.length - 1, clampDuration: jotaiDefaultStore.get(fileDurationAtom) });
                 seekAbs(detectedSegment.start);
             },
         });
@@ -58,7 +58,7 @@ async function detectSegments({ name, workingText, errorText, fn }: {
 
 /** Asks for the parameters, then removes the current segment, because detection replaces it with the detected segments */
 async function askParameters(dialogType: FfmpegDialog, docUrl?: string) {
-    if (!appStore.get(filePathAtom) || isWorking()) return undefined;
+    if (!jotaiDefaultStore.get(filePathAtom) || isWorking()) return undefined;
     const parameters = await showParametersDialog({ title: i18n.t('Enter parameters'), dialogType, parameters: getFfmpegParameters(dialogType), docUrl });
     if (parameters == null) return undefined;
     setFfmpegParametersForDialog(dialogType, parameters);
@@ -71,7 +71,7 @@ function getBoundingMode({ mode }: ParameterDialogParameters) {
 }
 
 export async function detectBlackScenes() {
-    const { start, end } = appStore.get(currentCutSegOrWholeTimelineAtom);
+    const { start, end } = jotaiDefaultStore.get(currentCutSegOrWholeTimelineAtom);
     const parameters = await askParameters('blackdetect', 'https://ffmpeg.org/ffmpeg-filters.html#blackdetect');
     if (parameters == null) return;
     const { mode: _mode, ...filterOptions } = parameters;
@@ -82,13 +82,13 @@ export async function detectBlackScenes() {
         workingText: i18n.t('Detecting black scenes'),
         errorText: i18n.t('Failed to detect black scenes'),
         fn: async ({ filePath, onSegmentDetected, signal }) => blackDetect({
-            filePath, streamId: appStore.get(activeVideoStreamIndexAtom), filterOptions, boundingMode, onProgress: setProgress, onSegmentDetected, signal, from: start, to: end, ffmpegHwaccel: userSettings.ffmpegHwaccel,
+            filePath, streamId: jotaiDefaultStore.get(activeVideoStreamIndexAtom), filterOptions, boundingMode, onProgress: setProgress, onSegmentDetected, signal, from: start, to: end, ffmpegHwaccel: userSettings.ffmpegHwaccel,
         }),
     });
 }
 
 export async function detectSilentScenes() {
-    const { start, end } = appStore.get(currentCutSegOrWholeTimelineAtom);
+    const { start, end } = jotaiDefaultStore.get(currentCutSegOrWholeTimelineAtom);
     const parameters = await askParameters('silencedetect', 'https://ffmpeg.org/ffmpeg-filters.html#silencedetect');
     if (parameters == null) return;
     const { mode: _mode, ...filterOptions } = parameters;
@@ -99,13 +99,13 @@ export async function detectSilentScenes() {
         workingText: i18n.t('Detecting silent scenes'),
         errorText: i18n.t('Failed to detect silent scenes'),
         fn: async ({ filePath, onSegmentDetected, signal }) => silenceDetect({
-            filePath, streamId: [...appStore.get(activeAudioStreamIndexesAtom)][0], filterOptions, boundingMode, onProgress: setProgress, onSegmentDetected, signal, from: start, to: end, ffmpegHwaccel: userSettings.ffmpegHwaccel,
+            filePath, streamId: [...jotaiDefaultStore.get(activeAudioStreamIndexesAtom)][0], filterOptions, boundingMode, onProgress: setProgress, onSegmentDetected, signal, from: start, to: end, ffmpegHwaccel: userSettings.ffmpegHwaccel,
         }),
     });
 }
 
 export async function detectSceneChanges() {
-    const { start, end } = appStore.get(currentCutSegOrWholeTimelineAtom);
+    const { start, end } = jotaiDefaultStore.get(currentCutSegOrWholeTimelineAtom);
     const parameters = await askParameters('sceneChange');
     if (parameters == null) return;
     const { minChange } = parameters;
@@ -116,7 +116,7 @@ export async function detectSceneChanges() {
         workingText: i18n.t('Detecting scene changes'),
         errorText: i18n.t('Failed to detect scene changes'),
         fn: async ({ filePath, onSegmentDetected, signal }) => ffmpegDetectSceneChanges({
-            filePath, streamId: appStore.get(activeVideoStreamIndexAtom), minChange, onProgress: setProgress, onSegmentDetected, signal, from: start, to: end, ffmpegHwaccel: userSettings.ffmpegHwaccel,
+            filePath, streamId: jotaiDefaultStore.get(activeVideoStreamIndexAtom), minChange, onProgress: setProgress, onSegmentDetected, signal, from: start, to: end, ffmpegHwaccel: userSettings.ffmpegHwaccel,
         }),
     });
 }

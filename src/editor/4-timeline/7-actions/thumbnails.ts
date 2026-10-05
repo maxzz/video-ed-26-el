@@ -1,6 +1,6 @@
 import { observe } from 'jotai-effect';
-import { appStore } from '@/components/4-dialogs/7-0-dialogs/store.ts';
-import { onFileReset } from '@/editor/0-core/7-actions/lifecycle.ts';
+import { jotaiDefaultStore } from '@/utils/local-utils/9-jotai-default-store.ts';
+import { onFileReset } from '@/editor/0-core/7-actions/2-lifecycle.ts';
 import { renderThumbnails } from '@/editor/0-core/8-lib/ffmpeg/ffmpeg.ts';
 import { isAbortedError } from '@/editor/0-core/8-lib/util.ts';
 import { filePathAtom } from '@/editor/2-file/9-state/a-file-atoms.ts';
@@ -17,7 +17,7 @@ function stopThumbnails() {
     if (current.urls.length > 0) console.log('Cleanup thumbnails', current.urls.length);
     current.urls.forEach((url) => URL.revokeObjectURL(url));
     current = undefined;
-    appStore.set(thumbnailsAtom, []);
+    jotaiDefaultStore.set(thumbnailsAtom, []);
 }
 
 function startThumbnails(params: { zoomedDuration: number | undefined; filePath: string | undefined; zoomWindowStartTime: number; showThumbnails: boolean; }) {
@@ -43,7 +43,7 @@ function startThumbnails(params: { zoomedDuration: number | undefined; filePath:
                 return;
             }
             run.urls.push(thumbnail.url);
-            appStore.set(thumbnailsAtom, (v) => [...v, thumbnail]);
+            jotaiDefaultStore.set(thumbnailsAtom, (v) => [...v, thumbnail]);
         },
     }).catch((err: unknown) => {
         if (!isAbortedError(err)) {
@@ -63,7 +63,7 @@ export function initThumbnails() {
         };
         const timer = setTimeout(() => startThumbnails(params), 300);
         return () => clearTimeout(timer);
-    }, appStore);
+    }, jotaiDefaultStore);
 
     onFileReset(stopThumbnails);
 }

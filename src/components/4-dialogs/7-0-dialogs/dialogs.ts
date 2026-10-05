@@ -1,8 +1,8 @@
 import type { ReactNode } from 'react';
 import { atom } from 'jotai';
 import { proxy } from 'valtio';
+import { jotaiDefaultStore } from '@/utils/local-utils/9-jotai-default-store.ts';
 import { nanoid } from 'nanoid';
-import { appStore } from './store.ts';
 
 // Promise based dialogs. The option names follow SweetAlert2 which LosslessCut used,
 // so ported dialog code maps one to one: `const { value } = await fireDialog({ input: 'text', ... })`.
@@ -60,7 +60,7 @@ export type DialogEntry =
 export const dialogStackAtom = atom<DialogEntry[]>([]);
 
 function removeDialog(id: string) {
-    appStore.set(dialogStackAtom, (prev) => prev.filter((entry) => entry.id !== id));
+    jotaiDefaultStore.set(dialogStackAtom, (prev) => prev.filter((entry) => entry.id !== id));
 }
 
 export async function fireDialog<T = string>(options: FireDialogOptions): Promise<FireDialogResult<T>> {
@@ -81,7 +81,7 @@ export async function fireDialog<T = string>(options: FireDialogOptions): Promis
                 resolve(result as FireDialogResult<T>);
             },
         };
-        appStore.set(dialogStackAtom, (prev) => [...prev, entry]);
+        jotaiDefaultStore.set(dialogStackAtom, (prev) => [...prev, entry]);
     });
 }
 
@@ -98,12 +98,12 @@ export async function openCustomDialog<T>(render: (close: (value?: T) => void) =
                 resolve(value as T | undefined);
             },
         };
-        appStore.set(dialogStackAtom, (prev) => [...prev, entry]);
+        jotaiDefaultStore.set(dialogStackAtom, (prev) => [...prev, entry]);
     });
 }
 
 export function closeAllDialogs() {
-    for (const entry of appStore.get(dialogStackAtom)) {
+    for (const entry of jotaiDefaultStore.get(dialogStackAtom)) {
         if (entry.kind === 'fire') {
             entry.resolve({ isConfirmed: false, isDenied: false, isDismissed: true });
         } else {

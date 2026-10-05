@@ -1,9 +1,9 @@
 import { atom } from 'jotai';
 import i18n from 'i18next';
-import { DirectoryAccessDeclinedError, UnsupportedFileError } from '../8-lib/errors.ts';
+import { DirectoryAccessDeclinedError, UnsupportedFileError } from '../8-lib/9-error-types.ts';
 import { isAbortedError } from '../8-lib/util.ts';
 import { abortFfmpegs } from '../8-lib/ffmpeg/ff-remote.ts';
-import { appStore } from '../../../components/4-dialogs/7-0-dialogs/store.ts';
+import { jotaiDefaultStore } from '../../../utils/local-utils/9-jotai-default-store.ts';
 
 // Port of upstream useLoading + useErrorHandling
 
@@ -20,21 +20,21 @@ export const progressAtom = atom<number | undefined>(undefined);
 //---------------------------------------------------------------------------
 
 export function isWorking() {
-    return appStore.get(workingAtom) != null;
+    return jotaiDefaultStore.get(workingAtom) != null;
 }
 
 export function setWorking(valOrBool?: WorkingState | true | undefined) {
-    appStore.set(workingAtom, valOrBool === true ? { text: i18n.t('Loading') } : valOrBool);
+    jotaiDefaultStore.set(workingAtom, valOrBool === true ? { text: i18n.t('Loading') } : valOrBool);
 }
 
 export function setProgress(progress: number | undefined) {
-    appStore.set(progressAtom, progress);
+    jotaiDefaultStore.set(progressAtom, progress);
 }
 
 export function abortWorking() {
     console.log('User clicked abort');
     abortFfmpegs();
-    appStore.get(workingAtom)?.abortController?.abort();
+    jotaiDefaultStore.get(workingAtom)?.abortController?.abort();
 }
 
 //---------------------------------------------------------------------------
@@ -48,7 +48,7 @@ export const genericErrorAtom = atom<GenericError | undefined>(undefined);
 
 export function handleError({ title, err }: GenericError) {
     console.error('handleError', title, err);
-    appStore.set(genericErrorAtom, { title, err });
+    jotaiDefaultStore.set(genericErrorAtom, { title, err });
 }
 
 //---------------------------------------------------------------------------

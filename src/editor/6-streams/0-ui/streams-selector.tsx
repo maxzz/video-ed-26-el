@@ -7,11 +7,11 @@ import {
     MenuIcon, PaperclipIcon, PencilIcon, Trash2Icon, VideoIcon, VideoOffIcon, Volume2Icon, VolumeXIcon,
 } from 'lucide-react';
 import type { FFprobeChapter, FFprobeFormat, FFprobeStream } from '@shared/ffprobe';
-import { appStore } from '@/components/4-dialogs/7-0-dialogs/store.ts';
+import { jotaiDefaultStore } from '@/utils/local-utils/9-jotai-default-store.ts';
 import { userSettings, userSettingsAtom } from '@/editor/0-core/9-state/user-settings.ts';
 import { formatTimecode } from '@/editor/0-core/9-state/timecode.ts';
 import { setWorking, withErrorHandling } from '@/editor/0-core/9-state/working.ts';
-import { mainApi, preloadEnv } from '@/editor/0-core/8-lib/main-api.ts';
+import { mainApi, preloadEnv } from '@/editor/0-core/7-actions/0-main-api.ts';
 import { extractSubtitleTrackToSegments, type FileStream, getStreamFps } from '@/editor/0-core/8-lib/ffmpeg/ffmpeg.ts';
 import { attachedPicDisposition, getActiveDisposition, isGpsStream } from '@/editor/0-core/8-lib/ffmpeg/streams.ts';
 import { type ContentDispositionOptions, contentDispositionOptionsSchema, deleteDispositionValue, dispositionOptions, type ParamsByFile } from '@/editor/0-core/8-lib/types.ts';
@@ -51,9 +51,9 @@ function getFormatDuration(format: FFprobeFormat | undefined) {
 async function loadSubtitleTrackToSegments(filePath: string, streamId: number) {
     setWorking(true);
     try {
-        appStore.set(streamsSelectorShownAtom, false);
+        jotaiDefaultStore.set(streamsSelectorShownAtom, false);
         await withErrorHandling(async () => {
-            loadCutSegments({ segments: await extractSubtitleTrackToSegments(filePath, streamId), append: true, clampDuration: appStore.get(fileDurationAtom) });
+            loadCutSegments({ segments: await extractSubtitleTrackToSegments(filePath, streamId), append: true, clampDuration: jotaiDefaultStore.get(fileDurationAtom) });
         });
     } finally {
         setWorking(undefined);
@@ -360,7 +360,7 @@ function StreamsSelectorContent() {
                 {externalFilesEntries.length > 0 && (
                     <div className="flex flex-col items-start gap-2">
                         <div>{t('When tracks have different lengths, do you want to make the output file as long as the longest or the shortest track?')}</div>
-                        <Button variant="outline" size="sm" onClick={() => appStore.set(shortestFlagAtom, (v) => !v)}>
+                        <Button variant="outline" size="sm" onClick={() => jotaiDefaultStore.set(shortestFlagAtom, (v) => !v)}>
                             {shortestFlag ? <><ArrowDown01Icon />{t('Shortest')}</> : <><ArrowUp01Icon />{t('Longest')}</>}
                         </Button>
                     </div>
@@ -376,7 +376,7 @@ export function StreamsSelector() {
 
     return (
         <>
-            <Dialog open={shown} onOpenChange={(open) => appStore.set(streamsSelectorShownAtom, open)}>
+            <Dialog open={shown} onOpenChange={(open) => jotaiDefaultStore.set(streamsSelectorShownAtom, open)}>
                 <DialogContent className="max-h-[90vh] sm:max-w-[95vw] flex flex-col">
                     <DialogHeader>
                         <DialogTitle>{t('Tracks')}</DialogTitle>

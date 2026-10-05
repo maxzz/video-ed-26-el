@@ -1,9 +1,9 @@
 import { atom } from 'jotai';
-import { appStore } from '@/components/4-dialogs/7-0-dialogs/store';
+import { jotaiDefaultStore } from '@/utils/local-utils/9-jotai-default-store';
 
 // Visibility of the main layout regions
 
 /** Segment list on the right */
 export const showRightBarAtom = atom(true);
 
-export const toggleSegmentsList = () => appStore.set(showRightBarAtom, (v) => !v);
+export const toggleSegmentsList = () => jotaiDefaultStore.set(showRightBarAtom, (v) => !v);

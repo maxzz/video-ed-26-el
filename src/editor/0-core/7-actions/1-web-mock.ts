@@ -61,6 +61,7 @@ export function createWebMockMainApi(): MainApi {
         showSaveDialog: async () => ({ canceled: true, filePath: undefined }),
         showMessageBox: async () => ({ response: 0 }),
     };
+    
     return new Proxy(base as MainApi, {
         get: (target, prop: string) => (target as unknown as Record<string, unknown>)[prop] ?? notAvailable(prop),
     });

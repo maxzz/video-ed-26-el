@@ -1,6 +1,6 @@
 import { useAtomValue } from 'jotai';
 import { useTranslation } from 'react-i18next';
-import { mainApi } from '@/editor/0-core/8-lib/main-api.ts';
+import { mainApi } from '@/editor/0-core/7-actions/0-main-api.ts';
 import { classNames } from '@/utils';
 import { mifiLinkAtom } from '../9-state/platform.ts';
 

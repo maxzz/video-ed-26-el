@@ -1,6 +1,6 @@
 import { atom } from 'jotai';
 import { observe } from 'jotai-effect';
-import { appStore } from '@/components/4-dialogs/7-0-dialogs/store';
+import { jotaiDefaultStore } from '@/utils/local-utils/9-jotai-default-store';
 import { workingAtom } from '@/editor/0-core/9-state/working.ts';
 
 /**
@@ -15,8 +15,8 @@ export function initWorkingTimer() {
     observe((get) => {
         if (!get(isWorkingAtom)) return undefined;
         const startedAt = Date.now();
-        appStore.set(workingElapsedMsAtom, 0);
-        const interval = setInterval(() => appStore.set(workingElapsedMsAtom, Date.now() - startedAt), 100);
+        jotaiDefaultStore.set(workingElapsedMsAtom, 0);
+        const interval = setInterval(() => jotaiDefaultStore.set(workingElapsedMsAtom, Date.now() - startedAt), 100);
         return () => clearInterval(interval);
-    }, appStore);
+    }, jotaiDefaultStore);
 }

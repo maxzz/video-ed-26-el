@@ -2,13 +2,13 @@ import i18n from 'i18next';
 import { Trans } from 'react-i18next';
 import invariant from 'tiny-invariant';
 import { changeEnabledStreamsExpressionHelpUrl } from '@shared/constants';
-import { appStore } from '@/components/4-dialogs/7-0-dialogs/store.ts';
+import { jotaiDefaultStore } from '@/utils/local-utils/9-jotai-default-store.ts';
 import { withErrorHandling } from '@/editor/0-core/9-state/working.ts';
-import { mainApi } from '@/editor/0-core/8-lib/main-api.ts';
+import { mainApi } from '@/editor/0-core/7-actions/0-main-api.ts';
 import { showOpenDialog } from '@/editor/0-core/8-lib/app-dialogs.tsx';
 import { readFileFfprobeMeta } from '@/editor/0-core/8-lib/ffmpeg/ffmpeg.ts';
 import type { FileParams, ParamsByFile, StreamParams } from '@/editor/0-core/8-lib/types.ts';
-import { openExpressionDialog } from '@/editor/0-core/0-ui/expression-dialog.tsx';
+import { openExpressionDialog } from '@/editor/0-core/0-ui/dlg-expression.tsx';
 import { allFilesMetaAtom, externalFilesMetaAtom, filePathAtom, paramsByFileAtom } from '@/editor/2-file/9-state/a-file-atoms.ts';
 import { streamsSelectorShownAtom } from '@/components/2-main/0-all/a-panels-atoms.ts';
 import { applyEnabledStreamsFilter, enabledStreamsFilterAtom, filterEnabledStreams, setCopyStreamIdsForPath } from '../9-state/streams-store.ts';
@@ -16,13 +16,13 @@ import { applyEnabledStreamsFilter, enabledStreamsFilterAtom, filterEnabledStrea
 // Port of the streams related parts of upstream App.tsx and useStreamsMeta
 
 export function showStreamsSelector() {
-    appStore.set(streamsSelectorShownAtom, true);
+    jotaiDefaultStore.set(streamsSelectorShownAtom, true);
 }
 
 export async function addStreamSourceFile(path: string) {
-    if (appStore.get(allFilesMetaAtom)[path]) return undefined; // Already added?
+    if (jotaiDefaultStore.get(allFilesMetaAtom)[path]) return undefined; // Already added?
     const fileMeta = await readFileFfprobeMeta(path);
-    appStore.set(externalFilesMetaAtom, (old) => ({ ...old, [path]: fileMeta }));
+    jotaiDefaultStore.set(externalFilesMetaAtom, (old) => ({ ...old, [path]: fileMeta }));
     setCopyStreamIdsForPath(path, () => Object.fromEntries(fileMeta.streams.map(({ index }) => [index, true])));
     return fileMeta;
 }
@@ -37,7 +37,7 @@ function cloneFileParams(fileParams: FileParams): FileParams {
 
 /** `setter` mutates a copy of the stream params (immer-like, as upstream used produce()) */
 export function updateStreamParams(fileId: string, streamId: number, setter: (params: StreamParams) => void) {
-    appStore.set(paramsByFileAtom, (old) => {
+    jotaiDefaultStore.set(paramsByFileAtom, (old) => {
         const draft: ParamsByFile = new Map(old);
         const fileParams = cloneFileParams(draft.get(fileId) ?? { metadata: {}, paramsByStream: new Map() });
         const params = fileParams.paramsByStream.get(streamId) ?? { metadata: {} };
@@ -49,7 +49,7 @@ export function updateStreamParams(fileId: string, streamId: number, setter: (pa
 }
 
 export function updateFileParams(fileId: string, setter: (params: FileParams) => void) {
-    appStore.set(paramsByFileAtom, (old) => {
+    jotaiDefaultStore.set(paramsByFileAtom, (old) => {
         const draft: ParamsByFile = new Map(old);
         const fileParams = cloneFileParams(draft.get(fileId) ?? { metadata: {}, paramsByStream: new Map() });
         setter(fileParams);
@@ -59,7 +59,7 @@ export function updateFileParams(fileId: string, setter: (params: FileParams) =>
 }
 
 export function removeExternalFile(path: string) {
-    appStore.set(externalFilesMetaAtom, (old) => {
+    jotaiDefaultStore.set(externalFilesMetaAtom, (old) => {
         const { [path]: _removed, ...rest } = old;
         return rest;
     });
@@ -80,7 +80,7 @@ export const toggleStripCurrentFilter = () => applyEnabledStreamsFilter();
 const ActionName = ({ name }: { name: string; }) => <b className="font-mono">{name}</b>;
 
 export async function changeEnabledStreamsFilter() {
-    invariant(appStore.get(filePathAtom) != null);
+    invariant(jotaiDefaultStore.get(filePathAtom) != null);
 
     const isEmpty = (v: string) => v.trim().length === 0;
 
@@ -92,7 +92,7 @@ export async function changeEnabledStreamsFilter() {
                 const streams = await filterEnabledStreams(value);
                 if (streams.length === 0) return { error: i18n.t('No tracks match this expression.') };
 
-                appStore.set(enabledStreamsFilterAtom, value);
+                jotaiDefaultStore.set(enabledStreamsFilterAtom, value);
 
                 await applyEnabledStreamsFilter(value);
                 return undefined;
@@ -118,6 +118,6 @@ export async function changeEnabledStreamsFilter() {
                 <button type="button" className="text-primary hover:underline" onClick={() => mainApi.openExternal(changeEnabledStreamsExpressionHelpUrl)}>{i18n.t('View available syntax.')}</button>
             </>
         ),
-        inputValue: appStore.get(enabledStreamsFilterAtom) ?? '',
+        inputValue: jotaiDefaultStore.get(enabledStreamsFilterAtom) ?? '',
     });
 }

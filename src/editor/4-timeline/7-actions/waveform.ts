@@ -3,9 +3,9 @@ import { observe } from 'jotai-effect';
 import sortBy from 'lodash/sortBy.js';
 import invariant from 'tiny-invariant';
 import type { WaveformSlice } from '@/editor/0-core/8-lib/types.ts';
-import { appStore } from '@/components/4-dialogs/7-0-dialogs/store.ts';
+import { jotaiDefaultStore } from '@/utils/local-utils/9-jotai-default-store.ts';
 import { isWorking, setWorking } from '@/editor/0-core/9-state/working.ts';
-import { onFileReset } from '@/editor/0-core/7-actions/lifecycle.ts';
+import { onFileReset } from '@/editor/0-core/7-actions/2-lifecycle.ts';
 import { ffmpegExtractWindow } from '@/editor/0-core/8-lib/constants.ts';
 import { renderWaveformPng, safeCreateBlob } from '@/editor/0-core/8-lib/ffmpeg/ffmpeg.ts';
 import { fileDurationAtom, filePathAtom } from '@/editor/2-file/9-state/a-file-atoms.ts';
@@ -19,7 +19,7 @@ const color = '#ffffff';
 
 /** Updates the waveforms and revokes the object URLs that are no longer used */
 function setWaveforms(fn: (existing: WaveformSlice[]) => WaveformSlice[]) {
-    const prev = appStore.get(waveformsAtom);
+    const prev = jotaiDefaultStore.get(waveformsAtom);
     const next = fn(prev);
     const usedUrls = new Set(next.flatMap((w) => (w.url != null ? [w.url] : [])));
     for (const waveform of prev) {
@@ -28,16 +28,16 @@ function setWaveforms(fn: (existing: WaveformSlice[]) => WaveformSlice[]) {
             URL.revokeObjectURL(waveform.url);
         }
     }
-    appStore.set(waveformsAtom, next);
+    jotaiDefaultStore.set(waveformsAtom, next);
 }
 
 function setOverviewWaveformUrl(url: string | undefined) {
-    const prev = appStore.get(overviewWaveformAtom);
+    const prev = jotaiDefaultStore.get(overviewWaveformAtom);
     if (prev != null) {
         console.log('Cleanup overview waveform');
         URL.revokeObjectURL(prev.url);
     }
-    appStore.set(overviewWaveformAtom, url != null ? { createdAt: new Date(), url } : undefined);
+    jotaiDefaultStore.set(overviewWaveformAtom, url != null ? { createdAt: new Date(), url } : undefined);
 }
 
 function resetWaveforms() {
@@ -49,7 +49,7 @@ observe((get) => {
     get(filePathAtom);
     get(waveformAudioStreamAtom);
     resetWaveforms();
-}, appStore);
+}, jotaiDefaultStore);
 
 onFileReset(resetWaveforms);
 
@@ -66,7 +66,7 @@ observe((get) => {
 
     (async () => {
         while (!aborted) {
-            const waveformStartTime = Math.floor(appStore.get(relevantTimeAtom) / ffmpegExtractWindow) * ffmpegExtractWindow;
+            const waveformStartTime = Math.floor(jotaiDefaultStore.get(relevantTimeAtom) / ffmpegExtractWindow) * ffmpegExtractWindow;
             const times = [
                 waveformStartTime,
                 waveformStartTime + ffmpegExtractWindow,
@@ -75,7 +75,7 @@ observe((get) => {
 
             for (const time of times) {
                 const safeExtractDuration = Math.min(time + ffmpegExtractWindow, fileDuration) - time;
-                const alreadyHaveWaveformAtTime = appStore.get(waveformsAtom).some((waveform) => waveform.from === time);
+                const alreadyHaveWaveformAtTime = jotaiDefaultStore.get(waveformsAtom).some((waveform) => waveform.from === time);
                 if (!alreadyHaveWaveformAtTime && time >= 0 && time < fileDuration) {
                     try {
                         const promise = renderWaveformPng({ filePath, start: time, duration: safeExtractDuration, color, streamIndex: audioStream.index, timeout: 10000 });
@@ -114,11 +114,11 @@ observe((get) => {
     return () => {
         aborted = true;
     };
-}, appStore);
+}, jotaiDefaultStore);
 
 async function renderOverviewWaveform() {
-    const filePath = appStore.get(filePathAtom);
-    const audioStream = appStore.get(waveformAudioStreamAtom);
+    const filePath = jotaiDefaultStore.get(filePathAtom);
+    const audioStream = jotaiDefaultStore.get(waveformAudioStreamAtom);
     invariant(filePath != null);
     invariant(audioStream != null);
 

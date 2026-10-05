@@ -3,10 +3,10 @@ import pMap from 'p-map';
 import invariant from 'tiny-invariant';
 import sortBy from 'lodash/sortBy.js';
 import type { DefiniteSegmentBase, SegmentBase, StateSegment } from '@/editor/0-core/8-lib/types.ts';
-import { appStore } from '@/components/4-dialogs/7-0-dialogs/store.ts';
+import { jotaiDefaultStore } from '@/utils/local-utils/9-jotai-default-store.ts';
 import { userSettings } from '@/editor/0-core/9-state/user-settings.ts';
 import { maxLabelLengthAtom } from '@/editor/0-core/9-state/user-settings.ts';
-import { UserFacingError } from '@/editor/0-core/8-lib/errors.ts';
+import { UserFacingError } from '@/editor/0-core/8-lib/9-error-types.ts';
 import { getFileSize, shuffleArray } from '@/editor/0-core/8-lib/util.ts';
 import { maxSegmentsAllowed } from '@/editor/0-core/8-lib/constants.ts';
 import { handleError, isWorking, setWorking } from '@/editor/0-core/9-state/working.ts';
@@ -33,19 +33,19 @@ import {
 
 const offsetSegments = (segments: DefiniteSegmentBase[], offset: number) => segments.map((s) => ({ start: s.start + offset, end: s.end + offset }));
 
-const getFileDuration = () => appStore.get(fileDurationAtom);
+const getFileDuration = () => jotaiDefaultStore.get(fileDurationAtom);
 
 export function setCurrentSegIndex(index: number | ((old: number) => number)) {
-    appStore.set(currentSegIndexAtom, index);
+    jotaiDefaultStore.set(currentSegIndexAtom, index);
 }
 
 export function createIndexedSegment({ segment, incrementCount }: { segment?: Parameters<typeof createSegment>[0]; incrementCount?: boolean; } = {}) {
-    if (incrementCount) appStore.set(segColorCounterAtom, (v) => v + 1);
-    return addSegmentColorIndex(createSegment(segment), appStore.get(segColorCounterAtom));
+    if (incrementCount) jotaiDefaultStore.set(segColorCounterAtom, (v) => v + 1);
+    return addSegmentColorIndex(createSegment(segment), jotaiDefaultStore.get(segColorCounterAtom));
 }
 
 export function clearSegColorCounter() {
-    appStore.set(segColorCounterAtom, 0);
+    jotaiDefaultStore.set(segColorCounterAtom, 0);
 }
 
 /** Replaces all segments (one undo step). Clamps times, converts zero length segments into markers and drops the "initial" flag */
@@ -82,7 +82,7 @@ export function clearSegments() {
 export function resetSegments() {
     clearSegColorCounter();
     resetSegmentsHistory();
-    appStore.set(currentSegIndexAtom, 0);
+    jotaiDefaultStore.set(currentSegIndexAtom, 0);
 }
 
 export function shuffleSegments() {
@@ -113,7 +113,7 @@ export function loadCutSegments({ segments, append, clampDuration, getNextCurren
 }
 
 export function deleteCurrentCutSeg() {
-    const currentCutSeg = appStore.get(currentCutSegAtom);
+    const currentCutSeg = jotaiDefaultStore.get(currentCutSegAtom);
     if (currentCutSeg == null) return;
     setCutSegments((existing) => existing.filter((s) => s.segId !== currentCutSeg.segId));
 }
@@ -138,12 +138,12 @@ export function removeSegment(index: number, wholeSegment?: true) {
     }
 }
 
-export const getCurrentSegIndexSafe = () => appStore.get(currentSegIndexSafeAtom);
+export const getCurrentSegIndexSafe = () => jotaiDefaultStore.get(currentSegIndexSafeAtom);
 
 export function invertAllSegments() {
     const fileDuration = getFileDuration();
     // treat markers as 0 length
-    const sortedSegments = sortSegments(appStore.get(selectedSegmentsAtom));
+    const sortedSegments = sortSegments(jotaiDefaultStore.get(selectedSegmentsAtom));
     const inverseSegmentsAndMarkers = invertSegments(sortedSegments, true, true, fileDuration);
     if (inverseSegmentsAndMarkers.length === 0) {
         errorToast(i18n.t('Make sure you have no overlapping segments.'));
@@ -156,7 +156,7 @@ export function invertAllSegments() {
 export function fillSegmentsGaps() {
     const fileDuration = getFileDuration();
     // treat markers as 0 length
-    const sortedSegments = sortSegments(appStore.get(selectedSegmentsAtom).map(({ end, ...rest }) => ({ ...rest, end: end ?? rest.start })));
+    const sortedSegments = sortSegments(jotaiDefaultStore.get(selectedSegmentsAtom).map(({ end, ...rest }) => ({ ...rest, end: end ?? rest.start })));
     const inverseSegmentsAndMarkers = invertSegments(sortedSegments, true, true, fileDuration);
     if (inverseSegmentsAndMarkers.length === 0) {
         errorToast(i18n.t('Make sure you have no overlapping segments.'));
@@ -189,9 +189,9 @@ export function updateSegAtIndex(index: number, newProps: Partial<StateSegment>)
 
 export function setCutTime(type: 'start' | 'end' | 'move', time: number | undefined) {
     const fileDuration = getFileDuration();
-    const currentCutSeg = appStore.get(currentCutSegAtom);
+    const currentCutSeg = jotaiDefaultStore.get(currentCutSegAtom);
     if (!isDurationValid(fileDuration) || currentCutSeg == null) return;
-    const currentSegIndexSafe = appStore.get(currentSegIndexSafeAtom);
+    const currentSegIndexSafe = jotaiDefaultStore.get(currentSegIndexSafeAtom);
 
     const clampStart = (start: number) => Math.min(Math.max(start, 0), fileDuration);
     const clampEnd = (end?: number | undefined) => (end != null ? Math.min(Math.max(end, 0), fileDuration) : undefined);
@@ -220,8 +220,8 @@ export async function modifySelectedSegmentTimes(transformSegment: <T extends Se
 }
 
 export async function alignSegmentTimesToKeyframes() {
-    const videoStream = appStore.get(activeVideoStreamAtom);
-    const filePath = appStore.get(filePathAtom);
+    const videoStream = jotaiDefaultStore.get(activeVideoStreamAtom);
+    const filePath = jotaiDefaultStore.get(filePathAtom);
     if (!videoStream || filePath == null || isWorking()) return;
     try {
         const response = await askForAlignSegments();
@@ -268,7 +268,7 @@ export function updateSegOrder(index: number, newOrder: number) {
 export function updateSegOrders(newOrders: string[]) {
     const newSegments = sortBy(getCutSegments(), (seg) => newOrders.indexOf(seg.segId));
     setCutSegments(newSegments);
-    const currentCutSeg = appStore.get(currentCutSegAtom);
+    const currentCutSeg = jotaiDefaultStore.get(currentCutSegAtom);
     if (currentCutSeg != null) {
         const newCurrentSegIndex = newOrders.indexOf(currentCutSeg.segId);
         if (newCurrentSegIndex !== -1 && newCurrentSegIndex < newSegments.length) setCurrentSegIndex(newCurrentSegIndex);
@@ -309,14 +309,14 @@ export function duplicateSegment(segment: Pick<StateSegment, 'start' | 'end'> & 
 }
 
 export function duplicateCurrentSegment() {
-    const currentCutSeg = appStore.get(currentCutSegAtom);
+    const currentCutSeg = jotaiDefaultStore.get(currentCutSegAtom);
     if (currentCutSeg != null) duplicateSegment(currentCutSeg);
 }
 
 export function setCutStart() {
     if (!checkFileOpened()) return;
     const relevantTime = getRelevantTime();
-    const currentCutSeg = appStore.get(currentCutSegAtom);
+    const currentCutSeg = jotaiDefaultStore.get(currentCutSegAtom);
     // https://github.com/mifi/lossless-cut/issues/168
     // If current time is after the end of the current segment in the timeline, or there is no segment,
     // conveniently add a new segment that starts at playerTime
@@ -343,11 +343,11 @@ export function setCutEnd() {
 export async function labelSegment(index: number) {
     const seg = getCutSegments()[index];
     if (seg == null) return;
-    const value = await labelSegmentDialog({ currentName: seg.name, maxLength: appStore.get(maxLabelLengthAtom) });
+    const value = await labelSegmentDialog({ currentName: seg.name, maxLength: jotaiDefaultStore.get(maxLabelLengthAtom) });
     if (value != null) updateSegAtIndex(index, { name: value });
 }
 
-export const labelCurrentSegment = () => labelSegment(appStore.get(currentSegIndexSafeAtom));
+export const labelCurrentSegment = () => labelSegment(jotaiDefaultStore.get(currentSegIndexSafeAtom));
 
 export function selectSegments(segmentsToSelect: { segId: string; }[]) {
     const segIdsToSelect = new Set(segmentsToSelect.map(({ segId }) => segId));
@@ -389,7 +389,7 @@ export function splitCurrentSegment() {
 }
 
 export async function createNumSegments() {
-    const timeline = appStore.get(currentCutSegOrWholeTimelineAtom);
+    const timeline = jotaiDefaultStore.get(currentCutSegOrWholeTimelineAtom);
     if (!checkFileOpened() || timeline.duration <= 0) return;
     const segments = await createNumSegmentsDialog(timeline.duration);
     if (!segments) return;
@@ -398,9 +398,9 @@ export async function createNumSegments() {
 }
 
 export async function createFixedDurationSegments() {
-    const timeline = appStore.get(currentCutSegOrWholeTimelineAtom);
+    const timeline = jotaiDefaultStore.get(currentCutSegOrWholeTimelineAtom);
     if (!checkFileOpened() || timeline.duration <= 0) return;
-    const segmentDuration = await askForSegmentDuration({ totalDuration: timeline.duration, inputPlaceholder: appStore.get(timecodePlaceholderAtom), parseTimecode });
+    const segmentDuration = await askForSegmentDuration({ totalDuration: timeline.duration, inputPlaceholder: jotaiDefaultStore.get(timecodePlaceholderAtom), parseTimecode });
     if (segmentDuration == null) return;
     deleteCurrentCutSeg();
     const segments = makeDurationSegments(segmentDuration, timeline.duration);
@@ -410,7 +410,7 @@ export async function createFixedDurationSegments() {
 export async function createFixedByteSizedSegments() {
     const fileDuration = getFileDuration();
     if (!checkFileOpened() || !isDurationValid(fileDuration)) return;
-    const mainFileMeta = appStore.get(mainFileMetaAtom);
+    const mainFileMeta = jotaiDefaultStore.get(mainFileMetaAtom);
     invariant(mainFileMeta != null);
     const fileSize = getFileSize(mainFileMeta.ffprobeMeta.format);
     invariant(fileSize != null);
@@ -420,7 +420,7 @@ export async function createFixedByteSizedSegments() {
 }
 
 export function getSegEstimatedSize(segment: Pick<StateSegment, 'start' | 'end'>) {
-    const mainFileMeta = appStore.get(mainFileMetaAtom);
+    const mainFileMeta = jotaiDefaultStore.get(mainFileMetaAtom);
     const fileDuration = getFileDuration();
     if (mainFileMeta == null || !isDurationValid(fileDuration) || segment.end == null) return undefined;
     const fileSize = getFileSize(mainFileMeta.ffprobeMeta.format);
@@ -429,7 +429,7 @@ export function getSegEstimatedSize(segment: Pick<StateSegment, 'start' | 'end'>
 }
 
 export async function createRandomSegments() {
-    const timeline = appStore.get(currentCutSegOrWholeTimelineAtom);
+    const timeline = jotaiDefaultStore.get(currentCutSegOrWholeTimelineAtom);
     if (!checkFileOpened() || timeline.duration <= 0) return;
     const segments = await createRandomSegmentsDialog(timeline.duration);
     if (!segments) return;
@@ -438,9 +438,9 @@ export async function createRandomSegments() {
 }
 
 export async function createSegmentsFromKeyframes() {
-    const { start, end } = appStore.get(currentCutSegOrWholeTimelineAtom);
-    const videoStream = appStore.get(activeVideoStreamAtom);
-    const filePath = appStore.get(filePathAtom);
+    const { start, end } = jotaiDefaultStore.get(currentCutSegOrWholeTimelineAtom);
+    const videoStream = jotaiDefaultStore.get(activeVideoStreamAtom);
+    const filePath = jotaiDefaultStore.get(filePathAtom);
     deleteCurrentCutSeg();
     if (!videoStream || filePath == null) return;
     const keyframes = (await readFrames({ filePath, from: start, to: end, streamIndex: videoStream.index })).filter((frame) => frame.keyframe);
@@ -449,7 +449,7 @@ export async function createSegmentsFromKeyframes() {
 }
 
 export async function selectSegmentsByLabel() {
-    const value = await selectSegmentsByLabelDialog(appStore.get(currentCutSegAtom)?.name);
+    const value = await selectSegmentsByLabelDialog(jotaiDefaultStore.get(currentCutSegAtom)?.name);
     if (value == null) return;
     selectSegments(getCutSegments().filter((seg) => seg.name === value));
 }
@@ -459,9 +459,9 @@ export function selectAllMarkers() {
 }
 
 export async function labelSelectedSegments() {
-    const firstSelectedSegment = appStore.get(selectedSegmentsAtom)[0];
+    const firstSelectedSegment = jotaiDefaultStore.get(selectedSegmentsAtom)[0];
     if (firstSelectedSegment == null) return;
-    const value = await labelSegmentDialog({ currentName: firstSelectedSegment.name, maxLength: appStore.get(maxLabelLengthAtom) });
+    const value = await labelSegmentDialog({ currentName: firstSelectedSegment.name, maxLength: jotaiDefaultStore.get(maxLabelLengthAtom) });
     if (value == null) return;
     setCutSegments((existing) => existing.map((s) => (s.selected ? { ...s, name: value } : s)));
 }
@@ -475,7 +475,7 @@ export function maybeCreateFullLengthSegment(newFileDuration: number) {
 }
 
 export function removeSelectedSegments() {
-    removeSegments(appStore.get(selectedSegmentsAtom).map((seg) => seg.segId));
+    removeSegments(jotaiDefaultStore.get(selectedSegmentsAtom).map((seg) => seg.segId));
 }
 
 export function selectOnlySegment(seg: Pick<StateSegment, 'segId'>) {
@@ -491,17 +491,17 @@ export const selectAllSegments = () => setCutSegmentsRaw((existing) => existing.
 export const invertSelectedSegments = () => setCutSegmentsRaw((existing) => existing.map((segment) => ({ ...segment, selected: !segment.selected })));
 
 export function selectOnlyCurrentSegment() {
-    const currentCutSeg = appStore.get(currentCutSegAtom);
+    const currentCutSeg = jotaiDefaultStore.get(currentCutSegAtom);
     if (currentCutSeg != null) selectOnlySegment(currentCutSeg);
 }
 
 export function toggleCurrentSegmentSelected() {
-    const currentCutSeg = appStore.get(currentCutSegAtom);
+    const currentCutSeg = jotaiDefaultStore.get(currentCutSegAtom);
     if (currentCutSeg != null) toggleSegmentSelected(currentCutSeg);
 }
 
 export function getSegmentsAtCursor() {
-    const cutSegments = appStore.get(cutSegmentsAtom);
+    const cutSegments = jotaiDefaultStore.get(cutSegmentsAtom);
     return findSegmentsAtCursor(cutSegments, getRelevantTime()).flatMap((index) => (cutSegments[index] ? [cutSegments[index]] : []));
 }
 

@@ -1,11 +1,11 @@
 import type { KeyBinding, KeyboardAction } from '@shared/types.ts';
-import { appStore } from '@/components/4-dialogs/7-0-dialogs/store.ts';
+import { jotaiDefaultStore } from '@/utils/local-utils/9-jotai-default-store.ts';
 import { userSettingsAtom } from '@/editor/0-core/9-state/user-settings.ts';
 import { isAnyDialogOpenAtom } from '@/components/4-dialogs/7-0-dialogs/dialogs.ts';
 import { getKeyupAction, hasAction, runAction } from '@/editor/0-core/7-actions/kbd-actions.ts';
-import { isWindows } from '@/editor/0-core/8-lib/main-api.ts';
+import { isWindows } from '@/editor/0-core/7-actions/0-main-api.ts';
 import { runMenuAction, type MenuAction } from '@/editor/0-core/menu-actions/index.ts';
-import { allModifiers, altModifiers, controlModifiers, metaModifiers, shiftModifiers } from '@/editor/0-core/8-lib/util.ts';
+import { allModifiers, altModifiers, controlModifiers, metaModifiers, shiftModifiers } from '@/editor/0-core/8-lib/utils-kbd.ts';
 import { anyPanelOpenAtom, closeExportConfirm, commandPaletteOpenAtom, exportConfirmOpenAtom } from '@/components/2-main/0-all/a-panels-atoms.ts';
 import { creatingBindingAtom } from '../9-state/keyboard-atoms.ts';
 import { addRecordedKey, updateKeyboardLayout } from './key-bindings.ts';
@@ -27,7 +27,7 @@ let indexedKeyBindings: readonly KeyBinding[] | undefined;
 let altActionTriggered = false;
 
 function getMatchingAction(e: KeyboardEvent): KeyboardAction | undefined {
-    const { keyBindings } = appStore.get(userSettingsAtom);
+    const { keyBindings } = jotaiDefaultStore.get(userSettingsAtom);
     if (keyBindings !== indexedKeyBindings) {
         indexedKeyBindings = keyBindings;
         keyBindingsByKeyCode = {};
@@ -95,9 +95,9 @@ function isCommandPaletteHotkey(e: KeyboardEvent) {
 }
 
 function onKeyDown(e: KeyboardEvent) {
-    if (appStore.get(creatingBindingAtom) != null) {
+    if (jotaiDefaultStore.get(creatingBindingAtom) != null) {
         // Escape is left to the dialog so that it can be closed; a confirmation on top of it gets its keys too
-        if (e.code === 'Escape' || appStore.get(isAnyDialogOpenAtom)) return;
+        if (e.code === 'Escape' || jotaiDefaultStore.get(isAnyDialogOpenAtom)) return;
         addRecordedKey(e.code);
         e.preventDefault();
         e.stopPropagation();
@@ -107,8 +107,8 @@ function onKeyDown(e: KeyboardEvent) {
     if (allModifiers.has(e.code)) return;
 
     if (isCommandPaletteHotkey(e)) {
-        const paletteOpen = appStore.get(commandPaletteOpenAtom);
-        if (paletteOpen || (!appStore.get(isAnyDialogOpenAtom) && !appStore.get(anyPanelOpenAtom))) {
+        const paletteOpen = jotaiDefaultStore.get(commandPaletteOpenAtom);
+        if (paletteOpen || (!jotaiDefaultStore.get(isAnyDialogOpenAtom) && !jotaiDefaultStore.get(anyPanelOpenAtom))) {
             toggleCommandPalette();
             e.preventDefault();
             e.stopPropagation();
@@ -126,7 +126,7 @@ function onKeyDown(e: KeyboardEvent) {
 
     const action = getMatchingAction(e);
 
-    if (appStore.get(exportConfirmOpenAtom)) {
+    if (jotaiDefaultStore.get(exportConfirmOpenAtom)) {
         // Escape closes the export confirm screen no matter what's focused
         if (e.code === 'Escape') {
             closeExportConfirm();
@@ -135,10 +135,10 @@ function onKeyDown(e: KeyboardEvent) {
             return;
         }
         // don't allow other key actions than export while the export confirm screen is open
-        if (action !== 'export' || isEditable(e.target) || appStore.get(isAnyDialogOpenAtom)) return;
+        if (action !== 'export' || isEditable(e.target) || jotaiDefaultStore.get(isAnyDialogOpenAtom)) return;
     } else {
         if (isKeyHandlingTarget(e.target)) return;
-        if (appStore.get(isAnyDialogOpenAtom) || appStore.get(anyPanelOpenAtom)) return;
+        if (jotaiDefaultStore.get(isAnyDialogOpenAtom) || jotaiDefaultStore.get(anyPanelOpenAtom)) return;
     }
 
     if (action == null || !hasAction(action)) return;

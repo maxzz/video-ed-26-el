@@ -7,7 +7,7 @@ import { AnimatePresence, motion } from 'motion/react';
 import { ChevronUpIcon, CircleHelpIcon, EyeIcon, FileIcon, PencilIcon, TriangleAlertIcon, Undo2Icon } from 'lucide-react';
 import { exportedFileNameTemplateHelpUrl } from '@shared/constants';
 import { userSettings, userSettingsAtom } from '@/editor/0-core/9-state/user-settings.ts';
-import { mainApi } from '@/editor/0-core/8-lib/main-api.ts';
+import { mainApi } from '@/editor/0-core/7-actions/0-main-api.ts';
 import { Button } from '@/ui/shadcn/button';
 import { Input } from '@/ui/shadcn/input';
 import { Switch } from '@/ui/shadcn/switch';

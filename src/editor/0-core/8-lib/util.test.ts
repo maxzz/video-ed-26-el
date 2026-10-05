@@ -1,7 +1,8 @@
 import path from 'node:path';
 import { describe, expect, it } from 'vitest';
 
-import { calculateTimelinePercent, checkFileSizes, escapeRegExp, filenamify, formatKeybinding, getExtensionForFormat, getOutDir, getOutFileExtension, getOutPath, getSuffixedOutPath, hasDuplicates, isAbortedError, isExecaError, shuffleArray } from './util.ts';
+import { formatKeybinding } from './utils-kbd.ts';
+import { calculateTimelinePercent, checkFileSizes, escapeRegExp, filenamify, getExtensionForFormat, getOutDir, getOutFileExtension, getOutPath, getSuffixedOutPath, hasDuplicates, isAbortedError, isExecaError, shuffleArray } from './util.ts';
 
 describe('out paths', () => {
     const dir = path.resolve('/videos');

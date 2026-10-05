@@ -2,9 +2,9 @@ import { atom } from 'jotai';
 import { snapshot, subscribe } from 'valtio';
 import { proxyWithHistory } from 'valtio-history';
 import type { DefiniteSegmentBase, SegmentToExport, StateSegment } from '@/editor/0-core/8-lib/types.ts';
-import { appStore } from '@/components/4-dialogs/7-0-dialogs/store.ts';
+import { jotaiDefaultStore } from '@/utils/local-utils/9-jotai-default-store.ts';
 import { userSettingsAtom } from '@/editor/0-core/9-state/user-settings.ts';
-import { onFileReset } from '@/editor/0-core/7-actions/lifecycle.ts';
+import { onFileReset } from '@/editor/0-core/7-actions/2-lifecycle.ts';
 import { fileDurationAtom, fileDurationNonZeroAtom } from '@/editor/2-file/9-state/a-file-atoms.ts';
 import { filterNonMarkers, invertSegments, isDurationValid, sortSegments } from '../8-lib/segments.ts';
 
@@ -22,13 +22,13 @@ export const canUndoAtom = atom(false);
 export const canRedoAtom = atom(false);
 
 subscribe(segmentsHistory, () => {
-    appStore.set(cutSegmentsAtom, snapshot(segmentsHistory).value.segments as StateSegment[]);
-    appStore.set(canUndoAtom, segmentsHistory.isUndoEnabled);
-    appStore.set(canRedoAtom, segmentsHistory.isRedoEnabled);
+    jotaiDefaultStore.set(cutSegmentsAtom, snapshot(segmentsHistory).value.segments as StateSegment[]);
+    jotaiDefaultStore.set(canUndoAtom, segmentsHistory.isUndoEnabled);
+    jotaiDefaultStore.set(canRedoAtom, segmentsHistory.isRedoEnabled);
 });
 
 export function getCutSegments() {
-    return appStore.get(cutSegmentsAtom) as StateSegment[];
+    return jotaiDefaultStore.get(cutSegmentsAtom) as StateSegment[];
 }
 
 export function commitSegments(segments: StateSegment[]) {

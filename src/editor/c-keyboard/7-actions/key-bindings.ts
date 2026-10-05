@@ -1,6 +1,6 @@
 import i18n from 'i18next';
 import type { KeyBinding, KeyboardAction } from '@shared/types.ts';
-import { appStore } from '@/components/4-dialogs/7-0-dialogs/store.ts';
+import { jotaiDefaultStore } from '@/utils/local-utils/9-jotai-default-store.ts';
 import { resetUserSetting, userSettings } from '@/editor/0-core/9-state/user-settings.ts';
 import { confirmDialog } from '@/editor/0-core/8-lib/app-dialogs.tsx';
 import type { KeyboardLayoutMap } from '@/editor/0-core/8-lib/types.ts';
@@ -12,10 +12,10 @@ type NavigatorWithKeyboard = Navigator & { keyboard?: { getLayoutMap(): Promise<
 export async function updateKeyboardLayout() {
     try {
         const layoutMap = await (navigator as NavigatorWithKeyboard).keyboard?.getLayoutMap();
-        appStore.set(keyboardLayoutMapAtom, layoutMap ?? new Map());
+        jotaiDefaultStore.set(keyboardLayoutMapAtom, layoutMap ?? new Map());
     } catch (err) {
         console.warn('Unable to get keyboard layout map', err);
-        appStore.set(keyboardLayoutMapAtom, new Map());
+        jotaiDefaultStore.set(keyboardLayoutMapAtom, new Map());
     }
 }
 
@@ -47,20 +47,20 @@ export async function deleteKeyBinding({ action, keys }: KeyBinding) {
 }
 
 export function startCreatingBinding(action: KeyboardAction) {
-    appStore.set(recordedKeysAtom, []);
-    appStore.set(creatingBindingAtom, action);
+    jotaiDefaultStore.set(recordedKeysAtom, []);
+    jotaiDefaultStore.set(creatingBindingAtom, action);
 }
 
 export function stopCreatingBinding() {
-    appStore.set(creatingBindingAtom, undefined);
+    jotaiDefaultStore.set(creatingBindingAtom, undefined);
 }
 
 export function addRecordedKey(code: string) {
-    appStore.set(recordedKeysAtom, (old) => [...new Set([...old, code])]);
+    jotaiDefaultStore.set(recordedKeysAtom, (old) => [...new Set([...old, code])]);
 }
 
 export function clearRecordedKeys() {
-    appStore.set(recordedKeysAtom, []);
+    jotaiDefaultStore.set(recordedKeysAtom, []);
 }
 
 export async function confirmNewKeyBinding(action: KeyboardAction, keys: string[]) {

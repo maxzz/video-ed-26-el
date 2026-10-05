@@ -1,6 +1,6 @@
 import { observe } from 'jotai-effect';
-import { appStore } from '@/components/4-dialogs/7-0-dialogs/store.ts';
-import { preloadEnv } from '@/editor/0-core/8-lib/main-api.ts';
+import { jotaiDefaultStore } from '@/utils/local-utils/9-jotai-default-store.ts';
+import { preloadEnv } from '@/editor/0-core/7-actions/0-main-api.ts';
 import { cacheBusterAtom, effectiveFilePathAtom } from '@/editor/2-file/9-state/a-file-atoms.ts';
 import { playbackVolumeAtom, videoElementAtom } from '../9-state/player-atoms.ts';
 
@@ -30,10 +30,10 @@ export function initVideoEffects() {
             video.removeAttribute('src');
             video.load();
         };
-    }, appStore);
+    }, jotaiDefaultStore);
 
     observe((get) => {
         const video = get(videoElementAtom);
         if (video) video.volume = get(playbackVolumeAtom);
-    }, appStore);
+    }, jotaiDefaultStore);
 }

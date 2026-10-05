@@ -9,7 +9,7 @@ import { useVirtualizer } from '@tanstack/react-virtual';
 import { ArrowDown01Icon, CircleCheckIcon, ContrastIcon, MinusIcon, PlusIcon, SplitIcon, TagIcon, XIcon } from 'lucide-react';
 import { cn } from '@/utils/classnames';
 import type { SegmentColorIndex } from '@/editor/0-core/8-lib/types.ts';
-import { appStore } from '@/components/4-dialogs/7-0-dialogs/store.ts';
+import { jotaiDefaultStore } from '@/utils/local-utils/9-jotai-default-store.ts';
 import { formatTimecodeAtom } from '@/editor/0-core/9-state/timecode.ts';
 import { rightBarWidth } from '@/editor/0-core/8-lib/constants.ts';
 import { runAction } from '@/editor/0-core/7-actions/kbd-actions.ts';
@@ -104,11 +104,11 @@ function SegmentRows() {
     }, [currentSegIndex, invertCutSegments, rowVirtualizer]);
 
     function handleDragStart(event: DragStartEvent) {
-        appStore.set(draggingSegIdAtom, String(event.active.id));
+        jotaiDefaultStore.set(draggingSegIdAtom, String(event.active.id));
     }
 
     function handleDragEnd(event: DragEndEvent) {
-        appStore.set(draggingSegIdAtom, undefined);
+        jotaiDefaultStore.set(draggingSegIdAtom, undefined);
         const { active, over } = event;
         if (over != null && active.id !== over.id) {
             const oldIndex = ids.indexOf(String(active.id));
@@ -121,7 +121,7 @@ function SegmentRows() {
     const draggingSeg = draggingIndex >= 0 ? items[draggingIndex] : undefined;
 
     return (
-        <DndContext sensors={sensors} collisionDetection={closestCenter} onDragStart={handleDragStart} onDragEnd={handleDragEnd} onDragCancel={() => appStore.set(draggingSegIdAtom, undefined)} modifiers={[restrictToVerticalAxis]}>
+        <DndContext sensors={sensors} collisionDetection={closestCenter} onDragStart={handleDragStart} onDragEnd={handleDragEnd} onDragCancel={() => jotaiDefaultStore.set(draggingSegIdAtom, undefined)} modifiers={[restrictToVerticalAxis]}>
             <SortableContext items={ids} strategy={verticalListSortingStrategy}>
                 <div ref={scrollerRef} className="grow pr-1 pl-2 overflow-x-hidden overflow-y-scroll">
                     <div className="relative overflow-hidden" style={{ height: rowVirtualizer.getTotalSize() }}>

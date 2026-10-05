@@ -1,8 +1,8 @@
 import { atom } from 'jotai';
 import type { AppInfo } from '@shared/ipc-contract.ts';
-import { appStore } from '@/components/4-dialogs/7-0-dialogs/store.ts';
+import { jotaiDefaultStore } from '@/utils/local-utils/9-jotai-default-store.ts';
 import { userSettings, userSettingsAtom } from '@/editor/0-core/9-state/user-settings.ts';
-import { getAppInfo, getFfCommandLine } from '@/editor/0-core/8-lib/main-api.ts';
+import { getAppInfo, getFfCommandLine } from '@/editor/0-core/7-actions/0-main-api.ts';
 import { isCuttingEnd, isCuttingStart } from '@/editor/0-core/8-lib/ffmpeg/ffmpeg.ts';
 import { encBitrateAtom, fileDurationAtom, ffmpegCommandLogAtom } from '@/editor/2-file/9-state/a-file-atoms.ts';
 import { segmentsToExportAtom } from '@/editor/5-segments/9-state/segments-store.ts';
@@ -11,7 +11,7 @@ import { defaultCutFileTemplate, defaultCutMergedFileTemplate, defaultMergedFile
 // Last commands log (upstream App.tsx appendLastCommandsLog/appendFfmpegCommandLog)
 
 export function appendLastCommandsLog(command: string) {
-    appStore.set(ffmpegCommandLogAtom, (old) => [...old, { command, time: new Date() }]);
+    jotaiDefaultStore.set(ffmpegCommandLogAtom, (old) => [...old, { command, time: new Date() }]);
 }
 
 export function appendFfmpegCommandLog(args: string[]) {
@@ -41,7 +41,7 @@ export const isEncodingAtom = atom((get) => get(needSmartCutAtom) || getLossyMod
 export const willMergeAtom = atom((get) => get(segmentsToExportAtom).length > 1 && get(userSettingsAtom).autoMerge);
 
 export function setEncBitrate(value: number | undefined) {
-    appStore.set(encBitrateAtom, value);
+    jotaiDefaultStore.set(encBitrateAtom, value);
 }
 
 /** "Show advanced options" in the export confirm sheet, undefined follows simple mode */
