@@ -7,7 +7,7 @@ import { handleError, isWorking, setProgress, setWorking } from '@/editor/0-core
 import { isAbortedError } from '@/editor/0-core/8-lib/util.ts';
 import type { FfmpegDialog } from '@/editor/0-core/8-lib/ffmpeg/ffmpeg-parameters.ts';
 import { blackDetect, detectSceneChanges as ffmpegDetectSceneChanges, silenceDetect } from '@/editor/0-core/8-lib/ffmpeg/ff-remote.ts';
-import { fileDurationAtom, filePathAtom } from '@/editor/2-file/9-state/file-atoms.ts';
+import { fileDurationAtom, filePathAtom } from '@/editor/2-file/9-state/a-file-atoms.ts';
 import { activeAudioStreamIndexesAtom, activeVideoStreamIndexAtom } from '@/editor/3-player/9-state/player-atoms.ts';
 import { seekAbs } from '@/editor/3-player/7-actions/player-actions.ts';
 import { currentCutSegOrWholeTimelineAtom } from '@/editor/5-segments/9-state/segments-store.ts';

@@ -8,7 +8,7 @@ import { toast } from '@/editor/0-core/8-lib/toast.tsx';
 import { adjustRate } from '@/editor/0-core/8-lib/rate-calculator.ts';
 import { getFrameCountRaw } from '@/editor/9-edl/8-lib/edl-formats.ts';
 import { enableAudioTrack, enableVideoTrack } from '@/editor/0-core/8-lib/ffmpeg/streams.ts';
-import { detectedFpsAtom, fileDurationAtom, filePathAtom, isFileOpenedAtom, previewFilePathAtom, usingDummyVideoAtom } from '@/editor/2-file/9-state/file-atoms.ts';
+import { detectedFpsAtom, fileDurationAtom, filePathAtom, isFileOpenedAtom, previewFilePathAtom, usingDummyVideoAtom } from '@/editor/2-file/9-state/a-file-atoms.ts';
 import { cutSegmentsAtom, currentCutSegAtom, currentSegIndexAtom, findSegmentsAtCursor, selectedSegmentsAtom, currentSegIndexSafeAtom } from '@/editor/5-segments/9-state/segments-store.ts';
 import { filterNonMarkers, getPlaybackAction } from '@/editor/5-segments/8-lib/segments.ts';
 import {

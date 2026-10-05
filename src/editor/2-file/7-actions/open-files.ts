@@ -11,8 +11,8 @@ import { getDownloadMediaOutPath, getImportProjectType, readDirRecursively, read
 import { concatDialogOpenAtom, streamsSelectorShownAtom } from '@/components/2-main/0-all/a-panels-atoms.ts';
 import { checkFileOpened } from '@/editor/3-player/7-actions/player-actions.ts';
 import { loadEdlFile } from '@/editor/9-edl/7-actions/edl-actions.ts';
-import { alwaysConcatMultipleFilesAtom, batchFilesAtom, filePathAtom, isFileOpenedAtom, lastOpenedPathAtom } from '../9-state/file-atoms.ts';
-import { getDroppedFilePaths } from '../8-lib/drop.ts';
+import { alwaysConcatMultipleFilesAtom, batchFilesAtom, filePathAtom, isFileOpenedAtom, lastOpenedPathAtom } from '../9-state/a-file-atoms.ts';
+import { getDroppedFilePaths } from '../../../utils/local-utils/drop-full-path.ts';
 import { batchLoadPaths } from './batch-actions.ts';
 import { ensureWritableOutDir } from './directory-access.ts';
 import { addStreamSourceFile } from '@/editor/6-streams/7-actions/streams-actions.tsx';

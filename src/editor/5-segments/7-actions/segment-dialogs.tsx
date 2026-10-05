@@ -13,7 +13,7 @@ import { mainApi } from '@/editor/0-core/8-lib/main-api.ts';
 import safeishEval from '@/editor/0-core/8-lib/eval/eval.ts';
 import { openExpressionDialog } from '@/editor/0-core/0-ui/expression-dialog.tsx';
 import { editingSegmentTagsAtom, editingSegmentTagsSegmentIndexAtom } from '@/components/2-main/0-all/a-panels-atoms.ts';
-import { fileDurationAtom } from '@/editor/2-file/9-state/file-atoms.ts';
+import { fileDurationAtom } from '@/editor/2-file/9-state/a-file-atoms.ts';
 import { getSegmentTags } from '../8-lib/segments.ts';
 import { getCutSegments } from '../9-state/segments-store.ts';
 import { openShiftSegmentsDialog } from '../0-ui/shift-segments-dialog.tsx';

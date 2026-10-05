@@ -3,7 +3,7 @@ import invariant from 'tiny-invariant';
 import { appStore } from '@/editor/0-core/9-state/store.ts';
 import { maxLabelLengthAtom, userSettings, userSettingsAtom } from '@/editor/0-core/9-state/user-settings.ts';
 import { formatTimecode, formatTimecodeAtom } from '@/editor/0-core/9-state/timecode.ts';
-import { currentFileExportCountAtom, exportCountAtom, fileDurationAtom, fileFormatAtom, filePathAtom, isCustomFormatSelectedAtom, mainFileMetaAtom, outputDirAtom } from '@/editor/2-file/9-state/file-atoms.ts';
+import { currentFileExportCountAtom, exportCountAtom, fileDurationAtom, fileFormatAtom, filePathAtom, isCustomFormatSelectedAtom, mainFileMetaAtom, outputDirAtom } from '@/editor/2-file/9-state/a-file-atoms.ts';
 import { segmentsToExportAtom } from '@/editor/5-segments/9-state/segments-store.ts';
 import { generateCutFileNames, generateCutMergedFileNames, generateMergedFileNames, type GenerateMergedOutFileNamesParams } from '../8-lib/output-name-template.ts';
 

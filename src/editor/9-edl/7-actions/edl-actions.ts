@@ -5,7 +5,7 @@ import { customOutDirAtom } from '@/editor/0-core/9-state/user-settings.ts';
 import { getFrameCount } from '@/editor/0-core/9-state/timecode.ts';
 import { withErrorHandling } from '@/editor/0-core/9-state/working.ts';
 import { openYouTubeChaptersDialog } from '@/editor/0-core/8-lib/app-dialogs.tsx';
-import { detectedFpsAtom, fileDurationAtom, filePathAtom } from '@/editor/2-file/9-state/file-atoms.ts';
+import { detectedFpsAtom, fileDurationAtom, filePathAtom } from '@/editor/2-file/9-state/a-file-atoms.ts';
 import { checkFileOpened } from '@/editor/3-player/7-actions/player-actions.ts';
 import { cutSegmentsAtom, selectedSegmentsAtom } from '@/editor/5-segments/9-state/segments-store.ts';
 import { loadCutSegments } from '@/editor/5-segments/7-actions/segment-actions.ts';

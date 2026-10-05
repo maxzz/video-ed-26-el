@@ -16,7 +16,7 @@ import { exportConfirmOpenAtom, streamsSelectorShownAtom } from '@/components/2-
 import {
     allFilesMetaAtom, currentFileExportCountAtom, detectedFileFormatAtom, detectedFpsAtom, exportCountAtom, externalFilesMetaAtom, fileDurationAtom, fileFormatAtom, filePathAtom,
     isFileOpenedAtom, isRotationSetAtom, mainFileFormatDataAtom, mainStreamsAtom, outputDirAtom, paramsByFileAtom, previewFilePathAtom, rotationAtom, shortestFlagAtom,
-} from '@/editor/2-file/9-state/file-atoms.ts';
+} from '@/editor/2-file/9-state/a-file-atoms.ts';
 import { batchListRemoveFile } from '@/editor/2-file/7-actions/batch-actions.ts';
 import { closeFile, loadMedia, runAndReloadFile, tryFixInvalidDuration } from '@/editor/2-file/7-actions/load-media.ts';
 import { projectFileSavePathAtom } from '@/editor/2-file/7-actions/project-auto-save.ts';

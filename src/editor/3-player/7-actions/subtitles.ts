@@ -5,7 +5,7 @@ import type { FFprobeStream } from '@shared/ffprobe';
 import { appStore } from '@/editor/0-core/9-state/store.ts';
 import { isWorking, setWorking, withErrorHandling } from '@/editor/0-core/9-state/working.ts';
 import { extractSubtitleTrackVtt } from '@/editor/0-core/8-lib/ffmpeg/ffmpeg.ts';
-import { filePathAtom, subtitleStreamsAtom } from '@/editor/2-file/9-state/file-atoms.ts';
+import { filePathAtom, subtitleStreamsAtom } from '@/editor/2-file/9-state/a-file-atoms.ts';
 import { activeSubtitleStreamIndexAtom, subtitlesByStreamIdAtom } from '../9-state/player-atoms.ts';
 
 // Port of upstream useSubtitles + onActiveSubtitleChange

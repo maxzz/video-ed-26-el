@@ -8,7 +8,7 @@ import { getFrameCountAtom } from '@/editor/0-core/9-state/timecode.ts';
 import { onFileReset } from '@/editor/0-core/7-actions/lifecycle.ts';
 import { calcShouldShowKeyframes, calcShouldShowWaveform } from '@/editor/0-core/8-lib/util.ts';
 import { getFrameCountRaw } from '@/editor/9-edl/8-lib/edl-formats.ts';
-import { detectedFpsAtom, fileDurationAtom, hasAudioAtom, hasVideoAtom, isFileOpenedAtom, startTimeOffsetAtom } from '@/editor/2-file/9-state/file-atoms.ts';
+import { detectedFpsAtom, fileDurationAtom, hasAudioAtom, hasVideoAtom, isFileOpenedAtom, startTimeOffsetAtom } from '@/editor/2-file/9-state/a-file-atoms';
 import { activeAudioStreamsAtom, commandedTimeAtom, playingAtom, relevantTimeAtom } from '@/editor/3-player/9-state/player-atoms.ts';
 import { hoveringTimeAtom } from '@/components/2-main/0-all/a-panels-atoms';
 import { isDurationValid } from '@/editor/5-segments/8-lib/segments.ts';

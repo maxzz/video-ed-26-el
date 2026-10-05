@@ -17,7 +17,7 @@ import { needsSmartCut, getCodecParams } from '@/editor/0-core/8-lib/ffmpeg/smar
 import { deleteDispositionValue, type AllFilesMeta, type Chapter, type CopyfileStreams, type LiteFFprobeStream, type ParamsByFile, type SegmentToExport } from '@/editor/0-core/8-lib/types.ts';
 import { UserFacingError } from '@/editor/0-core/8-lib/errors.ts';
 import { getGuaranteedSegments, isDurationValid } from '@/editor/5-segments/8-lib/segments.ts';
-import { encBitrateAtom, filePathAtom } from '@/editor/2-file/9-state/file-atoms.ts';
+import { encBitrateAtom, filePathAtom } from '@/editor/2-file/9-state/a-file-atoms.ts';
 import { outputPlaybackRateAtom } from '@/editor/3-player/9-state/player-atoms.ts';
 import { appendFfmpegCommandLog, appendLastCommandsLog, getLossyMode, isEncodingAtom } from '../9-state/export-atoms.ts';
 

@@ -12,7 +12,7 @@ import { getSuffixedOutPath } from '@/editor/0-core/8-lib/util.ts';
 import { cutSegmentsAtom } from '@/editor/5-segments/9-state/segments-store.ts';
 import { mapSaveableSegments } from '@/editor/5-segments/8-lib/segments.ts';
 import { saveLlcProject } from '@/editor/9-edl/8-lib/edl-store.ts';
-import { filePathAtom } from '../9-state/file-atoms.ts';
+import { filePathAtom } from '../9-state/a-file-atoms.ts';
 
 // Port of upstream useSegmentsAutoSave
 

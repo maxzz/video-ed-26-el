@@ -7,7 +7,7 @@ import { runAction } from '@/editor/0-core/7-actions/kbd-actions.ts';
 import { calculateTimelinePercent, mediaSourceQualities } from '@/editor/0-core/8-lib/util.ts';
 import { fullscreenAtom } from '@/components/2-main/0-all/a-panels-atoms.ts';
 import { showRightBarAtom } from '@/components/2-main/0-all/a-layout-atoms.ts';
-import { fileDurationAtom, filePathAtom, hasVideoAtom, isFileOpenedAtom, isRotationSetAtom } from '@/editor/2-file/9-state/file-atoms.ts';
+import { fileDurationAtom, filePathAtom, hasVideoAtom, isFileOpenedAtom, isRotationSetAtom } from '@/editor/2-file/9-state/a-file-atoms.ts';
 import { onFilesDrop } from '@/editor/2-file/7-actions/open-files.ts';
 import { bigWaveformEnabledAtom } from '@/editor/4-timeline/9-state/timeline-atoms.ts';
 import { onTimelineWheel } from '@/editor/4-timeline/7-actions/timeline-actions.ts';

@@ -6,7 +6,7 @@ import { appStore } from '@/editor/0-core/9-state/store.ts';
 import { formatTimecodeAtom, parseTimecode } from '@/editor/0-core/9-state/timecode.ts';
 import { isExactDurationMatch } from '@/editor/0-core/8-lib/duration.ts';
 import { mainApi } from '@/editor/0-core/8-lib/main-api.ts';
-import { isFileOpenedAtom, startTimeOffsetAtom } from '@/editor/2-file/9-state/file-atoms.ts';
+import { isFileOpenedAtom, startTimeOffsetAtom } from '@/editor/2-file/9-state/a-file-atoms.ts';
 import { seekAbs } from '@/editor/3-player/7-actions/player-actions.ts';
 import { currentCutSegAtom } from '@/editor/5-segments/9-state/segments-store.ts';
 import { darkModeAtom, getSegColorAtom } from '@/editor/5-segments/9-state/seg-ui-atoms.ts';

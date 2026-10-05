@@ -6,7 +6,7 @@ import { readFrames, readFramesAroundTime } from '@/editor/0-core/8-lib/ffmpeg/f
 import { appStore } from '@/editor/0-core/9-state/store.ts';
 import { handleError, setWorking } from '@/editor/0-core/9-state/working.ts';
 import { ffmpegExtractWindow } from '@/editor/0-core/8-lib/constants.ts';
-import { filePathAtom } from '@/editor/2-file/9-state/file-atoms.ts';
+import { filePathAtom } from '@/editor/2-file/9-state/a-file-atoms.ts';
 import { activeVideoStreamAtom, commandedTimeAtom } from '@/editor/3-player/9-state/player-atoms.ts';
 import { currentCutSegOrWholeTimelineAtom } from '@/editor/5-segments/9-state/segments-store.ts';
 import { keyframesEnabledAtom, maxKeyframesAtom, neighbouringKeyFramesMapAtom } from '../9-state/timeline-atoms.ts';

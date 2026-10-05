@@ -3,7 +3,7 @@ import { appStore } from '@/editor/0-core/9-state/store.ts';
 import { handleError } from '@/editor/0-core/9-state/working.ts';
 import { runFfmpegStartupCheck } from '@/editor/0-core/8-lib/ffmpeg/ffmpeg.ts';
 import { mainApi } from '@/editor/0-core/8-lib/main-api.ts';
-import { ffmpegInfoAtom } from '../9-state/file-atoms.ts';
+import { ffmpegInfoAtom } from '../9-state/a-file-atoms.ts';
 import { dialog_SendReport_open } from '../0-ui/dlg-send-report.tsx';
 
 // Port of upstream mifi.ts runStartupCheck

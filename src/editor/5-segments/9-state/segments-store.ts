@@ -5,7 +5,7 @@ import type { DefiniteSegmentBase, SegmentToExport, StateSegment } from '@/edito
 import { appStore } from '@/editor/0-core/9-state/store.ts';
 import { userSettingsAtom } from '@/editor/0-core/9-state/user-settings.ts';
 import { onFileReset } from '@/editor/0-core/7-actions/lifecycle.ts';
-import { fileDurationAtom, fileDurationNonZeroAtom } from '@/editor/2-file/9-state/file-atoms.ts';
+import { fileDurationAtom, fileDurationNonZeroAtom } from '@/editor/2-file/9-state/a-file-atoms.ts';
 import { filterNonMarkers, invertSegments, isDurationValid, sortSegments } from '../8-lib/segments.ts';
 
 const maxHistory = 100;

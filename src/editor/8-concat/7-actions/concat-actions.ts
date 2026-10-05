@@ -13,7 +13,7 @@ import {
     checkFileSizes, getOutDir, getOutPath, getStdioString, isAbortedError, isExecaError, isMuxNotSupported, isOutOfSpaceError,
     makeSourceFileAccessError, readFileSize, readFileSizes,
 } from '@/editor/0-core/8-lib/util.ts';
-import { batchFilePathsAtom, batchFilesAtom, detectedFileFormatAtom, fileFormatAtom } from '@/editor/2-file/9-state/file-atoms.ts';
+import { batchFilePathsAtom, batchFilesAtom, detectedFileFormatAtom, fileFormatAtom } from '@/editor/2-file/9-state/a-file-atoms.ts';
 import { closeBatch, ensureWritableOutDir, openFilesDialog, openSendReportDialog } from '@/editor/2-file/index.ts';
 import { concatDialogOpenAtom } from '@/components/2-main/0-all/a-panels-atoms.ts';
 import { concatFiles, maybeMkDeepOutDir, OutputNotWritableError } from '@/editor/7-export/8-lib/ffmpeg-operations.ts';

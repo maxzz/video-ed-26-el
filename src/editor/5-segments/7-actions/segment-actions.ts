@@ -17,7 +17,7 @@ import {
     labelSegmentDialog, selectSegmentsByLabelDialog, toastError,
 } from '@/editor/0-core/8-lib/app-dialogs.tsx';
 import { findKeyframeNearTime, mapTimesToSegments, readFrames } from '@/editor/0-core/8-lib/ffmpeg/ffmpeg.ts';
-import { fileDurationAtom, filePathAtom, mainFileMetaAtom } from '@/editor/2-file/9-state/file-atoms.ts';
+import { fileDurationAtom, filePathAtom, mainFileMetaAtom } from '@/editor/2-file/9-state/a-file-atoms.ts';
 import { activeVideoStreamAtom } from '@/editor/3-player/9-state/player-atoms.ts';
 import { checkFileOpened, getRelevantTime } from '@/editor/3-player/7-actions/player-actions.ts';
 import {

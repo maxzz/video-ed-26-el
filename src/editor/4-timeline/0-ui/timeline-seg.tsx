@@ -5,7 +5,7 @@ import { SaveIcon, Trash2Icon } from 'lucide-react';
 import type { StateSegment } from '@/editor/0-core/8-lib/types.ts';
 import { effectiveExportModeAtom, prefersReducedMotionAtom } from '@/editor/0-core/9-state/user-settings.ts';
 import { formatTimecodeAtom } from '@/editor/0-core/9-state/timecode.ts';
-import { fileDurationNonZeroAtom } from '@/editor/2-file/9-state/file-atoms.ts';
+import { fileDurationNonZeroAtom } from '@/editor/2-file/9-state/a-file-atoms';
 import { currentSegIndexSafeAtom, cutSegmentsAtom, inverseCutSegmentsAtom } from '@/editor/5-segments/9-state/segments-store.ts';
 import { darkModeAtom, getSegColorAtom, invertCutSegmentsAtom, springAnimationAtom } from '@/editor/5-segments/9-state/seg-ui-atoms.ts';
 import { setCurrentSegIndex } from '@/editor/5-segments/7-actions/segment-actions.ts';

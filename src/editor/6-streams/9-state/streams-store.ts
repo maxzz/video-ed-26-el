@@ -7,7 +7,7 @@ import { userSettingsAtom } from '@/editor/0-core/9-state/user-settings.ts';
 import { onFileReset } from '@/editor/0-core/7-actions/lifecycle.ts';
 import { isStreamThumbnail, shouldCopyStreamByDefault } from '@/editor/0-core/8-lib/ffmpeg/streams.ts';
 import safeishEval from '@/editor/0-core/8-lib/eval/eval.ts';
-import { externalFilesMetaAtom, filePathAtom, mainStreamsAtom } from '@/editor/2-file/9-state/file-atoms.ts';
+import { externalFilesMetaAtom, filePathAtom, mainStreamsAtom } from '@/editor/2-file/9-state/a-file-atoms';
 
 // Port of upstream useStreamsMeta: which streams of which files are copied to the output.
 

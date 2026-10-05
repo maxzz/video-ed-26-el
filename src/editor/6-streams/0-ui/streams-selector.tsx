@@ -16,7 +16,7 @@ import { extractSubtitleTrackToSegments, type FileStream, getStreamFps } from '@
 import { attachedPicDisposition, getActiveDisposition, isGpsStream } from '@/editor/0-core/8-lib/ffmpeg/streams.ts';
 import { type ContentDispositionOptions, contentDispositionOptionsSchema, deleteDispositionValue, dispositionOptions, type ParamsByFile } from '@/editor/0-core/8-lib/types.ts';
 import { streamsSelectorShownAtom } from '@/components/2-main/0-all/a-panels-atoms.ts';
-import { externalFilesMetaAtom, fileDurationAtom, filePathAtom, mainFileChaptersAtom, mainFileFormatDataAtom, mainStreamsAtom, paramsByFileAtom, shortestFlagAtom } from '@/editor/2-file/9-state/file-atoms.ts';
+import { externalFilesMetaAtom, fileDurationAtom, filePathAtom, mainFileChaptersAtom, mainFileFormatDataAtom, mainStreamsAtom, paramsByFileAtom, shortestFlagAtom } from '@/editor/2-file/9-state/a-file-atoms.ts';
 import { loadCutSegments } from '@/editor/5-segments/7-actions/segment-actions.ts';
 import { extractAllStreams, extractSingleStream } from '@/editor/7-export/7-actions/export-actions.ts';
 import { Button } from '@/ui/shadcn/button';

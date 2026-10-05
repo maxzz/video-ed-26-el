@@ -7,7 +7,7 @@ import { closestCenter, DndContext, DragOverlay, PointerSensor, useSensor, useSe
 import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
 import { restrictToVerticalAxis } from '@dnd-kit/modifiers';
 import { Button } from '@/ui/shadcn/button';
-import { batchFilesAtom, filePathAtom, selectedBatchFilesAtom } from '@/editor/2-file/9-state/file-atoms.ts';
+import { batchFilesAtom, filePathAtom, selectedBatchFilesAtom } from '@/editor/2-file/9-state/a-file-atoms.ts';
 import { closeBatch, convertFormatBatch, handleBatchFilesDrop } from '@/editor/2-file/index.ts';
 import { batchDraggingIdAtom, batchSortDescAtom } from '../9-state/concat-atoms.ts';
 import { onBatchDragCancel, onBatchDragEnd, onBatchDragStart, sortBatchFiles } from '../7-actions/batch-list-actions.ts';

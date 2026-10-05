@@ -1,7 +1,7 @@
 import { observe } from 'jotai-effect';
 import { appStore } from '@/editor/0-core/9-state/store.ts';
 import { preloadEnv } from '@/editor/0-core/8-lib/main-api.ts';
-import { cacheBusterAtom, effectiveFilePathAtom } from '@/editor/2-file/9-state/file-atoms.ts';
+import { cacheBusterAtom, effectiveFilePathAtom } from '@/editor/2-file/9-state/a-file-atoms.ts';
 import { playbackVolumeAtom, videoElementAtom } from '../9-state/player-atoms.ts';
 
 function getMediaUrl(path: string, cacheBuster: number) {

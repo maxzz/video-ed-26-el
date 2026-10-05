@@ -4,7 +4,7 @@ import invariant from 'tiny-invariant';
 import { appStore } from '@/editor/0-core/9-state/store.ts';
 import { getDefaultOutFormat, mapRecommendedDefaultFormat, readFileFfprobeMeta } from '@/editor/0-core/8-lib/ffmpeg/ffmpeg.ts';
 import { isAbortedError, readFileStats } from '@/editor/0-core/8-lib/util.ts';
-import { batchFilePathsAtom, detectedFileFormatAtom, fileFormatAtom } from '@/editor/2-file/9-state/file-atoms.ts';
+import { batchFilePathsAtom, detectedFileFormatAtom, fileFormatAtom } from '@/editor/2-file/9-state/a-file-atoms.ts';
 import { defaultMergedFileTemplate } from '@/editor/7-export/8-lib/output-name-template.ts';
 import {
     type ConcatFileMeta, concatEnableReadFileMetaAtom, concatFilesMetaAtom, concatFirstPathAtom, concatGeneratedFileNamesAtom,

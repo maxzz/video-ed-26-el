@@ -4,7 +4,7 @@ import type { AudioStreamInfo, FfmpegHwAccel } from '@shared/types';
 import { appStore } from '@/editor/0-core/9-state/store.ts';
 import { getAppInfo, mainApi } from '@/editor/0-core/8-lib/main-api.ts';
 import { getFrameDuration } from '@/editor/0-core/8-lib/util.ts';
-import { filePathAtom } from '@/editor/2-file/9-state/file-atoms.ts';
+import { filePathAtom } from '@/editor/2-file/9-state/a-file-atoms.ts';
 import {
     activeAudioStreamsAtom, activeVideoStreamAtom, compatCanvasElementAtom, compatLoadingAtom, compatPlayerEnabledAtom, compatShowCanvasAtom,
     compatVideoElementAtom, effectiveRotationAtom, ffmpegHwaccelAtom, hideCompatPlayerAtom, mediaSourceQualityAtom, videoElementAtom,

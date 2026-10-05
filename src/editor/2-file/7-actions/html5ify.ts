@@ -6,7 +6,7 @@ import { isWorking, setProgress, setWorking, withErrorHandling } from '@/editor/
 import { DirectoryAccessDeclinedError } from '@/editor/0-core/8-lib/errors.ts';
 import { toast } from '@/editor/0-core/8-lib/toast.tsx';
 import { html5ify } from '@/editor/7-export/8-lib/ffmpeg-operations.ts';
-import { batchFilesAtom, filePathAtom, hasAudioAtom, hasVideoAtom, previewFilePathAtom, rememberConvertToSupportedFormatAtom, usingDummyVideoAtom } from '../9-state/file-atoms.ts';
+import { batchFilesAtom, filePathAtom, hasAudioAtom, hasVideoAtom, previewFilePathAtom, rememberConvertToSupportedFormatAtom, usingDummyVideoAtom } from '../9-state/a-file-atoms.ts';
 import { dialogAsync_askForHtml5ifySpeed } from '../0-ui/dlg-html5ify.tsx';
 import { ensureWritableOutDir } from './directory-access.ts';
 

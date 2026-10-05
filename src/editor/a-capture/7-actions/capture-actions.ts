@@ -6,7 +6,7 @@ import { appStore } from '@/editor/0-core/9-state/store.ts';
 import { customOutDirAtom, userSettings } from '@/editor/0-core/9-state/user-settings.ts';
 import { handleError, isWorking, setProgress, setWorking, withErrorHandling } from '@/editor/0-core/9-state/working.ts';
 import { getFrameCount } from '@/editor/0-core/9-state/timecode.ts';
-import { detectedFpsAtom, fileDurationAtom, filePathAtom, outputDirAtom, paramsByFileAtom, usingPreviewFileAtom } from '@/editor/2-file/9-state/file-atoms.ts';
+import { detectedFpsAtom, fileDurationAtom, filePathAtom, outputDirAtom, paramsByFileAtom, usingPreviewFileAtom } from '@/editor/2-file/9-state/a-file-atoms.ts';
 import { showNotification, showOsNotification } from '@/editor/0-core/8-lib/notifications.ts';
 import { addStreamSourceFile } from '@/editor/6-streams/7-actions/streams-actions.tsx';
 import { videoElementAtom } from '@/editor/3-player/9-state/player-atoms.ts';

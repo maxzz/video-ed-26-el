@@ -1,7 +1,7 @@
 import { useAtomValue } from 'jotai';
 import { useTranslation } from 'react-i18next';
 import { CaptionsIcon } from 'lucide-react';
-import { audioStreamsAtom, subtitleStreamsAtom, videoStreamsAtom } from '@/editor/2-file/9-state/file-atoms.ts';
+import { audioStreamsAtom, subtitleStreamsAtom, videoStreamsAtom } from '@/editor/2-file/9-state/a-file-atoms.ts';
 import { Button } from '@/ui/shadcn/button';
 import { Label } from '@/ui/shadcn/label';
 import { Popover, PopoverContent, PopoverTrigger } from '@/ui/shadcn/popover';

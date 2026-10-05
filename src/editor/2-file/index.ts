@@ -17,4 +17,4 @@ export { ensureWritableOutDir, ensureAccessToSourceDir } from './7-actions/direc
 export { getEdlFilePath, getProjectFileSavePath, projectFileSavePathAtom } from './7-actions/project-auto-save.ts';
 export { runStartupCheck } from './7-actions/startup-check.ts';
 export { dialog_SendReport_open as openSendReportDialog } from './0-ui/dlg-send-report.tsx';
-export { getDroppedFilePaths } from './8-lib/drop.ts';
+

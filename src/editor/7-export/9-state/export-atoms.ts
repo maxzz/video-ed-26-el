@@ -4,7 +4,7 @@ import { appStore } from '@/editor/0-core/9-state/store.ts';
 import { userSettings, userSettingsAtom } from '@/editor/0-core/9-state/user-settings.ts';
 import { getAppInfo, getFfCommandLine } from '@/editor/0-core/8-lib/main-api.ts';
 import { isCuttingEnd, isCuttingStart } from '@/editor/0-core/8-lib/ffmpeg/ffmpeg.ts';
-import { encBitrateAtom, fileDurationAtom, ffmpegCommandLogAtom } from '@/editor/2-file/9-state/file-atoms.ts';
+import { encBitrateAtom, fileDurationAtom, ffmpegCommandLogAtom } from '@/editor/2-file/9-state/a-file-atoms.ts';
 import { segmentsToExportAtom } from '@/editor/5-segments/9-state/segments-store.ts';
 import { defaultCutFileTemplate, defaultCutMergedFileTemplate, defaultMergedFileTemplate } from '../8-lib/output-name-template.ts';
 

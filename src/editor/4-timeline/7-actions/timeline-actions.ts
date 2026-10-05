@@ -8,7 +8,7 @@ import { calcShouldShowKeyframes } from '@/editor/0-core/8-lib/util.ts';
 import { isMatroska } from '@/editor/0-core/8-lib/ffmpeg/streams.ts';
 import { findNearestKeyFrameTime as ffmpegFindNearestKeyFrameTime } from '@/editor/0-core/8-lib/ffmpeg/ffmpeg.ts';
 import normalizeWheel from '@/editor/0-core/8-lib/normalize-wheel.ts';
-import { detectedFpsAtom, fileFormatAtom, rotationAtom } from '@/editor/2-file/9-state/file-atoms.ts';
+import { detectedFpsAtom, fileFormatAtom, rotationAtom } from '@/editor/2-file/9-state/a-file-atoms.ts';
 import { hideCompatPlayerAtom } from '@/editor/3-player/9-state/player-atoms.ts';
 import { getRelevantTime, seekAbs, seekRel, shortStep } from '@/editor/3-player/7-actions/player-actions.ts';
 import { isDurationValid } from '@/editor/5-segments/8-lib/segments.ts';

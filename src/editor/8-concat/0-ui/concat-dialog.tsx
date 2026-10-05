@@ -13,7 +13,7 @@ import { setCustomOutDir, userSettings } from '@/editor/0-core/9-state/user-sett
 import { askForOutDir } from '@/editor/0-core/8-lib/app-dialogs.tsx';
 import { isMov } from '@/editor/0-core/8-lib/ffmpeg/streams.ts';
 import { basename } from '@/editor/0-core/8-lib/node-shims.ts';
-import { alwaysConcatMultipleFilesAtom, batchFilePathsAtom, detectedFileFormatAtom, fileFormatAtom } from '@/editor/2-file/9-state/file-atoms.ts';
+import { alwaysConcatMultipleFilesAtom, batchFilePathsAtom, detectedFileFormatAtom, fileFormatAtom } from '@/editor/2-file/9-state/a-file-atoms.ts';
 import {
     concatClearBatchFilesAfterConcatAtom, concatEnableReadFileMetaAtom, concatFilesMetaAtom, concatIncludeAllStreamsAtom, concatMismatchesPathAtom,
     concatOptionsOpenAtom, concatOutputDirAtom, concatProblemsByFileAtom, concatShowMismatchAlertAtom, isConcatDialogShownAtom, simpleModeAtom,

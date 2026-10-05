@@ -28,7 +28,7 @@ import { loadEdlFile } from '@/editor/9-edl/7-actions/edl-actions.ts';
 import {
     cacheBusterAtom, detectedFileFormatAtom, detectedFpsAtom, externalFilesMetaAtom, ffmpegInfoAtom, fileFormatAtom, filePathAtom, isFileOpenedAtom,
     mainFileMetaAtom, mainStreamsAtom, allFilesMetaAtom, previewFilePathAtom, rotationAtom, shortestFlagAtom, startTimeOffsetAtom, usingDummyVideoAtom,
-} from '../9-state/file-atoms.ts';
+} from '../9-state/a-file-atoms.ts';
 import { dialog_SendReport_open } from '../0-ui/dlg-send-report.tsx';
 import { ensureAccessToSourceDir, ensureWritableOutDir } from './directory-access.ts';
 import { html5ifyAndLoadWithPreferences } from './html5ify.ts';

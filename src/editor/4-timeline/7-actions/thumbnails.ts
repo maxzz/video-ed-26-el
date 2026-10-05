@@ -3,7 +3,7 @@ import { appStore } from '@/editor/0-core/9-state/store.ts';
 import { onFileReset } from '@/editor/0-core/7-actions/lifecycle.ts';
 import { renderThumbnails } from '@/editor/0-core/8-lib/ffmpeg/ffmpeg.ts';
 import { isAbortedError } from '@/editor/0-core/8-lib/util.ts';
-import { filePathAtom } from '@/editor/2-file/9-state/file-atoms.ts';
+import { filePathAtom } from '@/editor/2-file/9-state/a-file-atoms.ts';
 import { isDurationValid } from '@/editor/5-segments/8-lib/segments.ts';
 import { showThumbnailsAtom, thumbnailsAtom, zoomedDurationAtom, zoomWindowStartTimeAtom } from '../9-state/timeline-atoms.ts';
 

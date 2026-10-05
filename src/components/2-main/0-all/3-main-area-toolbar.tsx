@@ -10,7 +10,7 @@ import { mainApi, preloadEnv } from '@/editor/0-core/8-lib/main-api.ts';
 import { customOutDirAtom, setCustomOutDir, userSettingsAtom } from '@/editor/0-core/9-state/user-settings.ts';
 import { runAction } from '@/editor/0-core/7-actions/kbd-actions.ts';
 import { settingsVisibleAtom, streamsSelectorShownAtom } from '@/components/2-main/0-all/a-panels-atoms';
-import { filePathAtom, isCustomFormatSelectedAtom, numStreamsTotalAtom } from '@/editor/2-file/9-state/file-atoms.ts';
+import { filePathAtom, isCustomFormatSelectedAtom, numStreamsTotalAtom } from '@/editor/2-file/9-state/a-file-atoms';
 import { toggleSimpleMode } from '@/editor/4-timeline/7-actions/timeline-actions.ts';
 import { enabledStreamsFilterAtom, numStreamsToCopyAtom } from '@/editor/6-streams/9-state/streams-store.ts';
 import { changeEnabledStreamsFilter, toggleStripCurrentFilter } from '@/editor/6-streams/7-actions/streams-actions.tsx';

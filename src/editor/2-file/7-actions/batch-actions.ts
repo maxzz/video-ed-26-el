@@ -7,8 +7,8 @@ import { isWorking, setWorking, withErrorHandling } from '@/editor/0-core/9-stat
 import { confirmDialog } from '@/editor/0-core/8-lib/app-dialogs.tsx';
 import { mainApi } from '@/editor/0-core/8-lib/main-api.ts';
 import { basename } from '@/editor/0-core/8-lib/node-shims.ts';
-import { batchFilesAtom, filePathAtom, selectedBatchFilesAtom } from '../9-state/file-atoms.ts';
-import { getDroppedFilePaths } from '../8-lib/drop.ts';
+import { batchFilesAtom, filePathAtom, selectedBatchFilesAtom } from '../9-state/a-file-atoms.ts';
+import { getDroppedFilePaths } from '../../../utils/local-utils/drop-full-path.ts';
 import { userOpenSingleFile } from './load-media.ts';
 
 const mapPathsToFiles = (paths: string[]): BatchFile[] => paths.map((path) => ({ path, name: basename(path) }));

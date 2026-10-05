@@ -25,7 +25,7 @@ export function dialog_SendReport_open({ err, message, state }: { err?: unknown;
         html: (
             <div className="max-h-96 text-xs text-left overflow-y-auto flex flex-col gap-2">
                 <p>
-                    If you&apos;re having a problem or question about LosslessCut, please first check the links in the <b>Help</b> menu.
+                    If you're having a problem or question about LosslessCut, please first check the links in the <b>Help</b> menu.
                     {' '}If you cannot find any resolution, you may ask a question in <ExternalLink url={discussionsUrl}>GitHub discussions</ExternalLink>.
                 </p>
                 <p>
