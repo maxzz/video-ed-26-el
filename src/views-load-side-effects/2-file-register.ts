@@ -10,7 +10,7 @@ import { batchFileJump, batchOpenSelectedFile, closeBatch } from '@/editor/2-fil
 import { convertFormatBatch, userHtml5ifyCurrentFile } from '@/editor/2-file/7-actions/html5ify.ts';
 import { initFileEffects } from '@/editor/2-file/7-actions/file-effects.ts';
 
-function register() {
+export function register_2_file() {
     registerActions({
         openFiles: async (...args: unknown[]) => openFiles(...openFilesActionArgsSchema.parse(args)),
         openFilesDialog,
@@ -36,5 +36,3 @@ function register() {
 
     onAppReady(initFileEffects);
 }
-
-export { register as "2-file-register" };

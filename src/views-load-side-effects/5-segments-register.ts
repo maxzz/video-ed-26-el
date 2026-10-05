@@ -3,7 +3,7 @@ import { redoSegments, undoSegments } from '@/editor/5-segments/9-state/segments
 import * as seg from '@/editor/5-segments/7-actions/segment-actions.ts';
 import { editCurrentSegmentTags, mutateSegmentsByExpr, selectSegmentsByExpr, shiftAllSegmentTimes } from '@/editor/5-segments/7-actions/segment-dialogs.tsx';
 
-function register() {
+export function register_5_segments() {
     registerActions({
         setCutStart: seg.setCutStart,
         setCutEnd: seg.setCutEnd,
@@ -45,5 +45,3 @@ function register() {
         shiftAllSegmentTimes,
     });
 }
-
-export { register as "5-segments-register" };

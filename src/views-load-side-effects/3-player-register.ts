@@ -6,7 +6,7 @@ import { initVideoEffects } from '@/editor/3-player/7-actions/video-effects.ts';
 import { initSubtitleEffects } from '@/editor/3-player/7-actions/subtitles.ts';
 import { initWorkingTimer } from '@/editor/3-player/7-actions/working-timer.ts';
 
-function register() {
+export function register_3_player() {
     initVideoEffects();
     initSubtitleEffects();
     initWorkingTimer();
@@ -47,5 +47,3 @@ function register() {
         toggleFullscreenVideo,
     });
 }
-
-export { register as "3-player-register" };

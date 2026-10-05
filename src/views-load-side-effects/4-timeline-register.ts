@@ -7,7 +7,7 @@ import { initThumbnails } from '@/editor/4-timeline/7-actions/thumbnails.ts';
 
 const seekKeyup = tl.resetSeekAcceleration;
 
-function register() {
+export function register_4_timeline() {
     initThumbnails();
 
     registerActions({
@@ -32,5 +32,3 @@ function register() {
         generateOverviewWaveform,
     });
 }
-
-export { register as "4-timeline-register" };

@@ -6,7 +6,7 @@ import { initKeyboard } from '@/editor/c-keyboard/7-actions/keyboard-listener.ts
 import { toggleCommandPalette } from '@/editor/c-keyboard/7-actions/command-palette.ts';
 import { removeInvalidKeyBindings, updateKeyboardLayout } from '@/editor/c-keyboard/7-actions/key-bindings.ts';
 
-function register() {
+export function register_c_keyboard() {
     registerActions({
         toggleKeyboardShortcuts,
         toggleCommandPalette,
@@ -20,5 +20,3 @@ function register() {
         removeInvalidKeyBindings();
     }, appStore);
 }
-
-export { register as "c-keyboard-register" };
