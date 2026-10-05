@@ -11,8 +11,10 @@ import { getFileSize, shuffleArray } from '@/editor/0-core/8-lib/util.ts';
 import { maxSegmentsAllowed } from '@/editor/0-core/8-lib/constants.ts';
 import { handleError, isWorking, setWorking } from '@/editor/0-core/9-state/working.ts';
 import { parseTimecode, timecodePlaceholderAtom } from '@/editor/0-core/9-state/timecode.ts';
+import { askForAlignSegments } from '@/components/4-dialogs/7-1-dialogs/10-ask-for-align-segments.tsx';
+import { askForSegmentDuration } from '@/components/4-dialogs/7-1-dialogs/07-ask-for-segment-duration.tsx';
 import {
-    askForAlignSegments, askForSegmentDuration, createFixedByteSixedSegments as createFixedByteSixedSegmentsDialog,
+    createFixedByteSixedSegments as createFixedByteSixedSegmentsDialog,
     createNumSegments as createNumSegmentsDialog, createRandomSegments as createRandomSegmentsDialog, errorToast,
     labelSegmentDialog, selectSegmentsByLabelDialog, toastError,
 } from '@/components/4-dialogs/7-1-dialogs/00-app-dialogs.tsx';

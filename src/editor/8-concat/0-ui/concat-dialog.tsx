@@ -10,7 +10,7 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/ui/shadcn/table';
 import { cn } from '@/utils/classnames';
 import { setCustomOutDir, userSettings } from '@/editor/0-core/9-state/user-settings.ts';
-import { askForOutDir } from '@/components/4-dialogs/7-1-dialogs/00-app-dialogs.tsx';
+import { askForOutDir } from '@/components/4-dialogs/7-1-dialogs/02-ask-for-out-dir.tsx';
 import { isMov } from '@/editor/0-core/8-lib/ffmpeg/streams.ts';
 import { basename } from '@/editor/0-core/8-lib/node-shims.ts';
 import { alwaysConcatMultipleFilesAtom, batchFilePathsAtom, detectedFileFormatAtom, fileFormatAtom } from '@/editor/2-file/9-state/a-file-atoms.ts';
