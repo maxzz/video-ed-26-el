@@ -1,12 +1,80 @@
 import { useAtomValue } from 'jotai';
+import { Menubar, MenubarContent, MenubarMenu, MenubarSeparator, MenubarSub, MenubarSubContent, MenubarSubTrigger, MenubarTrigger } from '@/ui/shadcn/menubar';
 import { useTranslation } from 'react-i18next';
+
+import { type EdlExportType, type EdlImportType } from '@/editor/0-core/8-lib/types.ts';
 import { appName, faqUrl, featureRequestUrl, getReleaseUrl, githubUrl, homepageUrl, licensesUrl, thanksUrl, troubleshootingUrl, usageUrl } from '@shared/constants.ts';
-import type { EdlExportType, EdlImportType } from '@/editor/0-core/8-lib/types.ts';
 import { getAppInfo } from '@/editor/0-core/8-lib/main-api.ts';
 import { newVersionAtom } from '@/editor/f-platform/9-state/platform.ts';
 import { canRedoAtom, canUndoAtom } from '@/editor/5-segments/9-state/segments-store.ts';
-import { Menubar, MenubarContent, MenubarMenu, MenubarSeparator, MenubarSub, MenubarSubContent, MenubarSubTrigger, MenubarTrigger } from '@/ui/shadcn/menubar';
-import { MenuActionItem, modShortcut } from './menu-item.tsx';
+import { MenuActionItem, modShortcut } from './8-menu-item.tsx';
+
+export function TopMenu_All() {
+    const newVersion = useAtomValue(newVersionAtom);
+    return (
+        <Menubar className="grow p-0 min-w-0 h-auto bg-transparent border-0 rounded-none">
+            <TopMenu_File />
+            <TopMenu_Edit />
+            <TopMenu_Segments />
+            <TopMenu_ViewM />
+            <TopMenu_Tools />
+            <TopMenu_Help />
+            {newVersion != null && <TopMenu_NewVersion version={newVersion} />}
+        </Menubar>
+    );
+}
+
+function TopMenu_File() {
+    const { t } = useTranslation();
+    const { isMac } = getAppInfo();
+    return (
+        <MenubarMenu>
+            <MenubarTrigger>{t('File')}</MenubarTrigger>
+            <MenubarContent className="min-w-72">
+                <MenuActionItem label={t('Open')} shortcut={modShortcut('O')} action={{ what: 'openFilesDialog' }} />
+                <MenuActionItem label={t('Open folder')} action={{ what: 'openDirDialog' }} />
+                <MenuActionItem label={t('Open URL')} action={{ what: 'promptDownloadMediaUrl' }} />
+                <MenubarSeparator />
+                <MenuActionItem label={t('Close')} shortcut={modShortcut('W')} action={{ what: 'closeCurrentFile' }} />
+                <MenuActionItem label={t('Close batch')} action={{ what: 'closeBatch' }} />
+                <MenubarSeparator />
+                <MenuActionItem label={t('Import project (LLC)...')} action={{ what: 'importEdlFile', format: 'llc' }} />
+                <MenuActionItem label={t('Export project (LLC)...')} action={{ what: 'exportEdlFile', format: 'llc' }} />
+                <MenubarSub>
+                    <MenubarSubTrigger>{t('Import project')}</MenubarSubTrigger>
+                    <MenubarSubContent className="min-w-72">
+                        {importFormats.map(
+                            ([label, format]) => (
+                                <MenuActionItem key={format} label={t(label)} action={{ what: 'importEdlFile', format }} />
+                            )
+                        )}
+                    </MenubarSubContent>
+                </MenubarSub>
+                <MenubarSub>
+                    <MenubarSubTrigger>{t('Export project')}</MenubarSubTrigger>
+                    <MenubarSubContent className="min-w-72">
+                        {exportFormats.map(
+                            ([label, format]) => (
+                                <MenuActionItem key={format} label={t(label)} action={{ what: 'exportEdlFile', format }} />
+                            )
+                        )}
+                        <MenuActionItem label={t('Start times as YouTube Chapters')} action={{ what: 'exportYouTube' }} />
+                    </MenubarSubContent>
+                </MenubarSub>
+                <MenubarSeparator />
+                <MenuActionItem label={t('Convert to supported format')} action={{ what: 'html5ify' }} />
+                <MenuActionItem label={t('Fix incorrect duration')} action={{ what: 'fixInvalidDuration' }} />
+                <MenuActionItem label={t('Decimate video')} action={{ what: 'decimate' }} />
+                <MenubarSeparator />
+                <MenuActionItem label={t('Settings')} shortcut={modShortcut(',')} action={{ what: 'toggleSettings' }} />
+                {!isMac && (<>
+                    <MenubarSeparator />
+                    <MenuActionItem label={t('Exit')} action={{ what: 'quit' }} />
+                </>)}
+            </MenubarContent>
+        </MenubarMenu>
+    );
+}
 
 const importFormats = [
     ['Times in seconds (CSV)', 'csv'],
@@ -31,72 +99,7 @@ const exportFormats = [
     ['Subtitles (SRT)', 'srt'],
 ] as const satisfies readonly (readonly [string, EdlExportType])[];
 
-export function AppMenu() {
-    const newVersion = useAtomValue(newVersionAtom);
-    return (
-        <Menubar className="grow p-0 min-w-0 h-auto bg-transparent border-0 rounded-none">
-            <FileMenu />
-            <EditMenu />
-            <SegmentsMenu />
-            <ViewMenu />
-            <ToolsMenu />
-            <HelpMenu />
-            {newVersion != null && <NewVersionMenu version={newVersion} />}
-        </Menubar>
-    );
-}
-
-function FileMenu() {
-    const { t } = useTranslation();
-    const { isMac } = getAppInfo();
-    return (
-        <MenubarMenu>
-            <MenubarTrigger>{t('File')}</MenubarTrigger>
-            <MenubarContent className="min-w-72">
-                <MenuActionItem label={t('Open')} shortcut={modShortcut('O')} action={{ what: 'openFilesDialog' }} />
-                <MenuActionItem label={t('Open folder')} action={{ what: 'openDirDialog' }} />
-                <MenuActionItem label={t('Open URL')} action={{ what: 'promptDownloadMediaUrl' }} />
-                <MenubarSeparator />
-                <MenuActionItem label={t('Close')} shortcut={modShortcut('W')} action={{ what: 'closeCurrentFile' }} />
-                <MenuActionItem label={t('Close batch')} action={{ what: 'closeBatch' }} />
-                <MenubarSeparator />
-                <MenuActionItem label={t('Import project (LLC)...')} action={{ what: 'importEdlFile', format: 'llc' }} />
-                <MenuActionItem label={t('Export project (LLC)...')} action={{ what: 'exportEdlFile', format: 'llc' }} />
-                <MenubarSub>
-                    <MenubarSubTrigger>{t('Import project')}</MenubarSubTrigger>
-                    <MenubarSubContent className="min-w-72">
-                        {importFormats.map(([label, format]) => (
-                            <MenuActionItem key={format} label={t(label)} action={{ what: 'importEdlFile', format }} />
-                        ))}
-                    </MenubarSubContent>
-                </MenubarSub>
-                <MenubarSub>
-                    <MenubarSubTrigger>{t('Export project')}</MenubarSubTrigger>
-                    <MenubarSubContent className="min-w-72">
-                        {exportFormats.map(([label, format]) => (
-                            <MenuActionItem key={format} label={t(label)} action={{ what: 'exportEdlFile', format }} />
-                        ))}
-                        <MenuActionItem label={t('Start times as YouTube Chapters')} action={{ what: 'exportYouTube' }} />
-                    </MenubarSubContent>
-                </MenubarSub>
-                <MenubarSeparator />
-                <MenuActionItem label={t('Convert to supported format')} action={{ what: 'html5ify' }} />
-                <MenuActionItem label={t('Fix incorrect duration')} action={{ what: 'fixInvalidDuration' }} />
-                <MenuActionItem label={t('Decimate video')} action={{ what: 'decimate' }} />
-                <MenubarSeparator />
-                <MenuActionItem label={t('Settings')} shortcut={modShortcut(',')} action={{ what: 'toggleSettings' }} />
-                {!isMac && (
-                    <>
-                        <MenubarSeparator />
-                        <MenuActionItem label={t('Exit')} action={{ what: 'quit' }} />
-                    </>
-                )}
-            </MenubarContent>
-        </MenubarMenu>
-    );
-}
-
-function EditMenu() {
+function TopMenu_Edit() {
     const { t } = useTranslation();
     const canUndo = useAtomValue(canUndoAtom);
     const canRedo = useAtomValue(canRedoAtom);
@@ -124,7 +127,7 @@ function EditMenu() {
     );
 }
 
-function SegmentsMenu() {
+function TopMenu_Segments() {
     const { t } = useTranslation();
     return (
         <MenubarMenu>
@@ -156,7 +159,7 @@ function SegmentsMenu() {
     );
 }
 
-function ViewMenu() {
+function TopMenu_ViewM() {
     const { t } = useTranslation();
     const { isWindows } = getAppInfo();
     return (
@@ -180,7 +183,7 @@ function ViewMenu() {
     );
 }
 
-function ToolsMenu() {
+function TopMenu_Tools() {
     const { t } = useTranslation();
     return (
         <MenubarMenu>
@@ -201,7 +204,7 @@ function ToolsMenu() {
     );
 }
 
-function HelpMenu() {
+function TopMenu_Help() {
     const { t } = useTranslation();
     const { isMac, paths } = getAppInfo();
     return (
@@ -229,7 +232,7 @@ function HelpMenu() {
     );
 }
 
-function NewVersionMenu({ version }: { version: string; }) {
+function TopMenu_NewVersion({ version }: { version: string; }) {
     const { t } = useTranslation();
     return (
         <MenubarMenu>

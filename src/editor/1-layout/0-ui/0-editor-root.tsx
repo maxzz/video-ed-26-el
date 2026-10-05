@@ -5,7 +5,7 @@ import { prefersReducedMotionAtom } from '@/editor/0-core/9-state/user-settings.
 import { DialogHost } from '@/editor/0-core/0-ui/dialog-host.tsx';
 import { batchFilesAtom } from '@/editor/2-file/9-state/file-atoms.ts';
 import { showRightBarAtom } from '../9-state/layout-atoms.ts';
-import { TopMenu } from './top-menu.tsx';
+import { MainArea_Toolbar } from './app-menu/2-main-area-toolbar.tsx';
 import { BottomBar } from './bottom-bar.tsx';
 import { PlayerView, FileHosts } from '@/editor/3-player/index.ts';
 import { Timeline, TimelineHosts } from '@/editor/4-timeline/index.ts';
@@ -21,7 +21,7 @@ export function EditorRoot() {
     return (
         <MotionConfig reducedMotion={reducedMotion ? 'always' : 'user'}>
             <div className="select-none h-full min-h-0 overflow-hidden flex flex-col">
-                <TopMenu />
+                <MainArea_Toolbar />
 
                 <div className="min-h-0 flex-1 flex">
                     <BatchArea />

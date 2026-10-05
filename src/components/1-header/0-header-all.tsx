@@ -1,7 +1,7 @@
 import { useSetAtom } from "jotai";
 import { MainPage, APP_NAME, navigateToPageAtom } from "@/components/5-welcome/a-ui-app-page";
 import { AppLogo } from "@/components/5-welcome/2-app-logo";
-import { AppMenu } from "@/editor/1-layout/0-ui/app-menu/app-menu";
+import { TopMenu_All } from "@/editor/1-layout/0-ui/app-menu/1-top-menu";
 import { ButtonCommandPalette, ButtonKeyboardShortcuts } from "./6-btn-keyboard";
 import { ButtonOptions } from "./7-btn-options";
 import { ButtonThemeToggle } from "./8-btn-theme-toggle";
@@ -20,7 +20,7 @@ export function Header() {
                 <AppLogo className="size-4.5" iconClasses="stroke-[0.75]!" />
             </button>
 
-            <AppMenu />
+            <TopMenu_All />
 
             <div className="shrink-0 flex items-center gap-2">
                 <ButtonCommandPalette />

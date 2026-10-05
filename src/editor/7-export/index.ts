@@ -20,7 +20,7 @@ export { OutputFormatSelect, CurrentFileOutputFormatSelect } from './0-ui/output
 export { OutDirSelector } from './0-ui/out-dir-selector.tsx';
 export { FileNameTemplateEditor } from './0-ui/file-name-template-editor.tsx';
 export { CopyClipboardButton } from './0-ui/controls.tsx';
-export { TopMenu } from './0-ui/top-menu/top-menu.tsx';
+export { MainArea_Toolbar as TopMenu } from '../1-layout/0-ui/app-menu/2-main-area-toolbar.tsx';
 
 registerActions({
     export: onExportPress,
