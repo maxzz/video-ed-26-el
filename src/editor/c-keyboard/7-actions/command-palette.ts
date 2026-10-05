@@ -1,5 +1,5 @@
 import { appStore } from '@/editor/0-core/9-state/store.ts';
-import { runAction } from '@/editor/0-core/7-actions/actions-registry.ts';
+import { runAction } from '@/editor/0-core/7-actions/kbd-actions';
 import { commandPaletteOpenAtom } from '@/editor/1-layout/9-state/panels-atoms.ts';
 
 export function toggleCommandPalette() {

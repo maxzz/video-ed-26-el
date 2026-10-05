@@ -1,5 +1,5 @@
 // Owner: 4-timeline port. Public API of the timeline feature.
-import { registerActions } from '@/editor/0-core/7-actions/actions-registry.ts';
+import { registerActions } from '@/editor/0-core/7-actions/kbd-actions.ts';
 import { userSettings } from '@/editor/0-core/9-state/user-settings.ts';
 import * as tl from './7-actions/timeline-actions.ts';
 import { readAllKeyframes } from './7-actions/keyframes.ts';

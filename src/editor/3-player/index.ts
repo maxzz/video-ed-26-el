@@ -1,5 +1,5 @@
 // Public API of the player feature.
-import { registerActions } from '@/editor/0-core/7-actions/actions-registry.ts';
+import { registerActions } from '@/editor/0-core/7-actions/kbd-actions.ts';
 import { goToTimecodeDirectArgsSchema } from '@/editor/0-core/8-lib/types.ts';
 import * as player from './7-actions/player-actions.ts';
 import { decreaseVolume, goToTimecode, goToTimecodeDirect, increaseVolume, toggleFullscreenVideo } from './7-actions/video-events.ts';

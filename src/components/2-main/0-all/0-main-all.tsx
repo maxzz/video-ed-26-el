@@ -1,4 +1,4 @@
-import { EditorRoot } from "@/editor/1-layout";
+import { EditorRoot } from "./0-editor-root";
 
 export function MainBody() {
     return (

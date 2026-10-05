@@ -1,5 +1,5 @@
 // Owner: a-capture port. Public API of the frame capture feature.
-import { registerActions } from '@/editor/0-core/7-actions/actions-registry.ts';
+import { registerActions } from '@/editor/0-core/7-actions/kbd-actions.ts';
 import * as capture from './7-actions/capture-actions.ts';
 
 export { extractSegmentsFramesAsImages } from './7-actions/capture-actions.ts';

@@ -1,6 +1,6 @@
 // Every feature registers its actions when its index.ts is first imported.
 // Add new features here.
-import './1-layout/index.ts';
+import '../main-ini-togles.ts';
 import './2-file/index.ts';
 import './3-player/index.ts';
 import './4-timeline/index.ts';

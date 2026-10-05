@@ -2,6 +2,9 @@ import { atom } from 'jotai';
 import { appStore } from '../9-state/store.ts';
 import { handleError } from '../9-state/working.ts';
 
+//---------------------------------------------------------------------------
+// Keyboard actions
+
 /**
  * Single dispatch point for keyboard shortcuts, the HTTP API and the command palette.
  * Features register their actions from their index.ts with registerActions().
@@ -12,8 +15,7 @@ export type ActionFn = (...args: never[]) => unknown;
 
 export interface ActionDef {
     run: ActionFn;
-    /** Called on key up for keyboard bound actions (e.g. to reset seek acceleration) */
-    keyup?: () => void;
+    keyup?: () => void; // Called on key up for keyboard bound actions (e.g. to reset seek acceleration)
 }
 
 const registry = new Map<string, ActionDef>();
@@ -23,11 +25,16 @@ export const actionsVersionAtom = atom(0);
 
 export function registerActions(actions: Record<string, ActionFn | ActionDef>) {
     for (const [name, fnOrDef] of Object.entries(actions)) {
-        if (import.meta.env.DEV && registry.has(name)) console.warn('Action registered twice, the last one wins:', name);
+        if (import.meta.env.DEV && registry.has(name)) {
+            console.warn('Action registered twice, the last one wins:', name);
+        }
         registry.set(name, typeof fnOrDef === 'function' ? { run: fnOrDef } : fnOrDef);
     }
+
     appStore.set(actionsVersionAtom, (v) => v + 1);
 }
+
+//---------------------------------------------------------------------------
 
 export function hasAction(name: string) {
     return registry.has(name);
@@ -55,3 +62,5 @@ export async function runAction(name: string, ...args: unknown[]) {
     }
     return true;
 }
+
+//---------------------------------------------------------------------------

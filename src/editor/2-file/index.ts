@@ -1,5 +1,5 @@
 // Public API of the file feature (open, close, load media, batch, html5ify, project auto-save).
-import { registerActions } from '@/editor/0-core/7-actions/actions-registry.ts';
+import { registerActions } from '@/editor/0-core/7-actions/kbd-actions.ts';
 import { mainApi } from '@/editor/0-core/8-lib/main-api.ts';
 import { openFilesActionArgsSchema } from '@/editor/0-core/8-lib/types.ts';
 import {

@@ -1,5 +1,5 @@
 // Owner: 7-export + 6-streams port. Public API of the streams feature (tracks editor, tags, GPS map).
-import { registerActions } from '@/editor/0-core/7-actions/actions-registry.ts';
+import { registerActions } from '@/editor/0-core/7-actions/kbd-actions.ts';
 import { toggleStreamsSelector } from '@/editor/1-layout/9-state/panels-atoms.ts';
 import { toggleStripAll, toggleStripAudio, toggleStripSubtitle, toggleStripThumbnail, toggleStripVideo } from './9-state/streams-store.ts';
 import { changeEnabledStreamsFilter, showIncludeExternalStreamsDialog, showStreamsSelector, toggleStripCurrentFilter } from './7-actions/streams-actions.tsx';

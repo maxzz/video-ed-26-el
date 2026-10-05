@@ -1,5 +1,5 @@
 import { mainApi, mainEvents } from '../8-lib/main-api.ts';
-import { runAction } from './actions-registry.ts';
+import { runAction } from './kbd-actions.ts';
 
 let initialized = false;
 

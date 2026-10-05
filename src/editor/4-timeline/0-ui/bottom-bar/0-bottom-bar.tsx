@@ -14,7 +14,7 @@ import type { CaptureFormat } from '@shared/types.ts';
 import { appStore } from '@/editor/0-core/9-state/store.ts';
 import { userSettings, userSettingsAtom } from '@/editor/0-core/9-state/user-settings.ts';
 import { formatTimecodeAtom, getFrameCountAtom } from '@/editor/0-core/9-state/timecode.ts';
-import { hasAction, runAction } from '@/editor/0-core/7-actions/actions-registry.ts';
+import { hasAction, runAction } from '@/editor/0-core/7-actions/kbd-actions.ts';
 import { askForPlaybackRate } from '@/editor/0-core/8-lib/app-dialogs.tsx';
 import { getSegColor as getSegColorRaw } from '@/editor/0-core/8-lib/colors.ts';
 import { exportConfirmOpenAtom } from '@/editor/1-layout/9-state/panels-atoms.ts';

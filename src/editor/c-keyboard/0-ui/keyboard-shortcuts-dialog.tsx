@@ -6,7 +6,7 @@ import { HammerIcon, MouseIcon, PlusIcon, RotateCcwIcon, Trash2Icon } from 'luci
 import type { KeyboardAction, ModifierKey } from '@shared/types.ts';
 import { appStore } from '@/editor/0-core/9-state/store.ts';
 import { userSettingsAtom } from '@/editor/0-core/9-state/user-settings.ts';
-import { runAction } from '@/editor/0-core/7-actions/actions-registry.ts';
+import { runAction } from '@/editor/0-core/7-actions/kbd-actions.ts';
 import { keyboardShortcutsVisibleAtom } from '@/editor/1-layout/9-state/panels-atoms.ts';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/ui/shadcn/dialog';
 import { Button } from '@/ui/shadcn/button';

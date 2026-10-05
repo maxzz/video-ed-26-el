@@ -1,5 +1,5 @@
 // Owner: 5-segments port. Public API of the segments feature.
-import { registerActions } from '@/editor/0-core/7-actions/actions-registry.ts';
+import { registerActions } from '@/editor/0-core/7-actions/kbd-actions.ts';
 import { redoSegments, undoSegments } from './9-state/segments-store.ts';
 import * as seg from './7-actions/segment-actions.ts';
 import { editCurrentSegmentTags, mutateSegmentsByExpr, selectSegmentsByExpr, shiftAllSegmentTimes } from './7-actions/segment-dialogs.tsx';

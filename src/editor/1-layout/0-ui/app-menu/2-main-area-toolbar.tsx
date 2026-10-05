@@ -8,7 +8,7 @@ import { appStore } from '@/editor/0-core/9-state/store.ts';
 import { mainApi, preloadEnv } from '@/editor/0-core/8-lib/main-api.ts';
 
 import { customOutDirAtom, setCustomOutDir, userSettingsAtom } from '@/editor/0-core/9-state/user-settings.ts';
-import { runAction } from '@/editor/0-core/7-actions/actions-registry.ts';
+import { runAction } from '@/editor/0-core/7-actions/kbd-actions.ts';
 import { settingsVisibleAtom, streamsSelectorShownAtom } from '@/editor/1-layout/9-state/panels-atoms.ts';
 import { filePathAtom, isCustomFormatSelectedAtom, numStreamsTotalAtom } from '@/editor/2-file/9-state/file-atoms.ts';
 import { toggleSimpleMode } from '@/editor/4-timeline/7-actions/timeline-actions.ts';

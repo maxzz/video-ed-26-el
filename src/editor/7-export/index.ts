@@ -1,9 +1,7 @@
 // Owner: 7-export + 6-streams port. Public API of the export feature.
-import { registerActions } from '@/editor/0-core/7-actions/actions-registry.ts';
+import { registerActions } from '@/editor/0-core/7-actions/kbd-actions.ts';
 import { toggleLastCommands } from '@/editor/1-layout/9-state/panels-atoms.ts';
-import {
-    cleanupFilesDialog, copySegmentsToClipboard, extractAllStreams, onExportPress, toggleKeyframeCut, tryDecimate,
-} from './7-actions/export-actions.ts';
+import { cleanupFilesDialog, copySegmentsToClipboard, extractAllStreams, onExportPress, toggleKeyframeCut, tryDecimate } from './7-actions/export-actions.ts';
 
 export { ExportHosts } from './0-ui/export-hosts.tsx';
 export * as ffmpegOperations from './8-lib/ffmpeg-operations.ts';
@@ -20,7 +18,6 @@ export { OutputFormatSelect, CurrentFileOutputFormatSelect } from './0-ui/output
 export { OutDirSelector } from './0-ui/out-dir-selector.tsx';
 export { FileNameTemplateEditor } from './0-ui/file-name-template-editor.tsx';
 export { CopyClipboardButton } from './0-ui/controls.tsx';
-export { MainArea_Toolbar as TopMenu } from '../1-layout/0-ui/app-menu/2-main-area-toolbar.tsx';
 
 registerActions({
     export: onExportPress,
