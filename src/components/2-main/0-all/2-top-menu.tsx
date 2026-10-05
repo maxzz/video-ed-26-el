@@ -2,7 +2,7 @@ import { useAtomValue } from 'jotai';
 import { Menubar, MenubarContent, MenubarMenu, MenubarSeparator, MenubarSub, MenubarSubContent, MenubarSubTrigger, MenubarTrigger } from '@/ui/shadcn/menubar';
 import { useTranslation } from 'react-i18next';
 
-import { type EdlExportType, type EdlImportType } from '@/editor/0-core/8-lib/types.ts';
+import { type EdlExportType, type EdlImportType } from '@/editor/0-core/8-lib/9-types-core.ts';
 import { appName, faqUrl, featureRequestUrl, getReleaseUrl, githubUrl, homepageUrl, licensesUrl, thanksUrl, troubleshootingUrl, usageUrl } from '@shared/constants.ts';
 import { getAppInfo } from '@/editor/0-core/7-actions/0-main-api.ts';
 import { newVersionAtom } from '@/editor/f-platform/9-state/platform.ts';

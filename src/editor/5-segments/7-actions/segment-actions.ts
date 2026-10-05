@@ -2,7 +2,7 @@ import i18n from 'i18next';
 import pMap from 'p-map';
 import invariant from 'tiny-invariant';
 import sortBy from 'lodash/sortBy.js';
-import type { DefiniteSegmentBase, SegmentBase, StateSegment } from '@/editor/0-core/8-lib/types.ts';
+import type { DefiniteSegmentBase, SegmentBase, StateSegment } from '@/editor/0-core/8-lib/9-types-core.ts';
 import { jotaiDefaultStore } from '@/utils/local-utils/9-jotai-default-store.ts';
 import { userSettings } from '@/editor/0-core/9-state/user-settings.ts';
 import { maxLabelLengthAtom } from '@/editor/0-core/9-state/user-settings.ts';
@@ -15,7 +15,7 @@ import {
     askForAlignSegments, askForSegmentDuration, createFixedByteSixedSegments as createFixedByteSixedSegmentsDialog,
     createNumSegments as createNumSegmentsDialog, createRandomSegments as createRandomSegmentsDialog, errorToast,
     labelSegmentDialog, selectSegmentsByLabelDialog, toastError,
-} from '@/editor/0-core/8-lib/app-dialogs.tsx';
+} from '@/components/4-dialogs/7-1-dialogs/00-app-dialogs.tsx';
 import { findKeyframeNearTime, mapTimesToSegments, readFrames } from '@/editor/0-core/8-lib/ffmpeg/ffmpeg.ts';
 import { fileDurationAtom, filePathAtom, mainFileMetaAtom } from '@/editor/2-file/9-state/a-file-atoms.ts';
 import { activeVideoStreamAtom } from '@/editor/3-player/9-state/player-atoms.ts';

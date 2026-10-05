@@ -1,7 +1,7 @@
 import { atom } from 'jotai';
 import { type FFprobeStream } from '@shared/ffprobe';
 import { type Html5ifyMode } from '@shared/types';
-import { type BatchFile, type FfmpegCommandLog, type FileStats, type FilesMeta, type ParamsByFile } from '@/editor/0-core/8-lib/types.ts';
+import { type BatchFile, type FfmpegCommandLog, type FileStats, type FilesMeta, type ParamsByFile } from '@/editor/0-core/8-lib/9-types-core';
 import { type FileFfprobeMeta } from '@/editor/0-core/8-lib/ffmpeg/ffmpeg.ts';
 
 import { getAudioStreams, getRealVideoStreams, getSubtitleStreams } from '@/editor/0-core/8-lib/ffmpeg/streams.ts';

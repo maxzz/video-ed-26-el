@@ -1,7 +1,7 @@
 import i18n from 'i18next';
 import invariant from 'tiny-invariant';
 import type { CaptureFormat } from '@shared/types.ts';
-import type { SegmentBase } from '@/editor/0-core/8-lib/types.ts';
+import type { SegmentBase } from '@/editor/0-core/8-lib/9-types-core.ts';
 import { jotaiDefaultStore } from '@/utils/local-utils/9-jotai-default-store.ts';
 import { customOutDirAtom, userSettings } from '@/editor/0-core/9-state/user-settings.ts';
 import { handleError, isWorking, setProgress, setWorking, withErrorHandling } from '@/editor/0-core/9-state/working.ts';

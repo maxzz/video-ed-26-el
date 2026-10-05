@@ -1,5 +1,5 @@
 import type { HostMenuAction } from '@shared/ipc-contract.ts';
-import type { EdlExportType, EdlImportType } from '@/editor/0-core/8-lib/types.ts';
+import type { EdlExportType, EdlImportType } from '@/editor/0-core/8-lib/9-types-core';
 import type { EditCommand } from '@/editor/0-core/8-lib/edit-command.ts';
 
 /** Every application-menu command. `what` selects it; other fields are that command's parameters. */

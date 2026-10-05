@@ -1,7 +1,7 @@
 import { atom, type Getter } from 'jotai';
 import type { UniqueIdentifier } from '@dnd-kit/core';
 import type { FileFfprobeMeta } from '@/editor/0-core/8-lib/ffmpeg/ffmpeg.ts';
-import type { FileStats } from '@/editor/0-core/8-lib/types.ts';
+import type { FileStats } from '@/editor/0-core/8-lib/9-types-core';
 import { customOutDirAtom, maxLabelLengthAtom, userSettingsAtom } from '@/editor/0-core/9-state/user-settings.ts';
 import { getOutDir } from '@/editor/0-core/8-lib/util.ts';
 import { parseRatio } from '@shared/util';

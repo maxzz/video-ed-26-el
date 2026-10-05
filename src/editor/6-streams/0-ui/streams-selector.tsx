@@ -14,7 +14,7 @@ import { setWorking, withErrorHandling } from '@/editor/0-core/9-state/working.t
 import { mainApi, preloadEnv } from '@/editor/0-core/7-actions/0-main-api.ts';
 import { extractSubtitleTrackToSegments, type FileStream, getStreamFps } from '@/editor/0-core/8-lib/ffmpeg/ffmpeg.ts';
 import { attachedPicDisposition, getActiveDisposition, isGpsStream } from '@/editor/0-core/8-lib/ffmpeg/streams.ts';
-import { type ContentDispositionOptions, contentDispositionOptionsSchema, deleteDispositionValue, dispositionOptions, type ParamsByFile } from '@/editor/0-core/8-lib/types.ts';
+import { type ContentDispositionOptions, contentDispositionOptionsSchema, deleteDispositionValue, dispositionOptions, type ParamsByFile } from '@/editor/0-core/8-lib/9-types-core.ts';
 import { streamsSelectorShownAtom } from '@/components/2-main/0-all/a-panels-atoms.ts';
 import { externalFilesMetaAtom, fileDurationAtom, filePathAtom, mainFileChaptersAtom, mainFileFormatDataAtom, mainStreamsAtom, paramsByFileAtom, shortestFlagAtom } from '@/editor/2-file/9-state/a-file-atoms.ts';
 import { loadCutSegments } from '@/editor/5-segments/7-actions/segment-actions.ts';

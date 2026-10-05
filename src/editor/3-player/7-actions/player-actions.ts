@@ -1,9 +1,9 @@
 import i18n from 'i18next';
 import invariant from 'tiny-invariant';
-import type { PlaybackMode } from '@/editor/0-core/8-lib/types.ts';
+import type { PlaybackMode } from '@/editor/0-core/8-lib/9-types-core.ts';
 import { jotaiDefaultStore } from '@/utils/local-utils/9-jotai-default-store.ts';
 import { userSettings } from '@/editor/0-core/9-state/user-settings.ts';
-import { showPlaybackFailedMessage } from '@/editor/0-core/8-lib/app-dialogs.tsx';
+import { showPlaybackFailedMessage } from '@/components/4-dialogs/7-1-dialogs/00-app-dialogs.tsx';
 import { toast } from '@/components/4-dialogs/7-0-dialogs/toast.tsx';
 import { adjustRate } from '@/editor/0-core/8-lib/rate-calculator.ts';
 import { getFrameCountRaw } from '@/editor/9-edl/8-lib/edl-formats.ts';

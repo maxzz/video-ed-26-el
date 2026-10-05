@@ -5,14 +5,14 @@ import invariant from 'tiny-invariant';
 import pMap from 'p-map';
 import { ArrowRightIcon, CircleHelpIcon, InfoIcon, TriangleAlertIcon } from 'lucide-react';
 import type { OpenDialogOptions } from '@shared/ipc-contract.ts';
-import { formatDuration } from './duration.ts';
-import { isWindows, mainApi } from '../7-actions/0-main-api.ts';
-import { fs } from './node-shims.ts';
-import { testFailFsOperation, trashFile, unlinkWithRetry } from './util.ts';
-import type { ParseTimecode } from './types.ts';
-import type { FindKeyframeMode } from './ffmpeg/ffmpeg.ts';
-import { fireDialog, openCustomDialog } from '../../../components/4-dialogs/7-0-dialogs/dialogs.ts';
-import { toast } from '../../../components/4-dialogs/7-0-dialogs/toast.tsx';
+import { formatDuration } from '../../../editor/0-core/8-lib/duration.ts';
+import { isWindows, mainApi } from '../../../editor/0-core/7-actions/0-main-api.ts';
+import { fs } from '../../../editor/0-core/8-lib/node-shims.ts';
+import { testFailFsOperation, trashFile, unlinkWithRetry } from '../../../editor/0-core/8-lib/util.ts';
+import type { ParseTimecode } from '../../../editor/0-core/8-lib/9-types-core.ts';
+import type { FindKeyframeMode } from '../../../editor/0-core/8-lib/ffmpeg/ffmpeg.ts';
+import { fireDialog, openCustomDialog } from '../7-0-dialogs/dialogs.ts';
+import { toast } from '../7-0-dialogs/toast.tsx';
 import { DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/ui/shadcn/dialog';
 import { Button } from '@/ui/shadcn/button';
 
@@ -71,22 +71,6 @@ export async function askForFileOpenAction(inputOptions: [OpenFileResponse, stri
             </div>
         </DialogContent>
     ));
-}
-
-export async function showDiskFull() {
-    await fireDialog({ icon: 'error', text: i18n.t('The output location has no storage space remaining. Please free up some space and try again.') });
-}
-
-export async function showMuxNotSupported() {
-    await fireDialog({ icon: 'error', text: i18n.t('At least one codec is not supported by the selected output file format. Try another output format or try to disable one or more tracks.') });
-}
-
-export async function showOutputNotWritable() {
-    await fireDialog({ icon: 'error', text: i18n.t('You are not allowed to write the output file. This probably means that the file already exists with the wrong permissions, or you don\'t have write permissions to the output folder.') });
-}
-
-export async function showRefuseToOverwrite() {
-    await fireDialog({ icon: 'warning', text: i18n.t('Output file already exists, refusing to overwrite. You can turn on overwriting in settings.') });
 }
 
 export async function askForImportChapters() {
@@ -246,7 +230,9 @@ export async function createFixedByteSixedSegments({ fileDuration, fileSize }: {
         text: i18n.t('Divide timeline into a number of segments with an approximate byte size'),
         inputValidator: (v) => (parseBytesHuman(v) != null ? undefined : i18n.t('Please input a valid size. Example: {{example}}', { example })),
     });
-    if (value == null) return undefined;
+    if (value == null) {
+        return undefined;
+    }
     const parsed = parseBytesHuman(value);
     invariant(parsed != null);
     return fileDuration * (parsed / fileSize);
@@ -254,7 +240,9 @@ export async function createFixedByteSixedSegments({ fileDuration, fileSize }: {
 
 export async function createRandomSegments(totalDuration: number) {
     const response = await askForSegmentsRandomDurationRange();
-    if (response == null) return undefined;
+    if (response == null) {
+        return undefined;
+    }
 
     const { durationMin, durationMax, gapMin, gapMax } = response;
     const randomInRange = (min: number, max: number) => min + Math.random() * (max - min);
@@ -439,7 +427,7 @@ export async function deleteFiles({ paths, deleteIfTrashFails, signal }: { paths
     await pMap(failedToTrashFiles, async (path) => unlinkWithRetry(path, { signal }), { concurrency: 5 });
 }
 
-export { toastError } from '../../../components/4-dialogs/7-0-dialogs/toast.tsx';
+export { toastError } from '../7-0-dialogs/toast.tsx';
 
 export function errorToast(text: string) {
     toast.fire({ icon: 'error', text });

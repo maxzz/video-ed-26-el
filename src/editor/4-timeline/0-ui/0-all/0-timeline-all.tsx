@@ -5,7 +5,7 @@ import { TriangleIcon } from 'lucide-react';
 import { Button } from '@/ui/shadcn/button';
 import { ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuTrigger } from '@/ui/shadcn/context-menu';
 import { cn } from '@/utils/classnames';
-import type { RenderableWaveform } from '@/editor/0-core/8-lib/types.ts';
+import type { RenderableWaveform } from '@/editor/0-core/8-lib/9-types-core.ts';
 import { userSettingsAtom } from '@/editor/0-core/9-state/user-settings.ts';
 import { calculateTimelinePercent } from '@/editor/0-core/8-lib/util.ts';
 import { fileDurationNonZeroAtom } from '@/editor/2-file/9-state/a-file-atoms.ts';

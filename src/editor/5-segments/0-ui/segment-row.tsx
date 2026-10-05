@@ -7,7 +7,7 @@ import { CircleCheckIcon, CircleIcon, SaveIcon } from 'lucide-react';
 import prettyBytes from 'pretty-bytes';
 import { cn } from '@/utils/classnames';
 import { ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuSeparator, ContextMenuTrigger } from '@/ui/shadcn/context-menu';
-import type { InverseCutSegment, StateSegment } from '@/editor/0-core/8-lib/types.ts';
+import type { InverseCutSegment, StateSegment } from '@/editor/0-core/8-lib/9-types-core.ts';
 import { formatTimecodeAtom, getFrameCountAtom } from '@/editor/0-core/9-state/timecode.ts';
 import { runAction } from '@/editor/0-core/7-actions/kbd-actions.ts';
 import { jumpSegEnd, jumpSegStart } from '@/editor/3-player/7-actions/player-actions.ts';

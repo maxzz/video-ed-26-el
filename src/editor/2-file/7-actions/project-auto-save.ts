@@ -5,9 +5,9 @@ import isEqual from 'lodash/isEqual';
 import i18n from 'i18next';
 
 import { jotaiDefaultStore } from '@/utils/local-utils/9-jotai-default-store.ts';
-import { type StateSegment } from '@/editor/0-core/8-lib/types.ts';
+import { type StateSegment } from '@/editor/0-core/8-lib/9-types-core.ts';
 import { customOutDirAtom, userSettingsAtom } from '@/editor/0-core/9-state/user-settings.ts';
-import { errorToast } from '@/editor/0-core/8-lib/app-dialogs.tsx';
+import { errorToast } from '@/components/4-dialogs/7-1-dialogs/00-app-dialogs.tsx';
 import { getAppInfo } from '@/editor/0-core/7-actions/0-main-api.ts';
 import { getSuffixedOutPath } from '@/editor/0-core/8-lib/util.ts';
 import { cutSegmentsAtom } from '@/editor/5-segments/9-state/segments-store.ts';

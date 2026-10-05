@@ -8,7 +8,7 @@ import { restrictToVerticalAxis } from '@dnd-kit/modifiers';
 import { useVirtualizer } from '@tanstack/react-virtual';
 import { ArrowDown01Icon, CircleCheckIcon, ContrastIcon, MinusIcon, PlusIcon, SplitIcon, TagIcon, XIcon } from 'lucide-react';
 import { cn } from '@/utils/classnames';
-import type { SegmentColorIndex } from '@/editor/0-core/8-lib/types.ts';
+import type { SegmentColorIndex } from '@/editor/0-core/8-lib/9-types-core.ts';
 import { jotaiDefaultStore } from '@/utils/local-utils/9-jotai-default-store.ts';
 import { formatTimecodeAtom } from '@/editor/0-core/9-state/timecode.ts';
 import { rightBarWidth } from '@/editor/0-core/8-lib/constants.ts';

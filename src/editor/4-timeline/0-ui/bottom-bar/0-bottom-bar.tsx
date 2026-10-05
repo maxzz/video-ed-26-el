@@ -15,7 +15,7 @@ import { jotaiDefaultStore } from '@/utils/local-utils/9-jotai-default-store.ts'
 import { userSettings, userSettingsAtom } from '@/editor/0-core/9-state/user-settings.ts';
 import { formatTimecodeAtom, getFrameCountAtom } from '@/editor/0-core/9-state/timecode.ts';
 import { hasAction, runAction } from '@/editor/0-core/7-actions/kbd-actions.ts';
-import { askForPlaybackRate } from '@/editor/0-core/8-lib/app-dialogs.tsx';
+import { askForPlaybackRate } from '@/components/4-dialogs/7-1-dialogs/00-app-dialogs.tsx';
 import { getSegColor as getSegColorRaw } from '@/editor/0-core/8-lib/colors.ts';
 import { exportConfirmOpenAtom } from '@/components/2-main/0-all/a-panels-atoms.ts';
 import { detectedFpsAtom, fileDurationNonZeroAtom, hasAudioAtom, hasVideoAtom, isFileOpenedAtom, isRotationSetAtom, rotationAtom } from '@/editor/2-file/9-state/a-file-atoms.ts';

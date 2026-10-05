@@ -1,7 +1,7 @@
 import { atom } from 'jotai';
 import { snapshot, subscribe } from 'valtio';
 import { proxyWithHistory } from 'valtio-history';
-import type { DefiniteSegmentBase, SegmentToExport, StateSegment } from '@/editor/0-core/8-lib/types.ts';
+import type { DefiniteSegmentBase, SegmentToExport, StateSegment } from '@/editor/0-core/8-lib/9-types-core.ts';
 import { jotaiDefaultStore } from '@/utils/local-utils/9-jotai-default-store.ts';
 import { userSettingsAtom } from '@/editor/0-core/9-state/user-settings.ts';
 import { onFileReset } from '@/editor/0-core/7-actions/2-lifecycle.ts';

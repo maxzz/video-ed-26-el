@@ -1,4 +1,4 @@
-import type { EdlExportType, EdlImportType } from '@/editor/0-core/8-lib/types.ts';
+import type { EdlExportType, EdlImportType } from '@/editor/0-core/8-lib/9-types-core';
 import { toggleSettings as toggleSettingsPanel } from '@/components/2-main/0-all/a-panels-atoms';
 import { closeBatch as closeBatchImpl } from '@/editor/2-file/7-actions/batch-actions.ts';
 import { userHtml5ifyCurrentFile } from '@/editor/2-file/7-actions/html5ify.ts';

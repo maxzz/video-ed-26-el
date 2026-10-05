@@ -7,7 +7,7 @@ import { customOutDirAtom, effectiveExportModeAtom, hideAllNotificationsAtom, us
 import { formatTimecode, promptTimecode, timecodePlaceholderAtom } from '@/editor/0-core/9-state/timecode.ts';
 import { isWorking, setProgress, setWorking, withErrorHandling } from '@/editor/0-core/9-state/working.ts';
 import { resetAllFileState } from '@/editor/0-core/7-actions/2-lifecycle.ts';
-import { askForImportChapters, confirmDialog, errorToast } from '@/editor/0-core/8-lib/app-dialogs.tsx';
+import { askForImportChapters, confirmDialog, errorToast } from '@/components/4-dialogs/7-1-dialogs/00-app-dialogs.tsx';
 import { DirectoryAccessDeclinedError } from '@/editor/0-core/8-lib/9-error-types.ts';
 import { getDefaultOutFormat, getStreamFps, getTimecodeFromStreams, mapRecommendedDefaultFormat, readFileFfprobeMeta, tryMapChaptersToEdl } from '@/editor/0-core/8-lib/ffmpeg/ffmpeg.ts';
 import { doesPlayerSupportHevcPlayback, getAudioStreams, getRealVideoStreams, isAudioDefinitelyNotSupported, shouldCopyStreamByDefault, willPlayerProperlyHandleVideo } from '@/editor/0-core/8-lib/ffmpeg/streams.ts';

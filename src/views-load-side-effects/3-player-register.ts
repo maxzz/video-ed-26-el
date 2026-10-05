@@ -1,5 +1,5 @@
 import { registerActions } from '@/editor/0-core/7-actions/kbd-actions.ts';
-import { goToTimecodeDirectArgsSchema } from '@/editor/0-core/8-lib/types.ts';
+import { goToTimecodeDirectArgsSchema } from '@/editor/0-core/8-lib/9-types-core';
 import * as player from '@/editor/3-player/7-actions/player-actions.ts';
 import { decreaseVolume, goToTimecode, goToTimecodeDirect, increaseVolume, toggleFullscreenVideo } from '@/editor/3-player/7-actions/video-events.ts';
 import { initVideoEffects } from '@/editor/3-player/7-actions/video-effects.ts';

@@ -1,6 +1,6 @@
 import color from 'color';
 import invariant from 'tiny-invariant';
-import { type SegmentColorIndex } from './types.ts';
+import { type SegmentColorIndex } from './9-types-core.ts';
 
 // http://phrogz.net/css/distinct-colors.html
 const colorStrings = '\

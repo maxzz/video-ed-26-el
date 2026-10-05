@@ -1,7 +1,7 @@
 import { atom } from 'jotai';
 import type { ColorInstance } from 'color';
 import type { Transition } from 'motion/react';
-import type { InverseCutSegment, SegmentColorIndex, StateSegment } from '@/editor/0-core/8-lib/types.ts';
+import type { InverseCutSegment, SegmentColorIndex, StateSegment } from '@/editor/0-core/8-lib/9-types-core.ts';
 import { jotaiDefaultStore } from '@/utils/local-utils/9-jotai-default-store.ts';
 import { prefersReducedMotionAtom, userSettingsAtom } from '@/editor/0-core/9-state/user-settings.ts';
 import { onFileReset } from '@/editor/0-core/7-actions/2-lifecycle.ts';

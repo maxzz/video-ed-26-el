@@ -4,7 +4,7 @@ import { useSnapshot } from 'valtio';
 import { useTranslation } from 'react-i18next';
 import type { FFprobeStream } from '@shared/ffprobe';
 import { jotaiDefaultStore } from '@/utils/local-utils/9-jotai-default-store.ts';
-import type { FileParams, StreamParams } from '@/editor/0-core/8-lib/types.ts';
+import type { FileParams, StreamParams } from '@/editor/0-core/8-lib/9-types-core.ts';
 import { allFilesMetaAtom, filePathAtom, paramsByFileAtom } from '@/editor/2-file/9-state/a-file-atoms.ts';
 import { Button } from '@/ui/shadcn/button';
 import { Input } from '@/ui/shadcn/input';

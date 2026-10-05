@@ -4,7 +4,7 @@ import { jotaiDefaultStore } from '@/utils/local-utils/9-jotai-default-store.ts'
 import { customOutDirAtom, userSettings } from '@/editor/0-core/9-state/user-settings.ts';
 import { formatTimecode, parseTimecode, promptTimecode, timecodePlaceholderAtom } from '@/editor/0-core/9-state/timecode.ts';
 import { isWorking, setWorking } from '@/editor/0-core/9-state/working.ts';
-import { showPlaybackFailedMessage, toastError } from '@/editor/0-core/8-lib/app-dialogs.tsx';
+import { showPlaybackFailedMessage, toastError } from '@/components/4-dialogs/7-1-dialogs/00-app-dialogs.tsx';
 import { UserFacingError } from '@/editor/0-core/8-lib/9-error-types.ts';
 import { toast } from '@/components/4-dialogs/7-0-dialogs/toast.tsx';
 import { mediaSourceQualities } from '@/editor/0-core/8-lib/util.ts';

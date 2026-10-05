@@ -3,7 +3,7 @@ import { useAtomValue } from 'jotai';
 import { useTranslation } from 'react-i18next';
 import { FileOutputIcon, NotebookPenIcon, ScissorsIcon } from 'lucide-react';
 import { effectiveExportModeAtom, userSettingsAtom } from '@/editor/0-core/9-state/user-settings.ts';
-import type { ExportMode } from '@/editor/0-core/8-lib/types.ts';
+import type { ExportMode } from '@/editor/0-core/8-lib/9-types-core.ts';
 import { toggleExportConfirmEnabled } from '@/editor/4-timeline/7-actions/timeline-actions.ts';
 import { segmentsOrInverseAtom, segmentsToExportAtom } from '@/editor/5-segments/9-state/segments-store.ts';
 import { Button } from '@/ui/shadcn/button';

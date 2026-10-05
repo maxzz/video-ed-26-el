@@ -1,6 +1,6 @@
 import { registerActions } from '@/editor/0-core/7-actions/kbd-actions.ts';
 import { mainApi } from '@/editor/0-core/7-actions/0-main-api';
-import { openFilesActionArgsSchema } from '@/editor/0-core/8-lib/types.ts';
+import { openFilesActionArgsSchema } from '@/editor/0-core/8-lib/9-types-core';
 import { onAppReady } from '@/editor/0-core/7-actions/2-lifecycle';
 import {
     askStartTimeOffset, closeFileWithConfirm, makeCursorTimeZero, openSendReportDialogWithState, reloadFile, tryFixInvalidDuration,

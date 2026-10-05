@@ -40,14 +40,18 @@ export function getOutDir(customOutDir?: string | undefined, filePath?: string |
 }
 
 function getFileBaseName(filePath?: string) {
-    if (!filePath) return undefined;
+    if (!filePath) {
+        return undefined;
+    }
     const parsed = parsePath(filePath);
     return parsed.name;
 }
 
 export function getOutPath<T extends string | undefined>(a: { customOutDir?: string | undefined, filePath?: T | undefined, fileName: string; }): T extends string ? string : undefined;
 export function getOutPath({ customOutDir, filePath, fileName }: { customOutDir?: string | undefined, filePath?: string | undefined, fileName: string; }) {
-    if (filePath == null) return undefined;
+    if (filePath == null) {
+        return undefined;
+    }
     return join(getOutDir(customOutDir, filePath), fileName);
 }
 
@@ -57,7 +61,9 @@ export const getSuffixedFileName = (filePath: string | undefined, nameSuffix: st
 
 export function getSuffixedOutPath<T extends string | undefined>(a: { customOutDir?: string | undefined, filePath?: T | undefined, nameSuffix: string; }): T extends string ? string : undefined;
 export function getSuffixedOutPath({ customOutDir, filePath, nameSuffix }: { customOutDir?: string | undefined, filePath?: string | undefined, nameSuffix: string; }) {
-    if (filePath == null) return undefined;
+    if (filePath == null) {
+        return undefined;
+    }
     return getOutPath({ customOutDir, filePath, fileName: getSuffixedFileName(filePath, nameSuffix) });
 }
 
@@ -65,7 +71,9 @@ export async function havePermissionToReadFile(filePath: string) {
     try {
         await fs.accessRead(filePath);
     } catch (err) {
-        if (err instanceof Error && 'code' in err && ['EPERM', 'EACCES'].includes(err.code as string)) return false;
+        if (err instanceof Error && 'code' in err && ['EPERM', 'EACCES'].includes(err.code as string)) {
+            return false;
+        }
         console.error(err);
     }
     return true;
@@ -109,18 +117,22 @@ export const testFailFsOperation = false;
 
 // Retry because sometimes write operations fail on windows due to the file being locked for various reasons (often anti-virus) #272 #1797 #1704
 export async function fsOperationWithRetry<T>(operation: () => Promise<T>, { signal, retries = 10, minTimeout = 100, maxTimeout = 2000, ...opts }: Options & { retries?: number | undefined, minTimeout?: number | undefined, maxTimeout?: number | undefined; } = {}): Promise<T> {
-    return pRetry<T>(async () => {
-        if (testFailFsOperation && Math.random() > 0.3) throw Object.assign(new Error('test delete failure'), { code: 'EPERM' });
-        return operation();
-    }, {
-        retries,
-        signal,
-        minTimeout,
-        maxTimeout,
-        // mimic fs.rm `maxRetries` https://nodejs.org/api/fs.html#fspromisesrmpath-options
-        shouldRetry: (err) => err instanceof Error && 'code' in err && typeof err.code === 'string' && ['EBUSY', 'EMFILE', 'ENFILE', 'EPERM'].includes(err.code),
-        ...opts,
-    } as Options);
+    return pRetry<T>(
+        async () => {
+            if (testFailFsOperation && Math.random() > 0.3) {
+                throw Object.assign(new Error('test delete failure'), { code: 'EPERM' });
+            }
+            return operation();
+        }, {
+            retries,
+            signal,
+            minTimeout,
+            maxTimeout,
+            // mimic fs.rm `maxRetries` https://nodejs.org/api/fs.html#fspromisesrmpath-options
+            shouldRetry: (err) => err instanceof Error && 'code' in err && typeof err.code === 'string' && ['EBUSY', 'EMFILE', 'ENFILE', 'EPERM'].includes(err.code),
+            ...opts,
+        } as Options
+    );
 }
 
 // example error: index-18074aaf.js:166 Failed to delete C:\Users\USERNAME\Desktop\RC\New folder\2023-12-27 21-45-22 (GMT p5)-merged-1703933052361-00.01.04.915-00.01.07.424-seg1.mp4 Error: EPERM: operation not permitted, unlink 'C:\Users\USERNAME\Desktop\RC\New folder\2023-12-27 21-45-22 (GMT p5)-merged-1703933052361-00.01.04.915-00.01.07.424-seg1.mp4'
@@ -175,7 +187,9 @@ export function filenamify(name: string) {
 export function withBlur<T extends { target?: { blur?: () => unknown; } | object; }>(cb: (a: T) => void) {
     return (e: T) => {
         cb(e);
-        if (e.target && 'blur' in e.target) e.target?.blur?.();
+        if (e.target && 'blur' in e.target) {
+            e.target.blur?.();
+        }
     };
 }
 
@@ -192,13 +206,10 @@ export function getExtensionForFormat(format: string) {
         adts: 'aac',
         mpegts: 'ts',
     }[format];
-
     return ext || format;
 }
 
-export function getOutFileExtension({ isCustomFormatSelected, outFormat, filePath }: {
-    isCustomFormatSelected?: boolean, outFormat: string, filePath: string,
-}) {
+export function getOutFileExtension({ isCustomFormatSelected, outFormat, filePath }: { isCustomFormatSelected?: boolean, outFormat: string, filePath: string; }) {
     if (!isCustomFormatSelected) {
         const inputExt = extname(filePath);
         // QuickTime is quirky about the file extension of mov files (has to be .mov)
@@ -206,7 +217,9 @@ export function getOutFileExtension({ isCustomFormatSelected, outFormat, filePat
         const hasMovIncorrectExtension = outFormat === 'mov' && inputExt.toLowerCase() !== '.mov';
 
         // OK, just keep the current extension. Because most other players will not care about the extension
-        if (!hasMovIncorrectExtension) return inputExt;
+        if (!hasMovIncorrectExtension) {
+            return inputExt;
+        }
     }
 
     // user is changing format, must update extension too
@@ -233,10 +246,16 @@ export async function findExistingHtml5FriendlyFile(fp: string, cod: string | un
     const html5ifiedDirEntries = dirEntries.filter((entry) => entry.startsWith(prefix));
 
     let matches: { entry: string, suffix?: string; }[] = [];
-    suffixes.forEach((suffix) => {
-        const entryWithSuffix = html5ifiedDirEntries.find((entry) => new RegExp(`${suffix}\\..*$`).test(entry.replace(prefix, '')));
-        if (entryWithSuffix) matches = [...matches, { entry: entryWithSuffix, suffix }];
-    });
+    suffixes.forEach(
+        (suffix) => {
+            const entryWithSuffix = html5ifiedDirEntries.find(
+                (entry) => new RegExp(`${suffix}\\..*$`).test(entry.replace(prefix, ''))
+            );
+            if (entryWithSuffix) {
+                matches = [...matches, { entry: entryWithSuffix, suffix }];
+            }
+        }
+    );
 
     const nonMatches = html5ifiedDirEntries.filter((entry) => !matches.some((m) => m.entry === entry)).map((entry) => ({ entry }));
 
@@ -244,7 +263,9 @@ export async function findExistingHtml5FriendlyFile(fp: string, cod: string | un
     matches = [...matches, ...nonMatches];
 
     // console.log(matches);
-    if (matches.length === 0) return undefined;
+    if (matches.length === 0) {
+        return undefined;
+    }
 
     const { suffix, entry } = matches[0]!;
 
@@ -283,28 +304,24 @@ export function isExecaError(err: unknown): err is InvariantExecaError {
     return err instanceof Error && ('failed' in err && 'shortMessage' in err && 'isForcefullyTerminated' in err);
 }
 
-export const isAbortedError = (err: unknown) => (
-    // execa killed (aborted by user). isTerminated because runningFfmpegs process.kill
-    (isExecaError(err) && (err.isCanceled || err.isTerminated))
-    || (err instanceof Error && err.name === 'AbortError')
-);
+export function isAbortedError(err: unknown) {
+    return (isExecaError(err) && (err.isCanceled || err.isTerminated)) || (err instanceof Error && err.name === 'AbortError');
+}
 
-export const getStdioString = (stdio: string | Uint8Array) => (stdio instanceof Uint8Array ? new TextDecoder().decode(stdio) : stdio);
+export function getStdioString(stdio: string | Uint8Array) {
+    return stdio instanceof Uint8Array ? new TextDecoder().decode(stdio) : stdio;
+}
 
 // A bit hacky but it works, unless someone has a file called "No space left on device" ( ͡° ͜ʖ ͡°)
-export const isOutOfSpaceError = (err: InvariantExecaError) => (
-    err.exitCode !== 0
-    && !!getStdioString(err.stderr)?.includes('No space left on device')
-);
+export function isOutOfSpaceError(err: InvariantExecaError) {
+    return err.exitCode !== 0 && !!getStdioString(err.stderr)?.includes('No space left on device');
+}
 
 export const isMuxNotSupported = (err: InvariantExecaError) => (
-    err.exitCode !== 0
-    && err.stderr != null
-    && /Could not write header .*incorrect codec parameters .*Invalid argument/.test(getStdioString(err.stderr) ?? '')
+    err.exitCode !== 0 && err.stderr != null && /Could not write header .*incorrect codec parameters .*Invalid argument/.test(getStdioString(err.stderr) ?? '')
 );
 
-// https://stackoverflow.com/a/2450976/6519037
-export function shuffleArray<T>(arrayIn: T[]) {
+export function shuffleArray<T>(arrayIn: T[]) { // https://stackoverflow.com/a/2450976/6519037
     const array = [...arrayIn];
     let currentIndex = array.length;
     let randomIndex: number;
@@ -330,9 +347,7 @@ export function escapeRegExp(str: string) {
 }
 
 export const readFileStats = async (path: string) => stat(path);
-
 export const readFileSize = async (path: string) => (await readFileStats(path)).size;
-
 export const readFileSizes = (paths: string[]) => pMap(paths, async (path) => readFileSize(path), { concurrency: 5 });
 
 export function checkFileSizes(inputSize: number, outputSize: number) {
@@ -345,15 +360,13 @@ export function checkFileSizes(inputSize: number, outputSize: number) {
     return undefined;
 }
 
-export function setDocumentTitle({ filePath, working, progress }: {
-    filePath?: string | undefined,
-    working?: string | undefined,
-    progress?: number | undefined;
-}) {
+export function setDocumentTitle({ filePath, working, progress }: { filePath?: string | undefined, working?: string | undefined, progress?: number | undefined; }) {
     const parts: string[] = [];
 
     if (working) {
-        if (progress != null) parts.push(`${(progress * 100).toFixed(1)}%`);
+        if (progress != null) {
+            parts.push(`${(progress * 100).toFixed(1)}%`);
+        }
         parts.push(working);
     }
 
@@ -370,37 +383,51 @@ export async function readVideoTs(videoTsPath: string) {
     const files = await readdir(videoTsPath);
     const relevantFiles = files.filter((file) => /^vts_\d+_\d+\.vob$/i.test(file) && !/^vts_\d+_00\.vob$/i.test(file)); // skip menu
     const ret = sortBy(relevantFiles).map((file) => join(videoTsPath, file));
-    if (ret.length === 0) throw new UserFacingError(i18n.t('No VTS vob files found in folder'));
+    if (ret.length === 0) {
+        throw new UserFacingError(i18n.t('No VTS vob files found in folder'));
+    }
     return ret;
 }
 
 export async function readDirRecursively(dirPath: string) {
     const files = await readdir(dirPath, { recursive: true });
     const ret = (await pMap(files, async (path) => {
-        if (['.DS_Store'].includes(basename(path))) return [];
+        if (['.DS_Store'].includes(basename(path))) {
+            return [];
+        }
 
         const absPath = join(dirPath, path);
         const fileStat = await lstat(absPath); // readdir also returns directories...
-        if (!fileStat.isFile()) return [];
+        if (!fileStat.isFile()) {
+            return [];
+        }
 
         return [absPath];
     }, { concurrency: 5 })).flat();
 
-    if (ret.length === 0) throw new UserFacingError(i18n.t('No files found in folder'));
+    if (ret.length === 0) {
+        throw new UserFacingError(i18n.t('No files found in folder'));
+    }
     return ret;
 }
 
 export function getImportProjectType(filePath: string) {
-    if (filePath.endsWith('Summary.txt')) return 'dv-analyzer-summary-txt';
+    if (filePath.endsWith('Summary.txt')) {
+        return 'dv-analyzer-summary-txt';
+    }
     const edlFormatForExtension = { csv: 'csv', pbf: 'pbf', edl: 'edl', cue: 'cue', xml: 'xmeml', fcpxml: 'fcpxml', otio: 'otio' } as const;
     const matchingExt = Object.keys(edlFormatForExtension).find((ext) => filePath.toLowerCase().endsWith(`.${ext}`)) as keyof typeof edlFormatForExtension | undefined;
-    if (!matchingExt) return undefined;
+    if (!matchingExt) {
+        return undefined;
+    }
     return edlFormatForExtension[matchingExt];
 }
 
 export function getFileSize(format: FFprobeFormat) {
     const fileSize = parseInt(format.size, 10);
-    if (Number.isNaN(fileSize)) return undefined;
+    if (Number.isNaN(fileSize)) {
+        return undefined;
+    }
     return fileSize;
 }
 

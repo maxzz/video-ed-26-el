@@ -2,7 +2,7 @@ import type { ColorInstance } from 'color';
 import { useAtomValue } from 'jotai';
 import { AnimatePresence, motion, type MotionStyle } from 'motion/react';
 import { SaveIcon, Trash2Icon } from 'lucide-react';
-import type { StateSegment } from '@/editor/0-core/8-lib/types.ts';
+import type { StateSegment } from '@/editor/0-core/8-lib/9-types-core';
 import { effectiveExportModeAtom, prefersReducedMotionAtom } from '@/editor/0-core/9-state/user-settings.ts';
 import { formatTimecodeAtom } from '@/editor/0-core/9-state/timecode.ts';
 import { fileDurationNonZeroAtom } from '@/editor/2-file/9-state/a-file-atoms';

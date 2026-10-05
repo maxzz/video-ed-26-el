@@ -1,7 +1,7 @@
 import invariant from 'tiny-invariant';
 import type { FFprobeStream, FFprobeStreamDisposition } from '@shared/ffprobe';
 import type { AvoidNegativeTs } from '@shared/types';
-import type { AllFilesMeta, ChromiumHTMLAudioElement, ChromiumHTMLVideoElement, CopyfileStreams, LiteFFprobeStream } from '../types.ts';
+import type { AllFilesMeta, ChromiumHTMLAudioElement, ChromiumHTMLVideoElement, CopyfileStreams, LiteFFprobeStream } from '../9-types-core.ts';
 import type { FileStream } from './ffmpeg.ts';
 
 

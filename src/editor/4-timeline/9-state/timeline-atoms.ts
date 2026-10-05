@@ -1,7 +1,7 @@
 import { atom } from 'jotai';
 import sortBy from 'lodash/sortBy.js';
 import type { Frame } from '@/editor/0-core/8-lib/ffmpeg/ffmpeg.ts';
-import type { OverviewWaveform, Thumbnail, WaveformSlice } from '@/editor/0-core/8-lib/types.ts';
+import type { OverviewWaveform, Thumbnail, WaveformSlice } from '@/editor/0-core/8-lib/9-types-core';
 import { jotaiDefaultStore } from '@/utils/local-utils/9-jotai-default-store';
 import { userSettingsAtom } from '@/editor/0-core/9-state/user-settings.ts';
 import { getFrameCountAtom } from '@/editor/0-core/9-state/timecode.ts';

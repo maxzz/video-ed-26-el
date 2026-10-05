@@ -1,10 +1,10 @@
 import i18n from 'i18next';
-import type { EdlExportType, EdlFileType, EdlImportType, StateSegment } from '@/editor/0-core/8-lib/types.ts';
+import type { EdlExportType, EdlFileType, EdlImportType, StateSegment } from '@/editor/0-core/8-lib/9-types-core.ts';
 import { jotaiDefaultStore } from '@/utils/local-utils/9-jotai-default-store.ts';
 import { customOutDirAtom } from '@/editor/0-core/9-state/user-settings.ts';
 import { getFrameCount } from '@/editor/0-core/9-state/timecode.ts';
 import { withErrorHandling } from '@/editor/0-core/9-state/working.ts';
-import { openYouTubeChaptersDialog } from '@/editor/0-core/8-lib/app-dialogs.tsx';
+import { openYouTubeChaptersDialog } from '@/components/4-dialogs/7-1-dialogs/00-app-dialogs.tsx';
 import { detectedFpsAtom, fileDurationAtom, filePathAtom } from '@/editor/2-file/9-state/a-file-atoms.ts';
 import { checkFileOpened } from '@/editor/3-player/7-actions/player-actions.ts';
 import { cutSegmentsAtom, selectedSegmentsAtom } from '@/editor/5-segments/9-state/segments-store.ts';

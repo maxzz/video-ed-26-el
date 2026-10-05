@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { CircleCheckIcon, InfoIcon } from 'lucide-react';
 import { openCustomDialog } from '@/components/4-dialogs/7-0-dialogs/dialogs';
 import { showItemInFolder } from '@/editor/0-core/8-lib/util.ts';
-import { type CleanupChoice, type CleanupChoicesType, ListItem, Notices, OutputIncorrectSeeHelpMenu, UnorderedList, Warnings } from '@/editor/0-core/8-lib/app-dialogs.tsx';
+import { type CleanupChoice, type CleanupChoicesType, ListItem, Notices, OutputIncorrectSeeHelpMenu, UnorderedList, Warnings } from '@/components/4-dialogs/7-1-dialogs/00-app-dialogs';
 import { Button } from '@/ui/shadcn/button';
 import { Checkbox } from '@/ui/shadcn/checkbox';
 import { Input } from '@/ui/shadcn/input';

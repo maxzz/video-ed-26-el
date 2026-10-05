@@ -14,7 +14,7 @@ import { getSuffixedOutPath, transferTimestamps, getOutFileExtension, getOutDir,
 import { isCuttingStart, isCuttingEnd, runFfmpegWithProgress, getFfCommandLine, getDuration, createChaptersFromSegments, readFileFfprobeMeta, getExperimentalArgs, getVideoTimescaleArgs, logStdoutStderr, runFfmpegConcat, RefuseOverwriteError, runFfmpeg } from '@/editor/0-core/8-lib/ffmpeg/ffmpeg.ts';
 import { getEffectiveAvoidNegativeTs, getMapStreamsArgs, getStreamIdsToCopy, isCopyingOnlyAudioStreams } from '@/editor/0-core/8-lib/ffmpeg/streams.ts';
 import { needsSmartCut, getCodecParams } from '@/editor/0-core/8-lib/ffmpeg/smartcut.ts';
-import { deleteDispositionValue, type AllFilesMeta, type Chapter, type CopyfileStreams, type LiteFFprobeStream, type ParamsByFile, type SegmentToExport } from '@/editor/0-core/8-lib/types.ts';
+import { deleteDispositionValue, type AllFilesMeta, type Chapter, type CopyfileStreams, type LiteFFprobeStream, type ParamsByFile, type SegmentToExport } from '@/editor/0-core/8-lib/9-types-core.ts';
 import { UserFacingError } from '@/editor/0-core/8-lib/9-error-types.ts';
 import { getGuaranteedSegments, isDurationValid } from '@/editor/5-segments/8-lib/segments.ts';
 import { encBitrateAtom, filePathAtom } from '@/editor/2-file/9-state/a-file-atoms.ts';

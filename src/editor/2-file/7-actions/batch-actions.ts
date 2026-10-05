@@ -1,10 +1,10 @@
 import i18n from 'i18next';
 import invariant from 'tiny-invariant';
-import type { BatchFile } from '@/editor/0-core/8-lib/types.ts';
+import type { BatchFile } from '@/editor/0-core/8-lib/9-types-core.ts';
 import { jotaiDefaultStore } from '@/utils/local-utils/9-jotai-default-store.ts';
 import { userSettings } from '@/editor/0-core/9-state/user-settings.ts';
 import { isWorking, setWorking, withErrorHandling } from '@/editor/0-core/9-state/working.ts';
-import { confirmDialog } from '@/editor/0-core/8-lib/app-dialogs.tsx';
+import { confirmDialog } from '@/components/4-dialogs/7-1-dialogs/00-app-dialogs.tsx';
 import { mainApi } from '@/editor/0-core/7-actions/0-main-api.ts';
 import { basename } from '@/editor/0-core/8-lib/node-shims.ts';
 import { batchFilesAtom, filePathAtom, selectedBatchFilesAtom } from '../9-state/a-file-atoms.ts';

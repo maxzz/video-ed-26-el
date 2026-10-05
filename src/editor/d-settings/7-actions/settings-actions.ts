@@ -1,7 +1,7 @@
 import type { SupportedLanguage } from '@shared/i18n.ts';
 import { jotaiDefaultStore } from '@/utils/local-utils/9-jotai-default-store';
 import { customOutDirAtom, setCustomOutDir, userSettings } from '@/editor/0-core/9-state/user-settings.ts';
-import { askForFfPath, askForOutDir } from '@/editor/0-core/8-lib/app-dialogs.tsx';
+import { askForFfPath, askForOutDir } from '@/components/4-dialogs/7-1-dialogs/00-app-dialogs';
 import { settingsVisibleAtom, showAdvancedSettingsAtom, tunerVisibleAtom, type TunerType } from '@/components/2-main/0-all/a-panels-atoms';
 import { changeLanguage } from '@/editor/e-i18n/i18n.ts';
 

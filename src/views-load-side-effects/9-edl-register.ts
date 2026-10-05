@@ -1,5 +1,5 @@
 import { registerActions } from '@/editor/0-core/7-actions/kbd-actions.ts';
-import type { EdlExportType, EdlImportType } from '@/editor/0-core/8-lib/types.ts';
+import type { EdlExportType, EdlImportType } from '@/editor/0-core/8-lib/9-types-core';
 import { exportYouTube, importEdlFile, tryExportEdlFile } from '@/editor/9-edl/7-actions/edl-actions.ts';
 
 export function register_9_edl() {

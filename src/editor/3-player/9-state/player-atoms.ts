@@ -1,6 +1,6 @@
 import { atom } from 'jotai';
 import type { FFprobeStream } from '@shared/ffprobe';
-import type { ChromiumHTMLVideoElement, PlaybackMode } from '@/editor/0-core/8-lib/types.ts';
+import type { ChromiumHTMLVideoElement, PlaybackMode } from '@/editor/0-core/8-lib/9-types-core';
 import { audioStreamsAtom, isRotationSetAtom, mainAudioStreamAtom, mainVideoStreamAtom, rotationAtom, subtitleStreamsAtom, usingDummyVideoAtom, videoStreamsAtom } from '@/editor/2-file/9-state/a-file-atoms';
 import { canHtml5PlayerPlayStreams } from '@/editor/0-core/8-lib/ffmpeg/streams.ts';
 import { jotaiDefaultStore } from '@/utils/local-utils/9-jotai-default-store';
