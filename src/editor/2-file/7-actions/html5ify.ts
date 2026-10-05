@@ -1,6 +1,6 @@
 import i18n from 'i18next';
 import type { Html5ifyMode } from '@shared/types';
-import { appStore } from '@/editor/0-core/9-state/store.ts';
+import { appStore } from '@/components/4-dialogs/7-0-dialogs/store.ts';
 import { customOutDirAtom, userSettings } from '@/editor/0-core/9-state/user-settings.ts';
 import { isWorking, setProgress, setWorking, withErrorHandling } from '@/editor/0-core/9-state/working.ts';
 import { DirectoryAccessDeclinedError } from '@/editor/0-core/8-lib/errors.ts';

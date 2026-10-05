@@ -12,7 +12,7 @@ import { Label } from '@/ui/shadcn/label';
 import { RadioGroup, RadioGroupItem } from '@/ui/shadcn/radio-group';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/ui/shadcn/select';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/ui/shadcn/dialog';
-import { type DialogEntry, type DialogIcon, type FireDialogInputState, type FireDialogOptions, dialogStackAtom } from '../9-state/dialogs.ts';
+import { type DialogEntry, type DialogIcon, type FireDialogInputState, type FireDialogOptions, dialogStackAtom } from '../../../components/4-dialogs/7-0-dialogs/dialogs.ts';
 
 export function DialogHost() {
     const stack = useAtomValue(dialogStackAtom);

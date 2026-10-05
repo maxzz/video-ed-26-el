@@ -6,7 +6,7 @@ import i18n from 'i18next';
 import type { FFprobeStream } from '@shared/ffprobe';
 import type { AvoidNegativeTs, Html5ifyMode, PreserveMetadata } from '@shared/types';
 import { formatFfmpegNumber, getFixChannelLayoutFilter, getHwaccelArgs, hasCustomChannelLayout } from '@shared/util';
-import { appStore } from '@/editor/0-core/9-state/store.ts';
+import { appStore } from '@/components/4-dialogs/7-0-dialogs/store.ts';
 import { userSettings } from '@/editor/0-core/9-state/user-settings.ts';
 import { mainApi } from '@/editor/0-core/8-lib/main-api.ts';
 import { join, resolve, dirname } from '@/editor/0-core/8-lib/node-shims.ts';

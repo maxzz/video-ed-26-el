@@ -2,7 +2,7 @@ import i18n from 'i18next';
 import invariant from 'tiny-invariant';
 import type { CaptureFormat } from '@shared/types.ts';
 import type { SegmentBase } from '@/editor/0-core/8-lib/types.ts';
-import { appStore } from '@/editor/0-core/9-state/store.ts';
+import { appStore } from '@/components/4-dialogs/7-0-dialogs/store.ts';
 import { customOutDirAtom, userSettings } from '@/editor/0-core/9-state/user-settings.ts';
 import { handleError, isWorking, setProgress, setWorking, withErrorHandling } from '@/editor/0-core/9-state/working.ts';
 import { getFrameCount } from '@/editor/0-core/9-state/timecode.ts';

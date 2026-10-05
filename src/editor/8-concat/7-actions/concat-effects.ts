@@ -1,7 +1,7 @@
 import { observe } from 'jotai-effect';
 import pMap from 'p-map';
 import invariant from 'tiny-invariant';
-import { appStore } from '@/editor/0-core/9-state/store.ts';
+import { appStore } from '@/components/4-dialogs/7-0-dialogs/store.ts';
 import { getDefaultOutFormat, mapRecommendedDefaultFormat, readFileFfprobeMeta } from '@/editor/0-core/8-lib/ffmpeg/ffmpeg.ts';
 import { isAbortedError, readFileStats } from '@/editor/0-core/8-lib/util.ts';
 import { batchFilePathsAtom, detectedFileFormatAtom, fileFormatAtom } from '@/editor/2-file/9-state/a-file-atoms.ts';

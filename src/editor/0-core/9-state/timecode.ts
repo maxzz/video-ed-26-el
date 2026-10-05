@@ -6,8 +6,8 @@ import { getFrameDuration } from '../8-lib/util.ts';
 import { formatDuration, parseDuration } from '../8-lib/duration.ts';
 import { detectedFpsAtom } from '@/editor/2-file/9-state/a-file-atoms.ts';
 import { userSettingsAtom } from './user-settings.ts';
-import { appStore } from './store.ts';
-import { fireDialog } from './dialogs.ts';
+import { appStore } from '../../../components/4-dialogs/7-0-dialogs/store.ts';
+import { fireDialog } from '../../../components/4-dialogs/7-0-dialogs/dialogs.ts';
 
 // Port of upstream useTimecode: the functions are derived atoms, so they change when fps or format changes
 

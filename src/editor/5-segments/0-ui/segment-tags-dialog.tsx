@@ -9,7 +9,7 @@ import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '
 import { cn } from '@/utils/classnames';
 import type { SegmentTags } from '@/editor/0-core/8-lib/types.ts';
 import { segmentTagsSchema } from '@/editor/0-core/8-lib/types.ts';
-import { appStore } from '@/editor/0-core/9-state/store.ts';
+import { appStore } from '@/components/4-dialogs/7-0-dialogs/store.ts';
 import { mainApi } from '@/editor/0-core/8-lib/main-api.ts';
 import { errorToast } from '@/editor/0-core/8-lib/app-dialogs.tsx';
 import { editingSegmentTagsAtom, editingSegmentTagsSegmentIndexAtom } from '@/components/2-main/0-all/a-panels-atoms.ts';

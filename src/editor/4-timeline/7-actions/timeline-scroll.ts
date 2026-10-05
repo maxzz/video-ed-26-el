@@ -2,7 +2,7 @@ import type { MouseEvent as ReactMouseEvent } from 'react';
 import { observe } from 'jotai-effect';
 import { animate, type AnimationPlaybackControls } from 'motion/react';
 import debounce from 'lodash/debounce.js';
-import { appStore } from '@/editor/0-core/9-state/store.ts';
+import { appStore } from '@/components/4-dialogs/7-0-dialogs/store.ts';
 import { prefersReducedMotionAtom, userSettings } from '@/editor/0-core/9-state/user-settings.ts';
 import { calculateTimelinePos } from '@/editor/0-core/8-lib/util.ts';
 import { fileDurationNonZeroAtom } from '@/editor/2-file/9-state/a-file-atoms.ts';

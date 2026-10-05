@@ -3,7 +3,7 @@ import pMap from 'p-map';
 import invariant from 'tiny-invariant';
 import sortBy from 'lodash/sortBy.js';
 import type { DefiniteSegmentBase, SegmentBase, StateSegment } from '@/editor/0-core/8-lib/types.ts';
-import { appStore } from '@/editor/0-core/9-state/store.ts';
+import { appStore } from '@/components/4-dialogs/7-0-dialogs/store.ts';
 import { userSettings } from '@/editor/0-core/9-state/user-settings.ts';
 import { maxLabelLengthAtom } from '@/editor/0-core/9-state/user-settings.ts';
 import { UserFacingError } from '@/editor/0-core/8-lib/errors.ts';

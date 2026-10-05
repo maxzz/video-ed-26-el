@@ -1,6 +1,6 @@
 import { atom } from 'jotai';
 import { observe } from 'jotai-effect';
-import { appStore } from '@/editor/0-core/9-state/store.ts';
+import { appStore } from '@/components/4-dialogs/7-0-dialogs/store';
 import { onFileReset } from '@/editor/0-core/7-actions/lifecycle.ts';
 import { currentCutSegAtom } from '@/editor/5-segments/9-state/segments-store.ts';
 

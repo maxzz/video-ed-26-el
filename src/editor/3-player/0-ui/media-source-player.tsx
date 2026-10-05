@@ -1,7 +1,7 @@
 import type { CSSProperties, FocusEvent } from 'react';
 import { useAtomValue } from 'jotai';
 import { VideoIcon } from 'lucide-react';
-import { appStore } from '@/editor/0-core/9-state/store.ts';
+import { appStore } from '@/components/4-dialogs/7-0-dialogs/store.ts';
 import { cn } from '@/utils/classnames';
 import { compatCanvasElementAtom, compatLoadingAtom, compatShowCanvasAtom, compatVideoElementAtom, effectiveRotationAtom } from '../9-state/player-atoms.ts';
 import '../7-actions/compat-player.ts';

@@ -4,7 +4,7 @@ import type { Config } from '@shared/types.ts';
 import { Button } from '@/ui/shadcn/button';
 import { Slider } from '@/ui/shadcn/slider';
 import { Switch } from '@/ui/shadcn/switch';
-import { appStore } from '@/editor/0-core/9-state/store.ts';
+import { appStore } from '@/components/4-dialogs/7-0-dialogs/store';
 import { userSettings, userSettingsAtom } from '@/editor/0-core/9-state/user-settings.ts';
 import { tunerVisibleAtom } from '@/components/2-main/0-all/a-panels-atoms';
 

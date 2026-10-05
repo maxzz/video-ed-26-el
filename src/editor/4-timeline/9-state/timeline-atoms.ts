@@ -2,7 +2,7 @@ import { atom } from 'jotai';
 import sortBy from 'lodash/sortBy.js';
 import type { Frame } from '@/editor/0-core/8-lib/ffmpeg/ffmpeg.ts';
 import type { OverviewWaveform, Thumbnail, WaveformSlice } from '@/editor/0-core/8-lib/types.ts';
-import { appStore } from '@/editor/0-core/9-state/store.ts';
+import { appStore } from '@/components/4-dialogs/7-0-dialogs/store';
 import { userSettingsAtom } from '@/editor/0-core/9-state/user-settings.ts';
 import { getFrameCountAtom } from '@/editor/0-core/9-state/timecode.ts';
 import { onFileReset } from '@/editor/0-core/7-actions/lifecycle.ts';

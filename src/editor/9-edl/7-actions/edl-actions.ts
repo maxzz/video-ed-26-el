@@ -1,6 +1,6 @@
 import i18n from 'i18next';
 import type { EdlExportType, EdlFileType, EdlImportType, StateSegment } from '@/editor/0-core/8-lib/types.ts';
-import { appStore } from '@/editor/0-core/9-state/store.ts';
+import { appStore } from '@/components/4-dialogs/7-0-dialogs/store.ts';
 import { customOutDirAtom } from '@/editor/0-core/9-state/user-settings.ts';
 import { getFrameCount } from '@/editor/0-core/9-state/timecode.ts';
 import { withErrorHandling } from '@/editor/0-core/9-state/working.ts';

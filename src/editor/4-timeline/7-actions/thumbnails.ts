@@ -1,5 +1,5 @@
 import { observe } from 'jotai-effect';
-import { appStore } from '@/editor/0-core/9-state/store.ts';
+import { appStore } from '@/components/4-dialogs/7-0-dialogs/store.ts';
 import { onFileReset } from '@/editor/0-core/7-actions/lifecycle.ts';
 import { renderThumbnails } from '@/editor/0-core/8-lib/ffmpeg/ffmpeg.ts';
 import { isAbortedError } from '@/editor/0-core/8-lib/util.ts';

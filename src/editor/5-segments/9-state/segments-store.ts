@@ -2,7 +2,7 @@ import { atom } from 'jotai';
 import { snapshot, subscribe } from 'valtio';
 import { proxyWithHistory } from 'valtio-history';
 import type { DefiniteSegmentBase, SegmentToExport, StateSegment } from '@/editor/0-core/8-lib/types.ts';
-import { appStore } from '@/editor/0-core/9-state/store.ts';
+import { appStore } from '@/components/4-dialogs/7-0-dialogs/store.ts';
 import { userSettingsAtom } from '@/editor/0-core/9-state/user-settings.ts';
 import { onFileReset } from '@/editor/0-core/7-actions/lifecycle.ts';
 import { fileDurationAtom, fileDurationNonZeroAtom } from '@/editor/2-file/9-state/a-file-atoms.ts';

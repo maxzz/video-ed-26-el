@@ -2,7 +2,7 @@ import type { DragEvent, FocusEvent, SyntheticEvent } from 'react';
 import { useAtomValue } from 'jotai';
 import { useTranslation } from 'react-i18next';
 import { CircleXIcon, MenuIcon, RotateCcwSquareIcon } from 'lucide-react';
-import { appStore } from '@/editor/0-core/9-state/store.ts';
+import { appStore } from '@/components/4-dialogs/7-0-dialogs/store.ts';
 import { runAction } from '@/editor/0-core/7-actions/kbd-actions.ts';
 import { calculateTimelinePercent, mediaSourceQualities } from '@/editor/0-core/8-lib/util.ts';
 import { fullscreenAtom } from '@/components/2-main/0-all/a-panels-atoms.ts';

@@ -1,5 +1,5 @@
 import { observe } from 'jotai-effect';
-import { appStore } from '@/editor/0-core/9-state/store.ts';
+import { appStore } from '@/components/4-dialogs/7-0-dialogs/store';
 import { registerActions } from '@/editor/0-core/7-actions/kbd-actions.ts';
 import { keyboardShortcutsVisibleAtom, toggleKeyboardShortcuts } from '@/components/2-main/0-all/a-panels-atoms';
 import { initKeyboard } from '@/editor/c-keyboard/7-actions/keyboard-listener.ts';

@@ -1,29 +1,33 @@
 import { useAtomValue } from 'jotai';
-import { useTranslation } from 'react-i18next';
 import { TriangleAlertIcon } from 'lucide-react';
-import { appStore } from '@/editor/0-core/9-state/store.ts';
-import { genericErrorAtom } from '@/editor/0-core/9-state/working.ts';
 import { Button } from '@/ui/shadcn/button';
 import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/ui/shadcn/dialog';
+import { useTranslation } from 'react-i18next';
+import { appStore } from '@/components/4-dialogs/7-0-dialogs/store';
+
+import { genericErrorAtom } from '@/editor/0-core/9-state/working.ts';
 
 const closeErrorDialog = (open: boolean) => {
     if (!open) appStore.set(genericErrorAtom, undefined);
 };
 
 /** Port of upstream ErrorDialog: errors from anywhere in the app, also while other dialogs are open or from keyboard actions */
-export function ErrorDialog() {
+export function Dialog_ShowError() {
     const { t } = useTranslation();
     const error = useAtomValue(genericErrorAtom);
 
     return (
         <Dialog open={error != null} onOpenChange={closeErrorDialog}>
+
             <DialogContent className="max-w-xl">
                 <DialogHeader>
                     <DialogTitle className="flex items-center gap-2">
                         <TriangleAlertIcon className="shrink-0 size-4 text-amber-500" />
                         {error?.title ?? t('Error')}
                     </DialogTitle>
-                    <DialogDescription className="sr-only">{t('An error has occurred.')}</DialogDescription>
+                    <DialogDescription className="sr-only">
+                        {t('An error has occurred.')}
+                    </DialogDescription>
                 </DialogHeader>
 
                 {error != null && (
@@ -34,7 +38,9 @@ export function ErrorDialog() {
 
                 <DialogFooter>
                     <DialogClose asChild>
-                        <Button>{t('OK')}</Button>
+                        <Button>
+                            {t('OK')}
+                        </Button>
                     </DialogClose>
                 </DialogFooter>
             </DialogContent>

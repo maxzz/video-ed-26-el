@@ -2,7 +2,7 @@ import { observe } from 'jotai-effect';
 import i18n from 'i18next';
 import invariant from 'tiny-invariant';
 import type { FFprobeStream } from '@shared/ffprobe';
-import { appStore } from '@/editor/0-core/9-state/store.ts';
+import { appStore } from '@/components/4-dialogs/7-0-dialogs/store.ts';
 import { isWorking, setWorking, withErrorHandling } from '@/editor/0-core/9-state/working.ts';
 import { extractSubtitleTrackVtt } from '@/editor/0-core/8-lib/ffmpeg/ffmpeg.ts';
 import { filePathAtom, subtitleStreamsAtom } from '@/editor/2-file/9-state/a-file-atoms.ts';

@@ -4,7 +4,7 @@ import i18n from 'i18next';
 import type { Config } from '@shared/types.ts';
 import { defaultConfig } from '@shared/default-config.ts';
 import { mainApi } from '../8-lib/main-api.ts';
-import { appStore } from './store.ts';
+import { appStore } from '../../../components/4-dialogs/7-0-dialogs/store.ts';
 
 /**
  * User settings (electron-store `Config`). Mutate directly: `userSettings.keyframeCut = true`.

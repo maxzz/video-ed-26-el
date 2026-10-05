@@ -1,5 +1,5 @@
 import { atom } from 'jotai';
-import { appStore } from '../9-state/store.ts';
+import { appStore } from '../../../components/4-dialogs/7-0-dialogs/store.ts';
 import { handleError } from '../9-state/working.ts';
 
 //---------------------------------------------------------------------------

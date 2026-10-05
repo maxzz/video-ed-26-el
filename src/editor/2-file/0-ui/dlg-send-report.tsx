@@ -3,7 +3,7 @@ import { toast } from '@/editor/0-core/8-lib/toast.tsx';
 import { Button } from '@/ui/shadcn/button';
 import i18n from 'i18next';
 
-import { fireDialog } from '@/editor/0-core/9-state/dialogs.ts';
+import { fireDialog } from '@/components/4-dialogs/7-0-dialogs/dialogs';
 import { discussionsUrl, githubUrl, publicBugReportUrl } from '@shared/constants';
 import { getAppInfo, mainApi } from '@/editor/0-core/8-lib/main-api.ts';
 import { isExecaError } from '@/editor/0-core/8-lib/util.ts';

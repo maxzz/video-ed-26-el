@@ -1,6 +1,6 @@
 import type { WheelEvent } from 'react';
 import i18n from 'i18next';
-import { appStore } from '@/editor/0-core/9-state/store.ts';
+import { appStore } from '@/components/4-dialogs/7-0-dialogs/store.ts';
 import { userSettings } from '@/editor/0-core/9-state/user-settings.ts';
 import { showNotification } from '@/editor/0-core/8-lib/notifications.ts';
 import { zoomMax } from '@/editor/0-core/8-lib/constants.ts';

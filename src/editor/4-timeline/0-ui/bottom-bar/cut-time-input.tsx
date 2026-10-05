@@ -2,7 +2,7 @@ import type { ClipboardEvent, SubmitEvent } from 'react';
 import { useAtomValue } from 'jotai';
 import { useTranslation } from 'react-i18next';
 import { cn } from '@/utils/classnames';
-import { appStore } from '@/editor/0-core/9-state/store.ts';
+import { appStore } from '@/components/4-dialogs/7-0-dialogs/store.ts';
 import { formatTimecodeAtom, parseTimecode } from '@/editor/0-core/9-state/timecode.ts';
 import { isExactDurationMatch } from '@/editor/0-core/8-lib/duration.ts';
 import { mainApi } from '@/editor/0-core/8-lib/main-api.ts';

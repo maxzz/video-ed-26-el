@@ -7,7 +7,7 @@ import {
     MenuIcon, PaperclipIcon, PencilIcon, Trash2Icon, VideoIcon, VideoOffIcon, Volume2Icon, VolumeXIcon,
 } from 'lucide-react';
 import type { FFprobeChapter, FFprobeFormat, FFprobeStream } from '@shared/ffprobe';
-import { appStore } from '@/editor/0-core/9-state/store.ts';
+import { appStore } from '@/components/4-dialogs/7-0-dialogs/store.ts';
 import { userSettings, userSettingsAtom } from '@/editor/0-core/9-state/user-settings.ts';
 import { formatTimecode } from '@/editor/0-core/9-state/timecode.ts';
 import { setWorking, withErrorHandling } from '@/editor/0-core/9-state/working.ts';

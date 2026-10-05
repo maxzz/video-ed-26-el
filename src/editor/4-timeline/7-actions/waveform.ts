@@ -3,7 +3,7 @@ import { observe } from 'jotai-effect';
 import sortBy from 'lodash/sortBy.js';
 import invariant from 'tiny-invariant';
 import type { WaveformSlice } from '@/editor/0-core/8-lib/types.ts';
-import { appStore } from '@/editor/0-core/9-state/store.ts';
+import { appStore } from '@/components/4-dialogs/7-0-dialogs/store.ts';
 import { isWorking, setWorking } from '@/editor/0-core/9-state/working.ts';
 import { onFileReset } from '@/editor/0-core/7-actions/lifecycle.ts';
 import { ffmpegExtractWindow } from '@/editor/0-core/8-lib/constants.ts';

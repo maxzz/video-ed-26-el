@@ -3,7 +3,7 @@ import i18n from 'i18next';
 import { DirectoryAccessDeclinedError, UnsupportedFileError } from '../8-lib/errors.ts';
 import { isAbortedError } from '../8-lib/util.ts';
 import { abortFfmpegs } from '../8-lib/ffmpeg/ff-remote.ts';
-import { appStore } from './store.ts';
+import { appStore } from '../../../components/4-dialogs/7-0-dialogs/store.ts';
 
 // Port of upstream useLoading + useErrorHandling
 
@@ -16,6 +16,8 @@ export const workingAtom = atom<WorkingState | undefined>(undefined);
 
 /** 0..1 or undefined when no operation with progress is running */
 export const progressAtom = atom<number | undefined>(undefined);
+
+//---------------------------------------------------------------------------
 
 export function isWorking() {
     return appStore.get(workingAtom) != null;
@@ -35,6 +37,8 @@ export function abortWorking() {
     appStore.get(workingAtom)?.abortController?.abort();
 }
 
+//---------------------------------------------------------------------------
+
 export interface GenericError {
     title?: string | undefined;
     err?: unknown;
@@ -46,6 +50,8 @@ export function handleError({ title, err }: GenericError) {
     console.error('handleError', title, err);
     appStore.set(genericErrorAtom, { title, err });
 }
+
+//---------------------------------------------------------------------------
 
 /** Run an operation with error handling */
 export async function withErrorHandling(operation: () => Promise<void>, errorMsg?: string) {

@@ -1,5 +1,5 @@
 import { atom } from 'jotai';
-import { appStore } from '@/editor/0-core/9-state/store.ts';
+import { appStore } from '@/components/4-dialogs/7-0-dialogs/store';
 import { type FfmpegDialog, parameters as allFfmpegParameters } from '@/editor/0-core/8-lib/ffmpeg/ffmpeg-parameters.ts';
 
 export type ParameterDialogParameters = Record<string, string>;

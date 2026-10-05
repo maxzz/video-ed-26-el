@@ -3,7 +3,7 @@ import { useAtomValue } from 'jotai';
 import { useSnapshot } from 'valtio';
 import { useTranslation } from 'react-i18next';
 import type { FFprobeStream } from '@shared/ffprobe';
-import { appStore } from '@/editor/0-core/9-state/store.ts';
+import { appStore } from '@/components/4-dialogs/7-0-dialogs/store.ts';
 import type { FileParams, StreamParams } from '@/editor/0-core/8-lib/types.ts';
 import { allFilesMetaAtom, filePathAtom, paramsByFileAtom } from '@/editor/2-file/9-state/a-file-atoms.ts';
 import { Button } from '@/ui/shadcn/button';

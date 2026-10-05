@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { Button } from '@/ui/shadcn/button';
 import { Input } from '@/ui/shadcn/input';
 import { DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/ui/shadcn/dialog';
-import { openCustomDialog } from '../9-state/dialogs.ts';
+import { openCustomDialog } from '../../../components/4-dialogs/7-0-dialogs/dialogs.ts';
 
 export interface ExpressionDialogOptions {
     /** Return `{ error }` to keep the dialog open, undefined on success */

@@ -1,6 +1,6 @@
 import { atom } from 'jotai';
 import type { AppInfo } from '@shared/ipc-contract.ts';
-import { appStore } from '@/editor/0-core/9-state/store.ts';
+import { appStore } from '@/components/4-dialogs/7-0-dialogs/store.ts';
 import { userSettings, userSettingsAtom } from '@/editor/0-core/9-state/user-settings.ts';
 import { getAppInfo, getFfCommandLine } from '@/editor/0-core/8-lib/main-api.ts';
 import { isCuttingEnd, isCuttingStart } from '@/editor/0-core/8-lib/ffmpeg/ffmpeg.ts';

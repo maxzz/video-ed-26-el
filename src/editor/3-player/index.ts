@@ -5,7 +5,7 @@ export { NoFileLoaded } from './0-ui/no-file-loaded.tsx';
 export { VolumeControl } from './0-ui/volume-control.tsx';
 export { PlaybackStreamSelector } from './0-ui/playback-stream-selector.tsx';
 export { WorkingOverlay } from './0-ui/working-overlay.tsx';
-export { ErrorDialog } from './0-ui/error-dialog.tsx';
+export { Dialog_ShowError as ErrorDialog } from './0-ui/dlg-show-error.tsx';
 export { MediaSourcePlayer } from './0-ui/media-source-player.tsx';
 export {
     onDurationChange, onVideoError, goToTimecode, goToTimecodeDirect, toggleFullscreenVideo, setPlaybackVolume, increaseVolume, decreaseVolume,

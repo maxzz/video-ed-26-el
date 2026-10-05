@@ -4,7 +4,7 @@ import { useSnapshot } from 'valtio';
 import { useTranslation } from 'react-i18next';
 import { MouseIcon } from 'lucide-react';
 import type { ModifierKey } from '@shared/types';
-import { appStore } from '@/editor/0-core/9-state/store.ts';
+import { appStore } from '@/components/4-dialogs/7-0-dialogs/store.ts';
 import { userSettings } from '@/editor/0-core/9-state/user-settings.ts';
 import { runAction } from '@/editor/0-core/7-actions/kbd-actions.ts';
 import { getKeyDisplayName, getMetaKeyName, splitKeyboardKeys } from '@/editor/0-core/8-lib/util.ts';

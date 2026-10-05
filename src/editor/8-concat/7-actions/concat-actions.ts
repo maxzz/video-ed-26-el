@@ -2,7 +2,7 @@ import i18n from 'i18next';
 import invariant from 'tiny-invariant';
 import sum from 'lodash/sum.js';
 import type { FFprobeStream } from '@shared/ffprobe';
-import { appStore } from '@/editor/0-core/9-state/store.ts';
+import { appStore } from '@/components/4-dialogs/7-0-dialogs/store.ts';
 import { customOutDirAtom, userSettings } from '@/editor/0-core/9-state/user-settings.ts';
 import { isWorking, setProgress, setWorking } from '@/editor/0-core/9-state/working.ts';
 import { errorToast, showConcatFailedDialog, showDiskFull, showMuxNotSupported, showOutputNotWritable } from '@/editor/0-core/8-lib/app-dialogs.tsx';

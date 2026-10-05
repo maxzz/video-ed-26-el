@@ -3,7 +3,7 @@ import { atom, useAtomValue } from 'jotai';
 import { observe } from 'jotai-effect';
 import { CircleAlertIcon, LoaderCircleIcon } from 'lucide-react';
 import { cn } from '@/utils/classnames';
-import { appStore } from '@/editor/0-core/9-state/store.ts';
+import { appStore } from '@/components/4-dialogs/7-0-dialogs/store.ts';
 import { ffmpegExtractWindow } from '@/editor/0-core/8-lib/constants.ts';
 import { fileDurationNonZeroAtom } from '@/editor/2-file/9-state/a-file-atoms.ts';
 import { playingAtom, relevantTimeAtom } from '@/editor/3-player/9-state/player-atoms.ts';

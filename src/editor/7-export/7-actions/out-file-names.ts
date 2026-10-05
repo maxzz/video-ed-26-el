@@ -1,6 +1,6 @@
 import { atom, type Getter } from 'jotai';
 import invariant from 'tiny-invariant';
-import { appStore } from '@/editor/0-core/9-state/store.ts';
+import { appStore } from '@/components/4-dialogs/7-0-dialogs/store.ts';
 import { maxLabelLengthAtom, userSettings, userSettingsAtom } from '@/editor/0-core/9-state/user-settings.ts';
 import { formatTimecode, formatTimecodeAtom } from '@/editor/0-core/9-state/timecode.ts';
 import { currentFileExportCountAtom, exportCountAtom, fileDurationAtom, fileFormatAtom, filePathAtom, isCustomFormatSelectedAtom, mainFileMetaAtom, outputDirAtom } from '@/editor/2-file/9-state/a-file-atoms.ts';

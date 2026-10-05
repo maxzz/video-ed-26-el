@@ -3,7 +3,7 @@ import { proxy, useSnapshot } from 'valtio';
 import i18n from 'i18next';
 import { useTranslation } from 'react-i18next';
 import { CircleCheckIcon, InfoIcon } from 'lucide-react';
-import { openCustomDialog } from '@/editor/0-core/9-state/dialogs.ts';
+import { openCustomDialog } from '@/components/4-dialogs/7-0-dialogs/dialogs';
 import { showItemInFolder } from '@/editor/0-core/8-lib/util.ts';
 import { type CleanupChoice, type CleanupChoicesType, ListItem, Notices, OutputIncorrectSeeHelpMenu, UnorderedList, Warnings } from '@/editor/0-core/8-lib/app-dialogs.tsx';
 import { Button } from '@/ui/shadcn/button';

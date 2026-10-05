@@ -1,7 +1,7 @@
 import type { KeyBinding, KeyboardAction } from '@shared/types.ts';
-import { appStore } from '@/editor/0-core/9-state/store.ts';
+import { appStore } from '@/components/4-dialogs/7-0-dialogs/store.ts';
 import { userSettingsAtom } from '@/editor/0-core/9-state/user-settings.ts';
-import { isAnyDialogOpenAtom } from '@/editor/0-core/9-state/dialogs.ts';
+import { isAnyDialogOpenAtom } from '@/components/4-dialogs/7-0-dialogs/dialogs.ts';
 import { getKeyupAction, hasAction, runAction } from '@/editor/0-core/7-actions/kbd-actions.ts';
 import { isWindows } from '@/editor/0-core/8-lib/main-api.ts';
 import { runMenuAction, type MenuAction } from '@/editor/0-core/menu-actions/index.ts';

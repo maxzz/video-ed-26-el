@@ -2,7 +2,7 @@ import i18n from 'i18next';
 import { Trans } from 'react-i18next';
 import invariant from 'tiny-invariant';
 import { changeEnabledStreamsExpressionHelpUrl } from '@shared/constants';
-import { appStore } from '@/editor/0-core/9-state/store.ts';
+import { appStore } from '@/components/4-dialogs/7-0-dialogs/store.ts';
 import { withErrorHandling } from '@/editor/0-core/9-state/working.ts';
 import { mainApi } from '@/editor/0-core/8-lib/main-api.ts';
 import { showOpenDialog } from '@/editor/0-core/8-lib/app-dialogs.tsx';

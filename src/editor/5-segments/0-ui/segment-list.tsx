@@ -9,7 +9,7 @@ import { useVirtualizer } from '@tanstack/react-virtual';
 import { ArrowDown01Icon, CircleCheckIcon, ContrastIcon, MinusIcon, PlusIcon, SplitIcon, TagIcon, XIcon } from 'lucide-react';
 import { cn } from '@/utils/classnames';
 import type { SegmentColorIndex } from '@/editor/0-core/8-lib/types.ts';
-import { appStore } from '@/editor/0-core/9-state/store.ts';
+import { appStore } from '@/components/4-dialogs/7-0-dialogs/store.ts';
 import { formatTimecodeAtom } from '@/editor/0-core/9-state/timecode.ts';
 import { rightBarWidth } from '@/editor/0-core/8-lib/constants.ts';
 import { runAction } from '@/editor/0-core/7-actions/kbd-actions.ts';

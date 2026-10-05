@@ -4,7 +4,7 @@ import { motion, useAnimate } from 'motion/react';
 import { CircleHelpIcon, ClipboardIcon } from 'lucide-react';
 import { mainApi } from '@/editor/0-core/8-lib/main-api.ts';
 import { toast } from '@/editor/0-core/8-lib/toast.tsx';
-import type { DialogIcon } from '@/editor/0-core/9-state/dialogs.ts';
+import type { DialogIcon } from '@/components/4-dialogs/7-0-dialogs/dialogs';
 import { cn } from '@/utils/classnames';
 
 export function showHelpText({ icon = 'info', timer = 10000, text }: { icon?: DialogIcon; timer?: number; text: string; }) {

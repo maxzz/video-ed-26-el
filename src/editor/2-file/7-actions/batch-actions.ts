@@ -1,7 +1,7 @@
 import i18n from 'i18next';
 import invariant from 'tiny-invariant';
 import type { BatchFile } from '@/editor/0-core/8-lib/types.ts';
-import { appStore } from '@/editor/0-core/9-state/store.ts';
+import { appStore } from '@/components/4-dialogs/7-0-dialogs/store.ts';
 import { userSettings } from '@/editor/0-core/9-state/user-settings.ts';
 import { isWorking, setWorking, withErrorHandling } from '@/editor/0-core/9-state/working.ts';
 import { confirmDialog } from '@/editor/0-core/8-lib/app-dialogs.tsx';

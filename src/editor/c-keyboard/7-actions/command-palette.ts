@@ -1,4 +1,4 @@
-import { appStore } from '@/editor/0-core/9-state/store.ts';
+import { appStore } from '@/components/4-dialogs/7-0-dialogs/store';
 import { runAction } from '@/editor/0-core/7-actions/kbd-actions';
 import { commandPaletteOpenAtom } from '@/components/2-main/0-all/a-panels-atoms';
 

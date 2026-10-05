@@ -1,5 +1,5 @@
 import i18n from 'i18next';
-import { appStore } from '@/editor/0-core/9-state/store.ts';
+import { appStore } from '@/components/4-dialogs/7-0-dialogs/store.ts';
 import { handleError } from '@/editor/0-core/9-state/working.ts';
 import { runFfmpegStartupCheck } from '@/editor/0-core/8-lib/ffmpeg/ffmpeg.ts';
 import { mainApi } from '@/editor/0-core/8-lib/main-api.ts';
@@ -7,14 +7,6 @@ import { ffmpegInfoAtom } from '../9-state/a-file-atoms.ts';
 import { dialog_SendReport_open } from '../0-ui/dlg-send-report.tsx';
 
 // Port of upstream mifi.ts runStartupCheck
-
-async function getFfmpegPath() {
-    try {
-        return (await mainApi.ffCheckExists()).ffmpegPath;
-    } catch {
-        return 'ffmpeg';
-    }
-}
 
 export async function runStartupCheck({ customFfPath }: { customFfPath: string | undefined; }) {
     try {
@@ -57,16 +49,28 @@ export async function runStartupCheck({ customFfPath }: { customFfPath: string |
     }
 }
 
+async function getFfmpegPath() {
+    try {
+        return (await mainApi.ffCheckExists()).ffmpegPath;
+    } catch {
+        return 'ffmpeg';
+    }
+}
+
 let lastCustomFfPath: string | undefined | null = null;
 
 /** Applies the custom FFmpeg path and re-runs the startup check when it changes */
 export async function applyCustomFfPath(customFfPath: string | undefined) {
-    if (lastCustomFfPath === customFfPath) return;
+    if (lastCustomFfPath === customFfPath) {
+        return;
+    }
+
     lastCustomFfPath = customFfPath;
     try {
         await mainApi.ffSetCustomPath(customFfPath);
     } catch (err) {
         console.error('Failed to set custom FFmpeg path', err);
     }
+
     appStore.set(ffmpegInfoAtom, await runStartupCheck({ customFfPath }));
 }

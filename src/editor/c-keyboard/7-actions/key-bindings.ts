@@ -1,6 +1,6 @@
 import i18n from 'i18next';
 import type { KeyBinding, KeyboardAction } from '@shared/types.ts';
-import { appStore } from '@/editor/0-core/9-state/store.ts';
+import { appStore } from '@/components/4-dialogs/7-0-dialogs/store.ts';
 import { resetUserSetting, userSettings } from '@/editor/0-core/9-state/user-settings.ts';
 import { confirmDialog } from '@/editor/0-core/8-lib/app-dialogs.tsx';
 import type { KeyboardLayoutMap } from '@/editor/0-core/8-lib/types.ts';

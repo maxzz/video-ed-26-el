@@ -3,7 +3,7 @@ import { observe } from 'jotai-effect';
 import sortBy from 'lodash/sortBy.js';
 import type { Frame } from '@/editor/0-core/8-lib/ffmpeg/ffmpeg.ts';
 import { readFrames, readFramesAroundTime } from '@/editor/0-core/8-lib/ffmpeg/ffmpeg.ts';
-import { appStore } from '@/editor/0-core/9-state/store.ts';
+import { appStore } from '@/components/4-dialogs/7-0-dialogs/store.ts';
 import { handleError, setWorking } from '@/editor/0-core/9-state/working.ts';
 import { ffmpegExtractWindow } from '@/editor/0-core/8-lib/constants.ts';
 import { filePathAtom } from '@/editor/2-file/9-state/a-file-atoms.ts';

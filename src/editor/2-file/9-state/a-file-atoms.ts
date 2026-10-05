@@ -1,13 +1,14 @@
 import { atom } from 'jotai';
-import type { FFprobeStream } from '@shared/ffprobe';
-import type { Html5ifyMode } from '@shared/types';
-import type { BatchFile, FfmpegCommandLog, FileStats, FilesMeta, ParamsByFile } from '@/editor/0-core/8-lib/types.ts';
-import type { FileFfprobeMeta } from '@/editor/0-core/8-lib/ffmpeg/ffmpeg.ts';
+import { type FFprobeStream } from '@shared/ffprobe';
+import { type Html5ifyMode } from '@shared/types';
+import { type BatchFile, type FfmpegCommandLog, type FileStats, type FilesMeta, type ParamsByFile } from '@/editor/0-core/8-lib/types.ts';
+import { type FileFfprobeMeta } from '@/editor/0-core/8-lib/ffmpeg/ffmpeg.ts';
+
 import { getAudioStreams, getRealVideoStreams, getSubtitleStreams } from '@/editor/0-core/8-lib/ffmpeg/streams.ts';
 import { isDurationValid } from '@/editor/5-segments/8-lib/segments.ts';
 import { getOutDir } from '@/editor/0-core/8-lib/util.ts';
 import { customOutDirAtom } from '@/editor/0-core/9-state/user-settings.ts';
-import { appStore } from '@/editor/0-core/9-state/store.ts';
+import { appStore } from '@/components/4-dialogs/7-0-dialogs/store';
 import { setProgress } from '@/editor/0-core/9-state/working.ts';
 import { onFileReset } from '@/editor/0-core/7-actions/lifecycle.ts';
 

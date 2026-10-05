@@ -3,8 +3,9 @@ import { observe } from 'jotai-effect';
 import debounce from 'lodash/debounce';
 import isEqual from 'lodash/isEqual';
 import i18n from 'i18next';
-import type { StateSegment } from '@/editor/0-core/8-lib/types.ts';
-import { appStore } from '@/editor/0-core/9-state/store.ts';
+
+import { appStore } from '@/components/4-dialogs/7-0-dialogs/store.ts';
+import { type StateSegment } from '@/editor/0-core/8-lib/types.ts';
 import { customOutDirAtom, userSettingsAtom } from '@/editor/0-core/9-state/user-settings.ts';
 import { errorToast } from '@/editor/0-core/8-lib/app-dialogs.tsx';
 import { getAppInfo } from '@/editor/0-core/8-lib/main-api.ts';
@@ -16,10 +17,12 @@ import { filePathAtom } from '../9-state/a-file-atoms.ts';
 
 // Port of upstream useSegmentsAutoSave
 
-const projectSuffix = 'proj.llc';
-
 /** New LLC format can be stored along with input file or in working dir (customOutDir) */
-export const getEdlFilePath = (fp?: string, cod?: string) => getSuffixedOutPath({ customOutDir: cod, filePath: fp, nameSuffix: projectSuffix });
+export function getEdlFilePath(fp?: string, cod?: string) {
+    return getSuffixedOutPath({ customOutDir: cod, filePath: fp, nameSuffix: projectSuffix });
+}
+
+const projectSuffix = 'proj.llc';
 
 export function getProjectFileSavePath(storeProjectInWorkingDir: boolean) {
     return getEdlFilePath(appStore.get(filePathAtom), storeProjectInWorkingDir ? appStore.get(customOutDirAtom) : undefined);
@@ -29,7 +32,32 @@ const storeProjectInWorkingDirAtom = atom((get) => get(userSettingsAtom).storePr
 
 export const projectFileSavePathAtom = atom((get) => getEdlFilePath(get(filePathAtom), get(storeProjectInWorkingDirAtom) ? get(customOutDirAtom) : undefined));
 
+//---------------------------------------------------------------------------
+
+/** NOTE: Could lose a save if user closes too fast, but not a big issue I think */
+export function initProjectAutoSave() {
+    const debouncedSave = debounce(save, getAppInfo().isDev ? 2000 : 500);
+
+    observe(
+        (get) => {
+            const projectFileSavePath = get(projectFileSavePathAtom);
+            if (!projectFileSavePath) {
+                debouncedSave(undefined);
+                return;
+            }
+            debouncedSave({
+                cutSegments: get(cutSegmentsAtom) as StateSegment[],
+                projectFileSavePath,
+                filePath: get(filePathAtom),
+                autoSaveProjectFile: get(autoSaveProjectFileAtom),
+            });
+        },
+        appStore);
+}
+
 const autoSaveProjectFileAtom = atom((get) => get(userSettingsAtom).autoSaveProjectFile);
+
+//---------------------------------------------------------------------------
 
 interface SaveOperation {
     cutSegments: StateSegment[];
@@ -66,21 +94,3 @@ async function save(operation: SaveOperation | undefined) {
     }
 }
 
-/** NOTE: Could lose a save if user closes too fast, but not a big issue I think */
-export function initProjectAutoSave() {
-    const debouncedSave = debounce(save, getAppInfo().isDev ? 2000 : 500);
-
-    observe((get) => {
-        const projectFileSavePath = get(projectFileSavePathAtom);
-        if (!projectFileSavePath) {
-            debouncedSave(undefined);
-            return;
-        }
-        debouncedSave({
-            cutSegments: get(cutSegmentsAtom) as StateSegment[],
-            projectFileSavePath,
-            filePath: get(filePathAtom),
-            autoSaveProjectFile: get(autoSaveProjectFileAtom),
-        });
-    }, appStore);
-}

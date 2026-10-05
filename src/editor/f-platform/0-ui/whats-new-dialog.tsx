@@ -1,7 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import { FileTextIcon, GitCompareIcon } from 'lucide-react';
 import { appName } from '@shared/constants.ts';
-import { openCustomDialog } from '@/editor/0-core/9-state/dialogs.ts';
+import { openCustomDialog } from '@/components/4-dialogs/7-0-dialogs/dialogs.ts';
 import { mainApi } from '@/editor/0-core/8-lib/main-api.ts';
 import { Button } from '@/ui/shadcn/button';
 import { DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/ui/shadcn/dialog';
