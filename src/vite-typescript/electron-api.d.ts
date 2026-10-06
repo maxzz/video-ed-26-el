@@ -1,4 +1,4 @@
-import type { MainApi, MainEventsApi, NodePathApi, PreloadEnv } from '@shared/ipc-contract.ts';
+import { type MainApi, type MainEventsApi, type NodePathApi, type PreloadEnv } from "@shared/ipc-contract";
 
 declare global {
     interface Window {

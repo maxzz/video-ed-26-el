@@ -1,5 +1,5 @@
 // Test report generator for getFilenameAndExt()
-import { getFilenameAndExt } from './os-utils';
+import { getFilenameAndExt } from "./os-utils";
 
 interface TestCase {
     description: string;

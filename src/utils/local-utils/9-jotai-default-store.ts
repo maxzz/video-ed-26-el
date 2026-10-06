@@ -1,4 +1,4 @@
-import { getDefaultStore } from 'jotai';
+import { getDefaultStore } from "jotai";
 
 /**
  * The single Jotai store of the editor. Components use it implicitly (no Provider),

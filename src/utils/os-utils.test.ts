@@ -1,6 +1,6 @@
 // v.11.15.25
-import { describe, it, expect } from 'vitest';
-import { pathWithoutFilename, filenameWithoutPath, getFilenameAndExt } from './os-utils';
+import { describe, it, expect } from "vitest";
+import { pathWithoutFilename, filenameWithoutPath, getFilenameAndExt } from "./os-utils";
 
 describe('pathWithoutFilename', () => {
     type TestCase = {
