@@ -1,5 +1,5 @@
-import { vi } from 'vitest';
-import i18n from 'i18next';
+import { vi } from "vitest";
+import i18n from "i18next";
 
 // An uninitialized i18next returns undefined from t(), which breaks `error != null` style checks
 await i18n.init({ lng: 'en', resources: {}, nsSeparator: false, keySeparator: false, interpolation: { escapeValue: false } });

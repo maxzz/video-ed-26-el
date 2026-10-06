@@ -1,4 +1,4 @@
-import { homepageUrl } from '@shared/constants.ts';
+import { homepageUrl } from "@shared/constants";
 
 // Release links of this app (shared/constants.ts getReleaseUrl/compareReleasesUrl point to upstream LosslessCut)
 export const getAppReleaseUrl = (version: string) => `${homepageUrl}/releases/tag/v${version}`;

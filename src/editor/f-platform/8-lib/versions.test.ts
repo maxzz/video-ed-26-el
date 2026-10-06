@@ -1,6 +1,6 @@
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it } from "vitest";
 
-import { compareVersions, getAppCompareReleasesUrl, getAppReleaseUrl, parseMifiLink, shouldShowWhatsNew } from './versions.ts';
+import { compareVersions, getAppCompareReleasesUrl, getAppReleaseUrl, parseMifiLink, shouldShowWhatsNew } from "./versions";
 
 describe('compareVersions', () => {
     it('compares numerically', () => {

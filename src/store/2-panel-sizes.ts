@@ -1,4 +1,4 @@
-import { type Layout } from 'react-resizable-panels';
+import { type Layout } from "react-resizable-panels";
 
 export interface PanelSizes {
     horizontal: Layout;

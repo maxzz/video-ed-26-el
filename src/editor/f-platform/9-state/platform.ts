@@ -1,5 +1,5 @@
-import { atom } from 'jotai';
-import type { MifiLink } from '../8-lib/versions.ts';
+import { atom } from "jotai";
+import { type MifiLink } from "../8-lib/versions";
 
 /** Newer release found by the main process update check */
 export const newVersionAtom = atom<string | undefined>(undefined);

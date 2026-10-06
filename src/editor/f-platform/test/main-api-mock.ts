@@ -1,8 +1,8 @@
-import path from 'node:path';
-import { vi, type Mock } from 'vitest';
-import type { AppInfo, FfCommand, MainApi, MainEventsApi, NodePathApi, PreloadEnv } from '@shared/ipc-contract.ts';
-import { getFfCommandLine as getFfCommandLineShared } from '@shared/ff-command-line.ts';
-import { defaultConfig } from '@shared/default-config.ts';
+import path from "node:path";
+import { vi, type Mock } from "vitest";
+import { type AppInfo, type FfCommand, type MainApi, type MainEventsApi, type NodePathApi, type PreloadEnv } from "@shared/ipc-contract";
+import { getFfCommandLine as getFfCommandLineShared } from "@shared/ff-command-line";
+import { defaultConfig } from "@shared/default-config";
 
 // Replaces src/editor/0-core/8-lib/main-api.ts in unit tests (see setup.ts).
 // Every mainApi method is a vi.fn() that rejects until a test mocks it: vi.mocked(mainApi.stat).mockResolvedValue(...)
