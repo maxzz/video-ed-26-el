@@ -18,7 +18,7 @@ interface BatchFileProps {
 }
 
 /** Port of upstream components/BatchFile.tsx */
-export function BatchFile(props: BatchFileProps) {
+export function Menu_BatchFile(props: BatchFileProps) {
     const { t } = useTranslation();
     const { path } = props;
     const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id: path, transition: sortableTransition });

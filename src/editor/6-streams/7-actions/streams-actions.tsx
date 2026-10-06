@@ -11,7 +11,7 @@ import type { FileParams, ParamsByFile, StreamParams } from '@/editor/0-core/8-l
 import { openExpressionDialog } from '@/editor/0-core/0-ui/dlg-expression.tsx';
 import { allFilesMetaAtom, externalFilesMetaAtom, filePathAtom, paramsByFileAtom } from '@/editor/2-file/9-state/a-file-atoms.ts';
 import { streamsSelectorShownAtom } from '@/components/2-main/0-all/a-panels-atoms.ts';
-import { applyEnabledStreamsFilter, enabledStreamsFilterAtom, filterEnabledStreams, setCopyStreamIdsForPath } from '../9-state/streams-store.ts';
+import { applyEnabledStreamsFilter, enabledStreamsFilterAtom, filterEnabledStreams, setCopyStreamIdsForPath } from '../9-state/a-streams-store.ts';
 
 // Port of the streams related parts of upstream App.tsx and useStreamsMeta
 

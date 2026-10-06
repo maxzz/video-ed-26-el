@@ -24,7 +24,7 @@ import { MergedFileNameEditor } from './merged-file-name-editor.tsx';
 import { OutputFormatSelect } from '@/editor/7-export/0-ui/output-format-select.tsx';
 
 /** Port of upstream components/ConcatDialog.tsx */
-export function ConcatDialog() {
+export function Dialog_Concat() {
     const isShown = useAtomValue(isConcatDialogShownAtom);
     return (
         <Dialog open={isShown} onOpenChange={(open) => !open && closeConcatDialog()}>
@@ -96,8 +96,8 @@ function ConcatDialogContent() {
                 </Button>
             </DialogFooter>
 
-            <MergeOptionsDialog />
-            <MismatchesDialog />
+            <Dialog_MergeOptions />
+            <Dialog_Mismatches />
         </DialogContent>
     );
 }
@@ -150,7 +150,9 @@ function OutputDirRow() {
     );
 }
 
-function MismatchesDialog() {
+//---------------------------------------------------------------------------
+
+function Dialog_Mismatches() {
     const { t } = useTranslation();
     const [path, setPath] = useAtom(concatMismatchesPathAtom);
     const problemsByFile = useAtomValue(concatProblemsByFileAtom);
@@ -196,7 +198,9 @@ function MismatchesDialog() {
     );
 }
 
-function MergeOptionsDialog() {
+//---------------------------------------------------------------------------
+
+function Dialog_MergeOptions() {
     const { t } = useTranslation();
     const [open, setOpen] = useAtom(concatOptionsOpenAtom);
     const [includeAllStreams, setIncludeAllStreams] = useAtom(concatIncludeAllStreamsAtom);

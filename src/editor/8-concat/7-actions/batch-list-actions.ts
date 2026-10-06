@@ -1,9 +1,10 @@
-import type { DragEndEvent, DragStartEvent } from '@dnd-kit/core';
 import { arrayMove } from '@dnd-kit/sortable';
-import { jotaiDefaultStore } from '@/utils/local-utils/9-jotai-default-store.ts';
-import { batchFilesAtom } from '@/editor/2-file/9-state/a-file-atoms.ts';
-import { setBatchFiles } from '@/editor/2-file/index.ts';
-import { batchDraggingIdAtom, batchSortDescAtom } from '../9-state/concat-atoms.ts';
+import { type DragEndEvent, type DragStartEvent } from '@dnd-kit/core';
+import { jotaiDefaultStore } from '@/utils/local-utils/9-jotai-default-store';
+
+import { batchFilesAtom } from '@/editor/2-file/9-state/a-file-atoms';
+import { setBatchFiles } from '@/editor/2-file/index';
+import { batchDraggingIdAtom, batchSortDescAtom } from '../9-state/concat-atoms';
 
 // Port of the handlers of upstream components/BatchFilesList.tsx
 

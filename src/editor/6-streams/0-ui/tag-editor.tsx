@@ -1,18 +1,19 @@
 import type { FormEvent } from 'react';
 import { useSnapshot } from 'valtio';
-import { useTranslation } from 'react-i18next';
-import invariant from 'tiny-invariant';
+import { cn } from '@/utils/classnames';
+import { useLocalProxy } from '@/utils/local-utils/use-local-proxy.ts';
 import { AnimatePresence, motion } from 'motion/react';
-import { CheckIcon, ClipboardListIcon, ClipboardPasteIcon, InfoIcon, PencilIcon, PlusIcon, Trash2Icon, TriangleAlertIcon, Undo2Icon } from 'lucide-react';
-import { type SegmentTags, segmentTagsSchema } from '@/editor/0-core/8-lib/9-types-core.ts';
-import { mainApi } from '@/editor/0-core/7-actions/0-main-api.ts';
-import { errorToast } from '@/components/4-dialogs/7-1-dialogs/00-app-dialogs.tsx';
-import { CopyClipboardButton } from '@/editor/7-export/0-ui/controls.tsx';
 import { Button } from '@/ui/shadcn/button';
 import { Input } from '@/ui/shadcn/input';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/ui/shadcn/tooltip';
-import { cn } from '@/utils/classnames';
-import { useLocalProxy } from '../8-lib/use-local-proxy.ts';
+import { CheckIcon, ClipboardListIcon, ClipboardPasteIcon, InfoIcon, PencilIcon, PlusIcon, Trash2Icon, TriangleAlertIcon, Undo2Icon } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
+
+import { mainApi } from '@/editor/0-core/7-actions/0-main-api.ts';
+import { errorToast } from '@/components/4-dialogs/7-1-dialogs/00-app-dialogs.tsx';
+import { type SegmentTags, segmentTagsSchema } from '@/editor/0-core/8-lib/9-types-core.ts';
+import { CopyClipboardButton } from '@/editor/7-export/0-ui/controls.tsx';
+import invariant from 'tiny-invariant';
 
 // Port of upstream components/TagEditor.tsx
 
@@ -35,9 +36,9 @@ export function TagEditor({ existingTags = emptyObject, customTags = emptyObject
     tagInfo?: Record<string, { description: string; url?: string; }>;
     canDeleteExisting?: boolean;
 }) {
-    const { t } = useTranslation();
     const state = useLocalProxy<TagEditorState>(() => ({ editingTagVal: undefined, newTagKey: undefined, newTagKeyInput: '' }));
     const snap = useSnapshot(state, { sync: true });
+    const { t } = useTranslation();
 
     const newTagKeyInputError = !!snap.newTagKeyInput && snap.newTagKeyInput.includes('=');
 
@@ -122,65 +123,69 @@ export function TagEditor({ existingTags = emptyObject, customTags = emptyObject
         <div className="text-sm flex flex-col gap-3">
             <div className="flex flex-col">
                 <AnimatePresence initial={false}>
-                    {Object.keys(effectiveTags).map((tag) => {
-                        const editingThis = tag === editingTag;
-                        const thisTagCustom = customTags[tag] != null;
-                        const thisTagNew = existingTags[tag] == null;
-                        const value = effectiveTags[tag];
-                        const isDeletedExisting = !!canDeleteExisting && !value && !thisTagNew;
-                        const editingOther = editingTag != null && !editingThis;
-                        const emphasized = thisTagCustom || isDeletedExisting;
-                        const info = tagInfo?.[tag];
+                    {Object.keys(effectiveTags).map(
+                        (tag) => {
+                            const editingThis = tag === editingTag;
+                            const thisTagCustom = customTags[tag] != null;
+                            const thisTagNew = existingTags[tag] == null;
+                            const value = effectiveTags[tag];
+                            const isDeletedExisting = !!canDeleteExisting && !value && !thisTagNew;
+                            const editingOther = editingTag != null && !editingThis;
+                            const emphasized = thisTagCustom || isDeletedExisting;
+                            const info = tagInfo?.[tag];
 
-                        return (
-                            <motion.div
-                                key={tag}
-                                layout
-                                className="py-1 border-b border-border/50 flex items-center gap-2"
-                                transition={{ duration: 0.2 }}
-                                initial={{ opacity: 0 }}
-                                animate={{ opacity: 1 }}
-                                exit={{ opacity: 0 }}
-                            >
-                                <div className={cn('grow pr-4 break-all', thisTagNew ? 'text-foreground' : 'text-muted-foreground')}>{tag}</div>
+                            return (
+                                <motion.div
+                                    className="py-1 border-b border-border/50 flex items-center gap-2"
+                                    key={tag}
+                                    layout
+                                    transition={{ duration: 0.2 }}
+                                    initial={{ opacity: 0 }}
+                                    animate={{ opacity: 1 }}
+                                    exit={{ opacity: 0 }}
+                                >
+                                    <div className={cn('grow pr-4 break-all', thisTagNew ? 'text-foreground' : 'text-muted-foreground')}>{tag}</div>
 
-                                {editingThis ? (
-                                    <form className="inline" onSubmit={onSubmit}>
-                                        <Input className="h-7" autoFocus placeholder={t('Enter value')} value={snap.editingTagVal ?? ''} onChange={(e) => { state.editingTagVal = e.target.value; }} />
-                                    </form>
-                                ) : (
-                                    <span className={cn('py-1 break-all', emphasized && 'font-bold', isDeletedExisting ? 'text-destructive' : (emphasized ? 'text-foreground' : 'text-muted-foreground'))}>
-                                        {isDeletedExisting ? `<${t('deleted')}>` : (value ? String(value) : `<${t('empty')}>`)}
-                                    </span>
-                                )}
+                                    {editingThis
+                                        ? (
+                                            <form className="inline" onSubmit={onSubmit}>
+                                                <Input className="h-7" autoFocus placeholder={t('Enter value')} value={snap.editingTagVal ?? ''} onChange={(e) => { state.editingTagVal = e.target.value; }} />
+                                            </form>
+                                        ) : (
+                                            <span className={cn('py-1 break-all', emphasized && 'font-bold', isDeletedExisting ? 'text-destructive' : (emphasized ? 'text-foreground' : 'text-muted-foreground'))}>
+                                                {isDeletedExisting ? `<${t('deleted')}>` : (value ? String(value) : `<${t('empty')}>`)}
+                                            </span>
+                                        )
+                                    }
 
-                                {info && !editingThis && (
-                                    <Tooltip>
-                                        <TooltipTrigger asChild>
-                                            <Button variant="ghost" size="icon-xs" onClick={() => info.url && mainApi.openExternal(info.url)}><InfoIcon /></Button>
-                                        </TooltipTrigger>
-                                        <TooltipContent className="max-w-80">{info.description}</TooltipContent>
-                                    </Tooltip>
-                                )}
+                                    {info && !editingThis && (
+                                        <Tooltip>
+                                            <TooltipTrigger asChild>
+                                                <Button variant="ghost" size="icon-xs" onClick={() => info.url && mainApi.openExternal(info.url)}><InfoIcon /></Button>
+                                            </TooltipTrigger>
+                                            <TooltipContent className="max-w-80">{info.description}</TooltipContent>
+                                        </Tooltip>
+                                    )}
 
-                                <Button variant="ghost" size="icon-xs" disabled={editingOther} className={cn(editingThis && 'text-primary')} title={t('Edit')} onClick={() => onEditClick(tag)}>
-                                    {editingThis ? <CheckIcon /> : <PencilIcon />}
-                                </Button>
+                                    <Button variant="ghost" size="icon-xs" disabled={editingOther} className={cn(editingThis && 'text-primary')} title={t('Edit')} onClick={() => onEditClick(tag)}>
+                                        {editingThis ? <CheckIcon /> : <PencilIcon />}
+                                    </Button>
 
-                                {editingThis && thisTagNew && (
-                                    <Button variant="ghost" size="icon-xs" className="text-destructive" title={t('Delete')} onClick={onResetClick}><Trash2Icon /></Button>
-                                )}
+                                    {editingThis && thisTagNew && (
+                                        <Button variant="ghost" size="icon-xs" className="text-destructive" title={t('Delete')} onClick={onResetClick}><Trash2Icon /></Button>
+                                    )}
 
-                                {editingThis && !thisTagNew && (
-                                    <Button variant="ghost" size="icon-xs" className="text-destructive" title={t('Reset')} onClick={onResetClick}><Undo2Icon /></Button>
-                                )}
+                                    {editingThis && !thisTagNew && (
+                                        <Button variant="ghost" size="icon-xs" className="text-destructive" title={t('Reset')} onClick={onResetClick}><Undo2Icon /></Button>
+                                    )}
 
-                                {canDeleteExisting && !isDeletedExisting && !editingThis && existingTags[tag] != null && (
-                                    <Button variant="ghost" size="icon-xs" disabled={editingOther} className="text-destructive" title={t('Delete')} onClick={() => onDeleteExistingClick(tag)}><Trash2Icon /></Button>
-                                )}
-                            </motion.div>
-                        );
-                    })}
+                                    {canDeleteExisting && !isDeletedExisting && !editingThis && existingTags[tag] != null && (
+                                        <Button variant="ghost" size="icon-xs" disabled={editingOther} className="text-destructive" title={t('Delete')} onClick={() => onDeleteExistingClick(tag)}><Trash2Icon /></Button>
+                                    )}
+                                </motion.div>
+                            );
+                        }
+                    )}
                 </AnimatePresence>
             </div>
 

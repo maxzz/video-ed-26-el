@@ -21,7 +21,7 @@ import { concatDialogOpenAtom } from '@/components/2-main/0-all/a-panels-atoms.t
 import { concatFiles, maybeMkDeepOutDir, OutputNotWritableError } from '@/editor/7-export/8-lib/ffmpeg-operations.ts';
 import type { GeneratedOutFileNames } from '@/editor/7-export/8-lib/output-name-template.ts';
 import { showOsNotification } from '@/editor/0-core/8-lib/notifications.ts';
-import { openConcatFinishedDialog } from '@/editor/7-export/0-ui/finished-dialogs.tsx';
+import { openConcatFinishedDialog } from '@/components/4-dialogs/7-2-dialogs/finished-dialogs.tsx';
 import {
     concatClearBatchFilesAfterConcatAtom, concatEnableReadFileMetaAtom, concatFilesMetaAtom, concatFirstPathAtom, concatIncludeAllStreamsAtom,
     concatMergedFileTemplateAtom, concatOutputDirAtom, concatTempMergedFileTemplateAtom, generateConcatFileNames,

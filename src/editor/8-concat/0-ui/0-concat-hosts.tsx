@@ -1,6 +1,6 @@
-import { ConcatDialog } from './concat-dialog.tsx';
+import { Dialog_Concat } from './1-dlg-concat.tsx';
 
 /** Global overlays of the concat feature (merge files dialog) */
 export function ConcatHosts() {
-    return <ConcatDialog />;
+    return <Dialog_Concat />;
 }

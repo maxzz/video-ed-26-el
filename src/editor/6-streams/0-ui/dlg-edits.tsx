@@ -1,118 +1,26 @@
 import type { ReactNode } from 'react';
 import { useAtomValue } from 'jotai';
 import { useSnapshot } from 'valtio';
-import { useTranslation } from 'react-i18next';
-import type { FFprobeStream } from '@shared/ffprobe';
 import { jotaiDefaultStore } from '@/utils/local-utils/9-jotai-default-store.ts';
-import type { FileParams, StreamParams } from '@/editor/0-core/8-lib/9-types-core.ts';
-import { allFilesMetaAtom, filePathAtom, paramsByFileAtom } from '@/editor/2-file/9-state/a-file-atoms.ts';
+import { useLocalProxy } from '@/utils/local-utils/use-local-proxy.ts';
+import { cn } from '@/utils/classnames';
 import { Button } from '@/ui/shadcn/button';
 import { Input } from '@/ui/shadcn/input';
 import { Switch } from '@/ui/shadcn/switch';
 import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/ui/shadcn/dialog';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/ui/shadcn/tabs';
-import { cn } from '@/utils/classnames';
-import { editingFileAtom, editingStreamAtom, editingTagKeyAtom, setEditingFile, setEditingStream } from '../9-state/streams-ui-atoms.ts';
+import { useTranslation } from 'react-i18next';
+
+import { type FFprobeStream } from '@shared/ffprobe';
+import { type FileParams, type StreamParams } from '@/editor/0-core/8-lib/9-types-core.ts';
+import { allFilesMetaAtom, filePathAtom, paramsByFileAtom } from '@/editor/2-file/9-state/a-file-atoms.ts';
+import { editingFileAtom, editingStreamAtom, editingTagKeyAtom, setEditingFile, setEditingStream } from '../9-state/a-streams-ui-atoms.ts';
 import { updateFileParams, updateStreamParams } from '../7-actions/streams-actions.tsx';
-import { useLocalProxy } from '../8-lib/use-local-proxy.ts';
-import { TagEditor } from './tag-editor.tsx';
+import { TagEditor } from './tag-editor';
 
 // Port of upstream StreamsSelector.tsx EditFileDialog/EditStreamDialog
 
-const setEditingTagKey = (key: string | undefined) => jotaiDefaultStore.set(editingTagKeyAtom, key);
-
-function KeyValue({ name, value }: { name: ReactNode; value: ReactNode; }) {
-    return (
-        <div className="mb-1.5 text-sm flex items-center justify-between gap-4">
-            <div>{name}</div>
-            <div>{value}</div>
-        </div>
-    );
-}
-
-function Hint({ children }: { children: ReactNode; }) {
-    return <div className="mb-2 text-xs text-muted-foreground">{children}</div>;
-}
-
-function parseNonNegativeInt(value: string) {
-    const parsed = parseInt(value, 10);
-    return Number.isNaN(parsed) || parsed < 0 ? 0 : parsed;
-}
-
-function AspectEditor({ stream, streamParams, update }: { stream: FFprobeStream; streamParams: StreamParams | undefined; update: (setter: (a: StreamParams) => void) => void; }) {
-    const { t } = useTranslation();
-    const currentAr = streamParams?.aspectRatio ?? { num: 0, den: 0 };
-
-    const updateAr = (field: 'num' | 'den', value: string) => update((params) => {
-        params.aspectRatio = { ...currentAr, [field]: parseNonNegativeInt(value) };
-    });
-
-    const isSar = stream.codec_name === 'h264' || stream.codec_name === 'hevc';
-
-    return (
-        <>
-            <Hint>
-                {isSar ? t('Losslessly change the sample aspect ratio (SAR) of this track with a bitstream filter.') : t('Losslessly change the display aspect ratio of this track at the container level.')}
-                {' '}
-                {t('Note that this is not supported in all video players.')}
-            </Hint>
-            <KeyValue name={t('Width')} value={<Input className="h-7 w-20" type="number" min="0" placeholder="W" value={currentAr.num > 0 ? String(currentAr.num) : ''} onChange={(e) => updateAr('num', e.target.value)} />} />
-            <KeyValue name={t('Height')} value={<Input className="h-7 w-20" type="number" min="0" placeholder="H" value={currentAr.den > 0 ? String(currentAr.den) : ''} onChange={(e) => updateAr('den', e.target.value)} />} />
-        </>
-    );
-}
-
-function CropEditor({ stream, streamParams, update }: { stream: FFprobeStream; streamParams: StreamParams | undefined; update: (setter: (a: StreamParams) => void) => void; }) {
-    const { t } = useTranslation();
-    const currentCrop = streamParams?.crop ?? { left: 0, right: 0, top: 0, bottom: 0 };
-
-    if (!(stream.codec_name === 'h264' || stream.codec_name === 'hevc')) return null;
-
-    const fields = [['left', t('Left')], ['right', t('Right')], ['top', t('Top')], ['bottom', t('Bottom')]] as const;
-
-    return (
-        <>
-            <Hint>
-                {t('Losslessly crop pixels from each edge.')}
-                {' '}
-                {t('Note that this is not supported in all video players.')}
-            </Hint>
-            {fields.map(([field, label]) => (
-                <KeyValue
-                    key={field}
-                    name={label}
-                    value={<Input className="h-7 w-20" type="number" min="0" step="2" value={String(currentCrop[field])} onChange={(e) => update((params) => { params.crop = { ...currentCrop, [field]: parseNonNegativeInt(e.target.value) }; })} />}
-                />
-            ))}
-        </>
-    );
-}
-
-function OffsetEditor({ fileParams, update }: { fileParams: FileParams | undefined; update: (setter: (a: FileParams) => void) => void; }) {
-    const { t } = useTranslation();
-    const state = useLocalProxy(() => ({ valid: true }));
-    const snap = useSnapshot(state);
-
-    function handleChange(value: string) {
-        if (value.trim() === '') {
-            update((params) => { params.offset = undefined; });
-            state.valid = true;
-            return;
-        }
-        const offset = Number(value);
-        state.valid = !Number.isNaN(offset);
-        if (state.valid) update((params) => { params.offset = offset; });
-    }
-
-    return (
-        <>
-            <Hint>{t('Shift the timestamps of all tracks in this file by a specified number of seconds, relative to other files. Positive values will delay the file\'s tracks, negative will advance it.')}</Hint>
-            <KeyValue name={t('Shift by seconds')} value={<Input className={cn('h-7 w-20', !snap.valid && 'border-destructive text-destructive')} placeholder="0.0" defaultValue={fileParams?.offset ?? ''} onChange={(e) => handleChange(e.target.value)} />} />
-        </>
-    );
-}
-
-export function EditFileDialog() {
+export function Dialog_EditFile() {
     const { t } = useTranslation();
     const editingFile = useAtomValue(editingFileAtom);
     const editingKey = useAtomValue(editingTagKeyAtom);
@@ -185,7 +93,9 @@ function EditFileContent({ editingFile, editingKey }: { editingFile: string; edi
     );
 }
 
-export function EditStreamDialog() {
+//---------------------------------------------------------------------------
+
+export function Dialog_EditStream() {
     const { t } = useTranslation();
     const editingStream = useAtomValue(editingStreamAtom);
     const editingKey = useAtomValue(editingTagKeyAtom);
@@ -300,5 +210,100 @@ function EditStreamContent({ path, stream, editingKey }: { path: string; stream:
                 )}
             </TabsContent>
         </Tabs>
+    );
+}
+
+//---------------------------------------------------------------------------
+
+const setEditingTagKey = (key: string | undefined) => jotaiDefaultStore.set(editingTagKeyAtom, key);
+
+function KeyValue({ name, value }: { name: ReactNode; value: ReactNode; }) {
+    return (
+        <div className="mb-1.5 text-sm flex items-center justify-between gap-4">
+            <div>{name}</div>
+            <div>{value}</div>
+        </div>
+    );
+}
+
+function Hint({ children }: { children: ReactNode; }) {
+    return <div className="mb-2 text-xs text-muted-foreground">{children}</div>;
+}
+
+function parseNonNegativeInt(value: string) {
+    const parsed = parseInt(value, 10);
+    return Number.isNaN(parsed) || parsed < 0 ? 0 : parsed;
+}
+
+function AspectEditor({ stream, streamParams, update }: { stream: FFprobeStream; streamParams: StreamParams | undefined; update: (setter: (a: StreamParams) => void) => void; }) {
+    const { t } = useTranslation();
+    const currentAr = streamParams?.aspectRatio ?? { num: 0, den: 0 };
+
+    const updateAr = (field: 'num' | 'den', value: string) => update((params) => {
+        params.aspectRatio = { ...currentAr, [field]: parseNonNegativeInt(value) };
+    });
+
+    const isSar = stream.codec_name === 'h264' || stream.codec_name === 'hevc';
+
+    return (
+        <>
+            <Hint>
+                {isSar ? t('Losslessly change the sample aspect ratio (SAR) of this track with a bitstream filter.') : t('Losslessly change the display aspect ratio of this track at the container level.')}
+                {' '}
+                {t('Note that this is not supported in all video players.')}
+            </Hint>
+            <KeyValue name={t('Width')} value={<Input className="h-7 w-20" type="number" min="0" placeholder="W" value={currentAr.num > 0 ? String(currentAr.num) : ''} onChange={(e) => updateAr('num', e.target.value)} />} />
+            <KeyValue name={t('Height')} value={<Input className="h-7 w-20" type="number" min="0" placeholder="H" value={currentAr.den > 0 ? String(currentAr.den) : ''} onChange={(e) => updateAr('den', e.target.value)} />} />
+        </>
+    );
+}
+
+function CropEditor({ stream, streamParams, update }: { stream: FFprobeStream; streamParams: StreamParams | undefined; update: (setter: (a: StreamParams) => void) => void; }) {
+    const { t } = useTranslation();
+    const currentCrop = streamParams?.crop ?? { left: 0, right: 0, top: 0, bottom: 0 };
+
+    if (!(stream.codec_name === 'h264' || stream.codec_name === 'hevc')) return null;
+
+    const fields = [['left', t('Left')], ['right', t('Right')], ['top', t('Top')], ['bottom', t('Bottom')]] as const;
+
+    return (
+        <>
+            <Hint>
+                {t('Losslessly crop pixels from each edge.')}
+                {' '}
+                {t('Note that this is not supported in all video players.')}
+            </Hint>
+            {fields.map(([field, label]) => (
+                <KeyValue
+                    key={field}
+                    name={label}
+                    value={<Input className="h-7 w-20" type="number" min="0" step="2" value={String(currentCrop[field])} onChange={(e) => update((params) => { params.crop = { ...currentCrop, [field]: parseNonNegativeInt(e.target.value) }; })} />}
+                />
+            ))}
+        </>
+    );
+}
+
+function OffsetEditor({ fileParams, update }: { fileParams: FileParams | undefined; update: (setter: (a: FileParams) => void) => void; }) {
+    const { t } = useTranslation();
+    const state = useLocalProxy(() => ({ valid: true }));
+    const snap = useSnapshot(state);
+
+    function handleChange(value: string) {
+        if (value.trim() === '') {
+            update((params) => { params.offset = undefined; });
+            state.valid = true;
+            return;
+        }
+        const offset = Number(value);
+        state.valid = !Number.isNaN(offset);
+        if (state.valid) update((params) => { params.offset = offset; });
+    }
+
+    return (
+        <>
+            <Hint>{t('Shift the timestamps of all tracks in this file by a specified number of seconds, relative to other files. Positive values will delay the file\'s tracks, negative will advance it.')}</Hint>
+            <KeyValue name={t('Shift by seconds')} value={<Input className={cn('h-7 w-20', !snap.valid && 'border-destructive text-destructive')} placeholder="0.0" defaultValue={fileParams?.offset ?? ''} onChange={(e) => handleChange(e.target.value)} />} />
+        </>
     );
 }

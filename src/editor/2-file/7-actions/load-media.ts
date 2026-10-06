@@ -23,7 +23,7 @@ import { commandedTimeAtom } from '@/editor/3-player/9-state/player-atoms.ts';
 import { cutSegmentsAtom } from '@/editor/5-segments/9-state/segments-store.ts';
 import { clearSegColorCounter, loadCutSegments, resetSegments } from '@/editor/5-segments/7-actions/segment-actions.ts';
 import { isDurationValid } from '@/editor/5-segments/8-lib/segments.ts';
-import { copyStreamIdsByFileAtom, setCopyStreamIdsForPath } from '@/editor/6-streams/9-state/streams-store.ts';
+import { copyStreamIdsByFileAtom, setCopyStreamIdsForPath } from '@/editor/6-streams/9-state/a-streams-store.ts';
 import { loadLlcProject } from '@/editor/9-edl/8-lib/edl-store.ts';
 import { loadEdlFile } from '@/editor/9-edl/7-actions/edl-actions.ts';
 import {

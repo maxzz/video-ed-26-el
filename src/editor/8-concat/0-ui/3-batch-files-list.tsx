@@ -12,7 +12,7 @@ import { closeBatch, convertFormatBatch, handleBatchFilesDrop } from '@/editor/2
 import { batchDraggingIdAtom, batchSortDescAtom } from '../9-state/concat-atoms.ts';
 import { onBatchDragCancel, onBatchDragEnd, onBatchDragStart, sortBatchFiles } from '../7-actions/batch-list-actions.ts';
 import { concatBatch } from '../7-actions/concat-actions.ts';
-import { BatchFile, BatchFileDragOverlay } from './batch-file.tsx';
+import { Menu_BatchFile, BatchFileDragOverlay } from './2-menu-batch-file.tsx';
 
 const mySpring = { type: 'spring' as const, damping: 50, stiffness: 700 };
 
@@ -79,7 +79,7 @@ function BatchFilesItems() {
     return (
         <div className="overflow-x-hidden overflow-y-auto">
             {batchFiles.map(({ path, name }, index) => (
-                <BatchFile key={path} index={index} path={path} name={name} isSelected={selectedBatchFiles.includes(path)} isOpen={filePath === path} />
+                <Menu_BatchFile key={path} index={index} path={path} name={name} isSelected={selectedBatchFiles.includes(path)} isOpen={filePath === path} />
             ))}
         </div>
     );

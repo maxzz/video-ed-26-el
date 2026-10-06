@@ -28,13 +28,13 @@ import { effectiveRotationAtom } from '@/editor/3-player/9-state/player-atoms.ts
 import { checkFileOpened } from '@/editor/3-player/7-actions/player-actions.ts';
 import { cutSegmentsAtom, haveInvalidSegsAtom, segmentsOrInverseAtom, segmentsToExportAtom, selectedSegmentsAtom } from '@/editor/5-segments/9-state/segments-store.ts';
 import { convertSegmentsToChaptersWithGaps, hasAnySegmentOverlap, sortSegments } from '@/editor/5-segments/8-lib/segments.ts';
-import { copyFileStreamsAtom, copyStreamIdsByFileAtom, exportExtraStreamsAtom, mainCopiedStreamsAtom, nonCopiedExtraStreamsAtom, numStreamsToCopyAtom } from '@/editor/6-streams/9-state/streams-store.ts';
+import { copyFileStreamsAtom, copyStreamIdsByFileAtom, exportExtraStreamsAtom, mainCopiedStreamsAtom, nonCopiedExtraStreamsAtom, numStreamsToCopyAtom } from '@/editor/6-streams/9-state/a-streams-store.ts';
 import { formatTsvHuman } from '@/editor/9-edl/8-lib/edl-formats.ts';
 import { areWeCuttingAtom, cutFileTemplateOrDefaultAtom, cutMergedFileTemplateOrDefaultAtom, willMergeAtom } from '../9-state/export-atoms.ts';
 import { concatCutSegments, cutMultiple, decimate, extractStreams, fixInvalidDuration, OutputNotWritableError, tryDeleteFiles } from '../8-lib/ffmpeg-operations.ts';
 import { defaultCutFileTemplate } from '../8-lib/output-name-template.ts';
 import { showNotification, showOsNotification } from '@/editor/0-core/8-lib/notifications.ts';
-import { openCleanupFilesDialog, openCutFinishedDialog, openDecimateDialog, openExportFinishedDialog } from '../0-ui/finished-dialogs.tsx';
+import { openCleanupFilesDialog, openCutFinishedDialog, openDecimateDialog, openExportFinishedDialog } from '../../../components/4-dialogs/7-2-dialogs/finished-dialogs.tsx';
 import { generateCutMergedOutFileNames, generateOutSegFileNames } from './out-file-names.ts';
 
 // Port of the export flow of upstream App.tsx

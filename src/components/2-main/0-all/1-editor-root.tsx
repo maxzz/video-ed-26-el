@@ -9,7 +9,7 @@ import { BottomBar } from '@/editor/4-timeline/0-ui/bottom-bar/0-bottom-bar.tsx'
 import { PlayerView, FileHosts } from '@/editor/3-player/index.ts';
 import { Timeline, TimelineHosts } from '@/editor/4-timeline/index.ts';
 import { SegmentList } from '@/editor/5-segments/index.ts';
-import { ExportHosts } from '@/editor/7-export/index.ts';
+import { ExportHosts } from '@/editor/7-export/0-ui/0-export-hosts';
 import { BatchFilesList, ConcatHosts } from '@/editor/8-concat/index.ts';
 import { KeyboardHosts } from '@/editor/c-keyboard/index.ts';
 import { SettingsHosts } from '@/editor/d-settings/index.ts';

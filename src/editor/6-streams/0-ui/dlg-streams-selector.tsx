@@ -1,17 +1,24 @@
 import type { DragEvent } from 'react';
 import { useAtomValue } from 'jotai';
+import { cn } from '@/utils/classnames';
+import { jotaiDefaultStore } from '@/utils/local-utils/9-jotai-default-store.ts';
 import { Trans, useTranslation } from 'react-i18next';
-import prettyBytes from 'pretty-bytes';
+import { Button } from '@/ui/shadcn/button';
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/ui/shadcn/dialog';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from '@/ui/shadcn/dropdown-menu';
+import { Select, SelectContent, SelectItem, SelectSeparator, SelectTrigger, SelectValue } from '@/ui/shadcn/select';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/ui/shadcn/table';
 import {
     ArrowDown01Icon, ArrowUp01Icon, BanIcon, BinaryIcon, BookIcon, CaptionsIcon, EyeIcon, FileInputIcon, FileOutputIcon, FilterIcon, ImageIcon, InfoIcon, LanguagesIcon, MapIcon,
     MenuIcon, PaperclipIcon, PencilIcon, Trash2Icon, VideoIcon, VideoOffIcon, Volume2Icon, VolumeXIcon,
 } from 'lucide-react';
+
+import { mainApi, preloadEnv } from '@/editor/0-core/7-actions/0-main-api.ts';
+import prettyBytes from 'pretty-bytes';
 import type { FFprobeChapter, FFprobeFormat, FFprobeStream } from '@shared/ffprobe';
-import { jotaiDefaultStore } from '@/utils/local-utils/9-jotai-default-store.ts';
 import { userSettings, userSettingsAtom } from '@/editor/0-core/9-state/user-settings.ts';
 import { formatTimecode } from '@/editor/0-core/9-state/timecode.ts';
 import { setWorking, withErrorHandling } from '@/editor/0-core/9-state/working.ts';
-import { mainApi, preloadEnv } from '@/editor/0-core/7-actions/0-main-api.ts';
 import { extractSubtitleTrackToSegments, type FileStream, getStreamFps } from '@/editor/0-core/8-lib/ffmpeg/ffmpeg.ts';
 import { attachedPicDisposition, getActiveDisposition, isGpsStream } from '@/editor/0-core/8-lib/ffmpeg/streams.ts';
 import { type ContentDispositionOptions, contentDispositionOptionsSchema, deleteDispositionValue, dispositionOptions, type ParamsByFile } from '@/editor/0-core/8-lib/9-types-core.ts';
@@ -19,22 +26,86 @@ import { streamsSelectorShownAtom } from '@/components/2-main/0-all/a-panels-ato
 import { externalFilesMetaAtom, fileDurationAtom, filePathAtom, mainFileChaptersAtom, mainFileFormatDataAtom, mainStreamsAtom, paramsByFileAtom, shortestFlagAtom } from '@/editor/2-file/9-state/a-file-atoms.ts';
 import { loadCutSegments } from '@/editor/5-segments/7-actions/segment-actions.ts';
 import { extractAllStreams, extractSingleStream } from '@/editor/7-export/7-actions/export-actions.ts';
-import { Button } from '@/ui/shadcn/button';
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/ui/shadcn/dialog';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from '@/ui/shadcn/dropdown-menu';
-import { Select, SelectContent, SelectItem, SelectSeparator, SelectTrigger, SelectValue } from '@/ui/shadcn/select';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/ui/shadcn/table';
-import { cn } from '@/utils/classnames';
-import { copyStreamIdsByFileAtom, isCopyingStreamIdIn, nonCopiedExtraStreamsAtom, setCopyStreamIdsForPath, toggleCopyAllStreamsForPath, toggleCopyStreamId, toggleCopyStreamIds } from '../9-state/streams-store.ts';
-import { setEditingFile, setEditingStream } from '../9-state/streams-ui-atoms.ts';
+import { copyStreamIdsByFileAtom, isCopyingStreamIdIn, nonCopiedExtraStreamsAtom, setCopyStreamIdsForPath, toggleCopyAllStreamsForPath, toggleCopyStreamId, toggleCopyStreamIds } from '../9-state/a-streams-store.ts';
+import { setEditingFile, setEditingStream } from '../9-state/a-streams-ui-atoms.ts';
 import { addStreamSourceFile, changeEnabledStreamsFilter, removeExternalFile, showIncludeExternalStreamsDialog, updateStreamParams } from '../7-actions/streams-actions.tsx';
-import { EditFileDialog, EditStreamDialog } from './edit-dialogs.tsx';
+import { Dialog_EditFile, Dialog_EditStream } from './dlg-edits.tsx';
 import { GpsMap } from './gps-map.tsx';
-import { Json5Dialog } from './json-dialog.tsx';
+import { Dialog_Json5 } from './dlg-json5.tsx';
 
 // Port of upstream StreamsSelector.tsx and its dialog in App.tsx
 
-const unchangedDispositionValue = 'llc_disposition_unchanged';
+export function Dialog_StreamsSelector() {
+    const { t } = useTranslation();
+    const shown = useAtomValue(streamsSelectorShownAtom);
+
+    return (<>
+        <Dialog open={shown} onOpenChange={(open) => jotaiDefaultStore.set(streamsSelectorShownAtom, open)}>
+            <DialogContent className="max-h-[90vh] sm:max-w-[95vw] flex flex-col">
+                <DialogHeader>
+                    <DialogTitle>
+                        {t('Tracks')}
+                    </DialogTitle>
+                    <DialogDescription>
+                        {t('Click to select which tracks to keep when exporting:')}
+                    </DialogDescription>
+                </DialogHeader>
+                {shown && <StreamsSelectorContent />}
+            </DialogContent>
+        </Dialog>
+
+        <Dialog_EditFile />
+        <Dialog_EditStream />
+    </>);
+}
+
+function StreamsSelectorContent() {
+    const { t } = useTranslation();
+    const mainFilePath = useAtomValue(filePathAtom);
+    const mainFileFormat = useAtomValue(mainFileFormatDataAtom);
+    const mainFileStreams = useAtomValue(mainStreamsAtom);
+    const mainFileChapters = useAtomValue(mainFileChaptersAtom);
+    const externalFilesMeta = useAtomValue(externalFilesMetaAtom);
+    const nonCopiedExtraStreams = useAtomValue(nonCopiedExtraStreamsAtom);
+    const shortestFlag = useAtomValue(shortestFlagAtom);
+
+    if (mainFilePath == null) return null;
+
+    const externalFilesEntries = Object.entries(externalFilesMeta);
+
+    return (
+        <div className="min-h-0 overflow-y-auto">
+            <FileStreams path={mainFilePath} streams={mainFileStreams} format={mainFileFormat} chapters={mainFileChapters} isMainFile />
+
+            {externalFilesEntries.map(([path, { streams, format }]) => (
+                <FileStreams key={path} path={path} streams={streams} format={format} isMainFile={false} />
+            ))}
+
+            <div className="my-4 text-sm flex flex-col items-start gap-4">
+                <Button variant="outline" size="sm" onClick={showIncludeExternalStreamsDialog}>
+                    <FileInputIcon /> {t('Include more tracks from other file')}
+                </Button>
+
+                {nonCopiedExtraStreams.length > 0 && (
+                    <div className="flex items-center gap-3">
+                        <span>{t('Discard or extract unprocessable tracks to separate files?')}</span>
+                        <AutoExportToggler />
+                    </div>
+                )}
+
+                {externalFilesEntries.length > 0 && (
+                    <div className="flex flex-col items-start gap-2">
+                        <div>{t('When tracks have different lengths, do you want to make the output file as long as the longest or the shortest track?')}</div>
+                        <Button variant="outline" size="sm" onClick={() => jotaiDefaultStore.set(shortestFlagAtom, (v) => !v)}>
+                            {shortestFlag ? <><ArrowDown01Icon />{t('Shortest')}</> : <><ArrowUp01Icon />{t('Longest')}</>}
+                        </Button>
+                    </div>
+                )}
+            </div>
+        </div>
+    );
+}
+
 
 function getStreamEffectiveDisposition(paramsByFile: ParamsByFile, fileId: string, stream: FFprobeStream) {
     const customDisposition = paramsByFile.get(fileId)?.paramsByStream.get(stream.index)?.disposition;
@@ -154,7 +225,7 @@ function StreamRow({ filePath, stream, copyStream, fileDuration, paramsByFile, i
                 {stream.nb_frames != null ? <span> {stream.nb_frames}f</span> : null}
             </TableCell>
             <TableCell>{!Number.isNaN(bitrate) && (stream.codec_type === 'audio' ? `${Math.round(bitrate / 1000)} kbps` : prettyBytes(bitrate, { bits: true }))}</TableCell>
-            <TableCell className="whitespace-normal max-w-32 break-words" title={title}>{title}</TableCell>
+            <TableCell className="whitespace-normal max-w-32 wrap-break-word" title={title}>{title}</TableCell>
             <TableCell className="max-w-16 truncate" title={effectiveLanguage}>{effectiveLanguage}</TableCell>
             <TableCell>{stream.width && stream.height && `${stream.width}x${stream.height}`} {stream.channels && `${stream.channels}c`} {stream.channel_layout} {streamFps && `${streamFps.toFixed(2)}fps`}</TableCell>
             <TableCell>
@@ -175,6 +246,8 @@ function StreamRow({ filePath, stream, copyStream, fileDuration, paramsByFile, i
     );
 }
 
+const unchangedDispositionValue = 'llc_disposition_unchanged';
+
 function StreamMenu({ filePath, stream, codecTypeHuman, isMainFile }: { filePath: string; stream: FFprobeStream; codecTypeHuman: string; isMainFile: boolean; }) {
     const { t } = useTranslation();
     const trackInfoTitle = t('Track {{num}} info', { num: stream.index + 1 });
@@ -187,11 +260,11 @@ function StreamMenu({ filePath, stream, codecTypeHuman, isMainFile }: { filePath
 
             <DropdownMenuContent align="end">
                 {/* https://github.com/radix-ui/primitives/issues/1836#issuecomment-1674338372 */}
-                <Json5Dialog title={trackInfoTitle} json={stream}>
+                <Dialog_Json5 title={trackInfoTitle} json={stream}>
                     <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
                         <InfoIcon />{trackInfoTitle}
                     </DropdownMenuItem>
-                </Json5Dialog>
+                </Dialog_Json5>
 
                 <DropdownMenuItem onClick={() => setEditingStream({ streamId: stream.index, path: filePath })}>
                     <PencilIcon />{t('Edit track metadata')}
@@ -247,13 +320,13 @@ function FileHeading({ path, format, chapters, isMainFile }: { path: string; for
 
             <div className="flex flex-wrap items-center gap-1">
                 {chapters && chapters.length > 0 && (
-                    <Json5Dialog title={t('Chapters')} json={chapters}>
+                    <Dialog_Json5 title={t('Chapters')} json={chapters}>
                         <Button variant="outline" size="icon-sm" title={t('Chapters')}><BookIcon /></Button>
-                    </Json5Dialog>
+                    </Dialog_Json5>
                 )}
-                <Json5Dialog title={t('File info')} json={format}>
+                <Dialog_Json5 title={t('File info')} json={format}>
                     <Button variant="outline" size="icon-sm" title={t('File info')}><InfoIcon /></Button>
-                </Json5Dialog>
+                </Dialog_Json5>
                 <Button variant="outline" size="icon-sm" title={t('Edit file metadata')} onClick={() => setEditingFile(path)}><PencilIcon /></Button>
                 <Button variant="outline" size="icon-sm" title={t('Toggle all tracks')} onClick={() => toggleCopyAllStreamsForPath(path)}><EyeIcon /></Button>
                 {isMainFile && <Button variant="outline" size="icon-sm" title={t('Filter tracks')} onClick={changeEnabledStreamsFilter}><FilterIcon /></Button>}
@@ -320,74 +393,5 @@ function AutoExportToggler() {
             <Icon className={cn(!autoExportExtraStreams && 'text-destructive')} />
             {autoExportExtraStreams ? t('Extract') : t('Discard')}
         </Button>
-    );
-}
-
-function StreamsSelectorContent() {
-    const { t } = useTranslation();
-    const mainFilePath = useAtomValue(filePathAtom);
-    const mainFileFormat = useAtomValue(mainFileFormatDataAtom);
-    const mainFileStreams = useAtomValue(mainStreamsAtom);
-    const mainFileChapters = useAtomValue(mainFileChaptersAtom);
-    const externalFilesMeta = useAtomValue(externalFilesMetaAtom);
-    const nonCopiedExtraStreams = useAtomValue(nonCopiedExtraStreamsAtom);
-    const shortestFlag = useAtomValue(shortestFlagAtom);
-
-    if (mainFilePath == null) return null;
-
-    const externalFilesEntries = Object.entries(externalFilesMeta);
-
-    return (
-        <div className="min-h-0 overflow-y-auto">
-            <FileStreams path={mainFilePath} streams={mainFileStreams} format={mainFileFormat} chapters={mainFileChapters} isMainFile />
-
-            {externalFilesEntries.map(([path, { streams, format }]) => (
-                <FileStreams key={path} path={path} streams={streams} format={format} isMainFile={false} />
-            ))}
-
-            <div className="my-4 text-sm flex flex-col items-start gap-4">
-                <Button variant="outline" size="sm" onClick={showIncludeExternalStreamsDialog}>
-                    <FileInputIcon /> {t('Include more tracks from other file')}
-                </Button>
-
-                {nonCopiedExtraStreams.length > 0 && (
-                    <div className="flex items-center gap-3">
-                        <span>{t('Discard or extract unprocessable tracks to separate files?')}</span>
-                        <AutoExportToggler />
-                    </div>
-                )}
-
-                {externalFilesEntries.length > 0 && (
-                    <div className="flex flex-col items-start gap-2">
-                        <div>{t('When tracks have different lengths, do you want to make the output file as long as the longest or the shortest track?')}</div>
-                        <Button variant="outline" size="sm" onClick={() => jotaiDefaultStore.set(shortestFlagAtom, (v) => !v)}>
-                            {shortestFlag ? <><ArrowDown01Icon />{t('Shortest')}</> : <><ArrowUp01Icon />{t('Longest')}</>}
-                        </Button>
-                    </div>
-                )}
-            </div>
-        </div>
-    );
-}
-
-export function StreamsSelector() {
-    const { t } = useTranslation();
-    const shown = useAtomValue(streamsSelectorShownAtom);
-
-    return (
-        <>
-            <Dialog open={shown} onOpenChange={(open) => jotaiDefaultStore.set(streamsSelectorShownAtom, open)}>
-                <DialogContent className="max-h-[90vh] sm:max-w-[95vw] flex flex-col">
-                    <DialogHeader>
-                        <DialogTitle>{t('Tracks')}</DialogTitle>
-                        <DialogDescription>{t('Click to select which tracks to keep when exporting:')}</DialogDescription>
-                    </DialogHeader>
-                    {shown && <StreamsSelectorContent />}
-                </DialogContent>
-            </Dialog>
-
-            <EditFileDialog />
-            <EditStreamDialog />
-        </>
     );
 }

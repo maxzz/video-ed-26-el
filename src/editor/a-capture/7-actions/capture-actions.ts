@@ -14,7 +14,7 @@ import { getRelevantTime } from '@/editor/3-player/7-actions/player-actions.ts';
 import { currentCutSegAtom, selectedSegmentsAtom } from '@/editor/5-segments/9-state/segments-store.ts';
 import { captureFrameFromFfmpeg, captureFrameFromTag, captureFrameToClipboard, captureFramesRange } from '../8-lib/frame-capture.ts';
 import { askExtractFramesAsImages } from '../8-lib/extract-frames-dialog.ts';
-import { openExportFinishedDialog } from '@/editor/7-export/0-ui/finished-dialogs.tsx';
+import { openExportFinishedDialog } from '@/components/4-dialogs/7-2-dialogs/finished-dialogs.tsx';
 
 // Port of upstream App.tsx captureSnapshot*, extract*FramesAsImages, toggleCaptureFormat
 

@@ -1,22 +1,23 @@
 import type { ComponentProps } from 'react';
 import { useAtomValue } from 'jotai';
-import { useTranslation } from 'react-i18next';
-import { FileOutputIcon, NotebookPenIcon, ScissorsIcon } from 'lucide-react';
-import { effectiveExportModeAtom, userSettingsAtom } from '@/editor/0-core/9-state/user-settings.ts';
-import type { ExportMode } from '@/editor/0-core/8-lib/9-types-core.ts';
-import { toggleExportConfirmEnabled } from '@/editor/4-timeline/7-actions/timeline-actions.ts';
-import { segmentsOrInverseAtom, segmentsToExportAtom } from '@/editor/5-segments/9-state/segments-store.ts';
+import { cn } from '@/utils/classnames';
 import { Button } from '@/ui/shadcn/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/ui/shadcn/select';
-import { cn } from '@/utils/classnames';
+import { FileOutputIcon, NotebookPenIcon, ScissorsIcon } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
+
+import { type ExportMode } from '@/editor/0-core/8-lib/9-types-core.ts';
+import { effectiveExportModeAtom, userSettingsAtom } from '@/editor/0-core/9-state/user-settings.ts';
+import { toggleExportConfirmEnabled } from '@/editor/4-timeline/7-actions/timeline-actions.ts';
+import { segmentsOrInverseAtom, segmentsToExportAtom } from '@/editor/5-segments/9-state/segments-store.ts';
 import { areWeCuttingAtom } from '../9-state/export-atoms.ts';
 import { onExportPress, setExportMode } from '../7-actions/export-actions.ts';
 
 export function ExportButton({ className, onClick = onExportPress, ...rest }: Omit<ComponentProps<typeof Button>, 'onClick'> & { onClick?: () => void; }) {
-    const { t } = useTranslation();
     const segmentsToExport = useAtomValue(segmentsToExportAtom);
     const areWeCutting = useAtomValue(areWeCuttingAtom);
     const { autoMerge, simpleMode } = useAtomValue(userSettingsAtom);
+    const { t } = useTranslation();
 
     const CutIcon = areWeCutting ? ScissorsIcon : FileOutputIcon;
 
@@ -31,8 +32,8 @@ export function ExportButton({ className, onClick = onExportPress, ...rest }: Om
 
     return (
         <Button
-            title={title}
             className={cn(simpleMode && 'animate-pulse', className)}
+            title={title}
             onClick={(e) => { e.currentTarget.blur(); onClick(); }}
             {...rest}
         >
@@ -43,8 +44,8 @@ export function ExportButton({ className, onClick = onExportPress, ...rest }: Om
 }
 
 export function ToggleExportConfirm({ className }: { className?: string; }) {
-    const { t } = useTranslation();
     const { exportConfirmEnabled } = useAtomValue(userSettingsAtom);
+    const { t } = useTranslation();
     return (
         <Button variant="ghost" size="icon-sm" className={cn(exportConfirmEnabled ? 'text-primary' : 'text-muted-foreground', className)} title={t('Show export options screen before exporting?')} onClick={toggleExportConfirmEnabled}>
             <NotebookPenIcon />
@@ -53,9 +54,9 @@ export function ToggleExportConfirm({ className }: { className?: string; }) {
 }
 
 export function ExportModeButton({ className }: { className?: string; }) {
-    const { t } = useTranslation();
     const effectiveExportMode = useAtomValue(effectiveExportModeAtom);
     const selectedSegments = useAtomValue(segmentsOrInverseAtom).selected;
+    const { t } = useTranslation();
 
     const selectableModes: ExportMode[] = [
         'separate',
@@ -76,6 +77,7 @@ export function ExportModeButton({ className }: { className?: string; }) {
             <SelectTrigger size="sm" className={cn('min-w-0', className)} title={t('Export mode')}>
                 <SelectValue placeholder={t('Export mode')} />
             </SelectTrigger>
+            
             <SelectContent position="popper">
                 {selectableModes.map((mode) => <SelectItem key={mode} value={mode}>{titles[mode]}</SelectItem>)}
             </SelectContent>
