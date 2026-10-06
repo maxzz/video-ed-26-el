@@ -1,21 +1,21 @@
-import type { ReactNode } from 'react';
-import { useAtom, useAtomValue } from 'jotai';
-import { useTranslation } from 'react-i18next';
-import groupBy from 'lodash/groupBy.js';
-import { HammerIcon, MouseIcon, PlusIcon, RotateCcwIcon, Trash2Icon } from 'lucide-react';
-import type { KeyboardAction, ModifierKey } from '@shared/types.ts';
-import { jotaiDefaultStore } from '@/utils/local-utils/9-jotai-default-store.ts';
-import { userSettingsAtom } from '@/editor/0-core/9-state/user-settings.ts';
-import { runAction } from '@/editor/0-core/7-actions/kbd-actions.ts';
-import { keyboardShortcutsVisibleAtom } from '@/components/2-main/0-all/a-panels-atoms.ts';
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/ui/shadcn/dialog';
-import { Button } from '@/ui/shadcn/button';
-import { Input } from '@/ui/shadcn/input';
-import { Kbd } from '@/ui/shadcn/kbd';
-import { shortcutsSearchAtom } from '../9-state/keyboard-atoms.ts';
-import { deleteKeyBinding, resetKeyBindings, startCreatingBinding } from '../7-actions/key-bindings.ts';
-import { type ActionInfo, getActionCategories, getActionsMap, getModifier } from '../8-lib/actions-map.ts';
-import { KeyCombo } from './key-combo.tsx';
+import { type ReactNode } from "react";
+import { useAtom, useAtomValue } from "jotai";
+import { useTranslation } from "react-i18next";
+import groupBy from "lodash/groupBy.js";
+import { HammerIcon, MouseIcon, PlusIcon, RotateCcwIcon, Trash2Icon } from "lucide-react";
+import { type KeyboardAction, type ModifierKey } from "@shared/types";
+import { jotaiDefaultStore } from "@/utils/local-utils/9-jotai-default-store";
+import { userSettingsAtom } from "@/editor/0-core/9-state/user-settings";
+import { runAction } from "@/editor/0-core/7-actions/kbd-actions";
+import { keyboardShortcutsVisibleAtom } from "@/components/2-main/0-all/a-panels-atoms";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/ui/shadcn/dialog";
+import { Button } from "@/ui/shadcn/button";
+import { Input } from "@/ui/shadcn/input";
+import { Kbd } from "@/ui/shadcn/kbd";
+import { shortcutsSearchAtom } from "../9-state/keyboard-atoms";
+import { deleteKeyBinding, resetKeyBindings, startCreatingBinding } from "../7-actions/key-bindings";
+import { type ActionInfo, getActionCategories, getActionsMap, getModifier } from "../8-lib/actions-map";
+import { KeyCombo } from "./key-combo";
 
 // Port of upstream components/KeyboardShortcuts.tsx
 

@@ -1,15 +1,15 @@
-import type { KeyBinding, KeyboardAction } from '@shared/types.ts';
-import { jotaiDefaultStore } from '@/utils/local-utils/9-jotai-default-store.ts';
-import { userSettingsAtom } from '@/editor/0-core/9-state/user-settings.ts';
-import { isAnyDialogOpenAtom } from '@/components/4-dialogs/7-0-dialogs/dialogs.ts';
-import { getKeyupAction, hasAction, runAction } from '@/editor/0-core/7-actions/kbd-actions.ts';
-import { isWindows } from '@/editor/0-core/7-actions/0-main-api.ts';
-import { runMenuAction, type MenuAction } from '@/editor/0-core/menu-actions/index.ts';
-import { allModifiers, altModifiers, controlModifiers, metaModifiers, shiftModifiers } from '@/editor/0-core/8-lib/utils-kbd.ts';
-import { anyPanelOpenAtom, closeExportConfirm, commandPaletteOpenAtom, exportConfirmOpenAtom } from '@/components/2-main/0-all/a-panels-atoms.ts';
-import { creatingBindingAtom } from '../9-state/keyboard-atoms.ts';
-import { addRecordedKey, updateKeyboardLayout } from './key-bindings.ts';
-import { toggleCommandPalette } from './command-palette.ts';
+import { type KeyBinding, type KeyboardAction } from "@shared/types";
+import { jotaiDefaultStore } from "@/utils/local-utils/9-jotai-default-store";
+import { userSettingsAtom } from "@/editor/0-core/9-state/user-settings";
+import { isAnyDialogOpenAtom } from "@/components/4-dialogs/7-0-dialogs/dialogs";
+import { getKeyupAction, hasAction, runAction } from "@/editor/0-core/7-actions/kbd-actions";
+import { isWindows } from "@/editor/0-core/7-actions/0-main-api";
+import { runMenuAction, type MenuAction } from "@/editor/0-core/menu-actions";
+import { allModifiers, altModifiers, controlModifiers, metaModifiers, shiftModifiers } from "@/editor/0-core/8-lib/utils-kbd";
+import { anyPanelOpenAtom, closeExportConfirm, commandPaletteOpenAtom, exportConfirmOpenAtom } from "@/components/2-main/0-all/a-panels-atoms";
+import { creatingBindingAtom } from "../9-state/keyboard-atoms";
+import { addRecordedKey, updateKeyboardLayout } from "./key-bindings";
+import { toggleCommandPalette } from "./command-palette";
 
 // Port of upstream hooks/useKeyboard.ts, installed once at startup instead of in a component effect.
 //

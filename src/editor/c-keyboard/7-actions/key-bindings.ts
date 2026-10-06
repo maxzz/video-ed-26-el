@@ -1,11 +1,11 @@
-import i18n from 'i18next';
-import type { KeyBinding, KeyboardAction } from '@shared/types.ts';
-import { jotaiDefaultStore } from '@/utils/local-utils/9-jotai-default-store.ts';
-import { resetUserSetting, userSettings } from '@/editor/0-core/9-state/user-settings.ts';
-import { confirmDialog } from '@/components/4-dialogs/7-1-dialogs/00-app-dialogs.tsx';
-import type { KeyboardLayoutMap } from '@/editor/0-core/8-lib/9-types-core.ts';
-import { creatingBindingAtom, keyboardLayoutMapAtom, recordedKeysAtom } from '../9-state/keyboard-atoms.ts';
-import { getActionsMap } from '../8-lib/actions-map.ts';
+import i18n from "i18next";
+import { type KeyBinding, type KeyboardAction } from "@shared/types";
+import { jotaiDefaultStore } from "@/utils/local-utils/9-jotai-default-store";
+import { resetUserSetting, userSettings } from "@/editor/0-core/9-state/user-settings";
+import { confirmDialog } from "@/components/4-dialogs/7-1-dialogs/00-app-dialogs";
+import { type KeyboardLayoutMap } from "@/editor/0-core/8-lib/9-types-core";
+import { creatingBindingAtom, keyboardLayoutMapAtom, recordedKeysAtom } from "../9-state/keyboard-atoms";
+import { getActionsMap } from "../8-lib/actions-map";
 
 type NavigatorWithKeyboard = Navigator & { keyboard?: { getLayoutMap(): Promise<KeyboardLayoutMap>; }; };
 

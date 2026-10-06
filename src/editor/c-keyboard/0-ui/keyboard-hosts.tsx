@@ -1,6 +1,6 @@
-import { KeyboardShortcutsDialog } from './keyboard-shortcuts-dialog.tsx';
-import { CreateBindingDialog } from './create-binding-dialog.tsx';
-import { CommandPalette } from './command-palette.tsx';
+import { KeyboardShortcutsDialog } from "./keyboard-shortcuts-dialog";
+import { CreateBindingDialog } from "./create-binding-dialog";
+import { CommandPalette } from "./command-palette";
 
 /** Global overlays of the keyboard feature (shortcuts editor, command palette) */
 export function KeyboardHosts() {
