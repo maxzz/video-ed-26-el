@@ -18,6 +18,17 @@ function keepsTsExtension(value) {
     return value.endsWith('.d.ts') || value.endsWith('.test.ts') || value.endsWith('.test.tsx');
 }
 
+// `name/index.ts` and `name/index.tsx` import the folder. `./index.ts` becomes `.`, `../index.ts` becomes `..`.
+function stripTrailingIndex(value) {
+    const parts = value.split(/[/\\]/);
+    if (parts.length < 2) return value;
+    const last = parts[parts.length - 1];
+    if (last !== 'index' && last !== 'index.ts' && last !== 'index.tsx') return value;
+    parts.pop();
+    if (parts.length === 1 && parts[0] === '') return '.';
+    return parts.join('/');
+}
+
 function fixModuleSpecifier(raw) {
     if (raw.length < 2) return raw;
     const quote = raw[0];
@@ -27,6 +38,7 @@ function fixModuleSpecifier(raw) {
         if (value.endsWith('.tsx')) value = value.slice(0, -4);
         else if (value.endsWith('.ts')) value = value.slice(0, -3);
     }
+    value = stripTrailingIndex(value);
     return `"${value.replace(/\\/g, '\\\\').replace(/"/g, '\\"')}"`;
 }
 
@@ -219,6 +231,12 @@ const cases = [
     [`export const x = await import('./a.ts');`, `export const x = await import('./a.ts');`],
     [`import type { A } from './a.ts';\nexport function F(){ return <div className="from './nope.ts'">x</div>; }\nexport { A } from './b.tsx';\nconst x = import('./c.ts');`, `import { type A } from "./a";\nexport function F(){ return <div className="from './nope.ts'">x</div>; }\nexport { A } from './b.tsx';\nconst x = import('./c.ts');`],
     [`vi.mock('@/editor/0-core/8-lib/main-api.ts', () => import('./main-api-mock.ts'));`, `vi.mock('@/editor/0-core/8-lib/main-api.ts', () => import('./main-api-mock.ts'));`],
+    [`import { type MenuAction, runMenuAction } from '@/editor/0-core/menu-actions/index.ts';`, `import { type MenuAction, runMenuAction } from "@/editor/0-core/menu-actions";`],
+    [`import { StreamsSelector } from '@/editor/6-streams/index.tsx';`, `import { StreamsSelector } from "@/editor/6-streams";`],
+    [`import { setBatchFiles } from '@/editor/2-file/index';`, `import { setBatchFiles } from "@/editor/2-file";`],
+    [`import { loadViewsSideEffects } from './views-load-side-effects/index.ts';`, `import { loadViewsSideEffects } from "./views-load-side-effects";`],
+    [`import { local } from './index.ts';`, `import { local } from ".";`],
+    [`import { parent } from '../index.tsx';`, `import { parent } from "..";`],
     [`import { readFile } from './foo.test.ts';`, `import { readFile } from "./foo.test.ts";`],
     [`import { readFile } from './foo.test.tsx';`, `import { readFile } from "./foo.test.tsx";`],
     [`import type { Foo as Bar } from './a.ts'`, `import { type Foo as Bar } from "./a"`],

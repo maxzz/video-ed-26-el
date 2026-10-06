@@ -2,7 +2,8 @@ import fs from 'node:fs';
 import path from 'node:path';
 
 // Reports import lines (a line that starts with `import`) that still use
-// single quotes, a grouped `import type { … }`, or a .ts/.tsx extension.
+// single quotes, a grouped `import type { … }`, a .ts/.tsx extension, or a
+// trailing `/index`, `/index.ts`, or `/index.tsx`.
 // `*.test.ts` / `*.test.tsx` and `*.d.ts` are allowed to keep their extension.
 // Lines that do not start with `import` (vi.mock, await import(), export from) are ignored.
 
@@ -34,6 +35,7 @@ for (const file of walk('src')) {
         const value = raw.slice(1, -1);
         if (value.endsWith('.d.ts') || value.endsWith('.test.ts') || value.endsWith('.test.tsx')) return;
         if (value.endsWith('.ts') || value.endsWith('.tsx')) issues.push(`${at} extension ${raw}`);
+        if (/(^|[/\\])index$/.test(value)) issues.push(`${at} index path ${raw}`);
     });
 }
 
