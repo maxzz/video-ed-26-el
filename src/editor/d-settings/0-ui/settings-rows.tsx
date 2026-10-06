@@ -1,6 +1,6 @@
-import type { ReactNode } from 'react';
-import { motion } from 'motion/react';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/ui/shadcn/select';
+import { type ReactNode } from "react";
+import { motion } from "motion/react";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/ui/shadcn/select";
 
 export function SectionHeader({ title }: { title: ReactNode; }) {
     return (
