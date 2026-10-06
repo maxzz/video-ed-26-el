@@ -1,8 +1,8 @@
-import { useAtomValue } from 'jotai';
-import { useTranslation } from 'react-i18next';
-import { mainApi } from '@/editor/0-core/7-actions/0-main-api.ts';
-import { classNames } from '@/utils';
-import { mifiLinkAtom } from '../9-state/platform.ts';
+import { useAtomValue } from "jotai";
+import { useTranslation } from "react-i18next";
+import { mainApi } from "@/editor/0-core/7-actions/0-main-api";
+import { classNames } from "@/utils";
+import { mifiLinkAtom } from "../9-state/platform";
 
 /** Port of the remote link iframe from upstream NoFileLoaded.tsx. Renders nothing until the link is loaded */
 export function MifiLink({ darkMode, className }: { darkMode: boolean; className?: string; }) {

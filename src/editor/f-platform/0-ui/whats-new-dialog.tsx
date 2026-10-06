@@ -1,11 +1,11 @@
-import { useTranslation } from 'react-i18next';
-import { FileTextIcon, GitCompareIcon } from 'lucide-react';
-import { appName } from '@shared/constants.ts';
-import { openCustomDialog } from '@/components/4-dialogs/7-0-dialogs/dialogs.ts';
-import { mainApi } from '@/editor/0-core/7-actions/0-main-api.ts';
-import { Button } from '@/ui/shadcn/button';
-import { DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/ui/shadcn/dialog';
-import { getAppCompareReleasesUrl, getAppReleaseUrl } from '../8-lib/versions.ts';
+import { useTranslation } from "react-i18next";
+import { FileTextIcon, GitCompareIcon } from "lucide-react";
+import { appName } from "@shared/constants";
+import { openCustomDialog } from "@/components/4-dialogs/7-0-dialogs/dialogs";
+import { mainApi } from "@/editor/0-core/7-actions/0-main-api";
+import { Button } from "@/ui/shadcn/button";
+import { DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/ui/shadcn/dialog";
+import { getAppCompareReleasesUrl, getAppReleaseUrl } from "../8-lib/versions";
 
 /** Port of upstream WhatsNew.tsx. We have no bundled release highlights, so it links to the release notes */
 export async function openWhatsNewDialog({ fromVersion, toVersion }: { fromVersion: string; toVersion: string; }) {

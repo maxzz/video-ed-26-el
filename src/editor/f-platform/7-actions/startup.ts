@@ -1,12 +1,12 @@
-import i18n from 'i18next';
-import { jotaiDefaultStore } from '@/utils/local-utils/9-jotai-default-store.ts';
-import { userSettings } from '@/editor/0-core/9-state/user-settings.ts';
-import { getAppInfo, mainEvents } from '@/editor/0-core/7-actions/0-main-api.ts';
-import { isStoreBuild } from '@/editor/0-core/8-lib/util.ts';
-import { mifiLinkAtom, newVersionAtom } from '../9-state/platform.ts';
-import { parseMifiLink, shouldShowWhatsNew } from '../8-lib/versions.ts';
-import { openWhatsNewDialog } from '../0-ui/whats-new-dialog.tsx';
-import { showNewVersionNotice } from '../0-ui/new-version-notice.tsx';
+import i18n from "i18next";
+import { jotaiDefaultStore } from "@/utils/local-utils/9-jotai-default-store";
+import { userSettings } from "@/editor/0-core/9-state/user-settings";
+import { getAppInfo, mainEvents } from "@/editor/0-core/7-actions/0-main-api";
+import { isStoreBuild } from "@/editor/0-core/8-lib/util";
+import { mifiLinkAtom, newVersionAtom } from "../9-state/platform";
+import { parseMifiLink, shouldShowWhatsNew } from "../8-lib/versions";
+import { openWhatsNewDialog } from "../0-ui/whats-new-dialog";
+import { showNewVersionNotice } from "../0-ui/new-version-notice";
 
 const mifiConfigUrl = 'https://losslesscut.mifi.no/config.json';
 

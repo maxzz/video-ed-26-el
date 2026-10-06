@@ -1,7 +1,7 @@
-import i18n from 'i18next';
-import { initReactI18next } from 'react-i18next';
-import { mapLang, type ElectronLanguageKey } from '@shared/i18n.ts';
-import { mainApi } from '@/editor/0-core/7-actions/0-main-api';
+import i18n from "i18next";
+import { initReactI18next } from "react-i18next";
+import { mapLang, type ElectronLanguageKey } from "@shared/i18n";
+import { mainApi } from "@/editor/0-core/7-actions/0-main-api";
 
 // Translation keys are the English strings (like upstream), so English needs no resources.
 const locales = import.meta.glob<{ default: Record<string, string>; }>('/resources/locales/*/translation.json');
