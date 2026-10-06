@@ -1,3 +1,5 @@
+// Probe for the TypeScript 7 scanner token kinds used by tmp-fix-imports.mjs.
+// That fixer only rewrites statements whose line starts with the word import.
 import { createScanner } from 'typescript/unstable/ast/scanner';
 
 const sample = "import * as x from './a'; export ( ) [ ] < >";

@@ -7,24 +7,26 @@ const StringLiteral = 10;
 const OpenBrace = 18;
 const CloseBrace = 19;
 const OpenParen = 20;
-const CloseParen = 21;
-const OpenBracket = 22;
-const CloseBracket = 23;
-const Semicolon = 26;
 const Comma = 27;
 const Asterisk = 41;
-const ExportKeyword = 94;
 const ImportKeyword = 101;
 const AsKeyword = 129;
 const FromKeyword = 161;
+
+// Lines that load a *.test.ts / *.test.tsx module (Vitest) keep that extension.
+function keepsTsExtension(value) {
+    return value.endsWith('.d.ts') || value.endsWith('.test.ts') || value.endsWith('.test.tsx');
+}
 
 function fixModuleSpecifier(raw) {
     if (raw.length < 2) return raw;
     const quote = raw[0];
     if (quote !== "'" && quote !== '"') return raw;
     let value = raw.slice(1, -1).replace(/\\(.)/g, '$1');
-    if (value.endsWith('.tsx')) value = value.slice(0, -4);
-    else if (value.endsWith('.ts') && !value.endsWith('.d.ts')) value = value.slice(0, -3);
+    if (!keepsTsExtension(value)) {
+        if (value.endsWith('.tsx')) value = value.slice(0, -4);
+        else if (value.endsWith('.ts')) value = value.slice(0, -3);
+    }
     return `"${value.replace(/\\/g, '\\\\').replace(/"/g, '\\"')}"`;
 }
 
@@ -102,7 +104,11 @@ function transform(text, jsx) {
     function parseImport() {
         let tok = read();
 
-        if (tok.kind === OpenParen) return read();
+        if (tok.kind === OpenParen) {
+            const maybe = read();
+            if (maybe.kind === StringLiteral) fixSpecifier(maybe);
+            return read();
+        }
 
         if (tok.text === '.') return read();
 
@@ -167,63 +173,20 @@ function transform(text, jsx) {
         return tok;
     }
 
-    function parseExport() {
-        let tok = read();
-        if (tok.text === 'type') {
-            const after = peekKind();
-            if (after !== OpenBrace && after !== Asterisk) return;
-            tok = read();
-        }
-        if (tok.kind !== OpenBrace && tok.kind !== Asterisk) return;
-
-        if (tok.kind === Asterisk) {
-            if (peekKind() === AsKeyword) {
-                read();
-                read();
-            }
-            tok = read();
-        } else {
-            let depth = 1;
-            tok = read();
-            while (tok.kind !== EOF && depth > 0) {
-                if (tok.kind === OpenBrace) depth++;
-                else if (tok.kind === CloseBrace) depth--;
-                tok = read();
-            }
-        }
-        if (tok.kind === FromKeyword) {
-            const spec = read();
-            if (spec.kind === StringLiteral) fixSpecifier(spec);
-        }
-    }
-
     function jump(pos) {
         scanner.resetTokenState(pos);
         primed = false;
         steps = 0;
     }
 
-    const starts = [];
-    const headerRe = /(?:^|[\n;])[ \t]*(import|export)\b/g;
+    // Only statements whose line starts with the word import. That leaves
+    // `export … from`, `await import()`, and `vi.mock(..., () => import(...))` alone.
+    const headerRe = /^[ \t]*import\b/gm;
     for (let match = headerRe.exec(text); match; match = headerRe.exec(text)) {
-        starts.push(match.index + match[0].length - match[1].length);
-    }
-    for (const pos of starts) {
+        const pos = match.index + match[0].length - 'import'.length;
         jump(pos);
         const tok = read();
         if (tok.kind === ImportKeyword) parseImport();
-        else if (tok.kind === ExportKeyword) parseExport();
-    }
-
-    const dynamicRe = /\bimport[ \t]*\([ \t]*(['"])((?:\\.|(?!\1)[^\\])*)\1/g;
-    for (let match = dynamicRe.exec(text); match; match = dynamicRe.exec(text)) {
-        const quote = match[1];
-        const raw = quote + match[2] + quote;
-        const next = fixModuleSpecifier(raw);
-        if (next !== raw) {
-            const start = match.index + match[0].indexOf(quote);
-            edits.push({ start, end: start + raw.length, text: next });
-        }
     }
 
     edits.sort((a, b) => b.start - a.start || b.end - a.end);
@@ -240,21 +203,24 @@ const cases = [
     [`import { type Foo, bar } from './b.ts';`, `import { type Foo, bar } from "./b";`],
     [`import './c.css';`, `import "./c.css";`],
     [`import './c.ts';`, `import "./c";`],
-    [`export { X } from './d.tsx';`, `export { X } from "./d";`],
-    [`export type { Y } from './e.ts';`, `export type { Y } from "./e";`],
+    [`export { X } from './d.tsx';`, `export { X } from './d.tsx';`],
+    [`export type { Y } from './e.ts';`, `export type { Y } from './e.ts';`],
     [`import type Foo from './f.ts';`, `import type Foo from "./f";`],
     [`import type * as NS from './g.ts';`, `import type * as NS from "./g";`],
     [`import type Foo, { Bar } from './h.ts';`, `import type Foo, { type Bar } from "./h";`],
     [`import type from './i.ts';`, `import type from "./i";`],
     [`import type, { Foo } from './j.ts';`, `import type, { Foo } from "./j";`],
     [`import "already.ts";`, `import "already";`],
-    [`const { x } = await import('./z.tsx');`, `const { x } = await import("./z");`],
+    [`const { x } = await import('./z.tsx');`, `const { x } = await import('./z.tsx');`],
     [`import { a, b } from "react";`, `import { a, b } from "react";`],
     [`import React, * as ReactDOM from 'react';`, `import React, * as ReactDOM from "react";`],
     [`import * as path from 'node:path';`, `import * as path from "node:path";`],
     [`import type { A } from './file.d.ts';`, `import { type A } from "./file.d.ts";`],
-    [`export const x = await import('./a.ts');`, `export const x = await import("./a");`],
-    [`import type { A } from './a.ts';\nexport function F(){ return <div className="from './nope.ts'">x</div>; }\nexport { A } from './b.tsx';\nconst x = import('./c.ts');`, `import { type A } from "./a";\nexport function F(){ return <div className="from './nope.ts'">x</div>; }\nexport { A } from "./b";\nconst x = import("./c");`],
+    [`export const x = await import('./a.ts');`, `export const x = await import('./a.ts');`],
+    [`import type { A } from './a.ts';\nexport function F(){ return <div className="from './nope.ts'">x</div>; }\nexport { A } from './b.tsx';\nconst x = import('./c.ts');`, `import { type A } from "./a";\nexport function F(){ return <div className="from './nope.ts'">x</div>; }\nexport { A } from './b.tsx';\nconst x = import('./c.ts');`],
+    [`vi.mock('@/editor/0-core/8-lib/main-api.ts', () => import('./main-api-mock.ts'));`, `vi.mock('@/editor/0-core/8-lib/main-api.ts', () => import('./main-api-mock.ts'));`],
+    [`import { readFile } from './foo.test.ts';`, `import { readFile } from "./foo.test.ts";`],
+    [`import { readFile } from './foo.test.tsx';`, `import { readFile } from "./foo.test.tsx";`],
     [`import type { Foo as Bar } from './a.ts'`, `import { type Foo as Bar } from "./a"`],
 ];
 
