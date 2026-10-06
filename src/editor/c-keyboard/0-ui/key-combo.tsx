@@ -1,10 +1,10 @@
-import { Fragment } from 'react';
-import { useAtomValue } from 'jotai';
-import { PlusIcon } from 'lucide-react';
-import { cn } from '@/utils/classnames';
-import { Kbd } from '@/ui/shadcn/kbd';
-import { getKeyDisplayName, splitKeyboardKeys } from '@/editor/0-core/8-lib/utils-kbd.ts';
-import { keyboardLayoutMapAtom } from '../9-state/keyboard-atoms.ts';
+import { Fragment } from "react";
+import { useAtomValue } from "jotai";
+import { PlusIcon } from "lucide-react";
+import { cn } from "@/utils/classnames";
+import { Kbd } from "@/ui/shadcn/kbd";
+import { getKeyDisplayName, splitKeyboardKeys } from "@/editor/0-core/8-lib/utils-kbd";
+import { keyboardLayoutMapAtom } from "../9-state/keyboard-atoms";
 
 /** A single key code shown with the character of the user's keyboard layout (upstream Kbd) */
 export function KeyCode({ code, className }: { code: string; className?: string; }) {

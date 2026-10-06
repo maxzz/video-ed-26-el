@@ -1,15 +1,15 @@
-import { useAtomValue } from 'jotai';
-import i18n from 'i18next';
-import { useTranslation } from 'react-i18next';
-import groupBy from 'lodash/groupBy.js';
-import { userSettingsAtom } from '@/editor/0-core/9-state/user-settings.ts';
-import { actionsVersionAtom, getActionNames, hasAction } from '@/editor/0-core/7-actions/kbd-actions.ts';
-import { commandPaletteOpenAtom } from '@/components/2-main/0-all/a-panels-atoms.ts';
-import { Dialog, DialogContent, DialogDescription, DialogTitle } from '@/ui/shadcn/dialog';
-import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList, CommandShortcut } from '@/ui/shadcn/command';
-import { runPaletteAction, setCommandPaletteOpen } from '../7-actions/command-palette.ts';
-import { actionsWithArgs, getActionsMap, getExtraActionsMap, humanizeActionName } from '../8-lib/actions-map.ts';
-import { KeyCombo } from './key-combo.tsx';
+import { useAtomValue } from "jotai";
+import i18n from "i18next";
+import { useTranslation } from "react-i18next";
+import groupBy from "lodash/groupBy.js";
+import { userSettingsAtom } from "@/editor/0-core/9-state/user-settings";
+import { actionsVersionAtom, getActionNames, hasAction } from "@/editor/0-core/7-actions/kbd-actions";
+import { commandPaletteOpenAtom } from "@/components/2-main/0-all/a-panels-atoms";
+import { Dialog, DialogContent, DialogDescription, DialogTitle } from "@/ui/shadcn/dialog";
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList, CommandShortcut } from "@/ui/shadcn/command";
+import { runPaletteAction, setCommandPaletteOpen } from "../7-actions/command-palette";
+import { actionsWithArgs, getActionsMap, getExtraActionsMap, humanizeActionName } from "../8-lib/actions-map";
+import { KeyCombo } from "./key-combo";
 
 interface PaletteItem {
     id: string;

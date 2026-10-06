@@ -1,13 +1,13 @@
-import { useAtomValue } from 'jotai';
-import { useTranslation } from 'react-i18next';
-import { AnimatePresence, motion } from 'motion/react';
-import { RotateCcwIcon, SaveIcon, TriangleAlertIcon } from 'lucide-react';
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/ui/shadcn/dialog';
-import { Button } from '@/ui/shadcn/button';
-import { creatingBindingAtom, recordedKeysAtom } from '../9-state/keyboard-atoms.ts';
-import { addRecordedKey, clearRecordedKeys, confirmNewKeyBinding, stopCreatingBinding } from '../7-actions/key-bindings.ts';
-import { fixKeys, getActionsMap } from '../8-lib/actions-map.ts';
-import { KeyCombo } from './key-combo.tsx';
+import { useAtomValue } from "jotai";
+import { useTranslation } from "react-i18next";
+import { AnimatePresence, motion } from "motion/react";
+import { RotateCcwIcon, SaveIcon, TriangleAlertIcon } from "lucide-react";
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/ui/shadcn/dialog";
+import { Button } from "@/ui/shadcn/button";
+import { creatingBindingAtom, recordedKeysAtom } from "../9-state/keyboard-atoms";
+import { addRecordedKey, clearRecordedKeys, confirmNewKeyBinding, stopCreatingBinding } from "../7-actions/key-bindings";
+import { fixKeys, getActionsMap } from "../8-lib/actions-map";
+import { KeyCombo } from "./key-combo";
 
 /** "Bind new key to action". Key presses are recorded by the global keyboard listener while this is open */
 export function CreateBindingDialog() {
