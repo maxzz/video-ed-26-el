@@ -1,14 +1,14 @@
-import { registerActions } from '@/editor/0-core/7-actions/kbd-actions.ts';
-import { mainApi } from '@/editor/0-core/7-actions/0-main-api';
-import { openFilesActionArgsSchema } from '@/editor/0-core/8-lib/9-types-core';
-import { onAppReady } from '@/editor/0-core/7-actions/2-lifecycle';
+import { registerActions } from "@/editor/0-core/7-actions/kbd-actions";
+import { mainApi } from "@/editor/0-core/7-actions/0-main-api";
+import { openFilesActionArgsSchema } from "@/editor/0-core/8-lib/9-types-core";
+import { onAppReady } from "@/editor/0-core/7-actions/2-lifecycle";
 import {
     askStartTimeOffset, closeFileWithConfirm, makeCursorTimeZero, openSendReportDialogWithState, reloadFile, tryFixInvalidDuration,
-} from '@/editor/2-file/7-actions/load-media.ts';
-import { openDirDialog, openFiles, openFilesDialog, promptDownloadMediaUrlWrapper } from '@/editor/2-file/7-actions/open-files.ts';
-import { batchFileJump, batchOpenSelectedFile, closeBatch } from '@/editor/2-file/7-actions/batch-actions.ts';
-import { convertFormatBatch, userHtml5ifyCurrentFile } from '@/editor/2-file/7-actions/html5ify.ts';
-import { initFileEffects } from '@/editor/2-file/7-actions/file-effects.ts';
+} from "@/editor/2-file/7-actions/load-media";
+import { openDirDialog, openFiles, openFilesDialog, promptDownloadMediaUrlWrapper } from "@/editor/2-file/7-actions/open-files";
+import { batchFileJump, batchOpenSelectedFile, closeBatch } from "@/editor/2-file/7-actions/batch-actions";
+import { convertFormatBatch, userHtml5ifyCurrentFile } from "@/editor/2-file/7-actions/html5ify";
+import { initFileEffects } from "@/editor/2-file/7-actions/file-effects";
 
 export function register_2_file() {
     registerActions({

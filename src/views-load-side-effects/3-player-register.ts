@@ -1,10 +1,10 @@
-import { registerActions } from '@/editor/0-core/7-actions/kbd-actions.ts';
-import { goToTimecodeDirectArgsSchema } from '@/editor/0-core/8-lib/9-types-core';
-import * as player from '@/editor/3-player/7-actions/player-actions.ts';
-import { decreaseVolume, goToTimecode, goToTimecodeDirect, increaseVolume, toggleFullscreenVideo } from '@/editor/3-player/7-actions/video-events.ts';
-import { initVideoEffects } from '@/editor/3-player/7-actions/video-effects.ts';
-import { initSubtitleEffects } from '@/editor/3-player/7-actions/subtitles.ts';
-import { initWorkingTimer } from '@/editor/3-player/7-actions/working-timer.ts';
+import { registerActions } from "@/editor/0-core/7-actions/kbd-actions";
+import { goToTimecodeDirectArgsSchema } from "@/editor/0-core/8-lib/9-types-core";
+import * as player from "@/editor/3-player/7-actions/player-actions";
+import { decreaseVolume, goToTimecode, goToTimecodeDirect, increaseVolume, toggleFullscreenVideo } from "@/editor/3-player/7-actions/video-events";
+import { initVideoEffects } from "@/editor/3-player/7-actions/video-effects";
+import { initSubtitleEffects } from "@/editor/3-player/7-actions/subtitles";
+import { initWorkingTimer } from "@/editor/3-player/7-actions/working-timer";
 
 export function register_3_player() {
     initVideoEffects();

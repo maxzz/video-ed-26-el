@@ -1,7 +1,7 @@
-import { registerActions } from '@/editor/0-core/7-actions/kbd-actions.ts';
-import { redoSegments, undoSegments } from '@/editor/5-segments/9-state/segments-store.ts';
-import * as seg from '@/editor/5-segments/7-actions/segment-actions.ts';
-import { editCurrentSegmentTags, mutateSegmentsByExpr, selectSegmentsByExpr, shiftAllSegmentTimes } from '@/editor/5-segments/7-actions/segment-dialogs.tsx';
+import { registerActions } from "@/editor/0-core/7-actions/kbd-actions";
+import { redoSegments, undoSegments } from "@/editor/5-segments/9-state/segments-store";
+import * as seg from "@/editor/5-segments/7-actions/segment-actions";
+import { editCurrentSegmentTags, mutateSegmentsByExpr, selectSegmentsByExpr, shiftAllSegmentTimes } from "@/editor/5-segments/7-actions/segment-dialogs";
 
 export function register_5_segments() {
     registerActions({

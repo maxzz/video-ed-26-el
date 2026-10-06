@@ -1,5 +1,5 @@
-import { registerActions } from '@/editor/0-core/7-actions/kbd-actions.ts';
-import * as capture from '@/editor/a-capture/7-actions/capture-actions.ts';
+import { registerActions } from "@/editor/0-core/7-actions/kbd-actions";
+import * as capture from "@/editor/a-capture/7-actions/capture-actions";
 
 export function register_a_capture() {
     registerActions({
