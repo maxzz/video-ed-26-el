@@ -1,24 +1,23 @@
 import { useAtom, useAtomValue } from "jotai";
 import { useSnapshot } from "valtio";
-import { useTranslation } from "react-i18next";
-import { BanIcon, BrushCleaningIcon, CogIcon, FileIcon, FileOutputIcon, FolderIcon, GlobeIcon, KeyboardIcon, ContrastIcon, RotateCcwIcon, XIcon } from "lucide-react";
-import { langNames, type SupportedLanguage } from "@shared/i18n";
-import { type CaptureFormat, type Config, type EnableImportChapters, type ModifierKey, type TimecodeFormat } from "@shared/types";
-import { defaultConfig } from "@shared/default-config";
-import { userSettings } from "@/editor/0-core/9-state/user-settings";
-import { getEnableImportChaptersOptions, isStoreBuild } from "@/editor/0-core/8-lib/util";
-import { settingsVisibleAtom, showAdvancedSettingsAtom, toggleKeyboardShortcuts } from "@/components/2-main/0-all/a-panels-atoms";
-import { getModifierKeyNames } from "@/editor/c-keyboard";
-import { AppOptions } from "@/components/4-dialogs/8-3-options/1-app-options";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/ui/shadcn/dialog";
 import { Button } from "@/ui/shadcn/button";
 import { Switch } from "@/ui/shadcn/switch";
 import { Slider } from "@/ui/shadcn/slider";
+import { BanIcon, BrushCleaningIcon, CogIcon, FileIcon, FileOutputIcon, FolderIcon, GlobeIcon, KeyboardIcon, ContrastIcon, RotateCcwIcon, XIcon } from "lucide-react";
+import { useTranslation } from "react-i18next";
+
+import { userSettings } from "@/editor/0-core/9-state/user-settings";
+import { AppOptions } from "@/components/4-dialogs/8-3-options/1-app-options";
+import { defaultConfig } from "@shared/default-config";
+
+import { langNames, type SupportedLanguage } from "@shared/i18n";
+import { type CaptureFormat, type Config, type EnableImportChapters, type ModifierKey, type TimecodeFormat } from "@shared/types";
+import { getEnableImportChaptersOptions, isStoreBuild } from "@/editor/0-core/8-lib/util";
+import { settingsVisibleAtom, showAdvancedSettingsAtom, toggleKeyboardShortcuts } from "@/components/2-main/0-all/a-panels-atoms";
+import { getModifierKeyNames } from "@/editor/c-keyboard";
 import { askForCleanupChoices } from "@/editor/7-export/7-actions/export-actions";
-import {
-    changeCustomFfPath, clearCustomFfPath, requestTuner, setLanguage,
-    setShowAdvancedSettings, toggleExportConfirmEnabled, toggleStoreProjectInWorkingDir,
-} from "../7-actions/settings-actions";
+import { changeCustomFfPath, clearCustomFfPath, requestTuner, setLanguage, setShowAdvancedSettings, toggleExportConfirmEnabled, toggleStoreProjectInWorkingDir } from "../7-actions/settings-actions";
 import { SectionHeader, SettingRow, SettingSelect } from "./settings-rows";
 import { OutDirSelector } from "./out-dir-selector";
 

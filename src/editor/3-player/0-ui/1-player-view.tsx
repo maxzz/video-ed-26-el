@@ -14,7 +14,7 @@ import { fileDurationAtom, filePathAtom, hasVideoAtom, isFileOpenedAtom, isRotat
 import { onFilesDrop } from "@/editor/2-file/7-actions/open-files";
 import { bigWaveformEnabledAtom } from "@/editor/4-timeline/9-state/timeline-atoms";
 import { onTimelineWheel } from "@/editor/4-timeline/7-actions/timeline-actions";
-import { BigWaveform } from "@/editor/4-timeline/0-ui/big-waveform";
+import { BigWaveform } from "@/editor/4-timeline/0-ui/0-all/3-big-waveform";
 import {
     activeSubtitleAtom, compatPlayerEnabledAtom, compatPlayerRequiredAtom, mediaSourceQualityAtom, playbackVolumeAtom, playerTimeAtom,
     shouldShowPlaybackStreamSelectorAtom, videoContainerElementAtom, videoElementAtom,

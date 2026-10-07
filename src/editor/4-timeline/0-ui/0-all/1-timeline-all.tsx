@@ -20,7 +20,7 @@ import { onTimelineWheel } from "../../7-actions/timeline-actions";
 import { goToTimecode } from "@/editor/3-player/7-actions/video-events";
 import { generateOverviewWaveform } from "../../7-actions/waveform";
 import { onTimelineMouseDown, onTimelineMouseMove, onTimelineMouseOut, onTimelineScroll, timelineScrollerRef, timelineWrapperRef } from "../../7-actions/timeline-scroll";
-import { BetweenSegmentsList, TimelineSegments } from "../timeline-seg";
+import { BetweenSegmentsList, TimelineSegments } from "./2-timeline-seg";
 
 // Port of upstream Timeline.tsx. Leaf components subscribe to their own atoms so the time markers don't re-render the whole timeline
 
