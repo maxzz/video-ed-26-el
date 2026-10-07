@@ -1,15 +1,16 @@
 import { type ComponentProps, type CSSProperties } from "react";
 import { useAtomValue } from "jotai";
+import { cn } from "@/utils/classnames";
 import { motion } from "motion/react";
-import { useTranslation } from "react-i18next";
+import { Button } from "@/ui/shadcn/button";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/ui/shadcn/select";
 import {
     AudioWaveformIcon, BabyIcon, CameraIcon, ChevronLeftIcon, ChevronRightIcon, ContrastIcon, FileOutputIcon, GaugeIcon, ImagesIcon, KeyIcon,
     KeyRoundIcon, NotebookTextIcon, PauseIcon, PlayIcon, RotateCcwSquareIcon, ScissorsIcon, SkipBackIcon, SkipForwardIcon, StepBackIcon,
     StepForwardIcon, Trash2Icon, TriangleAlertIcon,
 } from "lucide-react";
-import { cn } from "@/utils/classnames";
-import { Button } from "@/ui/shadcn/button";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/ui/shadcn/select";
+import { useTranslation } from "react-i18next";
+
 import { type CaptureFormat } from "@shared/types";
 import { jotaiDefaultStore } from "@/utils/local-utils/9-jotai-default-store";
 import { userSettings, userSettingsAtom } from "@/editor/0-core/9-state/user-settings";
@@ -35,10 +36,6 @@ import { CutTimeInput } from "./cut-time-input";
 import { JumpSegmentButton, SegmentCutpointButton, SetCutpointButton } from "./segment-buttons";
 
 // Port of upstream BottomBar.tsx
-
-const zoomOptions = Array.from({ length: 13 }, (_unused, z) => 2 ** z);
-const leftRightWidth = 100;
-const activeClasses = 'text-primary';
 
 export function BottomBar() {
     return (
@@ -126,6 +123,8 @@ function BottomBarTopRow() {
     );
 }
 
+const leftRightWidth = 100;
+
 function ViewToggles() {
     const { t } = useTranslation();
     const hasAudio = useAtomValue(hasAudioAtom);
@@ -164,27 +163,29 @@ function KeyframeSeekButton({ direction }: { direction: -1 | 1; }) {
     return (
         <BarButton
             className={cn(prev ? 'mr-0.5 -scale-x-100' : 'ml-0.5', currentFrame?.keyframe && activeClasses)}
-            title={prev ? actionTitle(t('Seek previous keyframe'), 'seekBackwardsKeyframe') : actionTitle(t('Seek next keyframe'), 'seekForwardsKeyframe')}
             onClick={() => seekClosestKeyframe(direction)}
+            title={prev ? actionTitle(t('Seek previous keyframe'), 'seekBackwardsKeyframe') : actionTitle(t('Seek next keyframe'), 'seekForwardsKeyframe')}
         >
             <KeyRoundIcon className="size-5" />
         </BarButton>
     );
 }
 
+const activeClasses = 'text-primary';
+
 const roundButtonClasses = 'size-[2.3em] text-white rounded-full flex items-center justify-center';
 
 function PlayPauseButton() {
-    const { t } = useTranslation();
     const playing = useAtomValue(playingAtom);
     const actionTitle = useAtomValue(actionTitleAtom);
+    const { t } = useTranslation();
     const Icon = playing ? PauseIcon : PlayIcon;
     return (
         <div
-            role="button"
             className={cn('mt-0.5 mr-0.5 ml-1 bg-primary', roundButtonClasses, !playing && 'pl-0.5')}
-            title={actionTitle(t('Play/pause'), 'togglePlayResetSpeed')}
             onClick={() => player.togglePlay()}
+            title={actionTitle(t('Play/pause'), 'togglePlayResetSpeed')}
+            role="button"
         >
             <Icon className="size-[.9em] fill-current" />
         </div>
@@ -192,12 +193,12 @@ function PlayPauseButton() {
 }
 
 function BottomBarBottomRow() {
-    const { t } = useTranslation();
     const isFileOpened = useAtomValue(isFileOpenedAtom);
     const simpleMode = useAtomValue(simpleModeAtom);
     const hasVideo = useAtomValue(hasVideoAtom);
     const { exportConfirmEnabled } = useAtomValue(userSettingsAtom);
     const actionTitle = useAtomValue(actionTitleAtom);
+    const { t } = useTranslation();
 
     return (
         <div className="relative px-1 py-0.5 h-8 flex items-center justify-between gap-2">
@@ -206,17 +207,17 @@ function BottomBarBottomRow() {
             <div className="flex items-center">
                 <SimpleModeButton />
                 {simpleMode && (
-                    <div role="button" className="ml-1 text-xs cursor-pointer" onClick={toggleSimpleMode}>{t('Toggle advanced view')}</div>
+                    <div role="button" className="ml-1 text-xs cursor-pointer" onClick={toggleSimpleMode}>
+                        {t('Toggle advanced view')}
+                    </div>
                 )}
             </div>
 
-            {isFileOpened && !simpleMode && (
-                <>
-                    <ZoomControls />
-                    <PlaybackRateIndicator />
-                    <FpsButton />
-                </>
-            )}
+            {isFileOpened && !simpleMode && (<>
+                <ZoomControls />
+                <PlaybackRateIndicator />
+                <FpsButton />
+            </>)}
 
             {isFileOpened && !simpleMode && hasVideo && <RotationButton />}
 
@@ -254,8 +255,8 @@ function BottomBarBottomRow() {
 }
 
 function InvertCutModeButton() {
-    const { t } = useTranslation();
     const invertCutSegments = useAtomValue(invertCutSegmentsAtom);
+    const { t } = useTranslation();
     return (
         <motion.div animate={{ rotateX: invertCutSegments ? 0 : 180 }} transition={{ duration: 0.3 }}>
             <BarButton
@@ -270,8 +271,8 @@ function InvertCutModeButton() {
 }
 
 function SimpleModeButton() {
-    const { t } = useTranslation();
     const simpleMode = useAtomValue(simpleModeAtom);
+    const { t } = useTranslation();
     return (
         <BarButton className={simpleMode ? activeClasses : 'text-foreground'} title={t('Toggle advanced view')} onClick={toggleSimpleMode}>
             <BabyIcon className="size-5" />
@@ -280,25 +281,25 @@ function SimpleModeButton() {
 }
 
 function ZoomControls() {
-    const { t } = useTranslation();
     const zoom = useAtomValue(zoomAtom);
-    return (
-        <>
-            <div role="button" className="cursor-pointer" title={t('Zoom')} onClick={timelineToggleComfortZoom}>{zoom}x</div>
+    const { t } = useTranslation();
+    return (<>
+        <div role="button" className="cursor-pointer" title={t('Zoom')} onClick={timelineToggleComfortZoom}>{zoom}x</div>
 
-            <Select value={zoomOptions.includes(zoom) ? String(zoom) : ''} onValueChange={(v) => zoomAbs(() => parseInt(v, 10))}>
-                <SelectTrigger size="sm" className="w-[6.5em]" title={t('Zoom')}>
-                    <SelectValue placeholder={t('Zoom')} />
-                </SelectTrigger>
-                <SelectContent>
-                    {zoomOptions.map((val) => (
-                        <SelectItem key={val} value={String(val)}>{t('Zoom')} {val}x</SelectItem>
-                    ))}
-                </SelectContent>
-            </Select>
-        </>
-    );
+        <Select value={zoomOptions.includes(zoom) ? String(zoom) : ''} onValueChange={(v) => zoomAbs(() => parseInt(v, 10))}>
+            <SelectTrigger size="sm" className="w-[6.5em]" title={t('Zoom')}>
+                <SelectValue placeholder={t('Zoom')} />
+            </SelectTrigger>
+            <SelectContent>
+                {zoomOptions.map((val) => (
+                    <SelectItem key={val} value={String(val)}>{t('Zoom')} {val}x</SelectItem>
+                ))}
+            </SelectContent>
+        </Select>
+    </>);
 }
+
+const zoomOptions = Array.from({ length: 13 }, (_unused, z) => 2 ** z);
 
 function PlaybackRateIndicator() {
     const { t } = useTranslation();
