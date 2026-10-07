@@ -1,4 +1,4 @@
-import { type RequestMessageData, type ResponseMessageData } from "./eval";
+import { type RequestMessageData, type ResponseMessageData } from "./eval-protocol";
 
 
 // https://stackoverflow.com/a/10796616/6519037
