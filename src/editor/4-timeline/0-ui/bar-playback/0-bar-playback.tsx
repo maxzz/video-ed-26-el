@@ -32,22 +32,18 @@ import {
     increaseRotation, seekClosestKeyframe, timelineToggleComfortZoom, toggleExportConfirmEnabled, toggleInvertCutSegments, toggleShowKeyframes,
     toggleShowThumbnails, toggleSimpleMode, toggleWaveformMode, zoomAbs,
 } from "../../7-actions/timeline-actions";
-import { CutTimeInput } from "./cut-time-input";
-import { JumpSegmentButton, SegmentCutpointButton, SetCutpointButton } from "./segment-buttons";
+import { Input_CutTime } from "./1-input-cut-time";
+import { Button_JumpSegment, Button_SegmentCutpoint, Button_SetCutpoint } from "./2-button-segment-cut";
 
 // Port of upstream BottomBar.tsx
 
-export function BottomBar() {
+export function Bar_Playback() {
     return (
         <div className="shrink-0 bg-muted transition-[background] duration-500 border-t">
             <BottomBarTopRow />
             <BottomBarBottomRow />
         </div>
     );
-}
-
-function BarButton({ className, ...rest }: ComponentProps<'button'>) {
-    return <button type="button" className={cn('shrink-0 hover:text-foreground cursor-pointer', className)} {...rest} />;
 }
 
 function BottomBarTopRow() {
@@ -66,55 +62,51 @@ function BottomBarTopRow() {
 
             <div className="grow" />
 
-            {!simpleMode && (
-                <>
-                    <BarButton title={actionTitle(t('Jump to start of video'), 'jumpTimelineStart')} onClick={player.jumpTimelineStart}>
-                        <SkipBackIcon className="size-4" />
-                    </BarButton>
+            {!simpleMode && (<>
+                <Button_Bar title={actionTitle(t('Jump to start of video'), 'jumpTimelineStart')} onClick={player.jumpTimelineStart}>
+                    <SkipBackIcon className="size-4" />
+                </Button_Bar>
 
-                    <JumpSegmentButton direction={-1} />
+                <Button_JumpSegment direction={-1} />
 
-                    <SegmentCutpointButton className="mr-1.25" currentCutSeg={currentCutSeg} side="start" Icon={StepBackIcon} onClick={player.jumpCutStart} title={actionTitle(t('Jump to current segment\'s start time'), 'jumpCutStart')} />
-                </>
-            )}
+                <Button_SegmentCutpoint className="mr-1.25" currentCutSeg={currentCutSeg} side="start" Icon={StepBackIcon} onClick={player.jumpCutStart} title={actionTitle(t('Jump to current segment\'s start time'), 'jumpCutStart')} />
+            </>)}
 
-            <SetCutpointButton className="mr-1.25" currentCutSeg={currentCutSeg ?? { segColorIndex: 0 }} side="start" onClick={setCutStart} title={actionTitle(t('Start current segment at current time'), 'setCutStart')} />
+            <Button_SetCutpoint className="mr-1.25" currentCutSeg={currentCutSeg ?? { segColorIndex: 0 }} side="start" onClick={setCutStart} title={actionTitle(t('Start current segment at current time'), 'setCutStart')} />
 
-            {!simpleMode && <CutTimeInput side="start" />}
+            {!simpleMode && <Input_CutTime side="start" />}
 
-            {keyframesEnabled && <KeyframeSeekButton direction={-1} />}
+            {keyframesEnabled && <Button_KeyframeSeek direction={-1} />}
 
             {!simpleMode && (
-                <BarButton className="-mr-1 -ml-1.5" title={actionTitle(t('One frame back'), 'seekPreviousFrame')} onClick={() => player.shortStep(-1)}>
+                <Button_Bar className="-mr-1 -ml-1.5" title={actionTitle(t('One frame back'), 'seekPreviousFrame')} onClick={() => player.shortStep(-1)}>
                     <ChevronLeftIcon className="size-7" />
-                </BarButton>
+                </Button_Bar>
             )}
 
-            <PlayPauseButton />
+            <Button_PlayPause />
 
             {!simpleMode && (
-                <BarButton className="-mr-1.5 -ml-1" title={actionTitle(t('One frame forward'), 'seekNextFrame')} onClick={() => player.shortStep(1)}>
+                <Button_Bar className="-mr-1.5 -ml-1" title={actionTitle(t('One frame forward'), 'seekNextFrame')} onClick={() => player.shortStep(1)}>
                     <ChevronRightIcon className="size-7" />
-                </BarButton>
+                </Button_Bar>
             )}
 
-            {keyframesEnabled && <KeyframeSeekButton direction={1} />}
+            {keyframesEnabled && <Button_KeyframeSeek direction={1} />}
 
-            {!simpleMode && <CutTimeInput side="end" />}
+            {!simpleMode && <Input_CutTime side="end" />}
 
-            <SetCutpointButton className="ml-1.25" currentCutSeg={currentCutSeg} side="end" onClick={setCutEnd} title={actionTitle(t('End current segment at current time'), 'setCutEnd')} />
+            <Button_SetCutpoint className="ml-1.25" currentCutSeg={currentCutSeg} side="end" onClick={setCutEnd} title={actionTitle(t('End current segment at current time'), 'setCutEnd')} />
 
-            {!simpleMode && (
-                <>
-                    <SegmentCutpointButton className="ml-1.25" currentCutSeg={currentCutSeg} side="end" Icon={StepForwardIcon} onClick={player.jumpCutEnd} title={actionTitle(t('Jump to current segment\'s end time'), 'jumpCutEnd')} />
+            {!simpleMode && (<>
+                <Button_SegmentCutpoint className="ml-1.25" currentCutSeg={currentCutSeg} side="end" Icon={StepForwardIcon} onClick={player.jumpCutEnd} title={actionTitle(t('Jump to current segment\'s end time'), 'jumpCutEnd')} />
 
-                    <JumpSegmentButton direction={1} />
+                <Button_JumpSegment direction={1} />
 
-                    <BarButton title={actionTitle(t('Jump to end of video'), 'jumpTimelineEnd')} onClick={player.jumpTimelineEnd}>
-                        <SkipForwardIcon className="size-4" />
-                    </BarButton>
-                </>
-            )}
+                <Button_Bar title={actionTitle(t('Jump to end of video'), 'jumpTimelineEnd')} onClick={player.jumpTimelineEnd}>
+                    <SkipForwardIcon className="size-4" />
+                </Button_Bar>
+            </>)}
 
             <div className="grow" />
 
@@ -134,40 +126,37 @@ function ViewToggles() {
     const keyframesEnabled = useAtomValue(keyframesEnabledAtom);
     const actionTitle = useAtomValue(actionTitleAtom);
 
-    return (
-        <>
-            {hasAudio && (
-                <BarButton className={cn('px-0.5', waveformMode != null && activeClasses)} title={actionTitle(t('Show waveform'), 'toggleWaveformMode')} onClick={toggleWaveformMode}>
-                    <AudioWaveformIcon className="size-5" />
-                </BarButton>
-            )}
-            {hasVideo && (
-                <>
-                    <BarButton className={cn('px-1', showThumbnails && activeClasses)} title={actionTitle(t('Show thumbnails'), 'toggleShowThumbnails')} onClick={toggleShowThumbnails}>
-                        <ImagesIcon className="size-4" />
-                    </BarButton>
-                    <BarButton className={cn('px-1', keyframesEnabled && activeClasses)} title={actionTitle(t('Show keyframes'), 'toggleShowKeyframes')} onClick={toggleShowKeyframes}>
-                        <KeyIcon className="size-4" />
-                    </BarButton>
-                </>
-            )}
-        </>
-    );
+    return (<>
+        {hasAudio && (
+            <Button_Bar className={cn('px-0.5', waveformMode != null && activeClasses)} title={actionTitle(t('Show waveform'), 'toggleWaveformMode')} onClick={toggleWaveformMode}>
+                <AudioWaveformIcon className="size-5" />
+            </Button_Bar>
+        )}
+
+        {hasVideo && (<>
+            <Button_Bar className={cn('px-1', showThumbnails && activeClasses)} title={actionTitle(t('Show thumbnails'), 'toggleShowThumbnails')} onClick={toggleShowThumbnails}>
+                <ImagesIcon className="size-4" />
+            </Button_Bar>
+            <Button_Bar className={cn('px-1', keyframesEnabled && activeClasses)} title={actionTitle(t('Show keyframes'), 'toggleShowKeyframes')} onClick={toggleShowKeyframes}>
+                <KeyIcon className="size-4" />
+            </Button_Bar>
+        </>)}
+    </>);
 }
 
-function KeyframeSeekButton({ direction }: { direction: -1 | 1; }) {
+function Button_KeyframeSeek({ direction }: { direction: -1 | 1; }) {
     const { t } = useTranslation();
     const currentFrame = useAtomValue(currentFrameAtom);
     const actionTitle = useAtomValue(actionTitleAtom);
     const prev = direction < 0;
     return (
-        <BarButton
+        <Button_Bar
             className={cn(prev ? 'mr-0.5 -scale-x-100' : 'ml-0.5', currentFrame?.keyframe && activeClasses)}
             onClick={() => seekClosestKeyframe(direction)}
             title={prev ? actionTitle(t('Seek previous keyframe'), 'seekBackwardsKeyframe') : actionTitle(t('Seek next keyframe'), 'seekForwardsKeyframe')}
         >
             <KeyRoundIcon className="size-5" />
-        </BarButton>
+        </Button_Bar>
     );
 }
 
@@ -175,7 +164,7 @@ const activeClasses = 'text-primary';
 
 const roundButtonClasses = 'size-[2.3em] text-white rounded-full flex items-center justify-center';
 
-function PlayPauseButton() {
+function Button_PlayPause() {
     const playing = useAtomValue(playingAtom);
     const actionTitle = useAtomValue(actionTitleAtom);
     const { t } = useTranslation();
@@ -192,6 +181,8 @@ function PlayPauseButton() {
     );
 }
 
+//---------------------------------------------------------------------------
+
 function BottomBarBottomRow() {
     const isFileOpened = useAtomValue(isFileOpenedAtom);
     const simpleMode = useAtomValue(simpleModeAtom);
@@ -202,10 +193,10 @@ function BottomBarBottomRow() {
 
     return (
         <div className="relative px-1 py-0.5 h-8 flex items-center justify-between gap-2">
-            <InvertCutModeButton />
+            <Button_InvertCutMode />
 
             <div className="flex items-center">
-                <SimpleModeButton />
+                <Button_SimpleMode />
                 {simpleMode && (
                     <div role="button" className="ml-1 text-xs cursor-pointer" onClick={toggleSimpleMode}>
                         {t('Toggle advanced view')}
@@ -214,82 +205,85 @@ function BottomBarBottomRow() {
             </div>
 
             {isFileOpened && !simpleMode && (<>
-                <ZoomControls />
-                <PlaybackRateIndicator />
-                <FpsButton />
+                <Button_ZoomControls />
+                <Indicator_PlaybackRate />
+                <Button_Fps />
             </>)}
 
-            {isFileOpened && !simpleMode && hasVideo && <RotationButton />}
+            {isFileOpened && !simpleMode && hasVideo && <Button_Rotation />}
 
             <div className="grow" />
 
-            <DisplayTime />
+            <Indicator_DisplayTime />
 
             {!simpleMode && isFileOpened && (
-                <BarButton className="text-destructive hover:text-destructive" title={actionTitle(t('Close file and clean up'), 'cleanupFilesDialog')} onClick={() => runAction('cleanupFilesDialog')}>
+                <Button_Bar className="text-destructive hover:text-destructive" title={actionTitle(t('Close file and clean up'), 'cleanupFilesDialog')} onClick={() => runAction('cleanupFilesDialog')}>
                     <Trash2Icon className="size-4" />
-                </BarButton>
+                </Button_Bar>
             )}
 
             {hasVideo && (
                 <div className="whitespace-nowrap flex items-center gap-1">
-                    <BarButton title={actionTitle(t('Capture frame'), 'captureSnapshot')} onClick={() => runAction('captureSnapshot')}>
+                    <Button_Bar title={actionTitle(t('Capture frame'), 'captureSnapshot')} onClick={() => runAction('captureSnapshot')}>
                         <CameraIcon className="size-6" />
-                    </BarButton>
-                    {!simpleMode && <CaptureFormatButton />}
+                    </Button_Bar>
+                    {!simpleMode && <Button_CaptureFormat />}
                 </div>
             )}
 
-            {isFileOpened && <LoopSelectedSegmentsButton />}
+            {isFileOpened && <Button_LoopSelectedSegments />}
 
             {!exportConfirmEnabled && (
                 <span title={t('Export options screen is disabled, and you will not see any important notices or warnings.')}>
                     <TriangleAlertIcon className="ml-1 size-4 text-destructive" />
                 </span>
             )}
-            {(!simpleMode || !exportConfirmEnabled) && <ToggleExportConfirm />}
+            {(!simpleMode || !exportConfirmEnabled) && <Button_ToggleExportConfirm />}
 
-            {isFileOpened && <ExportButton />}
+            {isFileOpened && <Button_Export />}
         </div>
     );
 }
 
-function InvertCutModeButton() {
+function Button_InvertCutMode() {
     const invertCutSegments = useAtomValue(invertCutSegmentsAtom);
     const { t } = useTranslation();
     return (
         <motion.div animate={{ rotateX: invertCutSegments ? 0 : 180 }} transition={{ duration: 0.3 }}>
-            <BarButton
+            <Button_Bar
                 className={cn('block', invertCutSegments && 'text-destructive')}
                 title={invertCutSegments ? t('Discard selected segments') : t('Keep selected segments')}
                 onClick={toggleInvertCutSegments}
             >
                 <ContrastIcon className="size-6" />
-            </BarButton>
+            </Button_Bar>
         </motion.div>
     );
 }
 
-function SimpleModeButton() {
+function Button_SimpleMode() {
     const simpleMode = useAtomValue(simpleModeAtom);
     const { t } = useTranslation();
     return (
-        <BarButton className={simpleMode ? activeClasses : 'text-foreground'} title={t('Toggle advanced view')} onClick={toggleSimpleMode}>
+        <Button_Bar className={simpleMode ? activeClasses : 'text-foreground'} title={t('Toggle advanced view')} onClick={toggleSimpleMode}>
             <BabyIcon className="size-5" />
-        </BarButton>
+        </Button_Bar>
     );
 }
 
-function ZoomControls() {
+function Button_ZoomControls() {
     const zoom = useAtomValue(zoomAtom);
     const { t } = useTranslation();
     return (<>
-        <div role="button" className="cursor-pointer" title={t('Zoom')} onClick={timelineToggleComfortZoom}>{zoom}x</div>
+        <div className="cursor-pointer" title={t('Zoom')} onClick={timelineToggleComfortZoom} role="button">
+            {zoom}x
+        </div>
 
         <Select value={zoomOptions.includes(zoom) ? String(zoom) : ''} onValueChange={(v) => zoomAbs(() => parseInt(v, 10))}>
             <SelectTrigger size="sm" className="w-[6.5em]" title={t('Zoom')}>
                 <SelectValue placeholder={t('Zoom')} />
             </SelectTrigger>
+
             <SelectContent>
                 {zoomOptions.map((val) => (
                     <SelectItem key={val} value={String(val)}>{t('Zoom')} {val}x</SelectItem>
@@ -301,7 +295,7 @@ function ZoomControls() {
 
 const zoomOptions = Array.from({ length: 13 }, (_unused, z) => 2 ** z);
 
-function PlaybackRateIndicator() {
+function Indicator_PlaybackRate() {
     const playbackRate = useAtomValue(playbackRateAtom);
     const { t } = useTranslation();
     let flashColor = 'rgb(234 88 12)';
@@ -313,10 +307,10 @@ function PlaybackRateIndicator() {
     return (
         <motion.div
             className="px-0.5 text-xs text-muted-foreground rounded-lg"
-            title={t('Playback rate')}
             initial={{ scale: 2, backgroundColor: flashColor }}
             animate={{ scale: 1, backgroundColor: 'rgba(0,0,0,0)' }}
             transition={{ duration: 0.2 }}
+            title={t('Playback rate')}
             key={playbackRate}
         >
             {playbackRate.toFixed(1)}
@@ -331,15 +325,15 @@ async function handleChangePlaybackRateClick() {
     }
 }
 
-function FpsButton() {
+function Button_Fps() {
     const detectedFps = useAtomValue(detectedFpsAtom);
     const outputPlaybackRate = useAtomValue(outputPlaybackRateAtom);
     const { t } = useTranslation();
     return (
         <div className="whitespace-nowrap flex items-center">
-            <BarButton title={t('Change FPS')} onClick={handleChangePlaybackRateClick}>
+            <Button_Bar title={t('Change FPS')} onClick={handleChangePlaybackRateClick}>
                 <GaugeIcon className="size-5" />
-            </BarButton>
+            </Button_Bar>
 
             {detectedFps != null && (
                 <span className="ml-1 text-xs text-muted-foreground cursor-pointer" title={t('Video FPS')} onClick={handleChangePlaybackRateClick} role="button">
@@ -350,26 +344,26 @@ function FpsButton() {
     );
 }
 
-function RotationButton() {
+function Button_Rotation() {
     const rotation = useAtomValue(rotationAtom);
     const isRotationSet = useAtomValue(isRotationSetAtom);
     const actionTitle = useAtomValue(actionTitleAtom);
     const rotationStr = `${rotation}°`;
     const { t } = useTranslation();
     return (
-        <BarButton
+        <Button_Bar
             className="whitespace-nowrap flex items-center"
             title={actionTitle(`${t('Set output rotation. Current: ')} ${isRotationSet ? rotationStr : t('Don\'t modify')}`, 'increaseRotation')}
             onClick={increaseRotation}
         >
             <RotateCcwSquareIcon className={cn('size-5', isRotationSet && activeClasses)} />
             <span className="ml-0.5 inline-block text-xs text-right">{isRotationSet && rotationStr}</span>
-        </BarButton>
+        </Button_Bar>
     );
 }
 
 /** High frequency (follows the playhead): keep it a leaf */
-function DisplayTime() {
+function Indicator_DisplayTime() {
     const displayTime = useAtomValue(displayTimeAtom);
     const formatTimecode = useAtomValue(formatTimecodeAtom);
     const getFrameCount = useAtomValue(getFrameCountAtom);
@@ -400,18 +394,9 @@ function DisplayTime() {
     );
 }
 
-const captureFormats: CaptureFormat[] = ['jpeg', 'png', 'webp'];
+//---------------------------------------------------------------------------
 
-function toggleCaptureFormat() {
-    if (hasAction('toggleCaptureFormat')) {
-        void runAction('toggleCaptureFormat');
-        return;
-    }
-    const index = captureFormats.indexOf(userSettings.captureFormat);
-    userSettings.captureFormat = captureFormats[(index + 1) % captureFormats.length]!;
-}
-
-function CaptureFormatButton() {
+function Button_CaptureFormat() {
     const { captureFormat } = useAtomValue(userSettingsAtom);
     const actionTitle = useAtomValue(actionTitleAtom);
     const { t } = useTranslation();
@@ -422,7 +407,20 @@ function CaptureFormatButton() {
     );
 }
 
-function LoopSelectedSegmentsButton() {
+function toggleCaptureFormat() {
+    if (hasAction('toggleCaptureFormat')) {
+        void runAction('toggleCaptureFormat');
+        return;
+    }
+    const index = captureFormats.indexOf(userSettings.captureFormat);
+    userSettings.captureFormat = captureFormats[(index + 1) % captureFormats.length]!;
+}
+
+const captureFormats: CaptureFormat[] = ['jpeg', 'png', 'webp'];
+
+//---------------------------------------------------------------------------
+
+function Button_LoopSelectedSegments() {
     const selectedSegments = useAtomValue(selectedSegmentsAtom);
     const playing = useAtomValue(playingAtom);
     const playbackMode = useAtomValue(playbackModeAtom);
@@ -458,30 +456,23 @@ function LoopSelectedSegmentsButton() {
     );
 }
 
-function ToggleExportConfirm() {
+function Button_ToggleExportConfirm() {
     const { exportConfirmEnabled } = useAtomValue(userSettingsAtom);
     const { t } = useTranslation();
     return (
-        <BarButton
+        <Button_Bar
             className={cn(exportConfirmEnabled ? activeClasses : 'text-muted-foreground', exportConfirmEnabled && 'ml-1')}
             onClick={toggleExportConfirmEnabled}
             title={t('Show export options screen before exporting?')}
         >
             <NotebookTextIcon className="size-5.5" />
-        </BarButton>
+        </Button_Bar>
     );
 }
 
-function onExportPress() {
-    if (hasAction('export')) {
-        void runAction('export');
-    }
-    else {
-        jotaiDefaultStore.set(exportConfirmOpenAtom, true);
-    }
-}
+//---------------------------------------------------------------------------
 
-function ExportButton() {
+function Button_Export() {
     const segmentsToExport = useAtomValue(segmentsToExportAtom);
     const areWeCutting = useAtomValue(areWeCuttingAtom);
     const { autoMerge } = useAtomValue(userSettingsAtom);
@@ -505,4 +496,19 @@ function ExportButton() {
             {text}
         </Button>
     );
+}
+
+function onExportPress() {
+    if (hasAction('export')) {
+        void runAction('export');
+    }
+    else {
+        jotaiDefaultStore.set(exportConfirmOpenAtom, true);
+    }
+}
+
+//---------------------------------------------------------------------------
+
+function Button_Bar({ className, ...rest }: ComponentProps<'button'>) {
+    return <button type="button" className={cn('shrink-0 hover:text-foreground cursor-pointer', className)} {...rest} />;
 }

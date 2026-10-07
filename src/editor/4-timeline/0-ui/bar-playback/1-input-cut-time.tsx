@@ -13,11 +13,11 @@ import { currentCutSegAtom } from "@/editor/5-segments/9-state/segments-store";
 import { darkModeAtom, getSegColorAtom } from "@/editor/5-segments/9-state/seg-ui-atoms";
 import { setCutTime } from "@/editor/5-segments/7-actions/segment-actions";
 import { cutTimeErrorAtoms, cutTimeManualAtoms } from "../../9-state/bottom-bar-atoms";
+import { type Side } from "./9-types-playbar";
 
 // Port of upstream BottomBar.tsx CutTimeInput
 
-export function CutTimeInput({ side }: { side: Side; }) {
-    const { t } = useTranslation();
+export function Input_CutTime({ side }: { side: Side; }) {
     const isFileOpened = useAtomValue(isFileOpenedAtom);
     const currentCutSeg = useAtomValue(currentCutSegAtom);
     const cutTimeManual = useAtomValue(cutTimeManualAtoms[side]);
@@ -26,6 +26,7 @@ export function CutTimeInput({ side }: { side: Side; }) {
     const formatTimecode = useAtomValue(formatTimecodeAtom);
     const darkMode = useAtomValue(darkModeAtom);
     const getSegColor = useAtomValue(getSegColorAtom);
+    const { t } = useTranslation();
 
     const isStart = side === 'start';
     const cutTime = isStart ? currentCutSeg?.start : currentCutSeg?.end;
@@ -63,24 +64,11 @@ export function CutTimeInput({ side }: { side: Side; }) {
     );
 }
 
-type Side = 'start' | 'end';
+//---------------------------------------------------------------------------
 
 function setManual(side: Side, text: string | undefined, error = false) {
     jotaiDefaultStore.set(cutTimeManualAtoms[side], text);
     jotaiDefaultStore.set(cutTimeErrorAtoms[side], error);
-}
-
-function parseAndSetCutTime(side: Side, text: string) {
-    if (isEmptyEndTime(side, text)) {
-        setTime(side, undefined);
-        return;
-    }
-    // Don't proceed if not a valid time value
-    const timeWithOffset = parseTimecode(text);
-    if (timeWithOffset === undefined) {
-        return;
-    }
-    setTime(side, timeWithOffset);
 }
 
 function handleSubmit(side: Side, e: SubmitEvent<HTMLFormElement>) {
@@ -101,8 +89,6 @@ function handleSubmit(side: Side, e: SubmitEvent<HTMLFormElement>) {
     }
 }
 
-const isEmptyEndTime = (side: Side, v: string | undefined) => side === 'end' && v?.trim() === '';
-
 // Note: If we get an error from setCutTime, remain in the editing state (cutTimeManual)
 // https://github.com/mifi/lossless-cut/issues/988
 function setTime(side: Side, timeWithOffset: number | undefined) {
@@ -116,6 +102,8 @@ function setTime(side: Side, timeWithOffset: number | undefined) {
     seekAbs(timeWithoutOffset);
     setManual(side, undefined);
 }
+
+//---------------------------------------------------------------------------
 
 function handleCutTimeInput(side: Side, text: string) {
     try {
@@ -152,4 +140,21 @@ async function handleContextMenu(side: Side) {
     if (text) {
         setFromText(side, text);
     }
+}
+
+function parseAndSetCutTime(side: Side, text: string) {
+    if (isEmptyEndTime(side, text)) {
+        setTime(side, undefined);
+        return;
+    }
+    // Don't proceed if not a valid time value
+    const timeWithOffset = parseTimecode(text);
+    if (timeWithOffset === undefined) {
+        return;
+    }
+    setTime(side, timeWithOffset);
+}
+
+function isEmptyEndTime(side: Side, v: string | undefined) {
+    return side === 'end' && v?.trim() === '';
 }

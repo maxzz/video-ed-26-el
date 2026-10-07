@@ -5,7 +5,7 @@ import { Dialog_GenericHost } from "@/components/4-dialogs/7-0-dialogs/generic-d
 import { batchFilesAtom } from "@/editor/2-file/9-state/a-file-atoms";
 import { showRightBarAtom } from "./a-layout-atoms";
 import { MainArea_Toolbar } from "./3-main-area-toolbar";
-import { BottomBar } from "@/editor/4-timeline/0-ui/bottom-bar/0-bottom-bar";
+import { Bar_Playback } from "@/editor/4-timeline/0-ui/bar-playback/0-bar-playback";
 import { PlayerView, FileHosts } from "@/editor/3-player";
 import { Timeline, TimelineHosts } from "@/editor/4-timeline";
 import { SegmentList } from "@/editor/5-segments";
@@ -31,7 +31,7 @@ export function EditorRoot() {
                 </div>
 
                 <Timeline />
-                <BottomBar />
+                <Bar_Playback />
             </div>
 
             <FileHosts />
