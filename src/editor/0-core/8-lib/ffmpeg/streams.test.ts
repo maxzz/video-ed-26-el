@@ -2,7 +2,7 @@ import { test, expect } from "vitest";
 
 import { getEffectiveAvoidNegativeTs, getMapStreamsArgs, getStreamIdsToCopy, isCopyingOnlyAudioStreams } from "./streams";
 import { type FFprobeStreamDisposition } from "@shared/ffprobe";
-import { type LiteFFprobeStream } from "../types";
+import { type LiteFFprobeStream } from "../9-types-core";
 
 
 const makeDisposition = (override?: Partial<FFprobeStreamDisposition>): FFprobeStreamDisposition => ({

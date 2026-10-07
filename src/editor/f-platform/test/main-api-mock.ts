@@ -4,7 +4,7 @@ import { type AppInfo, type FfCommand, type MainApi, type MainEventsApi, type No
 import { getFfCommandLine as getFfCommandLineShared } from "@shared/ff-command-line";
 import { defaultConfig } from "@shared/default-config";
 
-// Replaces src/editor/0-core/8-lib/main-api.ts in unit tests (see setup.ts).
+// Replaces src/editor/0-core/7-actions/0-main-api.ts in unit tests (see setup.ts).
 // Every mainApi method is a vi.fn() that rejects until a test mocks it: vi.mocked(mainApi.stat).mockResolvedValue(...)
 
 const methodMocks = new Map<string, Mock>();

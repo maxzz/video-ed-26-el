@@ -2,7 +2,7 @@ import path from "node:path";
 import { describe, expect, it } from "vitest";
 
 import { formatDuration } from "@/editor/0-core/8-lib/duration";
-import { type SegmentToExport } from "@/editor/0-core/8-lib/types";
+import { type SegmentToExport } from "@/editor/0-core/8-lib/9-types-core";
 import { defaultCutFileTemplate, generateCutFileNames, generateCutMergedFileNames, generateMergedFileNames, maxFileNameLength } from "./output-name-template";
 
 const outputDir = path.resolve('/videos');
