@@ -302,19 +302,22 @@ function ZoomControls() {
 const zoomOptions = Array.from({ length: 13 }, (_unused, z) => 2 ** z);
 
 function PlaybackRateIndicator() {
-    const { t } = useTranslation();
     const playbackRate = useAtomValue(playbackRateAtom);
+    const { t } = useTranslation();
     let flashColor = 'rgb(234 88 12)';
-    if (playbackRate === 1) flashColor = 'rgb(8 145 178)';
-    else if (playbackRate < 1) flashColor = 'rgb(234 179 8)';
+    if (playbackRate === 1) {
+        flashColor = 'rgb(8 145 178)';
+    } else if (playbackRate < 1) {
+        flashColor = 'rgb(234 179 8)';
+    }
     return (
         <motion.div
-            key={playbackRate}
             className="px-0.5 text-xs text-muted-foreground rounded-lg"
             title={t('Playback rate')}
             initial={{ scale: 2, backgroundColor: flashColor }}
             animate={{ scale: 1, backgroundColor: 'rgba(0,0,0,0)' }}
             transition={{ duration: 0.2 }}
+            key={playbackRate}
         >
             {playbackRate.toFixed(1)}
         </motion.div>
@@ -323,20 +326,23 @@ function PlaybackRateIndicator() {
 
 async function handleChangePlaybackRateClick() {
     const newRate = await askForPlaybackRate({ detectedFps: jotaiDefaultStore.get(detectedFpsAtom), outputPlaybackRate: jotaiDefaultStore.get(outputPlaybackRateAtom) });
-    if (newRate != null) player.setOutputPlaybackRate(newRate);
+    if (newRate != null) {
+        player.setOutputPlaybackRate(newRate);
+    }
 }
 
 function FpsButton() {
-    const { t } = useTranslation();
     const detectedFps = useAtomValue(detectedFpsAtom);
     const outputPlaybackRate = useAtomValue(outputPlaybackRateAtom);
+    const { t } = useTranslation();
     return (
         <div className="whitespace-nowrap flex items-center">
             <BarButton title={t('Change FPS')} onClick={handleChangePlaybackRateClick}>
                 <GaugeIcon className="size-5" />
             </BarButton>
+
             {detectedFps != null && (
-                <span role="button" className="ml-1 text-xs text-muted-foreground cursor-pointer" title={t('Video FPS')} onClick={handleChangePlaybackRateClick}>
+                <span className="ml-1 text-xs text-muted-foreground cursor-pointer" title={t('Video FPS')} onClick={handleChangePlaybackRateClick} role="button">
                     {(detectedFps * outputPlaybackRate).toFixed(3)}
                 </span>
             )}
@@ -345,11 +351,11 @@ function FpsButton() {
 }
 
 function RotationButton() {
-    const { t } = useTranslation();
     const rotation = useAtomValue(rotationAtom);
     const isRotationSet = useAtomValue(isRotationSetAtom);
     const actionTitle = useAtomValue(actionTitleAtom);
     const rotationStr = `${rotation}°`;
+    const { t } = useTranslation();
     return (
         <BarButton
             className="whitespace-nowrap flex items-center"
@@ -374,10 +380,19 @@ function DisplayTime() {
         <div className="absolute inset-0 ml-6 flex items-center justify-center pointer-events-none">
             <div className="font-mono tracking-[-0.08em] pointer-events-auto">
                 {formatTimecode({ seconds: displayTime })}
+
                 <span className="ml-2 min-w-[3.5em] inline-block">
-                    {getFrameCount(displayTime) ?? 0}<span className="select-none opacity-50">f</span>
+                    {getFrameCount(displayTime) ?? 0}
+                    <span className="select-none opacity-50">
+                        f
+                    </span>
                     {isZoomed && (
-                        <span className="ml-2">{Math.round((displayTime / fileDurationNonZero) * 100)}<span className="select-none opacity-50">%</span></span>
+                        <span className="ml-2">
+                            {Math.round((displayTime / fileDurationNonZero) * 100)}
+                            <span className="select-none opacity-50">
+                                %
+                            </span>
+                        </span>
                     )}
                 </span>
             </div>
@@ -397,9 +412,9 @@ function toggleCaptureFormat() {
 }
 
 function CaptureFormatButton() {
-    const { t } = useTranslation();
     const { captureFormat } = useAtomValue(userSettingsAtom);
     const actionTitle = useAtomValue(actionTitleAtom);
+    const { t } = useTranslation();
     return (
         <Button size="xs" variant="outline" className="w-[3.7em]" title={actionTitle(t('Capture frame format'), 'toggleCaptureFormat')} onClick={(e) => { e.currentTarget.blur(); toggleCaptureFormat(); }}>
             {captureFormat.toUpperCase()}
@@ -408,11 +423,11 @@ function CaptureFormatButton() {
 }
 
 function LoopSelectedSegmentsButton() {
-    const { t } = useTranslation();
     const selectedSegments = useAtomValue(selectedSegmentsAtom);
     const playing = useAtomValue(playingAtom);
     const playbackMode = useAtomValue(playbackModeAtom);
     const actionTitle = useAtomValue(actionTitleAtom);
+    const { t } = useTranslation();
 
     // need at least 2 gradient elements:
     const selectedSegmentsSafe = (
