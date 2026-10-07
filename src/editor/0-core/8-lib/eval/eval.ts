@@ -3,19 +3,7 @@ import invariant from "tiny-invariant";
 // https://github.com/vitejs/vite/issues/11823#issuecomment-1407277242
 // https://github.com/mifi/lossless-cut/issues/2059
 import Worker from "./eval-worker.ts?worker";
-
-
-export interface RequestMessageData {
-    code: string,
-    id: number,
-    context: string // json
-}
-
-export type ResponseMessageData = { id: number } & ({
-    error: string,
-} | {
-    data: unknown,
-})
+import { type RequestMessageData, type ResponseMessageData } from "./eval-protocol";
 
 // https://v3.vitejs.dev/guide/features.html#web-workers
 // todo terminate() and recreate in case of error?
