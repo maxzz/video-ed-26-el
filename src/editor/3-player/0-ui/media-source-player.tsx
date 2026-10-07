@@ -5,9 +5,9 @@ import { jotaiDefaultStore } from "@/utils/local-utils/9-jotai-default-store";
 import { cn } from "@/utils/classnames";
 
 import { compatCanvasElementAtom, compatLoadingAtom, compatShowCanvasAtom, compatVideoElementAtom, effectiveRotationAtom } from "../9-state/player-atoms";
-import "../7-actions/compat-player";
+import "../7-actions/media-source-player-side-effects";
 
-/** Port of upstream MediaSourcePlayer. The streaming logic lives in 7-actions/compat-player.ts */
+/** Port of upstream MediaSourcePlayer. The streaming logic lives in 7-actions/media-source-player-side-effects.ts */
 export function MediaSourcePlayer() {
     const rotate = useAtomValue(effectiveRotationAtom);
     const loading = useAtomValue(compatLoadingAtom);

@@ -8,7 +8,7 @@ import { Progress } from "@/ui/shadcn/progress";
 import { workingElapsedMsAtom } from "../7-actions/working-timer";
 
 /** Port of upstream Working.tsx: blocking overlay while an operation runs, with progress and abort */
-export function WorkingOverlay() {
+export function Dialog_WorkingOverlay() {
     const working = useAtomValue(workingAtom);
     return (
         <AnimatePresence>
