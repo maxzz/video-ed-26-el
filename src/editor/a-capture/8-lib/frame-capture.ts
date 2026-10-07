@@ -1,12 +1,12 @@
-import pMap from 'p-map';
-import type { CaptureFormat } from '@shared/types.ts';
-import { userSettings } from '@/editor/0-core/9-state/user-settings.ts';
-import { formatTimecode } from '@/editor/0-core/9-state/timecode.ts';
-import { fs } from '@/editor/0-core/8-lib/node-shims.ts';
-import { assertFileExists, escapeRegExp, fsOperationWithRetry, getOutDir, getOutPath, getSuffixedFileName, getSuffixedOutPath, transferTimestamps } from '@/editor/0-core/8-lib/util.ts';
-import * as ffmpeg from '@/editor/0-core/8-lib/ffmpeg/ff-remote.ts';
-import { getNumDigits, isDurationValid } from '@/editor/5-segments/8-lib/segments.ts';
-import { appendFfmpegCommandLog } from '@/editor/7-export/9-state/export-atoms.ts';
+import pMap from "p-map";
+import { type CaptureFormat } from "@shared/types";
+import { userSettings } from "@/editor/0-core/9-state/user-settings";
+import { formatTimecode } from "@/editor/0-core/9-state/timecode";
+import { fs } from "@/editor/0-core/8-lib/node-shims";
+import { assertFileExists, escapeRegExp, fsOperationWithRetry, getOutDir, getOutPath, getSuffixedFileName, getSuffixedOutPath, transferTimestamps } from "@/editor/0-core/8-lib/util";
+import * as ffmpeg from "@/editor/0-core/8-lib/ffmpeg/ff-remote";
+import { getNumDigits, isDurationValid } from "@/editor/5-segments/8-lib/segments";
+import { appendFfmpegCommandLog } from "@/editor/7-export/9-state/export-atoms";
 
 // Port of upstream useFrameCapture
 

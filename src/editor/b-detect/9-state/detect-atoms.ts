@@ -1,6 +1,6 @@
-import { atom } from 'jotai';
-import { jotaiDefaultStore } from '@/utils/local-utils/9-jotai-default-store';
-import { type FfmpegDialog, parameters as allFfmpegParameters } from '@/editor/0-core/8-lib/ffmpeg/ffmpeg-parameters.ts';
+import { atom } from "jotai";
+import { jotaiDefaultStore } from "@/utils/local-utils/9-jotai-default-store";
+import { type FfmpegDialog, parameters as allFfmpegParameters } from "@/editor/0-core/8-lib/ffmpeg/ffmpeg-parameters";
 
 export type ParameterDialogParameters = Record<string, string>;
 

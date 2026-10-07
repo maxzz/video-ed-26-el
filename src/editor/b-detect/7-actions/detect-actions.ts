@@ -1,20 +1,20 @@
-import i18n from 'i18next';
-import invariant from 'tiny-invariant';
-import type { DetectedSegment } from '@shared/ipc-contract.ts';
-import { jotaiDefaultStore } from '@/utils/local-utils/9-jotai-default-store.ts';
-import { userSettings } from '@/editor/0-core/9-state/user-settings.ts';
-import { handleError, isWorking, setProgress, setWorking } from '@/editor/0-core/9-state/working.ts';
-import { isAbortedError } from '@/editor/0-core/8-lib/util.ts';
-import type { FfmpegDialog } from '@/editor/0-core/8-lib/ffmpeg/ffmpeg-parameters.ts';
-import { blackDetect, detectSceneChanges as ffmpegDetectSceneChanges, silenceDetect } from '@/editor/0-core/8-lib/ffmpeg/ff-remote.ts';
-import { fileDurationAtom, filePathAtom } from '@/editor/2-file/9-state/a-file-atoms.ts';
-import { activeAudioStreamIndexesAtom, activeVideoStreamIndexAtom } from '@/editor/3-player/9-state/player-atoms.ts';
-import { seekAbs } from '@/editor/3-player/7-actions/player-actions.ts';
-import { currentCutSegOrWholeTimelineAtom } from '@/editor/5-segments/9-state/segments-store.ts';
-import { deleteCurrentCutSeg, loadCutSegments } from '@/editor/5-segments/7-actions/segment-actions.ts';
-import { appendLastCommandsLog } from '@/editor/7-export/9-state/export-atoms.ts';
-import { getFfmpegParameters, type ParameterDialogParameters, setFfmpegParametersForDialog } from '../9-state/detect-atoms.ts';
-import { showParametersDialog } from '../0-ui/parameters-dialog.tsx';
+import i18n from "i18next";
+import invariant from "tiny-invariant";
+import { type DetectedSegment } from "@shared/ipc-contract";
+import { jotaiDefaultStore } from "@/utils/local-utils/9-jotai-default-store";
+import { userSettings } from "@/editor/0-core/9-state/user-settings";
+import { handleError, isWorking, setProgress, setWorking } from "@/editor/0-core/9-state/working";
+import { isAbortedError } from "@/editor/0-core/8-lib/util";
+import { type FfmpegDialog } from "@/editor/0-core/8-lib/ffmpeg/ffmpeg-parameters";
+import { blackDetect, detectSceneChanges as ffmpegDetectSceneChanges, silenceDetect } from "@/editor/0-core/8-lib/ffmpeg/ff-remote";
+import { fileDurationAtom, filePathAtom } from "@/editor/2-file/9-state/a-file-atoms";
+import { activeAudioStreamIndexesAtom, activeVideoStreamIndexAtom } from "@/editor/3-player/9-state/player-atoms";
+import { seekAbs } from "@/editor/3-player/7-actions/player-actions";
+import { currentCutSegOrWholeTimelineAtom } from "@/editor/5-segments/9-state/segments-store";
+import { deleteCurrentCutSeg, loadCutSegments } from "@/editor/5-segments/7-actions/segment-actions";
+import { appendLastCommandsLog } from "@/editor/7-export/9-state/export-atoms";
+import { getFfmpegParameters, type ParameterDialogParameters, setFfmpegParametersForDialog } from "../9-state/detect-atoms";
+import { showParametersDialog } from "../0-ui/parameters-dialog";
 
 // Port of the detection part of upstream useSegments
 

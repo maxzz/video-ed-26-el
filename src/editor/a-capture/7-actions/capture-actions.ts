@@ -1,20 +1,20 @@
-import i18n from 'i18next';
-import invariant from 'tiny-invariant';
-import type { CaptureFormat } from '@shared/types.ts';
-import type { SegmentBase } from '@/editor/0-core/8-lib/9-types-core.ts';
-import { jotaiDefaultStore } from '@/utils/local-utils/9-jotai-default-store.ts';
-import { customOutDirAtom, userSettings } from '@/editor/0-core/9-state/user-settings.ts';
-import { handleError, isWorking, setProgress, setWorking, withErrorHandling } from '@/editor/0-core/9-state/working.ts';
-import { getFrameCount } from '@/editor/0-core/9-state/timecode.ts';
-import { detectedFpsAtom, fileDurationAtom, filePathAtom, outputDirAtom, paramsByFileAtom, usingPreviewFileAtom } from '@/editor/2-file/9-state/a-file-atoms.ts';
-import { showNotification, showOsNotification } from '@/editor/0-core/8-lib/notifications.ts';
-import { addStreamSourceFile } from '@/editor/6-streams/7-actions/streams-actions.tsx';
-import { videoElementAtom } from '@/editor/3-player/9-state/player-atoms.ts';
-import { getRelevantTime } from '@/editor/3-player/7-actions/player-actions.ts';
-import { currentCutSegAtom, selectedSegmentsAtom } from '@/editor/5-segments/9-state/segments-store.ts';
-import { captureFrameFromFfmpeg, captureFrameFromTag, captureFrameToClipboard, captureFramesRange } from '../8-lib/frame-capture.ts';
-import { askExtractFramesAsImages } from '../8-lib/extract-frames-dialog.ts';
-import { openExportFinishedDialog } from '@/components/4-dialogs/7-2-dialogs/finished-dialogs.tsx';
+import i18n from "i18next";
+import invariant from "tiny-invariant";
+import { type CaptureFormat } from "@shared/types";
+import { type SegmentBase } from "@/editor/0-core/8-lib/9-types-core";
+import { jotaiDefaultStore } from "@/utils/local-utils/9-jotai-default-store";
+import { customOutDirAtom, userSettings } from "@/editor/0-core/9-state/user-settings";
+import { handleError, isWorking, setProgress, setWorking, withErrorHandling } from "@/editor/0-core/9-state/working";
+import { getFrameCount } from "@/editor/0-core/9-state/timecode";
+import { detectedFpsAtom, fileDurationAtom, filePathAtom, outputDirAtom, paramsByFileAtom, usingPreviewFileAtom } from "@/editor/2-file/9-state/a-file-atoms";
+import { showNotification, showOsNotification } from "@/editor/0-core/8-lib/notifications";
+import { addStreamSourceFile } from "@/editor/6-streams/7-actions/streams-actions";
+import { videoElementAtom } from "@/editor/3-player/9-state/player-atoms";
+import { getRelevantTime } from "@/editor/3-player/7-actions/player-actions";
+import { currentCutSegAtom, selectedSegmentsAtom } from "@/editor/5-segments/9-state/segments-store";
+import { captureFrameFromFfmpeg, captureFrameFromTag, captureFrameToClipboard, captureFramesRange } from "../8-lib/frame-capture";
+import { askExtractFramesAsImages } from "../8-lib/extract-frames-dialog";
+import { openExportFinishedDialog } from "@/components/4-dialogs/7-2-dialogs/finished-dialogs";
 
 // Port of upstream App.tsx captureSnapshot*, extract*FramesAsImages, toggleCaptureFormat
 
