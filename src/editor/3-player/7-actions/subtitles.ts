@@ -11,9 +11,24 @@ import { activeSubtitleStreamIndexAtom, subtitlesByStreamIdAtom } from "../9-sta
 
 // Port of upstream useSubtitles + onActiveSubtitleChange
 
-export async function loadSubtitle({ filePath, index, subtitleStream }: { filePath: string; index: number; subtitleStream: FFprobeStream; }) {
-    const url = await extractSubtitleTrackVtt(filePath, index);
-    jotaiDefaultStore.set(subtitlesByStreamIdAtom, (old) => ({ ...old, [index]: { url, lang: subtitleStream.tags?.language } }));
+export function initSubtitleEffects() {
+    // Cleanup removed subtitles
+    let previousSubtitles: Record<number, { url: string; lang?: string | undefined; }> = {};
+    observe(
+        (get) => {
+            const subtitlesByStreamId = get(subtitlesByStreamIdAtom);
+            const current = Object.values(subtitlesByStreamId);
+            Object.values(previousSubtitles).forEach(
+                ({ url, lang }) => {
+                    if (!current.some((existingSubtitle) => existingSubtitle.url === url)) {
+                        console.log('Cleanup subtitle', lang);
+                        URL.revokeObjectURL(url);
+                    }
+                }
+            );
+            previousSubtitles = subtitlesByStreamId;
+        },
+        jotaiDefaultStore);
 }
 
 export async function onActiveSubtitleChange(index?: number) {
@@ -46,20 +61,7 @@ export async function onActiveSubtitleChange(index?: number) {
     }
 }
 
-export function initSubtitleEffects() {
-    // Cleanup removed subtitles
-    let previousSubtitles: Record<number, { url: string; lang?: string | undefined; }> = {};
-    observe(
-        (get) => {
-            const subtitlesByStreamId = get(subtitlesByStreamIdAtom);
-            const current = Object.values(subtitlesByStreamId);
-            Object.values(previousSubtitles).forEach(({ url, lang }) => {
-                if (!current.some((existingSubtitle) => existingSubtitle.url === url)) {
-                    console.log('Cleanup subtitle', lang);
-                    URL.revokeObjectURL(url);
-                }
-            });
-            previousSubtitles = subtitlesByStreamId;
-        },
-        jotaiDefaultStore);
+async function loadSubtitle({ filePath, index, subtitleStream }: { filePath: string; index: number; subtitleStream: FFprobeStream; }) {
+    const url = await extractSubtitleTrackVtt(filePath, index);
+    jotaiDefaultStore.set(subtitlesByStreamIdAtom, (old) => ({ ...old, [index]: { url, lang: subtitleStream.tags?.language } }));
 }
