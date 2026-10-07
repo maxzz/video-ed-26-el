@@ -1,14 +1,14 @@
-import { atom } from 'jotai';
-import { jotaiDefaultStore } from '@/utils/local-utils/9-jotai-default-store';
-import { userSettingsAtom } from '@/editor/0-core/9-state/user-settings.ts';
+import { atom } from "jotai";
+import { jotaiDefaultStore } from "@/utils/local-utils/9-jotai-default-store";
+import { userSettingsAtom } from "@/editor/0-core/9-state/user-settings";
 
-import pMap from 'p-map';
-import { type FFprobeStream } from '@shared/ffprobe';
-import { onFileReset } from '@/editor/0-core/7-actions/2-lifecycle';
-import { isStreamThumbnail, shouldCopyStreamByDefault } from '@/editor/0-core/8-lib/ffmpeg/streams.ts';
-import { externalFilesMetaAtom, filePathAtom, mainStreamsAtom } from '@/editor/2-file/9-state/a-file-atoms';
-import safeishEval from '@/editor/0-core/8-lib/eval/eval.ts';
-import invariant from 'tiny-invariant';
+import pMap from "p-map";
+import { type FFprobeStream } from "@shared/ffprobe";
+import { onFileReset } from "@/editor/0-core/7-actions/2-lifecycle";
+import { isStreamThumbnail, shouldCopyStreamByDefault } from "@/editor/0-core/8-lib/ffmpeg/streams";
+import { externalFilesMetaAtom, filePathAtom, mainStreamsAtom } from "@/editor/2-file/9-state/a-file-atoms";
+import safeishEval from "@/editor/0-core/8-lib/eval/eval";
+import invariant from "tiny-invariant";
 
 // Port of upstream useStreamsMeta: which streams of which files are copied to the output.
 

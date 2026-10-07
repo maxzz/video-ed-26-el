@@ -1,14 +1,14 @@
-import { observe } from 'jotai-effect';
-import debounce from 'lodash/debounce';
-import type { AudioStreamInfo, FfmpegHwAccel } from '@shared/types';
-import { jotaiDefaultStore } from '@/utils/local-utils/9-jotai-default-store.ts';
-import { getAppInfo, mainApi } from '@/editor/0-core/7-actions/0-main-api.ts';
-import { getFrameDuration } from '@/editor/0-core/8-lib/util.ts';
-import { filePathAtom } from '@/editor/2-file/9-state/a-file-atoms.ts';
+import { observe } from "jotai-effect";
+import debounce from "lodash/debounce";
+import { type AudioStreamInfo, type FfmpegHwAccel } from "@shared/types";
+import { jotaiDefaultStore } from "@/utils/local-utils/9-jotai-default-store";
+import { getAppInfo, mainApi } from "@/editor/0-core/7-actions/0-main-api";
+import { getFrameDuration } from "@/editor/0-core/8-lib/util";
+import { filePathAtom } from "@/editor/2-file/9-state/a-file-atoms";
 import {
     activeAudioStreamsAtom, activeVideoStreamAtom, compatCanvasElementAtom, compatLoadingAtom, compatPlayerEnabledAtom, compatShowCanvasAtom,
     compatVideoElementAtom, effectiveRotationAtom, ffmpegHwaccelAtom, hideCompatPlayerAtom, mediaSourceQualityAtom, videoElementAtom,
-} from '../9-state/player-atoms.ts';
+} from "../9-state/player-atoms";
 
 // Port of upstream MediaSourcePlayer.startPlayback. Main streams fragmented mp4 from ffmpeg over the media-compat:// protocol,
 // we fetch() it and feed the chunks into a MediaSource of a "slave" <video> that is kept in sync with the master <video>.

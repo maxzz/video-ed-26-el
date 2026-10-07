@@ -1,5 +1,5 @@
-import i18n from 'i18next';
-import { showOpenDialog } from './01-show-open-dialog.tsx';
+import i18n from "i18next";
+import { showOpenDialog } from "./01-show-open-dialog";
 
 export async function askForFfPath(defaultPath?: string | undefined) {
     const { filePaths } = await showOpenDialog({

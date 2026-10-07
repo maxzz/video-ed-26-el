@@ -1,15 +1,15 @@
-import i18n from 'i18next';
-import invariant from 'tiny-invariant';
-import type { BatchFile } from '@/editor/0-core/8-lib/9-types-core.ts';
-import { jotaiDefaultStore } from '@/utils/local-utils/9-jotai-default-store.ts';
-import { userSettings } from '@/editor/0-core/9-state/user-settings.ts';
-import { isWorking, setWorking, withErrorHandling } from '@/editor/0-core/9-state/working.ts';
-import { confirmDialog } from '@/components/4-dialogs/7-1-dialogs/00-app-dialogs.tsx';
-import { mainApi } from '@/editor/0-core/7-actions/0-main-api.ts';
-import { basename } from '@/editor/0-core/8-lib/node-shims.ts';
-import { batchFilesAtom, filePathAtom, selectedBatchFilesAtom } from '../9-state/a-file-atoms.ts';
-import { getDroppedFilePaths } from '../../../utils/local-utils/8-drop-full-path.ts';
-import { userOpenSingleFile } from './load-media.ts';
+import i18n from "i18next";
+import invariant from "tiny-invariant";
+import { type BatchFile } from "@/editor/0-core/8-lib/9-types-core";
+import { jotaiDefaultStore } from "@/utils/local-utils/9-jotai-default-store";
+import { userSettings } from "@/editor/0-core/9-state/user-settings";
+import { isWorking, setWorking, withErrorHandling } from "@/editor/0-core/9-state/working";
+import { confirmDialog } from "@/components/4-dialogs/7-1-dialogs/00-app-dialogs";
+import { mainApi } from "@/editor/0-core/7-actions/0-main-api";
+import { basename } from "@/editor/0-core/8-lib/node-shims";
+import { batchFilesAtom, filePathAtom, selectedBatchFilesAtom } from "../9-state/a-file-atoms";
+import { getDroppedFilePaths } from "../../../utils/local-utils/8-drop-full-path";
+import { userOpenSingleFile } from "./load-media";
 
 const mapPathsToFiles = (paths: string[]): BatchFile[] => paths.map((path) => ({ path, name: basename(path) }));
 

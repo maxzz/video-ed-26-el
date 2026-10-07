@@ -1,31 +1,31 @@
-import i18n from 'i18next';
-import invariant from 'tiny-invariant';
-import sum from 'lodash/sum.js';
-import type { FFprobeStream } from '@shared/ffprobe';
-import { jotaiDefaultStore } from '@/utils/local-utils/9-jotai-default-store.ts';
-import { customOutDirAtom, userSettings } from '@/editor/0-core/9-state/user-settings.ts';
-import { isWorking, setProgress, setWorking } from '@/editor/0-core/9-state/working.ts';
-import { showConcatFailedDialog } from '@/components/4-dialogs/7-1-dialogs/12-show-concat-failed-dialog.tsx';
-import { errorToast } from '@/components/4-dialogs/7-1-dialogs/00-app-dialogs.tsx';
-import { showDiskFull, showMuxNotSupported, showOutputNotWritable } from '@/components/4-dialogs/7-1-dialogs/24-dlg-error-toasts.tsx';
-import { DirectoryAccessDeclinedError, UserFacingError } from '@/editor/0-core/8-lib/9-error-types.ts';
-import { createChaptersFromSegments } from '@/editor/0-core/8-lib/ffmpeg/ffmpeg.ts';
-import { parsePath } from '@/editor/0-core/8-lib/node-shims.ts';
+import i18n from "i18next";
+import invariant from "tiny-invariant";
+import sum from "lodash/sum.js";
+import { type FFprobeStream } from "@shared/ffprobe";
+import { jotaiDefaultStore } from "@/utils/local-utils/9-jotai-default-store";
+import { customOutDirAtom, userSettings } from "@/editor/0-core/9-state/user-settings";
+import { isWorking, setProgress, setWorking } from "@/editor/0-core/9-state/working";
+import { showConcatFailedDialog } from "@/components/4-dialogs/7-1-dialogs/12-show-concat-failed-dialog";
+import { errorToast } from "@/components/4-dialogs/7-1-dialogs/00-app-dialogs";
+import { showDiskFull, showMuxNotSupported, showOutputNotWritable } from "@/components/4-dialogs/7-1-dialogs/24-dlg-error-toasts";
+import { DirectoryAccessDeclinedError, UserFacingError } from "@/editor/0-core/8-lib/9-error-types";
+import { createChaptersFromSegments } from "@/editor/0-core/8-lib/ffmpeg/ffmpeg";
+import { parsePath } from "@/editor/0-core/8-lib/node-shims";
 import {
     checkFileSizes, getOutDir, getOutPath, getStdioString, isAbortedError, isExecaError, isMuxNotSupported, isOutOfSpaceError,
     makeSourceFileAccessError, readFileSize, readFileSizes,
-} from '@/editor/0-core/8-lib/util.ts';
-import { batchFilePathsAtom, batchFilesAtom, detectedFileFormatAtom, fileFormatAtom } from '@/editor/2-file/9-state/a-file-atoms.ts';
-import { closeBatch, ensureWritableOutDir, openFilesDialog, openSendReportDialog } from '@/editor/2-file/index.ts';
-import { concatDialogOpenAtom } from '@/components/2-main/0-all/a-panels-atoms.ts';
-import { concatFiles, maybeMkDeepOutDir, OutputNotWritableError } from '@/editor/7-export/8-lib/ffmpeg-operations.ts';
-import type { GeneratedOutFileNames } from '@/editor/7-export/8-lib/output-name-template.ts';
-import { showOsNotification } from '@/editor/0-core/8-lib/notifications.ts';
-import { openConcatFinishedDialog } from '@/components/4-dialogs/7-2-dialogs/finished-dialogs.tsx';
+} from "@/editor/0-core/8-lib/util";
+import { batchFilePathsAtom, batchFilesAtom, detectedFileFormatAtom, fileFormatAtom } from "@/editor/2-file/9-state/a-file-atoms";
+import { closeBatch, ensureWritableOutDir, openFilesDialog, openSendReportDialog } from "@/editor/2-file";
+import { concatDialogOpenAtom } from "@/components/2-main/0-all/a-panels-atoms";
+import { concatFiles, maybeMkDeepOutDir, OutputNotWritableError } from "@/editor/7-export/8-lib/ffmpeg-operations";
+import { type GeneratedOutFileNames } from "@/editor/7-export/8-lib/output-name-template";
+import { showOsNotification } from "@/editor/0-core/8-lib/notifications";
+import { openConcatFinishedDialog } from "@/components/4-dialogs/7-2-dialogs/finished-dialogs";
 import {
     concatClearBatchFilesAfterConcatAtom, concatEnableReadFileMetaAtom, concatFilesMetaAtom, concatFirstPathAtom, concatIncludeAllStreamsAtom,
     concatMergedFileTemplateAtom, concatOutputDirAtom, concatTempMergedFileTemplateAtom, generateConcatFileNames,
-} from '../9-state/concat-atoms.ts';
+} from "../9-state/concat-atoms";
 
 // Port of upstream App.tsx userConcatFiles/concatBatch and the actions of components/ConcatDialog.tsx
 

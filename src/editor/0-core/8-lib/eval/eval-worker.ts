@@ -1,4 +1,4 @@
-import type { RequestMessageData, ResponseMessageData } from './eval.ts';
+import { type RequestMessageData, type ResponseMessageData } from "./eval";
 
 
 // https://stackoverflow.com/a/10796616/6519037

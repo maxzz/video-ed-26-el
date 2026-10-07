@@ -1,41 +1,41 @@
-import i18n from 'i18next';
-import invariant from 'tiny-invariant';
-import { jotaiDefaultStore } from '@/utils/local-utils/9-jotai-default-store.ts';
-import { customOutDirAtom, effectiveExportModeAtom, hideAllNotificationsAtom, prefersReducedMotionAtom, setCustomOutDir, userSettings } from '@/editor/0-core/9-state/user-settings.ts';
-import { isWorking, setProgress, setWorking, withErrorHandling } from '@/editor/0-core/9-state/working.ts';
-import { askForOutDir } from '@/components/4-dialogs/7-1-dialogs/02-ask-for-out-dir.tsx';
-import { showExportFailedDialog } from '@/components/4-dialogs/7-1-dialogs/11-show-export-failed-dialog.tsx';
-import { type CleanupChoicesType, confirmDialog, deleteFiles, errorToast } from '@/components/4-dialogs/7-1-dialogs/00-app-dialogs.tsx';
-import { showDiskFull, showMuxNotSupported, showOutputNotWritable, showRefuseToOverwrite } from '@/components/4-dialogs/7-1-dialogs/24-dlg-error-toasts.tsx';
-import { UserFacingError } from '@/editor/0-core/8-lib/9-error-types.ts';
-import { isIphoneHevc, isProblematicAvc1, RefuseOverwriteError } from '@/editor/0-core/8-lib/ffmpeg/ffmpeg.ts';
-import { isMatroska } from '@/editor/0-core/8-lib/ffmpeg/streams.ts';
-import { mainApi } from '@/editor/0-core/7-actions/0-main-api.ts';
-import type { Chapter, ExportMode } from '@/editor/0-core/8-lib/9-types-core.ts';
-import { DirectoryAccessDeclinedError } from '@/editor/0-core/8-lib/9-error-types.ts';
-import { ensureWritableOutDir } from '@/editor/2-file/7-actions/directory-access.ts';
-import { getOutFileExtension, getOutPath, getStdioString, getSuffixedOutPath, isAbortedError, isExecaError, isMuxNotSupported, isOutOfSpaceError, transferTimestamps } from '@/editor/0-core/8-lib/util.ts';
-import { exportConfirmOpenAtom, streamsSelectorShownAtom } from '@/components/2-main/0-all/a-panels-atoms.ts';
+import i18n from "i18next";
+import invariant from "tiny-invariant";
+import { jotaiDefaultStore } from "@/utils/local-utils/9-jotai-default-store";
+import { customOutDirAtom, effectiveExportModeAtom, hideAllNotificationsAtom, prefersReducedMotionAtom, setCustomOutDir, userSettings } from "@/editor/0-core/9-state/user-settings";
+import { isWorking, setProgress, setWorking, withErrorHandling } from "@/editor/0-core/9-state/working";
+import { askForOutDir } from "@/components/4-dialogs/7-1-dialogs/02-ask-for-out-dir";
+import { showExportFailedDialog } from "@/components/4-dialogs/7-1-dialogs/11-show-export-failed-dialog";
+import { type CleanupChoicesType, confirmDialog, deleteFiles, errorToast } from "@/components/4-dialogs/7-1-dialogs/00-app-dialogs";
+import { showDiskFull, showMuxNotSupported, showOutputNotWritable, showRefuseToOverwrite } from "@/components/4-dialogs/7-1-dialogs/24-dlg-error-toasts";
+import { UserFacingError } from "@/editor/0-core/8-lib/9-error-types";
+import { isIphoneHevc, isProblematicAvc1, RefuseOverwriteError } from "@/editor/0-core/8-lib/ffmpeg/ffmpeg";
+import { isMatroska } from "@/editor/0-core/8-lib/ffmpeg/streams";
+import { mainApi } from "@/editor/0-core/7-actions/0-main-api";
+import { type Chapter, type ExportMode } from "@/editor/0-core/8-lib/9-types-core";
+import { DirectoryAccessDeclinedError } from "@/editor/0-core/8-lib/9-error-types";
+import { ensureWritableOutDir } from "@/editor/2-file/7-actions/directory-access";
+import { getOutFileExtension, getOutPath, getStdioString, getSuffixedOutPath, isAbortedError, isExecaError, isMuxNotSupported, isOutOfSpaceError, transferTimestamps } from "@/editor/0-core/8-lib/util";
+import { exportConfirmOpenAtom, streamsSelectorShownAtom } from "@/components/2-main/0-all/a-panels-atoms";
 import {
     allFilesMetaAtom, currentFileExportCountAtom, detectedFileFormatAtom, detectedFpsAtom, exportCountAtom, externalFilesMetaAtom, fileDurationAtom, fileFormatAtom, filePathAtom,
     isFileOpenedAtom, isRotationSetAtom, mainFileFormatDataAtom, mainStreamsAtom, outputDirAtom, paramsByFileAtom, previewFilePathAtom, rotationAtom, shortestFlagAtom,
-} from '@/editor/2-file/9-state/a-file-atoms.ts';
-import { batchListRemoveFile } from '@/editor/2-file/7-actions/batch-actions.ts';
-import { closeFile, loadMedia, runAndReloadFile, tryFixInvalidDuration } from '@/editor/2-file/7-actions/load-media.ts';
-import { projectFileSavePathAtom } from '@/editor/2-file/7-actions/project-auto-save.ts';
-import { dialog_SendReport_open } from '@/editor/2-file/0-ui/dlg-send-report.tsx';
-import { effectiveRotationAtom } from '@/editor/3-player/9-state/player-atoms.ts';
-import { checkFileOpened } from '@/editor/3-player/7-actions/player-actions.ts';
-import { cutSegmentsAtom, haveInvalidSegsAtom, segmentsOrInverseAtom, segmentsToExportAtom, selectedSegmentsAtom } from '@/editor/5-segments/9-state/segments-store.ts';
-import { convertSegmentsToChaptersWithGaps, hasAnySegmentOverlap, sortSegments } from '@/editor/5-segments/8-lib/segments.ts';
-import { copyFileStreamsAtom, copyStreamIdsByFileAtom, exportExtraStreamsAtom, mainCopiedStreamsAtom, nonCopiedExtraStreamsAtom, numStreamsToCopyAtom } from '@/editor/6-streams/9-state/a-streams-store.ts';
-import { formatTsvHuman } from '@/editor/9-edl/8-lib/edl-formats.ts';
-import { areWeCuttingAtom, cutFileTemplateOrDefaultAtom, cutMergedFileTemplateOrDefaultAtom, willMergeAtom } from '../9-state/export-atoms.ts';
-import { concatCutSegments, cutMultiple, decimate, extractStreams, fixInvalidDuration, OutputNotWritableError, tryDeleteFiles } from '../8-lib/ffmpeg-operations.ts';
-import { defaultCutFileTemplate } from '../8-lib/output-name-template.ts';
-import { showNotification, showOsNotification } from '@/editor/0-core/8-lib/notifications.ts';
-import { openCleanupFilesDialog, openCutFinishedDialog, openDecimateDialog, openExportFinishedDialog } from '../../../components/4-dialogs/7-2-dialogs/finished-dialogs.tsx';
-import { generateCutMergedOutFileNames, generateOutSegFileNames } from './out-file-names.ts';
+} from "@/editor/2-file/9-state/a-file-atoms";
+import { batchListRemoveFile } from "@/editor/2-file/7-actions/batch-actions";
+import { closeFile, loadMedia, runAndReloadFile, tryFixInvalidDuration } from "@/editor/2-file/7-actions/load-media";
+import { projectFileSavePathAtom } from "@/editor/2-file/7-actions/project-auto-save";
+import { dialog_SendReport_open } from "@/editor/2-file/0-ui/dlg-send-report";
+import { effectiveRotationAtom } from "@/editor/3-player/9-state/player-atoms";
+import { checkFileOpened } from "@/editor/3-player/7-actions/player-actions";
+import { cutSegmentsAtom, haveInvalidSegsAtom, segmentsOrInverseAtom, segmentsToExportAtom, selectedSegmentsAtom } from "@/editor/5-segments/9-state/segments-store";
+import { convertSegmentsToChaptersWithGaps, hasAnySegmentOverlap, sortSegments } from "@/editor/5-segments/8-lib/segments";
+import { copyFileStreamsAtom, copyStreamIdsByFileAtom, exportExtraStreamsAtom, mainCopiedStreamsAtom, nonCopiedExtraStreamsAtom, numStreamsToCopyAtom } from "@/editor/6-streams/9-state/a-streams-store";
+import { formatTsvHuman } from "@/editor/9-edl/8-lib/edl-formats";
+import { areWeCuttingAtom, cutFileTemplateOrDefaultAtom, cutMergedFileTemplateOrDefaultAtom, willMergeAtom } from "../9-state/export-atoms";
+import { concatCutSegments, cutMultiple, decimate, extractStreams, fixInvalidDuration, OutputNotWritableError, tryDeleteFiles } from "../8-lib/ffmpeg-operations";
+import { defaultCutFileTemplate } from "../8-lib/output-name-template";
+import { showNotification, showOsNotification } from "@/editor/0-core/8-lib/notifications";
+import { openCleanupFilesDialog, openCutFinishedDialog, openDecimateDialog, openExportFinishedDialog } from "../../../components/4-dialogs/7-2-dialogs/finished-dialogs";
+import { generateCutMergedOutFileNames, generateOutSegFileNames } from "./out-file-names";
 
 // Port of the export flow of upstream App.tsx
 

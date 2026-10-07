@@ -1,10 +1,10 @@
-import { nanoid } from 'nanoid';
-import sortBy from 'lodash/sortBy';
-import minBy from 'lodash/minBy';
-import maxBy from 'lodash/maxBy';
-import invariant from 'tiny-invariant';
+import { nanoid } from "nanoid";
+import sortBy from "lodash/sortBy";
+import minBy from "lodash/minBy";
+import maxBy from "lodash/maxBy";
+import invariant from "tiny-invariant";
 
-import type { DefiniteSegmentBase, PlaybackMode, SegmentBase, SegmentTags, SegmentToExport, StateSegment } from '@/editor/0-core/8-lib/9-types-core';
+import { type DefiniteSegmentBase, type PlaybackMode, type SegmentBase, type SegmentTags, type SegmentToExport, type StateSegment } from "@/editor/0-core/8-lib/9-types-core";
 
 
 export const isDurationValid = (duration?: number): duration is number => duration != null && Number.isFinite(duration) && duration > 0;

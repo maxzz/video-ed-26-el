@@ -1,37 +1,37 @@
-import type { DragEvent } from 'react';
-import { useAtomValue } from 'jotai';
-import { cn } from '@/utils/classnames';
-import { jotaiDefaultStore } from '@/utils/local-utils/9-jotai-default-store.ts';
-import { Trans, useTranslation } from 'react-i18next';
-import { Button } from '@/ui/shadcn/button';
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/ui/shadcn/dialog';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from '@/ui/shadcn/dropdown-menu';
-import { Select, SelectContent, SelectItem, SelectSeparator, SelectTrigger, SelectValue } from '@/ui/shadcn/select';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/ui/shadcn/table';
+import { type DragEvent } from "react";
+import { useAtomValue } from "jotai";
+import { cn } from "@/utils/classnames";
+import { jotaiDefaultStore } from "@/utils/local-utils/9-jotai-default-store";
+import { Trans, useTranslation } from "react-i18next";
+import { Button } from "@/ui/shadcn/button";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/ui/shadcn/dialog";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/ui/shadcn/dropdown-menu";
+import { Select, SelectContent, SelectItem, SelectSeparator, SelectTrigger, SelectValue } from "@/ui/shadcn/select";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/ui/shadcn/table";
 import {
     ArrowDown01Icon, ArrowUp01Icon, BanIcon, BinaryIcon, BookIcon, CaptionsIcon, EyeIcon, FileInputIcon, FileOutputIcon, FilterIcon, ImageIcon, InfoIcon, LanguagesIcon, MapIcon,
     MenuIcon, PaperclipIcon, PencilIcon, Trash2Icon, VideoIcon, VideoOffIcon, Volume2Icon, VolumeXIcon,
-} from 'lucide-react';
+} from "lucide-react";
 
-import { mainApi, preloadEnv } from '@/editor/0-core/7-actions/0-main-api.ts';
-import prettyBytes from 'pretty-bytes';
-import type { FFprobeChapter, FFprobeFormat, FFprobeStream } from '@shared/ffprobe';
-import { userSettings, userSettingsAtom } from '@/editor/0-core/9-state/user-settings.ts';
-import { formatTimecode } from '@/editor/0-core/9-state/timecode.ts';
-import { setWorking, withErrorHandling } from '@/editor/0-core/9-state/working.ts';
-import { extractSubtitleTrackToSegments, type FileStream, getStreamFps } from '@/editor/0-core/8-lib/ffmpeg/ffmpeg.ts';
-import { attachedPicDisposition, getActiveDisposition, isGpsStream } from '@/editor/0-core/8-lib/ffmpeg/streams.ts';
-import { type ContentDispositionOptions, contentDispositionOptionsSchema, deleteDispositionValue, dispositionOptions, type ParamsByFile } from '@/editor/0-core/8-lib/9-types-core.ts';
-import { streamsSelectorShownAtom } from '@/components/2-main/0-all/a-panels-atoms.ts';
-import { externalFilesMetaAtom, fileDurationAtom, filePathAtom, mainFileChaptersAtom, mainFileFormatDataAtom, mainStreamsAtom, paramsByFileAtom, shortestFlagAtom } from '@/editor/2-file/9-state/a-file-atoms.ts';
-import { loadCutSegments } from '@/editor/5-segments/7-actions/segment-actions.ts';
-import { extractAllStreams, extractSingleStream } from '@/editor/7-export/7-actions/export-actions.ts';
-import { copyStreamIdsByFileAtom, isCopyingStreamIdIn, nonCopiedExtraStreamsAtom, setCopyStreamIdsForPath, toggleCopyAllStreamsForPath, toggleCopyStreamId, toggleCopyStreamIds } from '../9-state/a-streams-store.ts';
-import { setEditingFile, setEditingStream } from '../9-state/a-streams-ui-atoms.ts';
-import { addStreamSourceFile, changeEnabledStreamsFilter, removeExternalFile, showIncludeExternalStreamsDialog, updateStreamParams } from '../7-actions/streams-actions.tsx';
-import { Dialog_EditFile, Dialog_EditStream } from './dlg-edits.tsx';
-import { GpsMap } from './gps-map.tsx';
-import { Dialog_Json5 } from './dlg-json5.tsx';
+import { mainApi, preloadEnv } from "@/editor/0-core/7-actions/0-main-api";
+import prettyBytes from "pretty-bytes";
+import { type FFprobeChapter, type FFprobeFormat, type FFprobeStream } from "@shared/ffprobe";
+import { userSettings, userSettingsAtom } from "@/editor/0-core/9-state/user-settings";
+import { formatTimecode } from "@/editor/0-core/9-state/timecode";
+import { setWorking, withErrorHandling } from "@/editor/0-core/9-state/working";
+import { extractSubtitleTrackToSegments, type FileStream, getStreamFps } from "@/editor/0-core/8-lib/ffmpeg/ffmpeg";
+import { attachedPicDisposition, getActiveDisposition, isGpsStream } from "@/editor/0-core/8-lib/ffmpeg/streams";
+import { type ContentDispositionOptions, contentDispositionOptionsSchema, deleteDispositionValue, dispositionOptions, type ParamsByFile } from "@/editor/0-core/8-lib/9-types-core";
+import { streamsSelectorShownAtom } from "@/components/2-main/0-all/a-panels-atoms";
+import { externalFilesMetaAtom, fileDurationAtom, filePathAtom, mainFileChaptersAtom, mainFileFormatDataAtom, mainStreamsAtom, paramsByFileAtom, shortestFlagAtom } from "@/editor/2-file/9-state/a-file-atoms";
+import { loadCutSegments } from "@/editor/5-segments/7-actions/segment-actions";
+import { extractAllStreams, extractSingleStream } from "@/editor/7-export/7-actions/export-actions";
+import { copyStreamIdsByFileAtom, isCopyingStreamIdIn, nonCopiedExtraStreamsAtom, setCopyStreamIdsForPath, toggleCopyAllStreamsForPath, toggleCopyStreamId, toggleCopyStreamIds } from "../9-state/a-streams-store";
+import { setEditingFile, setEditingStream } from "../9-state/a-streams-ui-atoms";
+import { addStreamSourceFile, changeEnabledStreamsFilter, removeExternalFile, showIncludeExternalStreamsDialog, updateStreamParams } from "../7-actions/streams-actions";
+import { Dialog_EditFile, Dialog_EditStream } from "./dlg-edits";
+import { GpsMap } from "./gps-map";
+import { Dialog_Json5 } from "./dlg-json5";
 
 // Port of upstream StreamsSelector.tsx and its dialog in App.tsx
 

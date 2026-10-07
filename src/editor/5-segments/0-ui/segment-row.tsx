@@ -1,20 +1,20 @@
-import type { CSSProperties, MouseEvent } from 'react';
-import { useAtomValue } from 'jotai';
-import { useTranslation } from 'react-i18next';
-import { useSortable } from '@dnd-kit/sortable';
-import { CSS } from '@dnd-kit/utilities';
-import { CircleCheckIcon, CircleIcon, SaveIcon } from 'lucide-react';
-import prettyBytes from 'pretty-bytes';
-import { cn } from '@/utils/classnames';
-import { ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuSeparator, ContextMenuTrigger } from '@/ui/shadcn/context-menu';
-import type { InverseCutSegment, StateSegment } from '@/editor/0-core/8-lib/9-types-core.ts';
-import { formatTimecodeAtom, getFrameCountAtom } from '@/editor/0-core/9-state/timecode.ts';
-import { runAction } from '@/editor/0-core/7-actions/kbd-actions.ts';
-import { jumpSegEnd, jumpSegStart } from '@/editor/3-player/7-actions/player-actions.ts';
-import { getSegmentTags } from '../8-lib/segments.ts';
-import { darkModeAtom, getSegColorAtom, invertCutSegmentsAtom } from '../9-state/seg-ui-atoms.ts';
-import * as seg from '../7-actions/segment-actions.ts';
-import { editSegmentTags, mutateSegmentsByExpr, reorderSegmentDialog, selectSegmentsByExpr } from '../7-actions/segment-dialogs.tsx';
+import { type CSSProperties, type MouseEvent } from "react";
+import { useAtomValue } from "jotai";
+import { useTranslation } from "react-i18next";
+import { useSortable } from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
+import { CircleCheckIcon, CircleIcon, SaveIcon } from "lucide-react";
+import prettyBytes from "pretty-bytes";
+import { cn } from "@/utils/classnames";
+import { ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuSeparator, ContextMenuTrigger } from "@/ui/shadcn/context-menu";
+import { type InverseCutSegment, type StateSegment } from "@/editor/0-core/8-lib/9-types-core";
+import { formatTimecodeAtom, getFrameCountAtom } from "@/editor/0-core/9-state/timecode";
+import { runAction } from "@/editor/0-core/7-actions/kbd-actions";
+import { jumpSegEnd, jumpSegStart } from "@/editor/3-player/7-actions/player-actions";
+import { getSegmentTags } from "../8-lib/segments";
+import { darkModeAtom, getSegColorAtom, invertCutSegmentsAtom } from "../9-state/seg-ui-atoms";
+import * as seg from "../7-actions/segment-actions";
+import { editSegmentTags, mutateSegmentsByExpr, reorderSegmentDialog, selectSegmentsByExpr } from "../7-actions/segment-dialogs";
 
 // Port of upstream SegmentList.tsx Segment
 

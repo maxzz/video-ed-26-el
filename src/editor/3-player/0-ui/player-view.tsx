@@ -1,29 +1,29 @@
-import type { DragEvent, FocusEvent, SyntheticEvent } from 'react';
-import { useAtomValue } from 'jotai';
-import { useTranslation } from 'react-i18next';
-import { CircleXIcon, MenuIcon, RotateCcwSquareIcon } from 'lucide-react';
-import { jotaiDefaultStore } from '@/utils/local-utils/9-jotai-default-store.ts';
-import { runAction } from '@/editor/0-core/7-actions/kbd-actions.ts';
-import { calculateTimelinePercent, mediaSourceQualities } from '@/editor/0-core/8-lib/util.ts';
-import { fullscreenAtom } from '@/components/2-main/0-all/a-panels-atoms.ts';
-import { showRightBarAtom } from '@/components/2-main/0-all/a-layout-atoms.ts';
-import { fileDurationAtom, filePathAtom, hasVideoAtom, isFileOpenedAtom, isRotationSetAtom } from '@/editor/2-file/9-state/a-file-atoms.ts';
-import { onFilesDrop } from '@/editor/2-file/7-actions/open-files.ts';
-import { bigWaveformEnabledAtom } from '@/editor/4-timeline/9-state/timeline-atoms.ts';
-import { onTimelineWheel } from '@/editor/4-timeline/7-actions/timeline-actions.ts';
-import { BigWaveform } from '@/editor/4-timeline/0-ui/big-waveform.tsx';
-import { Button } from '@/ui/shadcn/button';
-import { cn } from '@/utils/classnames';
+import { type DragEvent, type FocusEvent, type SyntheticEvent } from "react";
+import { useAtomValue } from "jotai";
+import { useTranslation } from "react-i18next";
+import { CircleXIcon, MenuIcon, RotateCcwSquareIcon } from "lucide-react";
+import { jotaiDefaultStore } from "@/utils/local-utils/9-jotai-default-store";
+import { runAction } from "@/editor/0-core/7-actions/kbd-actions";
+import { calculateTimelinePercent, mediaSourceQualities } from "@/editor/0-core/8-lib/util";
+import { fullscreenAtom } from "@/components/2-main/0-all/a-panels-atoms";
+import { showRightBarAtom } from "@/components/2-main/0-all/a-layout-atoms";
+import { fileDurationAtom, filePathAtom, hasVideoAtom, isFileOpenedAtom, isRotationSetAtom } from "@/editor/2-file/9-state/a-file-atoms";
+import { onFilesDrop } from "@/editor/2-file/7-actions/open-files";
+import { bigWaveformEnabledAtom } from "@/editor/4-timeline/9-state/timeline-atoms";
+import { onTimelineWheel } from "@/editor/4-timeline/7-actions/timeline-actions";
+import { BigWaveform } from "@/editor/4-timeline/0-ui/big-waveform";
+import { Button } from "@/ui/shadcn/button";
+import { cn } from "@/utils/classnames";
 import {
     activeSubtitleAtom, compatPlayerEnabledAtom, compatPlayerRequiredAtom, mediaSourceQualityAtom, playbackVolumeAtom, playerTimeAtom,
     shouldShowPlaybackStreamSelectorAtom, videoContainerElementAtom, videoElementAtom,
-} from '../9-state/player-atoms.ts';
-import { handleHideCompatPlayerClick, onSeeked, onStartPlaying, onStopPlaying, onTimeUpdate, onVideoAbort, togglePlay } from '../7-actions/player-actions.ts';
-import { incrementMediaSourceQuality, onDurationChange, onVideoError, toggleFullscreenVideo } from '../7-actions/video-events.ts';
-import { MediaSourcePlayer } from './media-source-player.tsx';
-import { NoFileLoaded } from './no-file-loaded.tsx';
-import { PlaybackStreamSelector } from './playback-stream-selector.tsx';
-import { VolumeControl } from './volume-control.tsx';
+} from "../9-state/player-atoms";
+import { handleHideCompatPlayerClick, onSeeked, onStartPlaying, onStopPlaying, onTimeUpdate, onVideoAbort, togglePlay } from "../7-actions/player-actions";
+import { incrementMediaSourceQuality, onDurationChange, onVideoError, toggleFullscreenVideo } from "../7-actions/video-events";
+import { MediaSourcePlayer } from "./media-source-player";
+import { NoFileLoaded } from "./no-file-loaded";
+import { PlaybackStreamSelector } from "./playback-stream-selector";
+import { VolumeControl } from "./volume-control";
 
 const setVideoElement = (el: HTMLVideoElement | null) => { jotaiDefaultStore.set(videoElementAtom, el); };
 const setVideoContainer = (el: HTMLDivElement | null) => { jotaiDefaultStore.set(videoContainerElementAtom, el); };

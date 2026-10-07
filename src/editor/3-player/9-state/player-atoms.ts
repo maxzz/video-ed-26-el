@@ -1,11 +1,11 @@
-import { atom } from 'jotai';
-import type { FFprobeStream } from '@shared/ffprobe';
-import type { ChromiumHTMLVideoElement, PlaybackMode } from '@/editor/0-core/8-lib/9-types-core';
-import { audioStreamsAtom, isRotationSetAtom, mainAudioStreamAtom, mainVideoStreamAtom, rotationAtom, subtitleStreamsAtom, usingDummyVideoAtom, videoStreamsAtom } from '@/editor/2-file/9-state/a-file-atoms';
-import { canHtml5PlayerPlayStreams } from '@/editor/0-core/8-lib/ffmpeg/streams.ts';
-import { jotaiDefaultStore } from '@/utils/local-utils/9-jotai-default-store';
-import { userSettingsAtom } from '@/editor/0-core/9-state/user-settings.ts';
-import { onFileReset } from '@/editor/0-core/7-actions/2-lifecycle';
+import { atom } from "jotai";
+import { type FFprobeStream } from "@shared/ffprobe";
+import { type ChromiumHTMLVideoElement, type PlaybackMode } from "@/editor/0-core/8-lib/9-types-core";
+import { audioStreamsAtom, isRotationSetAtom, mainAudioStreamAtom, mainVideoStreamAtom, rotationAtom, subtitleStreamsAtom, usingDummyVideoAtom, videoStreamsAtom } from "@/editor/2-file/9-state/a-file-atoms";
+import { canHtml5PlayerPlayStreams } from "@/editor/0-core/8-lib/ffmpeg/streams";
+import { jotaiDefaultStore } from "@/utils/local-utils/9-jotai-default-store";
+import { userSettingsAtom } from "@/editor/0-core/9-state/user-settings";
+import { onFileReset } from "@/editor/0-core/7-actions/2-lifecycle";
 
 /** Set by the <video> ref callback */
 export const videoElementAtom = atom<ChromiumHTMLVideoElement | null>(null);

@@ -1,18 +1,18 @@
-import i18n from 'i18next';
-import pMap from 'p-map';
-import prettyBytes from 'pretty-bytes';
-import sortBy from 'lodash/sortBy';
-import type { Options } from 'p-retry';
-import pRetry from 'p-retry';
-import invariant from 'tiny-invariant';
+import i18n from "i18next";
+import pMap from "p-map";
+import prettyBytes from "pretty-bytes";
+import sortBy from "lodash/sortBy";
+import { type Options } from "p-retry";
+import pRetry from "p-retry";
+import invariant from "tiny-invariant";
 
-import { ffmpegExtractWindow } from './constants.ts';
-import { appName } from '@shared/constants';
-import type { EnableImportChapters, Html5ifyMode } from '@shared/types';
-import { UserFacingError } from './9-error-types.ts';
-import type { FFprobeFormat } from '@shared/ffprobe';
-import { getAppInfo, isMac, isWindows, mainApi } from '../7-actions/0-main-api.ts';
-import { dirname, parsePath, join, extname, isAbsolute, resolve, basename, fs } from './node-shims.ts';
+import { ffmpegExtractWindow } from "./constants";
+import { appName } from "@shared/constants";
+import { type EnableImportChapters, type Html5ifyMode } from "@shared/types";
+import { UserFacingError } from "./9-error-types";
+import { type FFprobeFormat } from "@shared/ffprobe";
+import { getAppInfo, isMac, isWindows, mainApi } from "../7-actions/0-main-api";
+import { dirname, parsePath, join, extname, isAbsolute, resolve, basename, fs } from "./node-shims";
 
 const { stat, lstat, readdir, utimes, unlink } = fs;
 

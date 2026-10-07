@@ -1,14 +1,14 @@
-import type { ReactNode } from 'react';
-import i18n from 'i18next';
-import invariant from 'tiny-invariant';
-import pMap from 'p-map';
-import { CircleHelpIcon, InfoIcon, TriangleAlertIcon } from 'lucide-react';
-import { mainApi } from '../../../editor/0-core/7-actions/0-main-api.ts';
-import { testFailFsOperation, trashFile, unlinkWithRetry } from '../../../editor/0-core/8-lib/util.ts';
-import { fireDialog } from '../7-0-dialogs/dialogs.ts';
-import { toast } from '../7-0-dialogs/toast.tsx';
-import { askForNumSegments, maxSegments } from './06-ask-for-num-segments.tsx';
-import { askForSegmentsRandomDurationRange } from './08-ask-for-segments-random-duration-range.tsx';
+import { type ReactNode } from "react";
+import i18n from "i18next";
+import invariant from "tiny-invariant";
+import pMap from "p-map";
+import { CircleHelpIcon, InfoIcon, TriangleAlertIcon } from "lucide-react";
+import { mainApi } from "../../../editor/0-core/7-actions/0-main-api";
+import { testFailFsOperation, trashFile, unlinkWithRetry } from "../../../editor/0-core/8-lib/util";
+import { fireDialog } from "../7-0-dialogs/dialogs";
+import { toast } from "../7-0-dialogs/toast";
+import { askForNumSegments, maxSegments } from "./06-ask-for-num-segments";
+import { askForSegmentsRandomDurationRange } from "./08-ask-for-segments-random-duration-range";
 
 // Port of upstream dialogs/index.tsx (SweetAlert dialogs replaced by fireDialog)
 
@@ -189,7 +189,7 @@ export async function deleteFiles({ paths, deleteIfTrashFails, signal }: { paths
     await pMap(failedToTrashFiles, async (path) => unlinkWithRetry(path, { signal }), { concurrency: 5 });
 }
 
-export { toastError } from '../7-0-dialogs/toast.tsx';
+export { toastError } from "../7-0-dialogs/toast";
 
 export function errorToast(text: string) {
     toast.fire({ icon: 'error', text });

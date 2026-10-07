@@ -1,8 +1,8 @@
-import { addTransitionType, startTransition } from 'react';
-import { flushSync } from 'react-dom';
-import { atom, getDefaultStore } from 'jotai';
-import { appSettings } from '@/store/1-ui-settings';
-import { appName } from '@shared/constants.ts';
+import { addTransitionType, startTransition } from "react";
+import { flushSync } from "react-dom";
+import { atom, getDefaultStore } from "jotai";
+import { appSettings } from "@/store/1-ui-settings";
+import { appName } from "@shared/constants";
 
 /**
  * Transient page state lives in Jotai (not Valtio) on purpose:

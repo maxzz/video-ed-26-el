@@ -1,8 +1,8 @@
-import invariant from 'tiny-invariant';
+import invariant from "tiny-invariant";
 
 // https://github.com/vitejs/vite/issues/11823#issuecomment-1407277242
 // https://github.com/mifi/lossless-cut/issues/2059
-import Worker from './eval-worker.ts?worker';
+import Worker from "./eval-worker.ts?worker";
 
 
 export interface RequestMessageData {

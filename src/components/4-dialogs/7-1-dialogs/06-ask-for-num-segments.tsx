@@ -1,5 +1,5 @@
-import i18n from 'i18next';
-import { fireDialog } from '../7-0-dialogs/dialogs.ts';
+import i18n from "i18next";
+import { fireDialog } from "../7-0-dialogs/dialogs";
 
 export const maxSegments = 1000;
 

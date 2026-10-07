@@ -1,12 +1,12 @@
-import { CopyIcon } from 'lucide-react';
-import { toast } from '@/components/4-dialogs/7-0-dialogs/toast';
-import { Button } from '@/ui/shadcn/button';
-import i18n from 'i18next';
+import { CopyIcon } from "lucide-react";
+import { toast } from "@/components/4-dialogs/7-0-dialogs/toast";
+import { Button } from "@/ui/shadcn/button";
+import i18n from "i18next";
 
-import { fireDialog } from '@/components/4-dialogs/7-0-dialogs/dialogs';
-import { discussionsUrl, githubUrl, publicBugReportUrl } from '@shared/constants';
-import { getAppInfo, mainApi } from '@/editor/0-core/7-actions/0-main-api';
-import { isExecaError } from '@/editor/0-core/8-lib/util.ts';
+import { fireDialog } from "@/components/4-dialogs/7-0-dialogs/dialogs";
+import { discussionsUrl, githubUrl, publicBugReportUrl } from "@shared/constants";
+import { getAppInfo, mainApi } from "@/editor/0-core/7-actions/0-main-api";
+import { isExecaError } from "@/editor/0-core/8-lib/util";
 
 /** Port of upstream reporting.tsx openSendReportDialog */
 export function dialog_SendReport_open({ err, message, state }: { err?: unknown; message?: string | undefined; state?: unknown; } = {}) {

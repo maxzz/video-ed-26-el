@@ -1,11 +1,11 @@
-import i18n from 'i18next';
+import i18n from "i18next";
 
-import { getRealVideoStreams, getVideoTimebase } from './streams.ts';
+import { getRealVideoStreams, getVideoTimebase } from "./streams";
 
-import { readKeyframesAroundTime, findNextKeyframe, findKeyframeAtExactTime } from './ffmpeg.ts';
-import type { FFprobeStream } from '@shared/ffprobe';
-import { UserFacingError } from '../9-error-types.ts';
-import { readFileSize } from '../util.ts';
+import { readKeyframesAroundTime, findNextKeyframe, findKeyframeAtExactTime } from "./ffmpeg";
+import { type FFprobeStream } from "@shared/ffprobe";
+import { UserFacingError } from "../9-error-types";
+import { readFileSize } from "../util";
 
 
 const mapVideoCodec = (codec: string) => ({ av1: 'libsvtav1' }[codec] ?? codec);

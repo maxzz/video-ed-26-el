@@ -1,14 +1,14 @@
-import type { ColorInstance } from 'color';
-import { useAtomValue } from 'jotai';
-import { AnimatePresence, motion, type MotionStyle } from 'motion/react';
-import { SaveIcon, Trash2Icon } from 'lucide-react';
-import type { StateSegment } from '@/editor/0-core/8-lib/9-types-core';
-import { effectiveExportModeAtom, prefersReducedMotionAtom } from '@/editor/0-core/9-state/user-settings.ts';
-import { formatTimecodeAtom } from '@/editor/0-core/9-state/timecode.ts';
-import { fileDurationNonZeroAtom } from '@/editor/2-file/9-state/a-file-atoms';
-import { currentSegIndexSafeAtom, cutSegmentsAtom, inverseCutSegmentsAtom } from '@/editor/5-segments/9-state/segments-store.ts';
-import { darkModeAtom, getSegColorAtom, invertCutSegmentsAtom, springAnimationAtom } from '@/editor/5-segments/9-state/seg-ui-atoms.ts';
-import { setCurrentSegIndex } from '@/editor/5-segments/7-actions/segment-actions.ts';
+import { type ColorInstance } from "color";
+import { useAtomValue } from "jotai";
+import { AnimatePresence, motion, type MotionStyle } from "motion/react";
+import { SaveIcon, Trash2Icon } from "lucide-react";
+import { type StateSegment } from "@/editor/0-core/8-lib/9-types-core";
+import { effectiveExportModeAtom, prefersReducedMotionAtom } from "@/editor/0-core/9-state/user-settings";
+import { formatTimecodeAtom } from "@/editor/0-core/9-state/timecode";
+import { fileDurationNonZeroAtom } from "@/editor/2-file/9-state/a-file-atoms";
+import { currentSegIndexSafeAtom, cutSegmentsAtom, inverseCutSegmentsAtom } from "@/editor/5-segments/9-state/segments-store";
+import { darkModeAtom, getSegColorAtom, invertCutSegmentsAtom, springAnimationAtom } from "@/editor/5-segments/9-state/seg-ui-atoms";
+import { setCurrentSegIndex } from "@/editor/5-segments/7-actions/segment-actions";
 
 // Port of upstream TimelineSeg.tsx and BetweenSegments.tsx
 

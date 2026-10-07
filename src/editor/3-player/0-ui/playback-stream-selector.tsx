@@ -1,15 +1,15 @@
-import { useAtomValue } from 'jotai';
-import { useTranslation } from 'react-i18next';
-import { CaptionsIcon } from 'lucide-react';
-import { audioStreamsAtom, subtitleStreamsAtom, videoStreamsAtom } from '@/editor/2-file/9-state/a-file-atoms.ts';
-import { Button } from '@/ui/shadcn/button';
-import { Label } from '@/ui/shadcn/label';
-import { Popover, PopoverContent, PopoverTrigger } from '@/ui/shadcn/popover';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/ui/shadcn/select';
-import { Switch } from '@/ui/shadcn/switch';
-import { activeAudioStreamIndexesAtom, activeSubtitleStreamIndexAtom, activeVideoStreamIndexAtom } from '../9-state/player-atoms.ts';
-import { onActiveAudioStreamsChange, onActiveVideoStreamChange } from '../7-actions/player-actions.ts';
-import { onActiveSubtitleChange } from '../7-actions/subtitles.ts';
+import { useAtomValue } from "jotai";
+import { useTranslation } from "react-i18next";
+import { CaptionsIcon } from "lucide-react";
+import { audioStreamsAtom, subtitleStreamsAtom, videoStreamsAtom } from "@/editor/2-file/9-state/a-file-atoms";
+import { Button } from "@/ui/shadcn/button";
+import { Label } from "@/ui/shadcn/label";
+import { Popover, PopoverContent, PopoverTrigger } from "@/ui/shadcn/popover";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/ui/shadcn/select";
+import { Switch } from "@/ui/shadcn/switch";
+import { activeAudioStreamIndexesAtom, activeSubtitleStreamIndexAtom, activeVideoStreamIndexAtom } from "../9-state/player-atoms";
+import { onActiveAudioStreamsChange, onActiveVideoStreamChange } from "../7-actions/player-actions";
+import { onActiveSubtitleChange } from "../7-actions/subtitles";
 
 const defaultValue = 'default';
 

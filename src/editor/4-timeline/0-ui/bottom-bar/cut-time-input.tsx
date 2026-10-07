@@ -1,17 +1,17 @@
-import type { ClipboardEvent, SubmitEvent } from 'react';
-import { useAtomValue } from 'jotai';
-import { useTranslation } from 'react-i18next';
-import { cn } from '@/utils/classnames';
-import { jotaiDefaultStore } from '@/utils/local-utils/9-jotai-default-store.ts';
-import { formatTimecodeAtom, parseTimecode } from '@/editor/0-core/9-state/timecode.ts';
-import { isExactDurationMatch } from '@/editor/0-core/8-lib/duration.ts';
-import { mainApi } from '@/editor/0-core/7-actions/0-main-api.ts';
-import { isFileOpenedAtom, startTimeOffsetAtom } from '@/editor/2-file/9-state/a-file-atoms.ts';
-import { seekAbs } from '@/editor/3-player/7-actions/player-actions.ts';
-import { currentCutSegAtom } from '@/editor/5-segments/9-state/segments-store.ts';
-import { darkModeAtom, getSegColorAtom } from '@/editor/5-segments/9-state/seg-ui-atoms.ts';
-import { setCutTime } from '@/editor/5-segments/7-actions/segment-actions.ts';
-import { cutTimeErrorAtoms, cutTimeManualAtoms } from '../../9-state/bottom-bar-atoms.ts';
+import { type ClipboardEvent, type SubmitEvent } from "react";
+import { useAtomValue } from "jotai";
+import { useTranslation } from "react-i18next";
+import { cn } from "@/utils/classnames";
+import { jotaiDefaultStore } from "@/utils/local-utils/9-jotai-default-store";
+import { formatTimecodeAtom, parseTimecode } from "@/editor/0-core/9-state/timecode";
+import { isExactDurationMatch } from "@/editor/0-core/8-lib/duration";
+import { mainApi } from "@/editor/0-core/7-actions/0-main-api";
+import { isFileOpenedAtom, startTimeOffsetAtom } from "@/editor/2-file/9-state/a-file-atoms";
+import { seekAbs } from "@/editor/3-player/7-actions/player-actions";
+import { currentCutSegAtom } from "@/editor/5-segments/9-state/segments-store";
+import { darkModeAtom, getSegColorAtom } from "@/editor/5-segments/9-state/seg-ui-atoms";
+import { setCutTime } from "@/editor/5-segments/7-actions/segment-actions";
+import { cutTimeErrorAtoms, cutTimeManualAtoms } from "../../9-state/bottom-bar-atoms";
 
 // Port of upstream BottomBar.tsx CutTimeInput
 

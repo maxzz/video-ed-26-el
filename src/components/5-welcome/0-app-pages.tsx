@@ -1,15 +1,15 @@
-import { type ReactNode, type ViewTransitionClass, useEffect, ViewTransition } from 'react';
-import { useAtom, useAtomValue } from 'jotai';
-import { useSnapshot } from 'valtio';
-import { classNames } from '@/utils';
-import { appSettings, type WelcomeTransition } from '@/store/1-ui-settings';
-import { welcomeLogoClasses, welcomeLogoIconClasses, WelcomeContent } from './1-welcome-content';
-import { AppLogo } from './2-app-logo';
-import { WelcomePieces } from './3-welcome-pieces';
-import { MainPage, mainPageAtom, TRANSITION_TYPE_TO_MAIN, TRANSITION_TYPE_TO_WELCOME, welcomeSplitAtom } from './a-ui-app-page';
+import { type ReactNode, type ViewTransitionClass, useEffect, ViewTransition } from "react";
+import { useAtom, useAtomValue } from "jotai";
+import { useSnapshot } from "valtio";
+import { classNames } from "@/utils";
+import { appSettings, type WelcomeTransition } from "@/store/1-ui-settings";
+import { welcomeLogoClasses, welcomeLogoIconClasses, WelcomeContent } from "./1-welcome-content";
+import { AppLogo } from "./2-app-logo";
+import { WelcomePieces } from "./3-welcome-pieces";
+import { MainPage, mainPageAtom, TRANSITION_TYPE_TO_MAIN, TRANSITION_TYPE_TO_WELCOME, welcomeSplitAtom } from "./a-ui-app-page";
 
-import './c-view-transitions.css';
-import './c-view-transitions-doors.css';
+import "./c-view-transitions.css";
+import "./c-view-transitions-doors.css";
 import "./c-welcome-bkg.css";
 
 export function AppPages({ children }: { children: ReactNode; }) {

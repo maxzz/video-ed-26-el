@@ -1,10 +1,10 @@
-import type { CSSProperties, FocusEvent } from 'react';
-import { useAtomValue } from 'jotai';
-import { VideoIcon } from 'lucide-react';
-import { jotaiDefaultStore } from '@/utils/local-utils/9-jotai-default-store.ts';
-import { cn } from '@/utils/classnames';
-import { compatCanvasElementAtom, compatLoadingAtom, compatShowCanvasAtom, compatVideoElementAtom, effectiveRotationAtom } from '../9-state/player-atoms.ts';
-import '../7-actions/compat-player.ts';
+import { type CSSProperties, type FocusEvent } from "react";
+import { useAtomValue } from "jotai";
+import { VideoIcon } from "lucide-react";
+import { jotaiDefaultStore } from "@/utils/local-utils/9-jotai-default-store";
+import { cn } from "@/utils/classnames";
+import { compatCanvasElementAtom, compatLoadingAtom, compatShowCanvasAtom, compatVideoElementAtom, effectiveRotationAtom } from "../9-state/player-atoms";
+import "../7-actions/compat-player";
 
 const setCompatVideo = (el: HTMLVideoElement | null) => { jotaiDefaultStore.set(compatVideoElementAtom, el); };
 const setCompatCanvas = (el: HTMLCanvasElement | null) => { jotaiDefaultStore.set(compatCanvasElementAtom, el); };

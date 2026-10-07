@@ -1,17 +1,17 @@
-import { atom } from 'jotai';
-import sortBy from 'lodash/sortBy.js';
-import type { Frame } from '@/editor/0-core/8-lib/ffmpeg/ffmpeg.ts';
-import type { OverviewWaveform, Thumbnail, WaveformSlice } from '@/editor/0-core/8-lib/9-types-core';
-import { jotaiDefaultStore } from '@/utils/local-utils/9-jotai-default-store';
-import { userSettingsAtom } from '@/editor/0-core/9-state/user-settings.ts';
-import { getFrameCountAtom } from '@/editor/0-core/9-state/timecode.ts';
-import { onFileReset } from '@/editor/0-core/7-actions/2-lifecycle';
-import { calcShouldShowKeyframes, calcShouldShowWaveform } from '@/editor/0-core/8-lib/util.ts';
-import { getFrameCountRaw } from '@/editor/9-edl/8-lib/edl-formats.ts';
-import { detectedFpsAtom, fileDurationAtom, hasAudioAtom, hasVideoAtom, isFileOpenedAtom, startTimeOffsetAtom } from '@/editor/2-file/9-state/a-file-atoms';
-import { activeAudioStreamsAtom, commandedTimeAtom, playingAtom, relevantTimeAtom } from '@/editor/3-player/9-state/player-atoms.ts';
-import { hoveringTimeAtom } from '@/components/2-main/0-all/a-panels-atoms';
-import { isDurationValid } from '@/editor/5-segments/8-lib/segments.ts';
+import { atom } from "jotai";
+import sortBy from "lodash/sortBy.js";
+import { type Frame } from "@/editor/0-core/8-lib/ffmpeg/ffmpeg";
+import { type OverviewWaveform, type Thumbnail, type WaveformSlice } from "@/editor/0-core/8-lib/9-types-core";
+import { jotaiDefaultStore } from "@/utils/local-utils/9-jotai-default-store";
+import { userSettingsAtom } from "@/editor/0-core/9-state/user-settings";
+import { getFrameCountAtom } from "@/editor/0-core/9-state/timecode";
+import { onFileReset } from "@/editor/0-core/7-actions/2-lifecycle";
+import { calcShouldShowKeyframes, calcShouldShowWaveform } from "@/editor/0-core/8-lib/util";
+import { getFrameCountRaw } from "@/editor/9-edl/8-lib/edl-formats";
+import { detectedFpsAtom, fileDurationAtom, hasAudioAtom, hasVideoAtom, isFileOpenedAtom, startTimeOffsetAtom } from "@/editor/2-file/9-state/a-file-atoms";
+import { activeAudioStreamsAtom, commandedTimeAtom, playingAtom, relevantTimeAtom } from "@/editor/3-player/9-state/player-atoms";
+import { hoveringTimeAtom } from "@/components/2-main/0-all/a-panels-atoms";
+import { isDurationValid } from "@/editor/5-segments/8-lib/segments";
 
 // Zoom
 

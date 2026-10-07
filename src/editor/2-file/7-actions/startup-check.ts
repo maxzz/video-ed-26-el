@@ -1,10 +1,10 @@
-import i18n from 'i18next';
-import { jotaiDefaultStore } from '@/utils/local-utils/9-jotai-default-store.ts';
-import { handleError } from '@/editor/0-core/9-state/working.ts';
-import { runFfmpegStartupCheck } from '@/editor/0-core/8-lib/ffmpeg/ffmpeg.ts';
-import { mainApi } from '@/editor/0-core/7-actions/0-main-api.ts';
-import { ffmpegInfoAtom } from '../9-state/a-file-atoms.ts';
-import { dialog_SendReport_open } from '../0-ui/dlg-send-report.tsx';
+import i18n from "i18next";
+import { jotaiDefaultStore } from "@/utils/local-utils/9-jotai-default-store";
+import { handleError } from "@/editor/0-core/9-state/working";
+import { runFfmpegStartupCheck } from "@/editor/0-core/8-lib/ffmpeg/ffmpeg";
+import { mainApi } from "@/editor/0-core/7-actions/0-main-api";
+import { ffmpegInfoAtom } from "../9-state/a-file-atoms";
+import { dialog_SendReport_open } from "../0-ui/dlg-send-report";
 
 // Port of upstream mifi.ts runStartupCheck
 

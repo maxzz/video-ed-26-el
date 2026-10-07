@@ -1,10 +1,10 @@
-import { atom } from 'jotai';
-import { proxy, snapshot, subscribe } from 'valtio';
-import i18n from 'i18next';
-import type { Config } from '@shared/types.ts';
-import { defaultConfig } from '@shared/default-config.ts';
-import { mainApi } from '../7-actions/0-main-api.ts';
-import { jotaiDefaultStore } from '../../../utils/local-utils/9-jotai-default-store.ts';
+import { atom } from "jotai";
+import { proxy, snapshot, subscribe } from "valtio";
+import i18n from "i18next";
+import { type Config } from "@shared/types";
+import { defaultConfig } from "@shared/default-config";
+import { mainApi } from "../7-actions/0-main-api";
+import { jotaiDefaultStore } from "../../../utils/local-utils/9-jotai-default-store";
 
 /**
  * User settings (electron-store `Config`). Mutate directly: `userSettings.keyframeCut = true`.

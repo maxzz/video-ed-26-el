@@ -1,27 +1,27 @@
-import type { ReactNode } from 'react';
-import { useAtom, useAtomValue, useSetAtom } from 'jotai';
-import { useSnapshot } from 'valtio';
-import { useTranslation } from 'react-i18next';
-import { CheckIcon, CircleHelpIcon, CombineIcon, InfoIcon, SettingsIcon, TriangleAlertIcon } from 'lucide-react';
-import { Button } from '@/ui/shadcn/button';
-import { Checkbox } from '@/ui/shadcn/checkbox';
-import { Label } from '@/ui/shadcn/label';
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/ui/shadcn/dialog';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/ui/shadcn/table';
-import { cn } from '@/utils/classnames';
-import { setCustomOutDir, userSettings } from '@/editor/0-core/9-state/user-settings.ts';
-import { askForOutDir } from '@/components/4-dialogs/7-1-dialogs/02-ask-for-out-dir.tsx';
-import { isMov } from '@/editor/0-core/8-lib/ffmpeg/streams.ts';
-import { basename } from '@/editor/0-core/8-lib/node-shims.ts';
-import { alwaysConcatMultipleFilesAtom, batchFilePathsAtom, detectedFileFormatAtom, fileFormatAtom } from '@/editor/2-file/9-state/a-file-atoms.ts';
+import { type ReactNode } from "react";
+import { useAtom, useAtomValue, useSetAtom } from "jotai";
+import { useSnapshot } from "valtio";
+import { useTranslation } from "react-i18next";
+import { CheckIcon, CircleHelpIcon, CombineIcon, InfoIcon, SettingsIcon, TriangleAlertIcon } from "lucide-react";
+import { Button } from "@/ui/shadcn/button";
+import { Checkbox } from "@/ui/shadcn/checkbox";
+import { Label } from "@/ui/shadcn/label";
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/ui/shadcn/dialog";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/ui/shadcn/table";
+import { cn } from "@/utils/classnames";
+import { setCustomOutDir, userSettings } from "@/editor/0-core/9-state/user-settings";
+import { askForOutDir } from "@/components/4-dialogs/7-1-dialogs/02-ask-for-out-dir";
+import { isMov } from "@/editor/0-core/8-lib/ffmpeg/streams";
+import { basename } from "@/editor/0-core/8-lib/node-shims";
+import { alwaysConcatMultipleFilesAtom, batchFilePathsAtom, detectedFileFormatAtom, fileFormatAtom } from "@/editor/2-file/9-state/a-file-atoms";
 import {
     concatClearBatchFilesAfterConcatAtom, concatEnableReadFileMetaAtom, concatFilesMetaAtom, concatIncludeAllStreamsAtom, concatMismatchesPathAtom,
     concatOptionsOpenAtom, concatOutputDirAtom, concatProblemsByFileAtom, concatShowMismatchAlertAtom, isConcatDialogShownAtom, simpleModeAtom,
-} from '../9-state/concat-atoms.ts';
-import { closeConcatDialog, onConcatClick, setConcatEnableReadFileMeta } from '../7-actions/concat-actions.ts';
-import { onOutputFormatUserChange } from '@/editor/7-export/7-actions/export-actions.ts';
-import { MergedFileNameEditor } from './merged-file-name-editor.tsx';
-import { OutputFormatSelect } from '@/editor/7-export/0-ui/output-format-select.tsx';
+} from "../9-state/concat-atoms";
+import { closeConcatDialog, onConcatClick, setConcatEnableReadFileMeta } from "../7-actions/concat-actions";
+import { onOutputFormatUserChange } from "@/editor/7-export/7-actions/export-actions";
+import { MergedFileNameEditor } from "./merged-file-name-editor";
+import { OutputFormatSelect } from "@/editor/7-export/0-ui/output-format-select";
 
 /** Port of upstream components/ConcatDialog.tsx */
 export function Dialog_Concat() {

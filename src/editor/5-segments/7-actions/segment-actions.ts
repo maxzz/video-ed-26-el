@@ -1,35 +1,35 @@
-import i18n from 'i18next';
-import pMap from 'p-map';
-import invariant from 'tiny-invariant';
-import sortBy from 'lodash/sortBy.js';
-import type { DefiniteSegmentBase, SegmentBase, StateSegment } from '@/editor/0-core/8-lib/9-types-core.ts';
-import { jotaiDefaultStore } from '@/utils/local-utils/9-jotai-default-store.ts';
-import { userSettings } from '@/editor/0-core/9-state/user-settings.ts';
-import { maxLabelLengthAtom } from '@/editor/0-core/9-state/user-settings.ts';
-import { UserFacingError } from '@/editor/0-core/8-lib/9-error-types.ts';
-import { getFileSize, shuffleArray } from '@/editor/0-core/8-lib/util.ts';
-import { maxSegmentsAllowed } from '@/editor/0-core/8-lib/constants.ts';
-import { handleError, isWorking, setWorking } from '@/editor/0-core/9-state/working.ts';
-import { parseTimecode, timecodePlaceholderAtom } from '@/editor/0-core/9-state/timecode.ts';
-import { askForAlignSegments } from '@/components/4-dialogs/7-1-dialogs/10-ask-for-align-segments.tsx';
-import { askForSegmentDuration } from '@/components/4-dialogs/7-1-dialogs/07-ask-for-segment-duration.tsx';
+import i18n from "i18next";
+import pMap from "p-map";
+import invariant from "tiny-invariant";
+import sortBy from "lodash/sortBy.js";
+import { type DefiniteSegmentBase, type SegmentBase, type StateSegment } from "@/editor/0-core/8-lib/9-types-core";
+import { jotaiDefaultStore } from "@/utils/local-utils/9-jotai-default-store";
+import { userSettings } from "@/editor/0-core/9-state/user-settings";
+import { maxLabelLengthAtom } from "@/editor/0-core/9-state/user-settings";
+import { UserFacingError } from "@/editor/0-core/8-lib/9-error-types";
+import { getFileSize, shuffleArray } from "@/editor/0-core/8-lib/util";
+import { maxSegmentsAllowed } from "@/editor/0-core/8-lib/constants";
+import { handleError, isWorking, setWorking } from "@/editor/0-core/9-state/working";
+import { parseTimecode, timecodePlaceholderAtom } from "@/editor/0-core/9-state/timecode";
+import { askForAlignSegments } from "@/components/4-dialogs/7-1-dialogs/10-ask-for-align-segments";
+import { askForSegmentDuration } from "@/components/4-dialogs/7-1-dialogs/07-ask-for-segment-duration";
 import {
     createFixedByteSixedSegments as createFixedByteSixedSegmentsDialog,
     createNumSegments as createNumSegmentsDialog, createRandomSegments as createRandomSegmentsDialog, errorToast,
     labelSegmentDialog, selectSegmentsByLabelDialog, toastError,
-} from '@/components/4-dialogs/7-1-dialogs/00-app-dialogs.tsx';
-import { findKeyframeNearTime, mapTimesToSegments, readFrames } from '@/editor/0-core/8-lib/ffmpeg/ffmpeg.ts';
-import { fileDurationAtom, filePathAtom, mainFileMetaAtom } from '@/editor/2-file/9-state/a-file-atoms.ts';
-import { activeVideoStreamAtom } from '@/editor/3-player/9-state/player-atoms.ts';
-import { checkFileOpened, getRelevantTime } from '@/editor/3-player/7-actions/player-actions.ts';
+} from "@/components/4-dialogs/7-1-dialogs/00-app-dialogs";
+import { findKeyframeNearTime, mapTimesToSegments, readFrames } from "@/editor/0-core/8-lib/ffmpeg/ffmpeg";
+import { fileDurationAtom, filePathAtom, mainFileMetaAtom } from "@/editor/2-file/9-state/a-file-atoms";
+import { activeVideoStreamAtom } from "@/editor/3-player/9-state/player-atoms";
+import { checkFileOpened, getRelevantTime } from "@/editor/3-player/7-actions/player-actions";
 import {
     addSegmentColorIndex, combineOverlappingSegments as combineOverlappingSegments2, combineSelectedSegments as combineSelectedSegments2,
     createSegment, filterNonMarkers, invertSegments, isDurationValid, isInitialSegment, makeDurationSegments, sortSegments,
-} from '../8-lib/segments.ts';
+} from "../8-lib/segments";
 import {
     commitSegments, currentCutSegAtom, currentCutSegOrWholeTimelineAtom, currentSegIndexAtom, currentSegIndexSafeAtom,
     cutSegmentsAtom, findSegmentsAtCursor, getCutSegments, resetSegmentsHistory, segColorCounterAtom, selectedSegmentsAtom,
-} from '../9-state/segments-store.ts';
+} from "../9-state/segments-store";
 
 // Port of upstream useSegments (detection lives in b-detect, expression dialogs in 5-segments/0-ui)
 

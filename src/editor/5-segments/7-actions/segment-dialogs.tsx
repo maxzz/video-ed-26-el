@@ -1,23 +1,23 @@
-import i18n from 'i18next';
-import { Trans } from 'react-i18next';
-import pMap from 'p-map';
-import invariant from 'tiny-invariant';
-import type { StateSegment } from '@/editor/0-core/8-lib/9-types-core.ts';
-import { segmentTagsSchema } from '@/editor/0-core/8-lib/9-types-core.ts';
-import { editSegmentByExpressionHelpUrl, selectSegmentByExpressionHelpUrl } from '@shared/constants.ts';
-import { jotaiDefaultStore } from '@/utils/local-utils/9-jotai-default-store.ts';
-import { fireDialog } from '@/components/4-dialogs/7-0-dialogs/dialogs.ts';
-import { parseTimecode, timecodePlaceholderAtom } from '@/editor/0-core/9-state/timecode.ts';
-import { UserFacingError } from '@/editor/0-core/8-lib/9-error-types.ts';
-import { mainApi } from '@/editor/0-core/7-actions/0-main-api.ts';
-import safeishEval from '@/editor/0-core/8-lib/eval/eval.ts';
-import { openExpressionDialog } from '@/editor/0-core/0-ui/dlg-expression.tsx';
-import { editingSegmentTagsAtom, editingSegmentTagsSegmentIndexAtom } from '@/components/2-main/0-all/a-panels-atoms.ts';
-import { fileDurationAtom } from '@/editor/2-file/9-state/a-file-atoms.ts';
-import { getSegmentTags } from '../8-lib/segments.ts';
-import { getCutSegments } from '../9-state/segments-store.ts';
-import { openShiftSegmentsDialog } from '../0-ui/shift-segments-dialog.tsx';
-import { getCurrentSegIndexSafe, modifySelectedSegmentTimes, selectSegments, setCutSegments, updateSegAtIndex, updateSegOrder } from './segment-actions.ts';
+import i18n from "i18next";
+import { Trans } from "react-i18next";
+import pMap from "p-map";
+import invariant from "tiny-invariant";
+import { type StateSegment } from "@/editor/0-core/8-lib/9-types-core";
+import { segmentTagsSchema } from "@/editor/0-core/8-lib/9-types-core";
+import { editSegmentByExpressionHelpUrl, selectSegmentByExpressionHelpUrl } from "@shared/constants";
+import { jotaiDefaultStore } from "@/utils/local-utils/9-jotai-default-store";
+import { fireDialog } from "@/components/4-dialogs/7-0-dialogs/dialogs";
+import { parseTimecode, timecodePlaceholderAtom } from "@/editor/0-core/9-state/timecode";
+import { UserFacingError } from "@/editor/0-core/8-lib/9-error-types";
+import { mainApi } from "@/editor/0-core/7-actions/0-main-api";
+import safeishEval from "@/editor/0-core/8-lib/eval/eval";
+import { openExpressionDialog } from "@/editor/0-core/0-ui/dlg-expression";
+import { editingSegmentTagsAtom, editingSegmentTagsSegmentIndexAtom } from "@/components/2-main/0-all/a-panels-atoms";
+import { fileDurationAtom } from "@/editor/2-file/9-state/a-file-atoms";
+import { getSegmentTags } from "../8-lib/segments";
+import { getCutSegments } from "../9-state/segments-store";
+import { openShiftSegmentsDialog } from "../0-ui/shift-segments-dialog";
+import { getCurrentSegIndexSafe, modifySelectedSegmentTimes, selectSegments, setCutSegments, updateSegAtIndex, updateSegOrder } from "./segment-actions";
 
 // Segment dialogs from upstream useSegments/App/SegmentList: expressions, tags, reorder, shift
 

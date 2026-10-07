@@ -1,12 +1,12 @@
-import { atom } from 'jotai';
-import { snapshot, subscribe } from 'valtio';
-import { proxyWithHistory } from 'valtio-history';
-import type { DefiniteSegmentBase, SegmentToExport, StateSegment } from '@/editor/0-core/8-lib/9-types-core.ts';
-import { jotaiDefaultStore } from '@/utils/local-utils/9-jotai-default-store.ts';
-import { userSettingsAtom } from '@/editor/0-core/9-state/user-settings.ts';
-import { onFileReset } from '@/editor/0-core/7-actions/2-lifecycle.ts';
-import { fileDurationAtom, fileDurationNonZeroAtom } from '@/editor/2-file/9-state/a-file-atoms.ts';
-import { filterNonMarkers, invertSegments, isDurationValid, sortSegments } from '../8-lib/segments.ts';
+import { atom } from "jotai";
+import { snapshot, subscribe } from "valtio";
+import { proxyWithHistory } from "valtio-history";
+import { type DefiniteSegmentBase, type SegmentToExport, type StateSegment } from "@/editor/0-core/8-lib/9-types-core";
+import { jotaiDefaultStore } from "@/utils/local-utils/9-jotai-default-store";
+import { userSettingsAtom } from "@/editor/0-core/9-state/user-settings";
+import { onFileReset } from "@/editor/0-core/7-actions/2-lifecycle";
+import { fileDurationAtom, fileDurationNonZeroAtom } from "@/editor/2-file/9-state/a-file-atoms";
+import { filterNonMarkers, invertSegments, isDurationValid, sortSegments } from "../8-lib/segments";
 
 const maxHistory = 100;
 

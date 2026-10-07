@@ -1,18 +1,18 @@
-import i18n from 'i18next';
-import pMap from 'p-map';
-import max from 'lodash/max.js';
-import invariant from 'tiny-invariant';
+import i18n from "i18next";
+import pMap from "p-map";
+import max from "lodash/max.js";
+import invariant from "tiny-invariant";
 
-import type { FileNameTemplateContext } from '@shared/userTypes.ts';
+import { type FileNameTemplateContext } from "@shared/userTypes";
 
-import { hasDuplicates, filenamify, getOutFileExtension } from '@/editor/0-core/8-lib/util.ts';
-import { getAppInfo, isMac, isWindows } from '@/editor/0-core/7-actions/0-main-api';
-import { getSegmentTags, formatSegNum, getGuaranteedSegments } from '@/editor/5-segments/8-lib/segments.ts';
-import type { FileStats, FormatTimecode, SegmentToExport } from '@/editor/0-core/8-lib/9-types-core';
-import safeishEval from '@/editor/0-core/8-lib/eval/eval.ts';
-import { UserFacingError } from '@/editor/0-core/8-lib/9-error-types';
-import type { FileFfprobeMeta } from '@/editor/0-core/8-lib/ffmpeg/ffmpeg.ts';
-import { parsePath, sep as pathSep, join as pathJoin, normalize as pathNormalize, basename } from '@/editor/0-core/8-lib/node-shims.ts';
+import { hasDuplicates, filenamify, getOutFileExtension } from "@/editor/0-core/8-lib/util";
+import { getAppInfo, isMac, isWindows } from "@/editor/0-core/7-actions/0-main-api";
+import { getSegmentTags, formatSegNum, getGuaranteedSegments } from "@/editor/5-segments/8-lib/segments";
+import { type FileStats, type FormatTimecode, type SegmentToExport } from "@/editor/0-core/8-lib/9-types-core";
+import safeishEval from "@/editor/0-core/8-lib/eval/eval";
+import { UserFacingError } from "@/editor/0-core/8-lib/9-error-types";
+import { type FileFfprobeMeta } from "@/editor/0-core/8-lib/ffmpeg/ffmpeg";
+import { parsePath, sep as pathSep, join as pathJoin, normalize as pathNormalize, basename } from "@/editor/0-core/8-lib/node-shims";
 
 
 export const segNumVariable = 'SEG_NUM';

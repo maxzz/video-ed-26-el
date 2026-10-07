@@ -1,6 +1,6 @@
-import { z } from 'zod';
-import type { FFprobeChapter, FFprobeFormat, FFprobeStream } from '@shared/ffprobe';
-import type { FileStream } from './ffmpeg/ffmpeg.ts';
+import { z } from "zod";
+import { type FFprobeChapter, type FFprobeFormat, type FFprobeStream } from "@shared/ffprobe";
+import { type FileStream } from "./ffmpeg/ffmpeg";
 
 
 export interface ChromiumHTMLVideoElement extends HTMLVideoElement {

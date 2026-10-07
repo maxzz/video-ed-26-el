@@ -1,19 +1,19 @@
-import type { FormEvent } from 'react';
-import { useAtomValue } from 'jotai';
-import { proxy, useSnapshot } from 'valtio';
-import { useTranslation } from 'react-i18next';
-import { CheckIcon, ClipboardIcon, ClipboardListIcon, PencilIcon, PlusIcon, SaveIcon, Trash2Icon } from 'lucide-react';
-import { Button } from '@/ui/shadcn/button';
-import { Input } from '@/ui/shadcn/input';
-import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '@/ui/shadcn/dialog';
-import { cn } from '@/utils/classnames';
-import type { SegmentTags } from '@/editor/0-core/8-lib/9-types-core.ts';
-import { segmentTagsSchema } from '@/editor/0-core/8-lib/9-types-core.ts';
-import { jotaiDefaultStore } from '@/utils/local-utils/9-jotai-default-store.ts';
-import { mainApi } from '@/editor/0-core/7-actions/0-main-api.ts';
-import { errorToast } from '@/components/4-dialogs/7-1-dialogs/00-app-dialogs.tsx';
-import { editingSegmentTagsAtom, editingSegmentTagsSegmentIndexAtom } from '@/components/2-main/0-all/a-panels-atoms.ts';
-import { closeSegmentTagsEditor, saveSegmentTags } from '../7-actions/segment-dialogs.tsx';
+import { type FormEvent } from "react";
+import { useAtomValue } from "jotai";
+import { proxy, useSnapshot } from "valtio";
+import { useTranslation } from "react-i18next";
+import { CheckIcon, ClipboardIcon, ClipboardListIcon, PencilIcon, PlusIcon, SaveIcon, Trash2Icon } from "lucide-react";
+import { Button } from "@/ui/shadcn/button";
+import { Input } from "@/ui/shadcn/input";
+import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "@/ui/shadcn/dialog";
+import { cn } from "@/utils/classnames";
+import { type SegmentTags } from "@/editor/0-core/8-lib/9-types-core";
+import { segmentTagsSchema } from "@/editor/0-core/8-lib/9-types-core";
+import { jotaiDefaultStore } from "@/utils/local-utils/9-jotai-default-store";
+import { mainApi } from "@/editor/0-core/7-actions/0-main-api";
+import { errorToast } from "@/components/4-dialogs/7-1-dialogs/00-app-dialogs";
+import { editingSegmentTagsAtom, editingSegmentTagsSegmentIndexAtom } from "@/components/2-main/0-all/a-panels-atoms";
+import { closeSegmentTagsEditor, saveSegmentTags } from "../7-actions/segment-dialogs";
 
 // Upstream SegmentList "Edit segment tags" dialog with a port of TagEditor (for segment tags there are no existing tags, only custom ones)
 

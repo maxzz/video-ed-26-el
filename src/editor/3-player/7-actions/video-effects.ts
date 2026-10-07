@@ -1,8 +1,8 @@
-import { observe } from 'jotai-effect';
-import { jotaiDefaultStore } from '@/utils/local-utils/9-jotai-default-store.ts';
-import { preloadEnv } from '@/editor/0-core/7-actions/0-main-api.ts';
-import { cacheBusterAtom, effectiveFilePathAtom } from '@/editor/2-file/9-state/a-file-atoms.ts';
-import { playbackVolumeAtom, videoElementAtom } from '../9-state/player-atoms.ts';
+import { observe } from "jotai-effect";
+import { jotaiDefaultStore } from "@/utils/local-utils/9-jotai-default-store";
+import { preloadEnv } from "@/editor/0-core/7-actions/0-main-api";
+import { cacheBusterAtom, effectiveFilePathAtom } from "@/editor/2-file/9-state/a-file-atoms";
+import { playbackVolumeAtom, videoElementAtom } from "../9-state/player-atoms";
 
 function getMediaUrl(path: string, cacheBuster: number) {
     const baseUrl = preloadEnv.toMediaUrl(path);

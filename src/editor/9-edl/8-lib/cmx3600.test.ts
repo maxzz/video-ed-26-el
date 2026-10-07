@@ -1,7 +1,7 @@
-import { it, expect } from 'vitest';
+import { it, expect } from "vitest";
 
-import { readFixture } from './__fixtures__/read-fixture.ts';
-import { parseEdlCmx3600 } from './edl-formats.ts';
+import { readFixture } from "./__fixtures__/read-fixture";
+import { parseEdlCmx3600 } from "./edl-formats";
 
 
 it('parseEdlCmx3600', async () => {

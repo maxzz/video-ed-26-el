@@ -1,11 +1,11 @@
-import { StrictMode } from 'react';
-import { createRoot } from 'react-dom/client';
-import { App } from './components/0-all/0-app.tsx';
-import { initEditor } from './main-ini-startup.ts';
-import { initThemeSync } from './utils/local-utils/theme-sync.ts';
-import { mainApi } from './editor/0-core/7-actions/0-main-api.ts';
-import { loadViewsSideEffects } from './views-load-side-effects/index.ts';
-import './index.css';
+import { StrictMode } from "react";
+import { createRoot } from "react-dom/client";
+import { App } from "./components/0-all/0-app";
+import { initEditor } from "./main-ini-startup";
+import { initThemeSync } from "./utils/local-utils/theme-sync";
+import { mainApi } from "./editor/0-core/7-actions/0-main-api";
+import { loadViewsSideEffects } from "./views-load-side-effects";
+import "./index.css";
 
 await initEditor();
 initThemeSync();

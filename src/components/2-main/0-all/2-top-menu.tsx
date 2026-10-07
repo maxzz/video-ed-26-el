@@ -1,13 +1,13 @@
-import { useAtomValue } from 'jotai';
-import { Menubar, MenubarContent, MenubarMenu, MenubarSeparator, MenubarSub, MenubarSubContent, MenubarSubTrigger, MenubarTrigger } from '@/ui/shadcn/menubar';
-import { useTranslation } from 'react-i18next';
+import { useAtomValue } from "jotai";
+import { Menubar, MenubarContent, MenubarMenu, MenubarSeparator, MenubarSub, MenubarSubContent, MenubarSubTrigger, MenubarTrigger } from "@/ui/shadcn/menubar";
+import { useTranslation } from "react-i18next";
 
-import { type EdlExportType, type EdlImportType } from '@/editor/0-core/8-lib/9-types-core.ts';
-import { appName, faqUrl, featureRequestUrl, getReleaseUrl, githubUrl, homepageUrl, licensesUrl, thanksUrl, troubleshootingUrl, usageUrl } from '@shared/constants.ts';
-import { getAppInfo } from '@/editor/0-core/7-actions/0-main-api.ts';
-import { newVersionAtom } from '@/editor/f-platform/9-state/platform.ts';
-import { canRedoAtom, canUndoAtom } from '@/editor/5-segments/9-state/segments-store.ts';
-import { MenuActionItem, modShortcut } from './8-menu-item.tsx';
+import { type EdlExportType, type EdlImportType } from "@/editor/0-core/8-lib/9-types-core";
+import { appName, faqUrl, featureRequestUrl, getReleaseUrl, githubUrl, homepageUrl, licensesUrl, thanksUrl, troubleshootingUrl, usageUrl } from "@shared/constants";
+import { getAppInfo } from "@/editor/0-core/7-actions/0-main-api";
+import { newVersionAtom } from "@/editor/f-platform/9-state/platform";
+import { canRedoAtom, canUndoAtom } from "@/editor/5-segments/9-state/segments-store";
+import { MenuActionItem, modShortcut } from "./8-menu-item";
 
 export function TopMenu_All() {
     const newVersion = useAtomValue(newVersionAtom);

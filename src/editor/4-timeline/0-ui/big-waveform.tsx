@@ -1,15 +1,15 @@
-import type { MouseEvent, WheelEvent } from 'react';
-import { atom, useAtomValue } from 'jotai';
-import { observe } from 'jotai-effect';
-import { CircleAlertIcon, LoaderCircleIcon } from 'lucide-react';
-import { cn } from '@/utils/classnames';
-import { jotaiDefaultStore } from '@/utils/local-utils/9-jotai-default-store.ts';
-import { ffmpegExtractWindow } from '@/editor/0-core/8-lib/constants.ts';
-import { fileDurationNonZeroAtom } from '@/editor/2-file/9-state/a-file-atoms.ts';
-import { playingAtom, relevantTimeAtom } from '@/editor/3-player/9-state/player-atoms.ts';
-import { seekRel } from '@/editor/3-player/7-actions/player-actions.ts';
-import { darkModeAtom } from '@/editor/5-segments/9-state/seg-ui-atoms.ts';
-import { bigWaveformEnabledAtom, waveformsAtom, zoomUnroundedAtom } from '../9-state/timeline-atoms.ts';
+import { type MouseEvent, type WheelEvent } from "react";
+import { atom, useAtomValue } from "jotai";
+import { observe } from "jotai-effect";
+import { CircleAlertIcon, LoaderCircleIcon } from "lucide-react";
+import { cn } from "@/utils/classnames";
+import { jotaiDefaultStore } from "@/utils/local-utils/9-jotai-default-store";
+import { ffmpegExtractWindow } from "@/editor/0-core/8-lib/constants";
+import { fileDurationNonZeroAtom } from "@/editor/2-file/9-state/a-file-atoms";
+import { playingAtom, relevantTimeAtom } from "@/editor/3-player/9-state/player-atoms";
+import { seekRel } from "@/editor/3-player/7-actions/player-actions";
+import { darkModeAtom } from "@/editor/5-segments/9-state/seg-ui-atoms";
+import { bigWaveformEnabledAtom, waveformsAtom, zoomUnroundedAtom } from "../9-state/timeline-atoms";
 
 // Port of upstream BigWaveform.tsx. Rendered by the player area when bigWaveformEnabledAtom is true.
 

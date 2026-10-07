@@ -1,11 +1,11 @@
-import type { FormEvent } from 'react';
-import { proxy, useSnapshot } from 'valtio';
-import { useTranslation } from 'react-i18next';
-import { Button } from '@/ui/shadcn/button';
-import { Input } from '@/ui/shadcn/input';
-import { Label } from '@/ui/shadcn/label';
-import { DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/ui/shadcn/dialog';
-import { openCustomDialog } from '@/components/4-dialogs/7-0-dialogs/dialogs';
+import { type FormEvent } from "react";
+import { proxy, useSnapshot } from "valtio";
+import { useTranslation } from "react-i18next";
+import { Button } from "@/ui/shadcn/button";
+import { Input } from "@/ui/shadcn/input";
+import { Label } from "@/ui/shadcn/label";
+import { DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/ui/shadcn/dialog";
+import { openCustomDialog } from "@/components/4-dialogs/7-0-dialogs/dialogs";
 
 // Port of upstream openShiftSegmentsDialog (GenericDialog.tsx)
 

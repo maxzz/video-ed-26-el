@@ -1,25 +1,25 @@
-import { useAtomValue } from 'jotai';
-import { motion } from 'motion/react';
-import { useTranslation } from 'react-i18next';
-import { TriangleIcon } from 'lucide-react';
-import { Button } from '@/ui/shadcn/button';
-import { ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuTrigger } from '@/ui/shadcn/context-menu';
-import { cn } from '@/utils/classnames';
-import type { RenderableWaveform } from '@/editor/0-core/8-lib/9-types-core.ts';
-import { userSettingsAtom } from '@/editor/0-core/9-state/user-settings.ts';
-import { calculateTimelinePercent } from '@/editor/0-core/8-lib/util.ts';
-import { fileDurationNonZeroAtom } from '@/editor/2-file/9-state/a-file-atoms.ts';
-import { commandedTimeAtom, playerTimeAtom } from '@/editor/3-player/9-state/player-atoms.ts';
-import { darkModeAtom, springAnimationAtom } from '@/editor/5-segments/9-state/seg-ui-atoms.ts';
+import { useAtomValue } from "jotai";
+import { motion } from "motion/react";
+import { useTranslation } from "react-i18next";
+import { TriangleIcon } from "lucide-react";
+import { Button } from "@/ui/shadcn/button";
+import { ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuTrigger } from "@/ui/shadcn/context-menu";
+import { cn } from "@/utils/classnames";
+import { type RenderableWaveform } from "@/editor/0-core/8-lib/9-types-core";
+import { userSettingsAtom } from "@/editor/0-core/9-state/user-settings";
+import { calculateTimelinePercent } from "@/editor/0-core/8-lib/util";
+import { fileDurationNonZeroAtom } from "@/editor/2-file/9-state/a-file-atoms";
+import { commandedTimeAtom, playerTimeAtom } from "@/editor/3-player/9-state/player-atoms";
+import { darkModeAtom, springAnimationAtom } from "@/editor/5-segments/9-state/seg-ui-atoms";
 import {
     keyFramesInZoomWindowAtom, overviewWaveformAtom, shouldShowKeyframesAtom, shouldShowWaveformAtom, showThumbnailsAtom,
     thumbnailsSortedAtom, waveformEnabledAtom, waveformsAtom, zoomAtom,
-} from '../../9-state/timeline-atoms.ts';
-import { onTimelineWheel } from '../../7-actions/timeline-actions.ts';
-import { goToTimecode } from '@/editor/3-player/7-actions/video-events.ts';
-import { generateOverviewWaveform } from '../../7-actions/waveform.ts';
-import { onTimelineMouseDown, onTimelineMouseMove, onTimelineMouseOut, onTimelineScroll, timelineScrollerRef, timelineWrapperRef } from '../../7-actions/timeline-scroll.ts';
-import { BetweenSegmentsList, TimelineSegments } from '../timeline-seg.tsx';
+} from "../../9-state/timeline-atoms";
+import { onTimelineWheel } from "../../7-actions/timeline-actions";
+import { goToTimecode } from "@/editor/3-player/7-actions/video-events";
+import { generateOverviewWaveform } from "../../7-actions/waveform";
+import { onTimelineMouseDown, onTimelineMouseMove, onTimelineMouseOut, onTimelineScroll, timelineScrollerRef, timelineWrapperRef } from "../../7-actions/timeline-scroll";
+import { BetweenSegmentsList, TimelineSegments } from "../timeline-seg";
 
 // Port of upstream Timeline.tsx. Leaf components subscribe to their own atoms so the time markers don't re-render the whole timeline
 

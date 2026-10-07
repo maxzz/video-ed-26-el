@@ -1,6 +1,6 @@
-import type { ReactNode } from 'react';
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/ui/shadcn/dialog';
-import JSON5 from 'json5';
+import { type ReactNode } from "react";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/ui/shadcn/dialog";
+import JSON5 from "json5";
 
 // Port of upstream components/Json5Dialog.tsx
 

@@ -1,10 +1,10 @@
-import { atom } from 'jotai';
-import { observe } from 'jotai-effect';
-import { jotaiDefaultStore } from '@/utils/local-utils/9-jotai-default-store';
-import { userSettings, userSettingsAtom } from '@/editor/0-core/9-state/user-settings.ts';
+import { atom } from "jotai";
+import { observe } from "jotai-effect";
+import { jotaiDefaultStore } from "@/utils/local-utils/9-jotai-default-store";
+import { userSettings, userSettingsAtom } from "@/editor/0-core/9-state/user-settings";
 
-import { type SegmentTags } from '@/editor/0-core/8-lib/9-types-core';
-import { onFileReset } from '@/editor/0-core/7-actions/2-lifecycle';
+import { type SegmentTags } from "@/editor/0-core/8-lib/9-types-core";
+import { onFileReset } from "@/editor/0-core/7-actions/2-lifecycle";
 
 // Visibility of the app panels/sheets/dialogs. Shared because they are opened from menus, keyboard actions and buttons of other features.
 

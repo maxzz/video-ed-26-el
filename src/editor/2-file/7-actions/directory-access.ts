@@ -1,13 +1,13 @@
-import i18n from 'i18next';
-import invariant from 'tiny-invariant';
-import { setCustomOutDir } from '@/editor/0-core/9-state/user-settings.ts';
-import { askForOutDir } from '@/components/4-dialogs/7-1-dialogs/02-ask-for-out-dir.tsx';
-import { showOpenDialog } from '@/components/4-dialogs/7-1-dialogs/01-show-open-dialog.tsx';
-import { errorToast } from '@/components/4-dialogs/7-1-dialogs/00-app-dialogs';
-import { DirectoryAccessDeclinedError } from '@/editor/0-core/8-lib/9-error-types';
-import { mainApi } from '@/editor/0-core/7-actions/0-main-api';
-import { fs } from '@/editor/0-core/8-lib/node-shims.ts';
-import { checkDirWriteAccess, getFileDir, getOutDir } from '@/editor/0-core/8-lib/util.ts';
+import i18n from "i18next";
+import invariant from "tiny-invariant";
+import { setCustomOutDir } from "@/editor/0-core/9-state/user-settings";
+import { askForOutDir } from "@/components/4-dialogs/7-1-dialogs/02-ask-for-out-dir";
+import { showOpenDialog } from "@/components/4-dialogs/7-1-dialogs/01-show-open-dialog";
+import { errorToast } from "@/components/4-dialogs/7-1-dialogs/00-app-dialogs";
+import { DirectoryAccessDeclinedError } from "@/editor/0-core/8-lib/9-error-types";
+import { mainApi } from "@/editor/0-core/7-actions/0-main-api";
+import { fs } from "@/editor/0-core/8-lib/node-shims";
+import { checkDirWriteAccess, getFileDir, getOutDir } from "@/editor/0-core/8-lib/util";
 
 // Port of upstream useDirectoryAccess.
 // The MacOS App Store sandbox only allows access to user selected paths. We are never a MAS build,

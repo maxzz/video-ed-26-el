@@ -1,6 +1,6 @@
-import i18n from 'i18next';
-import { Trans } from 'react-i18next';
-import { fireDialog } from '../7-0-dialogs/dialogs.ts';
+import i18n from "i18next";
+import { Trans } from "react-i18next";
+import { fireDialog } from "../7-0-dialogs/dialogs";
 
 export const MovSuggestion = ({ fileFormat }: { fileFormat: string | undefined; }) => (fileFormat === 'mp4' ? <li><Trans>Change output <b>Format</b> from <b>MP4</b> to <b>MOV</b></Trans></li> : null);
 export const OutputFormatSuggestion = () => <li><Trans>Select a different output <b>Format</b> (<b>matroska</b> and <b>mp4</b> support most codecs)</Trans></li>;

@@ -1,6 +1,6 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect } from "vitest";
 
-import { adjustRate, DEFAULT_PLAYBACK_RATE } from './rate-calculator.ts';
+import { adjustRate, DEFAULT_PLAYBACK_RATE } from "./rate-calculator";
 
 it('inverts for reverse direction', () => {
   const r = adjustRate(1, -1, 2);

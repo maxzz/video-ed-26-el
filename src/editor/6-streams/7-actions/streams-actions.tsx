@@ -1,17 +1,17 @@
-import i18n from 'i18next';
-import { Trans } from 'react-i18next';
-import invariant from 'tiny-invariant';
-import { changeEnabledStreamsExpressionHelpUrl } from '@shared/constants';
-import { jotaiDefaultStore } from '@/utils/local-utils/9-jotai-default-store.ts';
-import { withErrorHandling } from '@/editor/0-core/9-state/working.ts';
-import { mainApi } from '@/editor/0-core/7-actions/0-main-api.ts';
-import { showOpenDialog } from '@/components/4-dialogs/7-1-dialogs/01-show-open-dialog.tsx';
-import { readFileFfprobeMeta } from '@/editor/0-core/8-lib/ffmpeg/ffmpeg.ts';
-import type { FileParams, ParamsByFile, StreamParams } from '@/editor/0-core/8-lib/9-types-core.ts';
-import { openExpressionDialog } from '@/editor/0-core/0-ui/dlg-expression.tsx';
-import { allFilesMetaAtom, externalFilesMetaAtom, filePathAtom, paramsByFileAtom } from '@/editor/2-file/9-state/a-file-atoms.ts';
-import { streamsSelectorShownAtom } from '@/components/2-main/0-all/a-panels-atoms.ts';
-import { applyEnabledStreamsFilter, enabledStreamsFilterAtom, filterEnabledStreams, setCopyStreamIdsForPath } from '../9-state/a-streams-store.ts';
+import i18n from "i18next";
+import { Trans } from "react-i18next";
+import invariant from "tiny-invariant";
+import { changeEnabledStreamsExpressionHelpUrl } from "@shared/constants";
+import { jotaiDefaultStore } from "@/utils/local-utils/9-jotai-default-store";
+import { withErrorHandling } from "@/editor/0-core/9-state/working";
+import { mainApi } from "@/editor/0-core/7-actions/0-main-api";
+import { showOpenDialog } from "@/components/4-dialogs/7-1-dialogs/01-show-open-dialog";
+import { readFileFfprobeMeta } from "@/editor/0-core/8-lib/ffmpeg/ffmpeg";
+import { type FileParams, type ParamsByFile, type StreamParams } from "@/editor/0-core/8-lib/9-types-core";
+import { openExpressionDialog } from "@/editor/0-core/0-ui/dlg-expression";
+import { allFilesMetaAtom, externalFilesMetaAtom, filePathAtom, paramsByFileAtom } from "@/editor/2-file/9-state/a-file-atoms";
+import { streamsSelectorShownAtom } from "@/components/2-main/0-all/a-panels-atoms";
+import { applyEnabledStreamsFilter, enabledStreamsFilterAtom, filterEnabledStreams, setCopyStreamIdsForPath } from "../9-state/a-streams-store";
 
 // Port of the streams related parts of upstream App.tsx and useStreamsMeta
 

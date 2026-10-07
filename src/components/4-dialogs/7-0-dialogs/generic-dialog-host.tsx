@@ -1,18 +1,18 @@
-import { type FormEvent } from 'react';
-import { useAtomValue } from 'jotai';
-import { useSnapshot } from 'valtio';
-import i18n from 'i18next';
-import { CircleAlertIcon, CircleCheckIcon, CircleHelpIcon, InfoIcon, TriangleAlertIcon } from 'lucide-react';
-import { classNames } from '@/utils';
-import { Button } from '@/ui/shadcn/button';
-import { Input } from '@/ui/shadcn/input';
-import { Textarea } from '@/ui/shadcn/textarea';
-import { Checkbox } from '@/ui/shadcn/checkbox';
-import { Label } from '@/ui/shadcn/label';
-import { RadioGroup, RadioGroupItem } from '@/ui/shadcn/radio-group';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/ui/shadcn/select';
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/ui/shadcn/dialog';
-import { type DialogEntry, type DialogIcon, type FireDialogInputState, type FireDialogOptions, dialogStackAtom } from './dialogs.ts';
+import { type FormEvent } from "react";
+import { useAtomValue } from "jotai";
+import { useSnapshot } from "valtio";
+import i18n from "i18next";
+import { CircleAlertIcon, CircleCheckIcon, CircleHelpIcon, InfoIcon, TriangleAlertIcon } from "lucide-react";
+import { classNames } from "@/utils";
+import { Button } from "@/ui/shadcn/button";
+import { Input } from "@/ui/shadcn/input";
+import { Textarea } from "@/ui/shadcn/textarea";
+import { Checkbox } from "@/ui/shadcn/checkbox";
+import { Label } from "@/ui/shadcn/label";
+import { RadioGroup, RadioGroupItem } from "@/ui/shadcn/radio-group";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/ui/shadcn/select";
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/ui/shadcn/dialog";
+import { type DialogEntry, type DialogIcon, type FireDialogInputState, type FireDialogOptions, dialogStackAtom } from "./dialogs";
 
 export function Dialog_GenericHost() {
     const stack = useAtomValue(dialogStackAtom);

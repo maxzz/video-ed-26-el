@@ -1,16 +1,16 @@
-import { atom } from 'jotai';
-import { type FFprobeStream } from '@shared/ffprobe';
-import { type Html5ifyMode } from '@shared/types';
-import { type BatchFile, type FfmpegCommandLog, type FileStats, type FilesMeta, type ParamsByFile } from '@/editor/0-core/8-lib/9-types-core';
-import { type FileFfprobeMeta } from '@/editor/0-core/8-lib/ffmpeg/ffmpeg.ts';
+import { atom } from "jotai";
+import { type FFprobeStream } from "@shared/ffprobe";
+import { type Html5ifyMode } from "@shared/types";
+import { type BatchFile, type FfmpegCommandLog, type FileStats, type FilesMeta, type ParamsByFile } from "@/editor/0-core/8-lib/9-types-core";
+import { type FileFfprobeMeta } from "@/editor/0-core/8-lib/ffmpeg/ffmpeg";
 
-import { getAudioStreams, getRealVideoStreams, getSubtitleStreams } from '@/editor/0-core/8-lib/ffmpeg/streams.ts';
-import { isDurationValid } from '@/editor/5-segments/8-lib/segments.ts';
-import { getOutDir } from '@/editor/0-core/8-lib/util.ts';
-import { customOutDirAtom } from '@/editor/0-core/9-state/user-settings.ts';
-import { jotaiDefaultStore } from '@/utils/local-utils/9-jotai-default-store';
-import { setProgress } from '@/editor/0-core/9-state/working.ts';
-import { onFileReset } from '@/editor/0-core/7-actions/2-lifecycle';
+import { getAudioStreams, getRealVideoStreams, getSubtitleStreams } from "@/editor/0-core/8-lib/ffmpeg/streams";
+import { isDurationValid } from "@/editor/5-segments/8-lib/segments";
+import { getOutDir } from "@/editor/0-core/8-lib/util";
+import { customOutDirAtom } from "@/editor/0-core/9-state/user-settings";
+import { jotaiDefaultStore } from "@/utils/local-utils/9-jotai-default-store";
+import { setProgress } from "@/editor/0-core/9-state/working";
+import { onFileReset } from "@/editor/0-core/7-actions/2-lifecycle";
 
 // Per project (per opened file) state. Reset by resetAllFileState() (see 0-core/7-actions/lifecycle.ts).
 

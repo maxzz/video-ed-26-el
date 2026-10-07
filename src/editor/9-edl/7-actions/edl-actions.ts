@@ -1,16 +1,16 @@
-import i18n from 'i18next';
-import type { EdlExportType, EdlFileType, EdlImportType, StateSegment } from '@/editor/0-core/8-lib/9-types-core.ts';
-import { jotaiDefaultStore } from '@/utils/local-utils/9-jotai-default-store.ts';
-import { customOutDirAtom } from '@/editor/0-core/9-state/user-settings.ts';
-import { getFrameCount } from '@/editor/0-core/9-state/timecode.ts';
-import { withErrorHandling } from '@/editor/0-core/9-state/working.ts';
-import { openYouTubeChaptersDialog } from '@/components/4-dialogs/7-1-dialogs/00-app-dialogs.tsx';
-import { detectedFpsAtom, fileDurationAtom, filePathAtom } from '@/editor/2-file/9-state/a-file-atoms.ts';
-import { checkFileOpened } from '@/editor/3-player/7-actions/player-actions.ts';
-import { cutSegmentsAtom, selectedSegmentsAtom } from '@/editor/5-segments/9-state/segments-store.ts';
-import { loadCutSegments } from '@/editor/5-segments/7-actions/segment-actions.ts';
-import { askForEdlImport, exportEdlFile, readEdlFile } from '../8-lib/edl-store.ts';
-import { formatYouTube } from '../8-lib/edl-formats.ts';
+import i18n from "i18next";
+import { type EdlExportType, type EdlFileType, type EdlImportType, type StateSegment } from "@/editor/0-core/8-lib/9-types-core";
+import { jotaiDefaultStore } from "@/utils/local-utils/9-jotai-default-store";
+import { customOutDirAtom } from "@/editor/0-core/9-state/user-settings";
+import { getFrameCount } from "@/editor/0-core/9-state/timecode";
+import { withErrorHandling } from "@/editor/0-core/9-state/working";
+import { openYouTubeChaptersDialog } from "@/components/4-dialogs/7-1-dialogs/00-app-dialogs";
+import { detectedFpsAtom, fileDurationAtom, filePathAtom } from "@/editor/2-file/9-state/a-file-atoms";
+import { checkFileOpened } from "@/editor/3-player/7-actions/player-actions";
+import { cutSegmentsAtom, selectedSegmentsAtom } from "@/editor/5-segments/9-state/segments-store";
+import { loadCutSegments } from "@/editor/5-segments/7-actions/segment-actions";
+import { askForEdlImport, exportEdlFile, readEdlFile } from "../8-lib/edl-store";
+import { formatYouTube } from "../8-lib/edl-formats";
 
 export async function loadEdlFile({ path, type, append = false }: { path: string; type: EdlFileType; append?: boolean; }) {
     console.log('Loading EDL file', type, path, append);

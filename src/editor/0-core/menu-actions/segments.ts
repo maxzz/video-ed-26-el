@@ -1,10 +1,10 @@
-import { mutateSegmentsByExpr as mutateSegmentsByExprImpl, selectSegmentsByExpr as selectSegmentsByExprImpl, shiftAllSegmentTimes as shiftAllSegmentTimesImpl } from '@/editor/5-segments/7-actions/segment-dialogs.tsx';
+import { mutateSegmentsByExpr as mutateSegmentsByExprImpl, selectSegmentsByExpr as selectSegmentsByExprImpl, shiftAllSegmentTimes as shiftAllSegmentTimesImpl } from "@/editor/5-segments/7-actions/segment-dialogs";
 import {
     alignSegmentTimesToKeyframes as alignSegmentTimesToKeyframesImpl, clearSegments as clearSegmentsImpl, combineOverlappingSegments as combineOverlappingSegmentsImpl,
     combineSelectedSegments as combineSelectedSegmentsImpl, createFixedByteSizedSegments as createFixedByteSizedSegmentsImpl, createFixedDurationSegments as createFixedDurationSegmentsImpl,
     createNumSegments as createNumSegmentsImpl, createRandomSegments as createRandomSegmentsImpl, fillSegmentsGaps as fillSegmentsGapsImpl, invertAllSegments as invertAllSegmentsImpl,
     reorderSegsByStartTime as reorderSegsByStartTimeImpl, shuffleSegments as shuffleSegmentsImpl, splitCurrentSegment as splitCurrentSegmentImpl,
-} from '@/editor/5-segments/7-actions/segment-actions.ts';
+} from "@/editor/5-segments/7-actions/segment-actions";
 
 export function createNumSegments() {
     return createNumSegmentsImpl();

@@ -1,6 +1,6 @@
-import i18n from 'i18next';
+import i18n from "i18next";
 
-import { fireDialog } from '../7-0-dialogs/dialogs.ts';
+import { fireDialog } from "../7-0-dialogs/dialogs";
 
 export async function showDiskFull() {
     await fireDialog({ icon: 'error', text: i18n.t('The output location has no storage space remaining. Please free up some space and try again.') });

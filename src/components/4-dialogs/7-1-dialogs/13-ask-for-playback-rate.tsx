@@ -1,5 +1,5 @@
-import i18n from 'i18next';
-import { fireDialog } from '../7-0-dialogs/dialogs.ts';
+import i18n from "i18next";
+import { fireDialog } from "../7-0-dialogs/dialogs";
 
 export async function askForPlaybackRate({ detectedFps, outputPlaybackRate }: { detectedFps: number | undefined; outputPlaybackRate: number; }) {
     const fps = detectedFps || 1;

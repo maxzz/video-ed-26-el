@@ -1,16 +1,16 @@
-import i18n from 'i18next';
-import { observe } from 'jotai-effect';
-import sortBy from 'lodash/sortBy.js';
-import invariant from 'tiny-invariant';
-import type { WaveformSlice } from '@/editor/0-core/8-lib/9-types-core.ts';
-import { jotaiDefaultStore } from '@/utils/local-utils/9-jotai-default-store.ts';
-import { isWorking, setWorking } from '@/editor/0-core/9-state/working.ts';
-import { onFileReset } from '@/editor/0-core/7-actions/2-lifecycle.ts';
-import { ffmpegExtractWindow } from '@/editor/0-core/8-lib/constants.ts';
-import { renderWaveformPng, safeCreateBlob } from '@/editor/0-core/8-lib/ffmpeg/ffmpeg.ts';
-import { fileDurationAtom, filePathAtom } from '@/editor/2-file/9-state/a-file-atoms.ts';
-import { relevantTimeAtom } from '@/editor/3-player/9-state/player-atoms.ts';
-import { overviewWaveformAtom, waveformAudioStreamAtom, waveformEnabledAtom, waveformsAtom } from '../9-state/timeline-atoms.ts';
+import i18n from "i18next";
+import { observe } from "jotai-effect";
+import sortBy from "lodash/sortBy.js";
+import invariant from "tiny-invariant";
+import { type WaveformSlice } from "@/editor/0-core/8-lib/9-types-core";
+import { jotaiDefaultStore } from "@/utils/local-utils/9-jotai-default-store";
+import { isWorking, setWorking } from "@/editor/0-core/9-state/working";
+import { onFileReset } from "@/editor/0-core/7-actions/2-lifecycle";
+import { ffmpegExtractWindow } from "@/editor/0-core/8-lib/constants";
+import { renderWaveformPng, safeCreateBlob } from "@/editor/0-core/8-lib/ffmpeg/ffmpeg";
+import { fileDurationAtom, filePathAtom } from "@/editor/2-file/9-state/a-file-atoms";
+import { relevantTimeAtom } from "@/editor/3-player/9-state/player-atoms";
+import { overviewWaveformAtom, waveformAudioStreamAtom, waveformEnabledAtom, waveformsAtom } from "../9-state/timeline-atoms";
 
 // Port of upstream useWaveform
 

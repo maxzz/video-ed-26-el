@@ -1,17 +1,17 @@
-import type { FormEvent, ReactNode } from 'react';
-import { proxy, useSnapshot } from 'valtio';
-import i18n from 'i18next';
-import { useTranslation } from 'react-i18next';
-import { CircleCheckIcon, InfoIcon } from 'lucide-react';
-import { openCustomDialog } from '@/components/4-dialogs/7-0-dialogs/dialogs';
-import { showItemInFolder } from '@/editor/0-core/8-lib/util.ts';
-import { type CleanupChoice, type CleanupChoicesType, ListItem, Notices, OutputIncorrectSeeHelpMenu, UnorderedList, Warnings } from '@/components/4-dialogs/7-1-dialogs/00-app-dialogs';
-import { Button } from '@/ui/shadcn/button';
-import { Checkbox } from '@/ui/shadcn/checkbox';
-import { Input } from '@/ui/shadcn/input';
-import { Label } from '@/ui/shadcn/label';
-import { DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/ui/shadcn/dialog';
-import { cn } from '@/utils/classnames';
+import { type FormEvent, type ReactNode } from "react";
+import { proxy, useSnapshot } from "valtio";
+import i18n from "i18next";
+import { useTranslation } from "react-i18next";
+import { CircleCheckIcon, InfoIcon } from "lucide-react";
+import { openCustomDialog } from "@/components/4-dialogs/7-0-dialogs/dialogs";
+import { showItemInFolder } from "@/editor/0-core/8-lib/util";
+import { type CleanupChoice, type CleanupChoicesType, ListItem, Notices, OutputIncorrectSeeHelpMenu, UnorderedList, Warnings } from "@/components/4-dialogs/7-1-dialogs/00-app-dialogs";
+import { Button } from "@/ui/shadcn/button";
+import { Checkbox } from "@/ui/shadcn/checkbox";
+import { Input } from "@/ui/shadcn/input";
+import { Label } from "@/ui/shadcn/label";
+import { DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/ui/shadcn/dialog";
+import { cn } from "@/utils/classnames";
 
 // Port of the dialogs of upstream components/GenericDialog.tsx useDialog()
 

@@ -1,9 +1,9 @@
-import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from "vitest";
 
-import type { FFprobeStream } from '@shared/ffprobe.ts';
-import { mainApi } from '../../7-actions/0-main-api.ts';
-import { resetMainApiMocks } from '@/editor/f-platform/test/main-api-mock.ts';
-import { getCodecParams, needsSmartCut } from './smartcut.ts';
+import { type FFprobeStream } from "@shared/ffprobe";
+import { mainApi } from "../../7-actions/0-main-api";
+import { resetMainApiMocks } from "@/editor/f-platform/test/main-api-mock";
+import { getCodecParams, needsSmartCut } from "./smartcut";
 
 function mockPackets(packets: { pts_time: string, flags: string }[]) {
     vi.mocked(mainApi.ffRun).mockResolvedValue({ stdout: JSON.stringify({ packets }), stderr: '', exitCode: 0, command: '' });

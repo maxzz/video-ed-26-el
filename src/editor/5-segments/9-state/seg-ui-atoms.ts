@@ -1,14 +1,14 @@
-import { atom } from 'jotai';
-import type { ColorInstance } from 'color';
-import type { Transition } from 'motion/react';
-import type { InverseCutSegment, SegmentColorIndex, StateSegment } from '@/editor/0-core/8-lib/9-types-core.ts';
-import { jotaiDefaultStore } from '@/utils/local-utils/9-jotai-default-store.ts';
-import { prefersReducedMotionAtom, userSettingsAtom } from '@/editor/0-core/9-state/user-settings.ts';
-import { onFileReset } from '@/editor/0-core/7-actions/2-lifecycle.ts';
-import { getSegColor } from '@/editor/0-core/8-lib/colors.ts';
-import { commandedTimeAtom } from '@/editor/3-player/9-state/player-atoms.ts';
-import { isInitialSegment } from '../8-lib/segments.ts';
-import { cutSegmentsAtom, findSegmentsAtCursor, inverseCutSegmentsAtom, segColorCounterAtom, selectedSegmentsAtom } from './segments-store.ts';
+import { atom } from "jotai";
+import { type ColorInstance } from "color";
+import { type Transition } from "motion/react";
+import { type InverseCutSegment, type SegmentColorIndex, type StateSegment } from "@/editor/0-core/8-lib/9-types-core";
+import { jotaiDefaultStore } from "@/utils/local-utils/9-jotai-default-store";
+import { prefersReducedMotionAtom, userSettingsAtom } from "@/editor/0-core/9-state/user-settings";
+import { onFileReset } from "@/editor/0-core/7-actions/2-lifecycle";
+import { getSegColor } from "@/editor/0-core/8-lib/colors";
+import { commandedTimeAtom } from "@/editor/3-player/9-state/player-atoms";
+import { isInitialSegment } from "../8-lib/segments";
+import { cutSegmentsAtom, findSegmentsAtCursor, inverseCutSegmentsAtom, segColorCounterAtom, selectedSegmentsAtom } from "./segments-store";
 
 // UI state shared by the timeline, the bottom bar and the segment list (upstream SegColorsContext + parts of useUserSettings)
 

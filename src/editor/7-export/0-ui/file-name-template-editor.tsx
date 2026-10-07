@@ -1,24 +1,24 @@
-import { useEffect, useRef } from 'react';
-import { proxy, useSnapshot } from 'valtio';
-import debounce from 'lodash/debounce';
-import { useAtomValue } from 'jotai';
-import { useTranslation } from 'react-i18next';
-import { AnimatePresence, motion } from 'motion/react';
-import { ChevronUpIcon, CircleHelpIcon, EyeIcon, FileIcon, PencilIcon, TriangleAlertIcon, Undo2Icon } from 'lucide-react';
-import { exportedFileNameTemplateHelpUrl } from '@shared/constants';
-import { userSettings, userSettingsAtom } from '@/editor/0-core/9-state/user-settings.ts';
-import { mainApi } from '@/editor/0-core/7-actions/0-main-api.ts';
-import { Button } from '@/ui/shadcn/button';
-import { Input } from '@/ui/shadcn/input';
-import { Switch } from '@/ui/shadcn/switch';
-import { Label } from '@/ui/shadcn/label';
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/ui/shadcn/dialog';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/ui/shadcn/select';
+import { useEffect, useRef } from "react";
+import { proxy, useSnapshot } from "valtio";
+import debounce from "lodash/debounce";
+import { useAtomValue } from "jotai";
+import { useTranslation } from "react-i18next";
+import { AnimatePresence, motion } from "motion/react";
+import { ChevronUpIcon, CircleHelpIcon, EyeIcon, FileIcon, PencilIcon, TriangleAlertIcon, Undo2Icon } from "lucide-react";
+import { exportedFileNameTemplateHelpUrl } from "@shared/constants";
+import { userSettings, userSettingsAtom } from "@/editor/0-core/9-state/user-settings";
+import { mainApi } from "@/editor/0-core/7-actions/0-main-api";
+import { Button } from "@/ui/shadcn/button";
+import { Input } from "@/ui/shadcn/input";
+import { Switch } from "@/ui/shadcn/switch";
+import { Label } from "@/ui/shadcn/label";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/ui/shadcn/dialog";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/ui/shadcn/select";
 import {
     extVariable, type GeneratedOutFileNames, type GenerateOutFileNames, segNumIntVariable, segNumVariable, segSuffixVariable, segTagsVariable, selectedSegNumIntVariable, selectedSegNumVariable,
-} from '../8-lib/output-name-template.ts';
-import { toggleSafeOutputFileName } from '../7-actions/export-actions.ts';
-import { HighlightedText } from './controls.tsx';
+} from "../8-lib/output-name-template";
+import { toggleSafeOutputFileName } from "../7-actions/export-actions";
+import { HighlightedText } from "./controls";
 
 export type FileNameTemplateEditorMode = 'separate' | 'merge-segments' | 'merge-files';
 

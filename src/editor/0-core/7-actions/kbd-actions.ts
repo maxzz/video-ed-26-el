@@ -1,6 +1,6 @@
-import { atom } from 'jotai';
-import { jotaiDefaultStore } from '../../../utils/local-utils/9-jotai-default-store.ts';
-import { handleError } from '../9-state/working.ts';
+import { atom } from "jotai";
+import { jotaiDefaultStore } from "../../../utils/local-utils/9-jotai-default-store";
+import { handleError } from "../9-state/working";
 
 //---------------------------------------------------------------------------
 // Keyboard actions

@@ -1,6 +1,6 @@
-import { atom } from 'jotai';
-import { jotaiDefaultStore } from '@/utils/local-utils/9-jotai-default-store';
-import { onFileReset } from '@/editor/0-core/7-actions/2-lifecycle';
+import { atom } from "jotai";
+import { jotaiDefaultStore } from "@/utils/local-utils/9-jotai-default-store";
+import { onFileReset } from "@/editor/0-core/7-actions/2-lifecycle";
 
 // State of the tracks editor (upstream StreamsSelector local state)
 

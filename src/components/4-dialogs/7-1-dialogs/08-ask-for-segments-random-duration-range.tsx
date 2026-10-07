@@ -1,5 +1,5 @@
-import i18n from 'i18next';
-import { fireDialog } from '../7-0-dialogs/dialogs.ts';
+import i18n from "i18next";
+import { fireDialog } from "../7-0-dialogs/dialogs";
 
 // https://github.com/mifi/lossless-cut/issues/1153
 export async function askForSegmentsRandomDurationRange() {

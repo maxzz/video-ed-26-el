@@ -1,38 +1,38 @@
-import type { ComponentProps, CSSProperties } from 'react';
-import { useAtomValue } from 'jotai';
-import { motion } from 'motion/react';
-import { useTranslation } from 'react-i18next';
+import { type ComponentProps, type CSSProperties } from "react";
+import { useAtomValue } from "jotai";
+import { motion } from "motion/react";
+import { useTranslation } from "react-i18next";
 import {
     AudioWaveformIcon, BabyIcon, CameraIcon, ChevronLeftIcon, ChevronRightIcon, ContrastIcon, FileOutputIcon, GaugeIcon, ImagesIcon, KeyIcon,
     KeyRoundIcon, NotebookTextIcon, PauseIcon, PlayIcon, RotateCcwSquareIcon, ScissorsIcon, SkipBackIcon, SkipForwardIcon, StepBackIcon,
     StepForwardIcon, Trash2Icon, TriangleAlertIcon,
-} from 'lucide-react';
-import { cn } from '@/utils/classnames';
-import { Button } from '@/ui/shadcn/button';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/ui/shadcn/select';
-import type { CaptureFormat } from '@shared/types.ts';
-import { jotaiDefaultStore } from '@/utils/local-utils/9-jotai-default-store.ts';
-import { userSettings, userSettingsAtom } from '@/editor/0-core/9-state/user-settings.ts';
-import { formatTimecodeAtom, getFrameCountAtom } from '@/editor/0-core/9-state/timecode.ts';
-import { hasAction, runAction } from '@/editor/0-core/7-actions/kbd-actions.ts';
-import { askForPlaybackRate } from '@/components/4-dialogs/7-1-dialogs/13-ask-for-playback-rate.tsx';
-import { getSegColor as getSegColorRaw } from '@/editor/0-core/8-lib/colors.ts';
-import { exportConfirmOpenAtom } from '@/components/2-main/0-all/a-panels-atoms.ts';
-import { detectedFpsAtom, fileDurationNonZeroAtom, hasAudioAtom, hasVideoAtom, isFileOpenedAtom, isRotationSetAtom, rotationAtom } from '@/editor/2-file/9-state/a-file-atoms.ts';
-import { outputPlaybackRateAtom, playbackModeAtom, playbackRateAtom, playingAtom } from '@/editor/3-player/9-state/player-atoms.ts';
-import * as player from '@/editor/3-player/7-actions/player-actions.ts';
-import { currentCutSegAtom, segmentsToExportAtom, selectedSegmentsAtom } from '@/editor/5-segments/9-state/segments-store.ts';
-import { invertCutSegmentsAtom, simpleModeAtom } from '@/editor/5-segments/9-state/seg-ui-atoms.ts';
-import { setCutEnd, setCutStart } from '@/editor/5-segments/7-actions/segment-actions.ts';
-import { actionTitleAtom } from '../../9-state/action-title.ts';
-import { areWeCuttingAtom } from '../../9-state/bottom-bar-atoms.ts';
-import { currentFrameAtom, displayTimeAtom, isZoomedAtom, keyframesEnabledAtom, showThumbnailsAtom, waveformModeAtom, zoomAtom } from '../../9-state/timeline-atoms.ts';
+} from "lucide-react";
+import { cn } from "@/utils/classnames";
+import { Button } from "@/ui/shadcn/button";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/ui/shadcn/select";
+import { type CaptureFormat } from "@shared/types";
+import { jotaiDefaultStore } from "@/utils/local-utils/9-jotai-default-store";
+import { userSettings, userSettingsAtom } from "@/editor/0-core/9-state/user-settings";
+import { formatTimecodeAtom, getFrameCountAtom } from "@/editor/0-core/9-state/timecode";
+import { hasAction, runAction } from "@/editor/0-core/7-actions/kbd-actions";
+import { askForPlaybackRate } from "@/components/4-dialogs/7-1-dialogs/13-ask-for-playback-rate";
+import { getSegColor as getSegColorRaw } from "@/editor/0-core/8-lib/colors";
+import { exportConfirmOpenAtom } from "@/components/2-main/0-all/a-panels-atoms";
+import { detectedFpsAtom, fileDurationNonZeroAtom, hasAudioAtom, hasVideoAtom, isFileOpenedAtom, isRotationSetAtom, rotationAtom } from "@/editor/2-file/9-state/a-file-atoms";
+import { outputPlaybackRateAtom, playbackModeAtom, playbackRateAtom, playingAtom } from "@/editor/3-player/9-state/player-atoms";
+import * as player from "@/editor/3-player/7-actions/player-actions";
+import { currentCutSegAtom, segmentsToExportAtom, selectedSegmentsAtom } from "@/editor/5-segments/9-state/segments-store";
+import { invertCutSegmentsAtom, simpleModeAtom } from "@/editor/5-segments/9-state/seg-ui-atoms";
+import { setCutEnd, setCutStart } from "@/editor/5-segments/7-actions/segment-actions";
+import { actionTitleAtom } from "../../9-state/action-title";
+import { areWeCuttingAtom } from "../../9-state/bottom-bar-atoms";
+import { currentFrameAtom, displayTimeAtom, isZoomedAtom, keyframesEnabledAtom, showThumbnailsAtom, waveformModeAtom, zoomAtom } from "../../9-state/timeline-atoms";
 import {
     increaseRotation, seekClosestKeyframe, timelineToggleComfortZoom, toggleExportConfirmEnabled, toggleInvertCutSegments, toggleShowKeyframes,
     toggleShowThumbnails, toggleSimpleMode, toggleWaveformMode, zoomAbs,
-} from '../../7-actions/timeline-actions.ts';
-import { CutTimeInput } from './cut-time-input.tsx';
-import { JumpSegmentButton, SegmentCutpointButton, SetCutpointButton } from './segment-buttons.tsx';
+} from "../../7-actions/timeline-actions";
+import { CutTimeInput } from "./cut-time-input";
+import { JumpSegmentButton, SegmentCutpointButton, SetCutpointButton } from "./segment-buttons";
 
 // Port of upstream BottomBar.tsx
 

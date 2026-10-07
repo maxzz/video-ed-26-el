@@ -1,12 +1,12 @@
-import { atom } from 'jotai';
-import type { AppInfo } from '@shared/ipc-contract.ts';
-import { jotaiDefaultStore } from '@/utils/local-utils/9-jotai-default-store.ts';
-import { userSettings, userSettingsAtom } from '@/editor/0-core/9-state/user-settings.ts';
-import { getAppInfo, getFfCommandLine } from '@/editor/0-core/7-actions/0-main-api.ts';
-import { isCuttingEnd, isCuttingStart } from '@/editor/0-core/8-lib/ffmpeg/ffmpeg.ts';
-import { encBitrateAtom, fileDurationAtom, ffmpegCommandLogAtom } from '@/editor/2-file/9-state/a-file-atoms.ts';
-import { segmentsToExportAtom } from '@/editor/5-segments/9-state/segments-store.ts';
-import { defaultCutFileTemplate, defaultCutMergedFileTemplate, defaultMergedFileTemplate } from '../8-lib/output-name-template.ts';
+import { atom } from "jotai";
+import { type AppInfo } from "@shared/ipc-contract";
+import { jotaiDefaultStore } from "@/utils/local-utils/9-jotai-default-store";
+import { userSettings, userSettingsAtom } from "@/editor/0-core/9-state/user-settings";
+import { getAppInfo, getFfCommandLine } from "@/editor/0-core/7-actions/0-main-api";
+import { isCuttingEnd, isCuttingStart } from "@/editor/0-core/8-lib/ffmpeg/ffmpeg";
+import { encBitrateAtom, fileDurationAtom, ffmpegCommandLogAtom } from "@/editor/2-file/9-state/a-file-atoms";
+import { segmentsToExportAtom } from "@/editor/5-segments/9-state/segments-store";
+import { defaultCutFileTemplate, defaultCutMergedFileTemplate, defaultMergedFileTemplate } from "../8-lib/output-name-template";
 
 // Last commands log (upstream App.tsx appendLastCommandsLog/appendFfmpegCommandLog)
 

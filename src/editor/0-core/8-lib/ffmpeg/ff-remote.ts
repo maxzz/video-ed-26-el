@@ -1,7 +1,7 @@
-import { nanoid } from 'nanoid';
-import type { CaptureFormat, FfmpegHwAccel } from '@shared/types.ts';
-import type { DetectedSegment, FfRunOptions } from '@shared/ipc-contract.ts';
-import { getFfCommandLine, mainApi, mainEvents } from '../../7-actions/0-main-api.ts';
+import { nanoid } from "nanoid";
+import { type CaptureFormat, type FfmpegHwAccel } from "@shared/types";
+import { type DetectedSegment, type FfRunOptions } from "@shared/ipc-contract";
+import { getFfCommandLine, mainApi, mainEvents } from "../../7-actions/0-main-api";
 
 // Renderer-side facade over the main-process ffmpeg service (electron/main/ffmpeg).
 // Mirrors the function names LosslessCut's renderer used through @electron/remote.

@@ -1,12 +1,12 @@
-import { useAtomValue } from 'jotai';
-import { useTranslation } from 'react-i18next';
-import { Volume2Icon, VolumeXIcon } from 'lucide-react';
-import { Button } from '@/ui/shadcn/button';
-import { Popover, PopoverContent, PopoverTrigger } from '@/ui/shadcn/popover';
-import { Slider } from '@/ui/shadcn/slider';
-import { playbackVolumeAtom } from '../9-state/player-atoms.ts';
-import { toggleMuted } from '../7-actions/player-actions.ts';
-import { setPlaybackVolume } from '../7-actions/video-events.ts';
+import { useAtomValue } from "jotai";
+import { useTranslation } from "react-i18next";
+import { Volume2Icon, VolumeXIcon } from "lucide-react";
+import { Button } from "@/ui/shadcn/button";
+import { Popover, PopoverContent, PopoverTrigger } from "@/ui/shadcn/popover";
+import { Slider } from "@/ui/shadcn/slider";
+import { playbackVolumeAtom } from "../9-state/player-atoms";
+import { toggleMuted } from "../7-actions/player-actions";
+import { setPlaybackVolume } from "../7-actions/video-events";
 
 /** Port of upstream VolumeControl: preview volume only, does not affect output */
 export function VolumeControl() {

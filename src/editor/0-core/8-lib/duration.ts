@@ -1,4 +1,4 @@
-import padStart from 'lodash/padStart';
+import padStart from "lodash/padStart";
 
 export function formatDuration({ seconds: totalSecondsIn, fileNameFriendly, showFraction = true, shorten = false, fps }: {
     seconds?: number | undefined,

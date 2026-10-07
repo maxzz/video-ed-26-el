@@ -1,8 +1,8 @@
-import { appName } from '@shared/constants';
-import { jotaiDefaultStore } from '@/utils/local-utils/9-jotai-default-store';
-import { hideAllNotificationsAtom, userSettings } from '@/editor/0-core/9-state/user-settings.ts';
-import { isLinux, mainApi } from '@/editor/0-core/7-actions/0-main-api';
-import { toast } from '@/components/4-dialogs/7-0-dialogs/toast';
+import { appName } from "@shared/constants";
+import { jotaiDefaultStore } from "@/utils/local-utils/9-jotai-default-store";
+import { hideAllNotificationsAtom, userSettings } from "@/editor/0-core/9-state/user-settings";
+import { isLinux, mainApi } from "@/editor/0-core/7-actions/0-main-api";
+import { toast } from "@/components/4-dialogs/7-0-dialogs/toast";
 
 export function showNotification(opts: Parameters<typeof toast.fire>[0]) {
     if (!jotaiDefaultStore.get(hideAllNotificationsAtom)) toast.fire(opts);

@@ -1,8 +1,8 @@
-import { test, expect } from 'vitest';
+import { test, expect } from "vitest";
 
-import { getEffectiveAvoidNegativeTs, getMapStreamsArgs, getStreamIdsToCopy, isCopyingOnlyAudioStreams } from './streams.ts';
-import type { FFprobeStreamDisposition } from '@shared/ffprobe.ts';
-import type { LiteFFprobeStream } from '../types.ts';
+import { getEffectiveAvoidNegativeTs, getMapStreamsArgs, getStreamIdsToCopy, isCopyingOnlyAudioStreams } from "./streams";
+import { type FFprobeStreamDisposition } from "@shared/ffprobe";
+import { type LiteFFprobeStream } from "../types";
 
 
 const makeDisposition = (override?: Partial<FFprobeStreamDisposition>): FFprobeStreamDisposition => ({

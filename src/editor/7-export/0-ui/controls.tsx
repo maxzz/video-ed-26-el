@@ -1,11 +1,11 @@
-import type { ComponentProps, ReactNode } from 'react';
-import { useTranslation } from 'react-i18next';
-import { motion, useAnimate } from 'motion/react';
-import { CircleHelpIcon, ClipboardIcon } from 'lucide-react';
-import { mainApi } from '@/editor/0-core/7-actions/0-main-api';
-import { toast } from '@/components/4-dialogs/7-0-dialogs/toast';
-import type { DialogIcon } from '@/components/4-dialogs/7-0-dialogs/dialogs';
-import { cn } from '@/utils/classnames';
+import { type ComponentProps, type ReactNode } from "react";
+import { useTranslation } from "react-i18next";
+import { motion, useAnimate } from "motion/react";
+import { CircleHelpIcon, ClipboardIcon } from "lucide-react";
+import { mainApi } from "@/editor/0-core/7-actions/0-main-api";
+import { toast } from "@/components/4-dialogs/7-0-dialogs/toast";
+import { type DialogIcon } from "@/components/4-dialogs/7-0-dialogs/dialogs";
+import { cn } from "@/utils/classnames";
 
 export function showHelpText({ icon = 'info', timer = 10000, text }: { icon?: DialogIcon; timer?: number; text: string; }) {
     toast.fire({ icon, timer, text });

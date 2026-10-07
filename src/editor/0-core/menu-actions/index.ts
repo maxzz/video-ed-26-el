@@ -1,14 +1,14 @@
-import { handleError } from '@/editor/0-core/9-state/working.ts';
-import * as edit from './edit.ts';
-import * as file from './file.ts';
-import * as help from './help.ts';
-import * as host from './host.ts';
-import * as segments from './segments.ts';
-import * as tools from './tools.ts';
-import type { MenuAction } from './type-menu-action.ts';
-import * as view from './view.ts';
+import { handleError } from "@/editor/0-core/9-state/working";
+import * as edit from "./edit";
+import * as file from "./file";
+import * as help from "./help";
+import * as host from "./host";
+import * as segments from "./segments";
+import * as tools from "./tools";
+import { type MenuAction } from "./type-menu-action";
+import * as view from "./view";
 
-export type { MenuAction } from './type-menu-action.ts';
+export { type MenuAction } from "./type-menu-action";
 
 /** Every application-menu command. Callers use only this function. */
 export function runMenuAction(action: MenuAction) {

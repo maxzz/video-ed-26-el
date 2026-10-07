@@ -1,10 +1,10 @@
-import type { FormEvent, ReactNode } from 'react';
-import { proxy, useSnapshot } from 'valtio';
-import { useTranslation } from 'react-i18next';
-import { Button } from '@/ui/shadcn/button';
-import { Input } from '@/ui/shadcn/input';
-import { DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/ui/shadcn/dialog';
-import { openCustomDialog } from '../../../components/4-dialogs/7-0-dialogs/dialogs.ts';
+import { type FormEvent, type ReactNode } from "react";
+import { proxy, useSnapshot } from "valtio";
+import { useTranslation } from "react-i18next";
+import { Button } from "@/ui/shadcn/button";
+import { Input } from "@/ui/shadcn/input";
+import { DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/ui/shadcn/dialog";
+import { openCustomDialog } from "../../../components/4-dialogs/7-0-dialogs/dialogs";
 
 export interface ExpressionDialogOptions {
     onSubmit: (value: string) => Promise<{ error: string; } | undefined>; // Return `{ error }` to keep the dialog open, undefined on success

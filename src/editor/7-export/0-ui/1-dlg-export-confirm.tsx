@@ -1,42 +1,42 @@
-import type { ReactNode } from 'react';
-import { useAtomValue } from 'jotai';
-import { motion } from 'motion/react';
-import { cn } from '@/utils/classnames';
-import { Button } from '@/ui/shadcn/button';
-import { Input } from '@/ui/shadcn/input';
-import { Switch } from '@/ui/shadcn/switch';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/ui/shadcn/select';
-import { Sheet, SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetTitle } from '@/ui/shadcn/sheet';
-import { CircleCheckIcon, InfoIcon, SettingsIcon, TriangleAlertIcon } from 'lucide-react';
-import i18n from 'i18next';
-import { Trans, useTranslation } from 'react-i18next';
+import { type ReactNode } from "react";
+import { useAtomValue } from "jotai";
+import { motion } from "motion/react";
+import { cn } from "@/utils/classnames";
+import { Button } from "@/ui/shadcn/button";
+import { Input } from "@/ui/shadcn/input";
+import { Switch } from "@/ui/shadcn/switch";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/ui/shadcn/select";
+import { Sheet, SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetTitle } from "@/ui/shadcn/sheet";
+import { CircleCheckIcon, InfoIcon, SettingsIcon, TriangleAlertIcon } from "lucide-react";
+import i18n from "i18next";
+import { Trans, useTranslation } from "react-i18next";
 
-import { mainApi } from '@/editor/0-core/7-actions/0-main-api.ts';
-import { type AvoidNegativeTs, type PreserveMetadata } from '@shared/types';
-import { troubleshootingUrl } from '@shared/constants';
-import { jotaiDefaultStore } from '@/utils/local-utils/9-jotai-default-store.ts';
-import { effectiveExportModeAtom, userSettings, userSettingsAtom } from '@/editor/0-core/9-state/user-settings.ts';
-import { findNearestKeyFrameTime } from '@/editor/0-core/8-lib/ffmpeg/ffmpeg.ts';
-import { isMov as ffmpegIsMov } from '@/editor/0-core/8-lib/ffmpeg/streams.ts';
-import { closeExportConfirm, exportConfirmOpenAtom, settingsVisibleAtom, streamsSelectorShownAtom } from '@/components/2-main/0-all/a-panels-atoms.ts';
-import { encBitrateAtom, fileFormatAtom, numStreamsTotalAtom, outputDirAtom } from '@/editor/2-file/9-state/a-file-atoms.ts';
-import { outputPlaybackRateAtom } from '@/editor/3-player/9-state/player-atoms.ts';
-import { neighbouringKeyFramesAtom } from '@/editor/4-timeline/9-state/timeline-atoms.ts';
-import { toggleExportConfirmEnabled } from '@/editor/4-timeline/7-actions/timeline-actions.ts';
-import { currentSegIndexSafeAtom, segmentsOrInverseAtom, segmentsToExportAtom } from '@/editor/5-segments/9-state/segments-store.ts';
-import { mainCopiedThumbnailStreamsAtom, numStreamsToCopyAtom } from '@/editor/6-streams/9-state/a-streams-store.ts';
+import { mainApi } from "@/editor/0-core/7-actions/0-main-api";
+import { type AvoidNegativeTs, type PreserveMetadata } from "@shared/types";
+import { troubleshootingUrl } from "@shared/constants";
+import { jotaiDefaultStore } from "@/utils/local-utils/9-jotai-default-store";
+import { effectiveExportModeAtom, userSettings, userSettingsAtom } from "@/editor/0-core/9-state/user-settings";
+import { findNearestKeyFrameTime } from "@/editor/0-core/8-lib/ffmpeg/ffmpeg";
+import { isMov as ffmpegIsMov } from "@/editor/0-core/8-lib/ffmpeg/streams";
+import { closeExportConfirm, exportConfirmOpenAtom, settingsVisibleAtom, streamsSelectorShownAtom } from "@/components/2-main/0-all/a-panels-atoms";
+import { encBitrateAtom, fileFormatAtom, numStreamsTotalAtom, outputDirAtom } from "@/editor/2-file/9-state/a-file-atoms";
+import { outputPlaybackRateAtom } from "@/editor/3-player/9-state/player-atoms";
+import { neighbouringKeyFramesAtom } from "@/editor/4-timeline/9-state/timeline-atoms";
+import { toggleExportConfirmEnabled } from "@/editor/4-timeline/7-actions/timeline-actions";
+import { currentSegIndexSafeAtom, segmentsOrInverseAtom, segmentsToExportAtom } from "@/editor/5-segments/9-state/segments-store";
+import { mainCopiedThumbnailStreamsAtom, numStreamsToCopyAtom } from "@/editor/6-streams/9-state/a-streams-store";
 import {
     areWeCuttingAtom, cutFileTemplateOrDefaultAtom, cutMergedFileTemplateOrDefaultAtom, effectiveExportShowAdvancedAtom, exportShowAdvancedAtom, getLossyMode, isEncodingAtom, needSmartCutAtom,
     setCutFileTemplate, setCutMergedFileTemplate, setEncBitrate, willMergeAtom,
-} from '../9-state/export-atoms.ts';
-import { onExportConfirm, toggleKeyframeCut } from '../7-actions/export-actions.ts';
-import { generateCutMergedOutFileNamesFnAtom, generateOutSegFileNamesFnAtom } from '../7-actions/out-file-names.ts';
-import { defaultCutFileTemplate, defaultCutMergedFileTemplate } from '../8-lib/output-name-template.ts';
-import { HelpIcon, HighlightedText, showHelpText } from './controls.tsx';
-import { ExportButton, ExportModeButton, ToggleExportConfirm } from './export-buttons.tsx';
-import { FileNameTemplateEditor } from './file-name-template-editor.tsx';
-import { CurrentFileOutputFormatSelect } from './output-format-select.tsx';
-import { OutDirSelector } from './out-dir-selector.tsx';
+} from "../9-state/export-atoms";
+import { onExportConfirm, toggleKeyframeCut } from "../7-actions/export-actions";
+import { generateCutMergedOutFileNamesFnAtom, generateOutSegFileNamesFnAtom } from "../7-actions/out-file-names";
+import { defaultCutFileTemplate, defaultCutMergedFileTemplate } from "../8-lib/output-name-template";
+import { HelpIcon, HighlightedText, showHelpText } from "./controls";
+import { ExportButton, ExportModeButton, ToggleExportConfirm } from "./export-buttons";
+import { FileNameTemplateEditor } from "./file-name-template-editor";
+import { CurrentFileOutputFormatSelect } from "./output-format-select";
+import { OutDirSelector } from "./out-dir-selector";
 
 // Port of upstream components/ExportConfirm.tsx
 

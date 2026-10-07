@@ -1,8 +1,8 @@
-import i18n from 'i18next';
-import { ArrowRightIcon } from 'lucide-react';
-import { openCustomDialog } from '../7-0-dialogs/dialogs.ts';
-import { DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/ui/shadcn/dialog';
-import { Button } from '@/ui/shadcn/button';
+import i18n from "i18next";
+import { ArrowRightIcon } from "lucide-react";
+import { openCustomDialog } from "../7-0-dialogs/dialogs";
+import { DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/ui/shadcn/dialog";
+import { Button } from "@/ui/shadcn/button";
 
 export type OpenFileResponse = 'open' | 'project' | 'tracks' | 'subtitles' | 'addToBatch' | 'mergeWithCurrentFile';
 

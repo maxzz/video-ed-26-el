@@ -1,22 +1,22 @@
-import type { ReactNode } from 'react';
-import { useAtomValue } from 'jotai';
-import { useSnapshot } from 'valtio';
-import { jotaiDefaultStore } from '@/utils/local-utils/9-jotai-default-store.ts';
-import { useLocalProxy } from '@/utils/local-utils/use-local-proxy.ts';
-import { cn } from '@/utils/classnames';
-import { Button } from '@/ui/shadcn/button';
-import { Input } from '@/ui/shadcn/input';
-import { Switch } from '@/ui/shadcn/switch';
-import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/ui/shadcn/dialog';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/ui/shadcn/tabs';
-import { useTranslation } from 'react-i18next';
+import { type ReactNode } from "react";
+import { useAtomValue } from "jotai";
+import { useSnapshot } from "valtio";
+import { jotaiDefaultStore } from "@/utils/local-utils/9-jotai-default-store";
+import { useLocalProxy } from "@/utils/local-utils/use-local-proxy";
+import { cn } from "@/utils/classnames";
+import { Button } from "@/ui/shadcn/button";
+import { Input } from "@/ui/shadcn/input";
+import { Switch } from "@/ui/shadcn/switch";
+import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/ui/shadcn/dialog";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/ui/shadcn/tabs";
+import { useTranslation } from "react-i18next";
 
-import { type FFprobeStream } from '@shared/ffprobe';
-import { type FileParams, type StreamParams } from '@/editor/0-core/8-lib/9-types-core.ts';
-import { allFilesMetaAtom, filePathAtom, paramsByFileAtom } from '@/editor/2-file/9-state/a-file-atoms.ts';
-import { editingFileAtom, editingStreamAtom, editingTagKeyAtom, setEditingFile, setEditingStream } from '../9-state/a-streams-ui-atoms.ts';
-import { updateFileParams, updateStreamParams } from '../7-actions/streams-actions.tsx';
-import { TagEditor } from './tag-editor';
+import { type FFprobeStream } from "@shared/ffprobe";
+import { type FileParams, type StreamParams } from "@/editor/0-core/8-lib/9-types-core";
+import { allFilesMetaAtom, filePathAtom, paramsByFileAtom } from "@/editor/2-file/9-state/a-file-atoms";
+import { editingFileAtom, editingStreamAtom, editingTagKeyAtom, setEditingFile, setEditingStream } from "../9-state/a-streams-ui-atoms";
+import { updateFileParams, updateStreamParams } from "../7-actions/streams-actions";
+import { TagEditor } from "./tag-editor";
 
 // Port of upstream StreamsSelector.tsx EditFileDialog/EditStreamDialog
 

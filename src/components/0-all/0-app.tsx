@@ -1,13 +1,13 @@
-import { useSnapshot } from 'valtio';
-import { classNames } from '@/utils';
-import { appSettings } from '@/store/1-ui-settings';
-import { Toaster } from '@/ui/shadcn/sonner';
-import { TooltipProvider } from '@/ui/shadcn/tooltip';
-import { AllDialogs } from './1-globals';
-import { AppPages } from '../5-welcome';
-import { Header } from '../1-header';
-import { MainBody } from '../2-main';
-import { StatusBar } from '../6-status-bar';
+import { useSnapshot } from "valtio";
+import { classNames } from "@/utils";
+import { appSettings } from "@/store/1-ui-settings";
+import { Toaster } from "@/ui/shadcn/sonner";
+import { TooltipProvider } from "@/ui/shadcn/tooltip";
+import { AllDialogs } from "./1-globals";
+import { AppPages } from "../5-welcome";
+import { Header } from "../1-header";
+import { MainBody } from "../2-main";
+import { StatusBar } from "../6-status-bar";
 
 export function App() {
     const { showStatusBar } = useSnapshot(appSettings);

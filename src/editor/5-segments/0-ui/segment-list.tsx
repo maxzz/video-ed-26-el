@@ -1,27 +1,27 @@
-import { useEffect, useRef, type CSSProperties, type ReactNode } from 'react';
-import { useAtomValue } from 'jotai';
-import { motion } from 'motion/react';
-import { Trans, useTranslation } from 'react-i18next';
-import { closestCenter, DndContext, DragOverlay, PointerSensor, useSensor, useSensors, type DragEndEvent, type DragStartEvent } from '@dnd-kit/core';
-import { arrayMove, SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
-import { restrictToVerticalAxis } from '@dnd-kit/modifiers';
-import { useVirtualizer } from '@tanstack/react-virtual';
-import { ArrowDown01Icon, CircleCheckIcon, ContrastIcon, MinusIcon, PlusIcon, SplitIcon, TagIcon, XIcon } from 'lucide-react';
-import { cn } from '@/utils/classnames';
-import type { SegmentColorIndex } from '@/editor/0-core/8-lib/9-types-core.ts';
-import { jotaiDefaultStore } from '@/utils/local-utils/9-jotai-default-store.ts';
-import { formatTimecodeAtom } from '@/editor/0-core/9-state/timecode.ts';
-import { rightBarWidth } from '@/editor/0-core/8-lib/constants.ts';
-import { runAction } from '@/editor/0-core/7-actions/kbd-actions.ts';
-import { actionTitleAtom } from '@/editor/4-timeline/9-state/action-title.ts';
-import { currentSegIndexSafeAtom, cutSegmentsAtom } from '../9-state/segments-store.ts';
+import { useEffect, useRef, type CSSProperties, type ReactNode } from "react";
+import { useAtomValue } from "jotai";
+import { motion } from "motion/react";
+import { Trans, useTranslation } from "react-i18next";
+import { closestCenter, DndContext, DragOverlay, PointerSensor, useSensor, useSensors, type DragEndEvent, type DragStartEvent } from "@dnd-kit/core";
+import { arrayMove, SortableContext, verticalListSortingStrategy } from "@dnd-kit/sortable";
+import { restrictToVerticalAxis } from "@dnd-kit/modifiers";
+import { useVirtualizer } from "@tanstack/react-virtual";
+import { ArrowDown01Icon, CircleCheckIcon, ContrastIcon, MinusIcon, PlusIcon, SplitIcon, TagIcon, XIcon } from "lucide-react";
+import { cn } from "@/utils/classnames";
+import { type SegmentColorIndex } from "@/editor/0-core/8-lib/9-types-core";
+import { jotaiDefaultStore } from "@/utils/local-utils/9-jotai-default-store";
+import { formatTimecodeAtom } from "@/editor/0-core/9-state/timecode";
+import { rightBarWidth } from "@/editor/0-core/8-lib/constants";
+import { runAction } from "@/editor/0-core/7-actions/kbd-actions";
+import { actionTitleAtom } from "@/editor/4-timeline/9-state/action-title";
+import { currentSegIndexSafeAtom, cutSegmentsAtom } from "../9-state/segments-store";
 import {
     darkModeAtom, draggingSegIdAtom, firstSegmentAtCursorAtom, getSegColorAtom, invertCutSegmentsAtom, isOnlyMarkersAtom,
     nextSegColorIndexAtom, segmentListItemsAtom, selectedSegmentsTotalAtom, simpleModeAtom, springAnimationAtom,
-} from '../9-state/seg-ui-atoms.ts';
-import * as seg from '../7-actions/segment-actions.ts';
-import { reorderSegmentDialog } from '../7-actions/segment-dialogs.tsx';
-import { SegmentRowContent, SortableSegmentRow } from './segment-row.tsx';
+} from "../9-state/seg-ui-atoms";
+import * as seg from "../7-actions/segment-actions";
+import { reorderSegmentDialog } from "../7-actions/segment-dialogs";
+import { SegmentRowContent, SortableSegmentRow } from "./segment-row";
 
 // Port of upstream SegmentList.tsx (right bar)
 

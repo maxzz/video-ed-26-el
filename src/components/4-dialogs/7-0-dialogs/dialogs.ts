@@ -1,8 +1,8 @@
-import type { ReactNode } from 'react';
-import { atom } from 'jotai';
-import { proxy } from 'valtio';
-import { jotaiDefaultStore } from '@/utils/local-utils/9-jotai-default-store.ts';
-import { nanoid } from 'nanoid';
+import { type ReactNode } from "react";
+import { atom } from "jotai";
+import { proxy } from "valtio";
+import { jotaiDefaultStore } from "@/utils/local-utils/9-jotai-default-store";
+import { nanoid } from "nanoid";
 
 // Promise based dialogs. The option names follow SweetAlert2 which LosslessCut used,
 // so ported dialog code maps one to one: `const { value } = await fireDialog({ input: 'text', ... })`.

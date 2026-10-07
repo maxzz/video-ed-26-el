@@ -1,21 +1,21 @@
-import pMap from 'p-map';
-import sortBy from 'lodash/sortBy';
-import i18n from 'i18next';
-import type { FRAMERATE } from 'smpte-timecode';
-import Timecode from 'smpte-timecode';
-import minBy from 'lodash/minBy';
-import invariant from 'tiny-invariant';
-import z from 'zod';
+import pMap from "p-map";
+import sortBy from "lodash/sortBy";
+import i18n from "i18next";
+import { type FRAMERATE } from "smpte-timecode";
+import Timecode from "smpte-timecode";
+import minBy from "lodash/minBy";
+import invariant from "tiny-invariant";
+import z from "zod";
 
-import { pcmAudioCodecs, isMov } from './streams.ts';
-import { isExecaError } from '../util.ts';
-import { isDurationValid } from '@/editor/5-segments/8-lib/segments.ts';
-import type { FFprobeChapter, FFprobeFormat, FFprobeProbeResult, FFprobeStream } from '@shared/ffprobe';
-import { parseSrt, parseSrtToSegments } from '@/editor/9-edl/8-lib/edl-formats.ts';
-import { UnsupportedFileError, UserFacingError } from '../9-error-types.ts';
-import { mainApi } from '../../7-actions/0-main-api.ts';
-import { parseFfprobeDuration } from '@shared/util';
-import { renderWaveformPng, mapTimesToSegments, detectSceneChanges, captureFrames, captureFrameToFile, captureFrameToClipboard, getFfCommandLine, runFfmpegConcat, runFfmpegWithProgress, getDuration, abortFfmpegs, runFfmpeg, runFfprobe } from './ff-remote.ts';
+import { pcmAudioCodecs, isMov } from "./streams";
+import { isExecaError } from "../util";
+import { isDurationValid } from "@/editor/5-segments/8-lib/segments";
+import { type FFprobeChapter, type FFprobeFormat, type FFprobeProbeResult, type FFprobeStream } from "@shared/ffprobe";
+import { parseSrt, parseSrtToSegments } from "@/editor/9-edl/8-lib/edl-formats";
+import { UnsupportedFileError, UserFacingError } from "../9-error-types";
+import { mainApi } from "../../7-actions/0-main-api";
+import { parseFfprobeDuration } from "@shared/util";
+import { renderWaveformPng, mapTimesToSegments, detectSceneChanges, captureFrames, captureFrameToFile, captureFrameToClipboard, getFfCommandLine, runFfmpegConcat, runFfmpegWithProgress, getDuration, abortFfmpegs, runFfmpeg, runFfprobe } from "./ff-remote";
 
 export { renderWaveformPng, mapTimesToSegments, detectSceneChanges, captureFrames, captureFrameToFile, captureFrameToClipboard, getFfCommandLine, runFfmpegConcat, runFfmpegWithProgress, getDuration, abortFfmpegs, runFfmpeg, runFfprobe };
 

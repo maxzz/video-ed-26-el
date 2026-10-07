@@ -1,7 +1,7 @@
-import i18n from 'i18next';
-import { Trans } from 'react-i18next';
-import { fireDialog } from '../7-0-dialogs/dialogs.ts';
-import { DifferentFileSuggestion, ErrorReportSuggestion, HelpSuggestion, MovSuggestion, OutputFormatSuggestion, WorkingDirectorySuggestion } from './11-show-export-failed-dialog.tsx';
+import i18n from "i18next";
+import { Trans } from "react-i18next";
+import { fireDialog } from "../7-0-dialogs/dialogs";
+import { DifferentFileSuggestion, ErrorReportSuggestion, HelpSuggestion, MovSuggestion, OutputFormatSuggestion, WorkingDirectorySuggestion } from "./11-show-export-failed-dialog";
 
 export async function showConcatFailedDialog({ fileFormat }: { fileFormat: string | undefined; }) {
     const html = (

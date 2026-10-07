@@ -1,17 +1,17 @@
-import type { ComponentProps } from 'react';
-import { useAtomValue } from 'jotai';
-import { cn } from '@/utils/classnames';
-import { Button } from '@/ui/shadcn/button';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/ui/shadcn/select';
-import { FileOutputIcon, NotebookPenIcon, ScissorsIcon } from 'lucide-react';
-import { useTranslation } from 'react-i18next';
+import { type ComponentProps } from "react";
+import { useAtomValue } from "jotai";
+import { cn } from "@/utils/classnames";
+import { Button } from "@/ui/shadcn/button";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/ui/shadcn/select";
+import { FileOutputIcon, NotebookPenIcon, ScissorsIcon } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
-import { type ExportMode } from '@/editor/0-core/8-lib/9-types-core.ts';
-import { effectiveExportModeAtom, userSettingsAtom } from '@/editor/0-core/9-state/user-settings.ts';
-import { toggleExportConfirmEnabled } from '@/editor/4-timeline/7-actions/timeline-actions.ts';
-import { segmentsOrInverseAtom, segmentsToExportAtom } from '@/editor/5-segments/9-state/segments-store.ts';
-import { areWeCuttingAtom } from '../9-state/export-atoms.ts';
-import { onExportPress, setExportMode } from '../7-actions/export-actions.ts';
+import { type ExportMode } from "@/editor/0-core/8-lib/9-types-core";
+import { effectiveExportModeAtom, userSettingsAtom } from "@/editor/0-core/9-state/user-settings";
+import { toggleExportConfirmEnabled } from "@/editor/4-timeline/7-actions/timeline-actions";
+import { segmentsOrInverseAtom, segmentsToExportAtom } from "@/editor/5-segments/9-state/segments-store";
+import { areWeCuttingAtom } from "../9-state/export-atoms";
+import { onExportPress, setExportMode } from "../7-actions/export-actions";
 
 export function ExportButton({ className, onClick = onExportPress, ...rest }: Omit<ComponentProps<typeof Button>, 'onClick'> & { onClick?: () => void; }) {
     const segmentsToExport = useAtomValue(segmentsToExportAtom);

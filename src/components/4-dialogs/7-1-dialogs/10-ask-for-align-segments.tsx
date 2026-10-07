@@ -1,7 +1,7 @@
-import i18n from 'i18next';
-import type { FindKeyframeMode } from '../../../editor/0-core/8-lib/ffmpeg/ffmpeg.ts';
-import { fireDialog } from '../7-0-dialogs/dialogs.ts';
-import { askForSegmentsStartOrEnd } from './09-ask-for-segments-start-or-end.tsx';
+import i18n from "i18next";
+import { type FindKeyframeMode } from "../../../editor/0-core/8-lib/ffmpeg/ffmpeg";
+import { fireDialog } from "../7-0-dialogs/dialogs";
+import { askForSegmentsStartOrEnd } from "./09-ask-for-segments-start-or-end";
 
 export async function askForAlignSegments() {
     const startOrEnd = await askForSegmentsStartOrEnd(i18n.t('Do you want to align the segment start or end timestamps to keyframes?'));

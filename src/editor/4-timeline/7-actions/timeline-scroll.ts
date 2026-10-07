@@ -1,18 +1,18 @@
-import type { MouseEvent as ReactMouseEvent } from 'react';
-import { observe } from 'jotai-effect';
-import { animate, type AnimationPlaybackControls } from 'motion/react';
-import debounce from 'lodash/debounce.js';
-import { jotaiDefaultStore } from '@/utils/local-utils/9-jotai-default-store.ts';
-import { prefersReducedMotionAtom, userSettings } from '@/editor/0-core/9-state/user-settings.ts';
-import { calculateTimelinePos } from '@/editor/0-core/8-lib/util.ts';
-import { fileDurationNonZeroAtom } from '@/editor/2-file/9-state/a-file-atoms.ts';
-import { hoveringTimeAtom } from '@/components/2-main/0-all/a-panels-atoms.ts';
-import { commandedTimeAtom, relevantTimeAtom } from '@/editor/3-player/9-state/player-atoms.ts';
-import { seekAbs } from '@/editor/3-player/7-actions/player-actions.ts';
-import { currentCutSegAtom } from '@/editor/5-segments/9-state/segments-store.ts';
-import { setCutTime } from '@/editor/5-segments/7-actions/segment-actions.ts';
-import { isModifierPressed } from '../8-lib/modifier-keys.ts';
-import { timelineScrollerElementAtom, timelineWrapperElementAtom, zoomAtom, zoomWindowStartTimeAtom } from '../9-state/timeline-atoms.ts';
+import { type MouseEvent as ReactMouseEvent } from "react";
+import { observe } from "jotai-effect";
+import { animate, type AnimationPlaybackControls } from "motion/react";
+import debounce from "lodash/debounce.js";
+import { jotaiDefaultStore } from "@/utils/local-utils/9-jotai-default-store";
+import { prefersReducedMotionAtom, userSettings } from "@/editor/0-core/9-state/user-settings";
+import { calculateTimelinePos } from "@/editor/0-core/8-lib/util";
+import { fileDurationNonZeroAtom } from "@/editor/2-file/9-state/a-file-atoms";
+import { hoveringTimeAtom } from "@/components/2-main/0-all/a-panels-atoms";
+import { commandedTimeAtom, relevantTimeAtom } from "@/editor/3-player/9-state/player-atoms";
+import { seekAbs } from "@/editor/3-player/7-actions/player-actions";
+import { currentCutSegAtom } from "@/editor/5-segments/9-state/segments-store";
+import { setCutTime } from "@/editor/5-segments/7-actions/segment-actions";
+import { isModifierPressed } from "../8-lib/modifier-keys";
+import { timelineScrollerElementAtom, timelineWrapperElementAtom, zoomAtom, zoomWindowStartTimeAtom } from "../9-state/timeline-atoms";
 
 // Port of the imperative parts of upstream Timeline.tsx: auto scroll, zoom centering and mouse seeking/segment resizing
 

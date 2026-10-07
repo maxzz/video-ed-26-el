@@ -1,7 +1,7 @@
-import type { MainApi, MainEventsApi, NodePathApi, PreloadEnv } from '@shared/ipc-contract.ts';
-import type { Config } from '@shared/types.ts';
-import { defaultConfig } from '@shared/default-config.ts';
-import { appName } from '@shared/constants.ts';
+import { type MainApi, type MainEventsApi, type NodePathApi, type PreloadEnv } from "@shared/ipc-contract";
+import { type Config } from "@shared/types";
+import { defaultConfig } from "@shared/default-config";
+import { appName } from "@shared/constants";
 
 // Lets the renderer run in a plain browser (pnpm dev:web) for UI work. Anything that needs the main process throws.
 

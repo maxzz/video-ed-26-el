@@ -1,6 +1,6 @@
-import { test, it, expect, describe } from 'vitest';
+import { test, it, expect, describe } from "vitest";
 
-import { convertSegmentsToChaptersWithGaps, partitionIntoOverlappingRanges, formatSegNum, combineOverlappingSegments, invertSegments } from './segments.ts';
+import { convertSegmentsToChaptersWithGaps, partitionIntoOverlappingRanges, formatSegNum, combineOverlappingSegments, invertSegments } from "./segments";
 
 it('converts segments to chapters with gaps', () => {
   expect(convertSegmentsToChaptersWithGaps([

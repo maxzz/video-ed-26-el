@@ -1,12 +1,12 @@
-import { useAtomValue } from 'jotai';
-import { useTranslation } from 'react-i18next';
-import { jotaiDefaultStore } from '@/utils/local-utils/9-jotai-default-store.ts';
-import { Button } from '@/ui/shadcn/button';
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/ui/shadcn/dialog';
+import { useAtomValue } from "jotai";
+import { useTranslation } from "react-i18next";
+import { jotaiDefaultStore } from "@/utils/local-utils/9-jotai-default-store";
+import { Button } from "@/ui/shadcn/button";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/ui/shadcn/dialog";
 
-import { lastCommandsVisibleAtom, toggleLastCommands } from '@/components/2-main/0-all/a-panels-atoms.ts';
-import { ffmpegCommandLogAtom } from '@/editor/2-file/9-state/a-file-atoms.ts';
-import { CopyClipboardButton } from './controls';
+import { lastCommandsVisibleAtom, toggleLastCommands } from "@/components/2-main/0-all/a-panels-atoms";
+import { ffmpegCommandLogAtom } from "@/editor/2-file/9-state/a-file-atoms";
+import { CopyClipboardButton } from "./controls";
 
 // Port of upstream LastCommands.tsx
 

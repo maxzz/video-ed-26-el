@@ -1,14 +1,14 @@
-import { proxy, useSnapshot } from 'valtio';
-import { useTranslation } from 'react-i18next';
-import { Button } from '@/ui/shadcn/button';
-import { Checkbox } from '@/ui/shadcn/checkbox';
-import { DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/ui/shadcn/dialog';
-import { Label } from '@/ui/shadcn/label';
-import { RadioGroup, RadioGroupItem } from '@/ui/shadcn/radio-group';
-import i18n from 'i18next';
+import { proxy, useSnapshot } from "valtio";
+import { useTranslation } from "react-i18next";
+import { Button } from "@/ui/shadcn/button";
+import { Checkbox } from "@/ui/shadcn/checkbox";
+import { DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/ui/shadcn/dialog";
+import { Label } from "@/ui/shadcn/label";
+import { RadioGroup, RadioGroupItem } from "@/ui/shadcn/radio-group";
+import i18n from "i18next";
 
-import { openCustomDialog } from '@/components/4-dialogs/7-0-dialogs/dialogs';
-import { type Html5ifyMode } from '@shared/types';
+import { openCustomDialog } from "@/components/4-dialogs/7-0-dialogs/dialogs";
+import { type Html5ifyMode } from "@shared/types";
 
 /** Port of upstream askForHtml5ifySpeed (useHtml5ify) */
 export async function dialogAsync_askForHtml5ifySpeed({ allowedOptions, showRemember, initialOption }: {

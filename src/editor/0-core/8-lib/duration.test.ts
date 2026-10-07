@@ -1,6 +1,6 @@
-import { it, expect } from 'vitest';
+import { it, expect } from "vitest";
 
-import { formatDuration, parseDuration } from './duration.ts';
+import { formatDuration, parseDuration } from "./duration";
 
 it('should format duration properly', () => {
   expect(formatDuration({ seconds: 1.5, fps: 30 })).toBe('00:00:01.15');

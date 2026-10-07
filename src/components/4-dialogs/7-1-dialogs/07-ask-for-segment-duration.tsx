@@ -1,8 +1,8 @@
-import i18n from 'i18next';
-import { formatDuration } from '../../../editor/0-core/8-lib/duration.ts';
-import type { ParseTimecode } from '../../../editor/0-core/8-lib/9-types-core.ts';
-import { fireDialog } from '../7-0-dialogs/dialogs.ts';
-import { maxSegments } from './06-ask-for-num-segments.tsx';
+import i18n from "i18next";
+import { formatDuration } from "../../../editor/0-core/8-lib/duration";
+import { type ParseTimecode } from "../../../editor/0-core/8-lib/9-types-core";
+import { fireDialog } from "../7-0-dialogs/dialogs";
+import { maxSegments } from "./06-ask-for-num-segments";
 
 export async function askForSegmentDuration({ totalDuration, inputPlaceholder, parseTimecode }: {
     totalDuration: number;

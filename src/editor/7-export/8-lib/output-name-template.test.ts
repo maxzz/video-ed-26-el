@@ -1,9 +1,9 @@
-import path from 'node:path';
-import { describe, expect, it } from 'vitest';
+import path from "node:path";
+import { describe, expect, it } from "vitest";
 
-import { formatDuration } from '@/editor/0-core/8-lib/duration.ts';
-import type { SegmentToExport } from '@/editor/0-core/8-lib/types.ts';
-import { defaultCutFileTemplate, generateCutFileNames, generateCutMergedFileNames, generateMergedFileNames, maxFileNameLength } from './output-name-template.ts';
+import { formatDuration } from "@/editor/0-core/8-lib/duration";
+import { type SegmentToExport } from "@/editor/0-core/8-lib/types";
+import { defaultCutFileTemplate, generateCutFileNames, generateCutMergedFileNames, generateMergedFileNames, maxFileNameLength } from "./output-name-template";
 
 const outputDir = path.resolve('/videos');
 const sourceFile = { path: path.join(outputDir, 'my video.mp4') };

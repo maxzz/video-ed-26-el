@@ -1,18 +1,18 @@
-import type { DragEvent } from 'react';
-import { useAtomValue } from 'jotai';
-import { useTranslation } from 'react-i18next';
-import { motion } from 'motion/react';
-import { ArrowDownAZIcon, ArrowUpAZIcon, CombineIcon, WandSparklesIcon, XIcon } from 'lucide-react';
-import { closestCenter, DndContext, DragOverlay, PointerSensor, useSensor, useSensors } from '@dnd-kit/core';
-import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
-import { restrictToVerticalAxis } from '@dnd-kit/modifiers';
-import { Button } from '@/ui/shadcn/button';
-import { batchFilesAtom, filePathAtom, selectedBatchFilesAtom } from '@/editor/2-file/9-state/a-file-atoms.ts';
-import { closeBatch, convertFormatBatch, handleBatchFilesDrop } from '@/editor/2-file/index.ts';
-import { batchDraggingIdAtom, batchSortDescAtom } from '../9-state/concat-atoms.ts';
-import { onBatchDragCancel, onBatchDragEnd, onBatchDragStart, sortBatchFiles } from '../7-actions/batch-list-actions.ts';
-import { concatBatch } from '../7-actions/concat-actions.ts';
-import { Menu_BatchFile, BatchFileDragOverlay } from './2-menu-batch-file.tsx';
+import { type DragEvent } from "react";
+import { useAtomValue } from "jotai";
+import { useTranslation } from "react-i18next";
+import { motion } from "motion/react";
+import { ArrowDownAZIcon, ArrowUpAZIcon, CombineIcon, WandSparklesIcon, XIcon } from "lucide-react";
+import { closestCenter, DndContext, DragOverlay, PointerSensor, useSensor, useSensors } from "@dnd-kit/core";
+import { SortableContext, verticalListSortingStrategy } from "@dnd-kit/sortable";
+import { restrictToVerticalAxis } from "@dnd-kit/modifiers";
+import { Button } from "@/ui/shadcn/button";
+import { batchFilesAtom, filePathAtom, selectedBatchFilesAtom } from "@/editor/2-file/9-state/a-file-atoms";
+import { closeBatch, convertFormatBatch, handleBatchFilesDrop } from "@/editor/2-file";
+import { batchDraggingIdAtom, batchSortDescAtom } from "../9-state/concat-atoms";
+import { onBatchDragCancel, onBatchDragEnd, onBatchDragStart, sortBatchFiles } from "../7-actions/batch-list-actions";
+import { concatBatch } from "../7-actions/concat-actions";
+import { Menu_BatchFile, BatchFileDragOverlay } from "./2-menu-batch-file";
 
 const mySpring = { type: 'spring' as const, damping: 50, stiffness: 700 };
 

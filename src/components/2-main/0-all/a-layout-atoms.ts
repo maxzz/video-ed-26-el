@@ -1,5 +1,5 @@
-import { atom } from 'jotai';
-import { jotaiDefaultStore } from '@/utils/local-utils/9-jotai-default-store';
+import { atom } from "jotai";
+import { jotaiDefaultStore } from "@/utils/local-utils/9-jotai-default-store";
 
 // Visibility of the main layout regions
 

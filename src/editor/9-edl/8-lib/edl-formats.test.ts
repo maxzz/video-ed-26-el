@@ -1,9 +1,9 @@
-import { it, describe, expect, test } from 'vitest';
+import { it, describe, expect, test } from "vitest";
 
-import type { Otio } from './edl-formats.ts';
-import { parseSrtToSegments, formatSrt, parseYouTube, formatYouTube, parseMplayerEdl, parseXmeml, parseFcpXml, parseCsv, parseCsvTime, getFrameValParser, formatCsvFrames, getFrameCountRaw, parsePbf, parseDvAnalyzerSummaryTxt, parseCutlist, parseDjiGps1, parseOtio, parseDjiGps2 } from './edl-formats.ts';
-import { readFixture, readFixtureBinary } from './__fixtures__/read-fixture.ts';
-import otioFixture from './__fixtures__/otio.ts';
+import { type Otio } from "./edl-formats";
+import { parseSrtToSegments, formatSrt, parseYouTube, formatYouTube, parseMplayerEdl, parseXmeml, parseFcpXml, parseCsv, parseCsvTime, getFrameValParser, formatCsvFrames, getFrameCountRaw, parsePbf, parseDvAnalyzerSummaryTxt, parseCutlist, parseDjiGps1, parseOtio, parseDjiGps2 } from "./edl-formats";
+import { readFixture, readFixtureBinary } from "./__fixtures__/read-fixture";
+import otioFixture from "./__fixtures__/otio";
 
 
 const expectYouTube1 = [

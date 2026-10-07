@@ -1,6 +1,6 @@
-import i18n from 'i18next';
-import { fs } from '../../../editor/0-core/8-lib/node-shims.ts';
-import { showOpenDialog } from './01-show-open-dialog.tsx';
+import i18n from "i18next";
+import { fs } from "../../../editor/0-core/8-lib/node-shims";
+import { showOpenDialog } from "./01-show-open-dialog";
 
 export async function askForOutDir(defaultPath?: string | undefined) {
     const { filePaths } = await showOpenDialog({

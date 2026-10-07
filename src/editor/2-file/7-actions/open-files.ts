@@ -1,23 +1,23 @@
-import i18n from 'i18next';
-import invariant from 'tiny-invariant';
-import { jotaiDefaultStore } from '@/utils/local-utils/9-jotai-default-store.ts';
-import { customOutDirAtom, userSettings } from '@/editor/0-core/9-state/user-settings.ts';
-import { isWorking, setWorking, withErrorHandling } from '@/editor/0-core/9-state/working.ts';
-import { showOpenDialog } from '@/components/4-dialogs/7-1-dialogs/01-show-open-dialog.tsx';
-import { askForFileOpenAction, type OpenFileResponse } from '@/components/4-dialogs/7-1-dialogs/04-ask-for-file-open-action.tsx';
-import { errorToast, promptDownloadMediaUrl } from '@/components/4-dialogs/7-1-dialogs/00-app-dialogs.tsx';
-import { mainApi } from '@/editor/0-core/7-actions/0-main-api.ts';
-import { basename, fs } from '@/editor/0-core/8-lib/node-shims.ts';
-import { getDownloadMediaOutPath, getImportProjectType, readDirRecursively, readVideoTs, resolvePathIfNeeded } from '@/editor/0-core/8-lib/util.ts';
-import { concatDialogOpenAtom, streamsSelectorShownAtom } from '@/components/2-main/0-all/a-panels-atoms.ts';
-import { checkFileOpened } from '@/editor/3-player/7-actions/player-actions.ts';
-import { loadEdlFile } from '@/editor/9-edl/7-actions/edl-actions.ts';
-import { alwaysConcatMultipleFilesAtom, batchFilesAtom, filePathAtom, isFileOpenedAtom, lastOpenedPathAtom } from '../9-state/a-file-atoms.ts';
-import { getDroppedFilePaths } from '../../../utils/local-utils/8-drop-full-path.ts';
-import { batchLoadPaths } from './batch-actions.ts';
-import { ensureWritableOutDir } from './directory-access.ts';
-import { addStreamSourceFile } from '@/editor/6-streams/7-actions/streams-actions.tsx';
-import { loadMedia, userOpenSingleFile } from './load-media.ts';
+import i18n from "i18next";
+import invariant from "tiny-invariant";
+import { jotaiDefaultStore } from "@/utils/local-utils/9-jotai-default-store";
+import { customOutDirAtom, userSettings } from "@/editor/0-core/9-state/user-settings";
+import { isWorking, setWorking, withErrorHandling } from "@/editor/0-core/9-state/working";
+import { showOpenDialog } from "@/components/4-dialogs/7-1-dialogs/01-show-open-dialog";
+import { askForFileOpenAction, type OpenFileResponse } from "@/components/4-dialogs/7-1-dialogs/04-ask-for-file-open-action";
+import { errorToast, promptDownloadMediaUrl } from "@/components/4-dialogs/7-1-dialogs/00-app-dialogs";
+import { mainApi } from "@/editor/0-core/7-actions/0-main-api";
+import { basename, fs } from "@/editor/0-core/8-lib/node-shims";
+import { getDownloadMediaOutPath, getImportProjectType, readDirRecursively, readVideoTs, resolvePathIfNeeded } from "@/editor/0-core/8-lib/util";
+import { concatDialogOpenAtom, streamsSelectorShownAtom } from "@/components/2-main/0-all/a-panels-atoms";
+import { checkFileOpened } from "@/editor/3-player/7-actions/player-actions";
+import { loadEdlFile } from "@/editor/9-edl/7-actions/edl-actions";
+import { alwaysConcatMultipleFilesAtom, batchFilesAtom, filePathAtom, isFileOpenedAtom, lastOpenedPathAtom } from "../9-state/a-file-atoms";
+import { getDroppedFilePaths } from "../../../utils/local-utils/8-drop-full-path";
+import { batchLoadPaths } from "./batch-actions";
+import { ensureWritableOutDir } from "./directory-access";
+import { addStreamSourceFile } from "@/editor/6-streams/7-actions/streams-actions";
+import { loadMedia, userOpenSingleFile } from "./load-media";
 
 export async function userOpenFiles(newFilePathsIn?: string[]) {
     await withErrorHandling(async () => {

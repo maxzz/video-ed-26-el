@@ -1,7 +1,7 @@
-import i18n from 'i18next';
-import { userSettings } from '../9-state/user-settings.ts';
-import { showNotification } from '../8-lib/notifications.ts';
-import { toast } from '../../../components/4-dialogs/7-0-dialogs/toast.tsx';
+import i18n from "i18next";
+import { userSettings } from "../9-state/user-settings";
+import { showNotification } from "../8-lib/notifications";
+import { toast } from "../../../components/4-dialogs/7-0-dialogs/toast";
 
 // Settings toggles used from several places (bottom bar, top menu, settings dialog, keyboard)
 

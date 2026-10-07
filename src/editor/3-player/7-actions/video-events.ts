@@ -1,22 +1,22 @@
-import i18n from 'i18next';
-import invariant from 'tiny-invariant';
-import { jotaiDefaultStore } from '@/utils/local-utils/9-jotai-default-store.ts';
-import { customOutDirAtom, userSettings } from '@/editor/0-core/9-state/user-settings.ts';
-import { formatTimecode, parseTimecode, promptTimecode, timecodePlaceholderAtom } from '@/editor/0-core/9-state/timecode.ts';
-import { isWorking, setWorking } from '@/editor/0-core/9-state/working.ts';
-import { showPlaybackFailedMessage } from '@/components/4-dialogs/7-1-dialogs/14-show-playback-failed-message.tsx';
-import { toastError } from '@/components/4-dialogs/7-1-dialogs/00-app-dialogs.tsx';
-import { UserFacingError } from '@/editor/0-core/8-lib/9-error-types.ts';
-import { toast } from '@/components/4-dialogs/7-0-dialogs/toast.tsx';
-import { mediaSourceQualities } from '@/editor/0-core/8-lib/util.ts';
-import { fullscreenAtom } from '@/components/2-main/0-all/a-panels-atoms.ts';
-import { fileDurationAtom, filePathAtom, hasAudioAtom, hasVideoAtom, usingPreviewFileAtom } from '@/editor/2-file/9-state/a-file-atoms.ts';
-import { html5ifyAndLoadWithPreferences } from '@/editor/2-file/7-actions/html5ify.ts';
-import { isFileDurationValid, showNotNativelySupportedMessage } from '@/editor/2-file/7-actions/load-media.ts';
-import { maybeCreateFullLengthSegment } from '@/editor/5-segments/7-actions/segment-actions.ts';
-import { isDurationValid } from '@/editor/5-segments/8-lib/segments.ts';
-import { commandedTimeAtom, mediaSourceQualityAtom, videoContainerElementAtom, videoElementAtom } from '../9-state/player-atoms.ts';
-import { seekAbs, seekRel } from './player-actions.ts';
+import i18n from "i18next";
+import invariant from "tiny-invariant";
+import { jotaiDefaultStore } from "@/utils/local-utils/9-jotai-default-store";
+import { customOutDirAtom, userSettings } from "@/editor/0-core/9-state/user-settings";
+import { formatTimecode, parseTimecode, promptTimecode, timecodePlaceholderAtom } from "@/editor/0-core/9-state/timecode";
+import { isWorking, setWorking } from "@/editor/0-core/9-state/working";
+import { showPlaybackFailedMessage } from "@/components/4-dialogs/7-1-dialogs/14-show-playback-failed-message";
+import { toastError } from "@/components/4-dialogs/7-1-dialogs/00-app-dialogs";
+import { UserFacingError } from "@/editor/0-core/8-lib/9-error-types";
+import { toast } from "@/components/4-dialogs/7-0-dialogs/toast";
+import { mediaSourceQualities } from "@/editor/0-core/8-lib/util";
+import { fullscreenAtom } from "@/components/2-main/0-all/a-panels-atoms";
+import { fileDurationAtom, filePathAtom, hasAudioAtom, hasVideoAtom, usingPreviewFileAtom } from "@/editor/2-file/9-state/a-file-atoms";
+import { html5ifyAndLoadWithPreferences } from "@/editor/2-file/7-actions/html5ify";
+import { isFileDurationValid, showNotNativelySupportedMessage } from "@/editor/2-file/7-actions/load-media";
+import { maybeCreateFullLengthSegment } from "@/editor/5-segments/7-actions/segment-actions";
+import { isDurationValid } from "@/editor/5-segments/8-lib/segments";
+import { commandedTimeAtom, mediaSourceQualityAtom, videoContainerElementAtom, videoElementAtom } from "../9-state/player-atoms";
+import { seekAbs, seekRel } from "./player-actions";
 
 /** Some files report duration infinity first, then proper duration later. Sometimes after seeking to end of file, duration might change */
 export function onDurationChange(durationNew: number) {

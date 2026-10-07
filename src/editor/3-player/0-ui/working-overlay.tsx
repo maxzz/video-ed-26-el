@@ -1,11 +1,11 @@
-import { useAtomValue } from 'jotai';
-import { AnimatePresence, motion } from 'motion/react';
-import { useTranslation } from 'react-i18next';
-import { Loader2Icon } from 'lucide-react';
-import { abortWorking, progressAtom, workingAtom } from '@/editor/0-core/9-state/working.ts';
-import { Button } from '@/ui/shadcn/button';
-import { Progress } from '@/ui/shadcn/progress';
-import { workingElapsedMsAtom } from '../7-actions/working-timer.ts';
+import { useAtomValue } from "jotai";
+import { AnimatePresence, motion } from "motion/react";
+import { useTranslation } from "react-i18next";
+import { Loader2Icon } from "lucide-react";
+import { abortWorking, progressAtom, workingAtom } from "@/editor/0-core/9-state/working";
+import { Button } from "@/ui/shadcn/button";
+import { Progress } from "@/ui/shadcn/progress";
+import { workingElapsedMsAtom } from "../7-actions/working-timer";
 
 /** Port of upstream Working.tsx: blocking overlay while an operation runs, with progress and abort */
 export function WorkingOverlay() {

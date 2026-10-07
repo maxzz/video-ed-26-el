@@ -1,12 +1,12 @@
-import { atom, useAtomValue } from 'jotai';
-import { useTranslation } from 'react-i18next';
-import type { Config } from '@shared/types.ts';
-import { Button } from '@/ui/shadcn/button';
-import { Slider } from '@/ui/shadcn/slider';
-import { Switch } from '@/ui/shadcn/switch';
-import { jotaiDefaultStore } from '@/utils/local-utils/9-jotai-default-store';
-import { userSettings, userSettingsAtom } from '@/editor/0-core/9-state/user-settings.ts';
-import { tunerVisibleAtom } from '@/components/2-main/0-all/a-panels-atoms';
+import { atom, useAtomValue } from "jotai";
+import { useTranslation } from "react-i18next";
+import { type Config } from "@shared/types";
+import { Button } from "@/ui/shadcn/button";
+import { Slider } from "@/ui/shadcn/slider";
+import { Switch } from "@/ui/shadcn/switch";
+import { jotaiDefaultStore } from "@/utils/local-utils/9-jotai-default-store";
+import { userSettings, userSettingsAtom } from "@/editor/0-core/9-state/user-settings";
+import { tunerVisibleAtom } from "@/components/2-main/0-all/a-panels-atoms";
 
 // Port of upstream ValueTuners.tsx + ValueTuner.tsx
 

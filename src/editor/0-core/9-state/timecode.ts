@@ -1,14 +1,14 @@
-import { atom } from 'jotai';
-import i18n from 'i18next';
-import { jotaiDefaultStore } from '../../../utils/local-utils/9-jotai-default-store.ts';
-import { fireDialog } from '../../../components/4-dialogs/7-0-dialogs/dialogs.ts';
+import { atom } from "jotai";
+import i18n from "i18next";
+import { jotaiDefaultStore } from "../../../utils/local-utils/9-jotai-default-store";
+import { fireDialog } from "../../../components/4-dialogs/7-0-dialogs/dialogs";
 
-import type { FormatTimecode, ParseTimecode } from '../8-lib/9-types-core.ts';
-import { getFrameCountRaw } from '@/editor/9-edl/8-lib/edl-formats.ts';
-import { getFrameDuration } from '../8-lib/util.ts';
-import { formatDuration, parseDuration } from '../8-lib/duration.ts';
-import { detectedFpsAtom } from '@/editor/2-file/9-state/a-file-atoms.ts';
-import { userSettingsAtom } from './user-settings.ts';
+import { type FormatTimecode, type ParseTimecode } from "../8-lib/9-types-core";
+import { getFrameCountRaw } from "@/editor/9-edl/8-lib/edl-formats";
+import { getFrameDuration } from "../8-lib/util";
+import { formatDuration, parseDuration } from "../8-lib/duration";
+import { detectedFpsAtom } from "@/editor/2-file/9-state/a-file-atoms";
+import { userSettingsAtom } from "./user-settings";
 
 // Port of upstream useTimecode: the functions are derived atoms, so they change when fps or format changes
 

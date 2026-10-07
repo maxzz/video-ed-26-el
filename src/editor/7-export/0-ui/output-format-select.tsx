@@ -1,10 +1,10 @@
-import { useAtomValue } from 'jotai';
-import { useTranslation } from 'react-i18next';
-import { detectedFileFormatAtom, fileFormatAtom } from '@/editor/2-file/9-state/a-file-atoms.ts';
-import { onOutputFormatUserChange } from '../7-actions/export-actions.ts';
-import allOutFormats, { type FfmpegFormat } from '@/editor/0-core/8-lib/ffmpeg/out-formats.ts';
-import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectSeparator, SelectTrigger, SelectValue } from '@/ui/shadcn/select';
-import { cn } from '@/utils/classnames';
+import { useAtomValue } from "jotai";
+import { useTranslation } from "react-i18next";
+import { detectedFileFormatAtom, fileFormatAtom } from "@/editor/2-file/9-state/a-file-atoms";
+import { onOutputFormatUserChange } from "../7-actions/export-actions";
+import allOutFormats, { type FfmpegFormat } from "@/editor/0-core/8-lib/ffmpeg/out-formats";
+import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectSeparator, SelectTrigger, SelectValue } from "@/ui/shadcn/select";
+import { cn } from "@/utils/classnames";
 
 const commonVideoAudioFormats = ['matroska', 'mov', 'mp4', 'mpegts', 'ogv', 'webm'] as const;
 const commonAudioFormats = ['flac', 'ipod', 'mp3', 'oga', 'ogg', 'opus', 'wav'] as const;

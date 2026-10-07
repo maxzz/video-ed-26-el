@@ -1,11 +1,11 @@
-import { useAtomValue } from 'jotai';
-import { TriangleAlertIcon } from 'lucide-react';
-import { Button } from '@/ui/shadcn/button';
-import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/ui/shadcn/dialog';
-import { useTranslation } from 'react-i18next';
-import { jotaiDefaultStore } from '@/utils/local-utils/9-jotai-default-store';
+import { useAtomValue } from "jotai";
+import { TriangleAlertIcon } from "lucide-react";
+import { Button } from "@/ui/shadcn/button";
+import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/ui/shadcn/dialog";
+import { useTranslation } from "react-i18next";
+import { jotaiDefaultStore } from "@/utils/local-utils/9-jotai-default-store";
 
-import { genericErrorAtom } from '@/editor/0-core/9-state/working.ts';
+import { genericErrorAtom } from "@/editor/0-core/9-state/working";
 
 const closeErrorDialog = (open: boolean) => {
     if (!open) jotaiDefaultStore.set(genericErrorAtom, undefined);

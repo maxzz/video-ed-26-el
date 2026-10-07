@@ -1,7 +1,7 @@
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it } from "vitest";
 
-import type { FFprobeFormat, FFprobeStream } from '@shared/ffprobe.ts';
-import { findNearestKeyFrameTime, getExperimentalArgs, getSafeCutTime, getStreamFps, getTimecodeFromStreams, getVideoTimescaleArgs, isCuttingEnd, isCuttingStart, isIphoneHevc, isProblematicAvc1, mapRecommendedDefaultFormat, tryMapChaptersToEdl, type Frame } from './ffmpeg.ts';
+import { type FFprobeFormat, type FFprobeStream } from "@shared/ffprobe";
+import { findNearestKeyFrameTime, getExperimentalArgs, getSafeCutTime, getStreamFps, getTimecodeFromStreams, getVideoTimescaleArgs, isCuttingEnd, isCuttingStart, isIphoneHevc, isProblematicAvc1, mapRecommendedDefaultFormat, tryMapChaptersToEdl, type Frame } from "./ffmpeg";
 
 const createdAt = new Date(0);
 const frame = (time: number, keyframe = false): Frame => ({ time, keyframe, createdAt });

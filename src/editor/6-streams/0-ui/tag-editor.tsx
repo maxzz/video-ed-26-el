@@ -1,19 +1,19 @@
-import type { FormEvent } from 'react';
-import { useSnapshot } from 'valtio';
-import { cn } from '@/utils/classnames';
-import { useLocalProxy } from '@/utils/local-utils/use-local-proxy.ts';
-import { AnimatePresence, motion } from 'motion/react';
-import { Button } from '@/ui/shadcn/button';
-import { Input } from '@/ui/shadcn/input';
-import { Tooltip, TooltipContent, TooltipTrigger } from '@/ui/shadcn/tooltip';
-import { CheckIcon, ClipboardListIcon, ClipboardPasteIcon, InfoIcon, PencilIcon, PlusIcon, Trash2Icon, TriangleAlertIcon, Undo2Icon } from 'lucide-react';
-import { useTranslation } from 'react-i18next';
+import { type FormEvent } from "react";
+import { useSnapshot } from "valtio";
+import { cn } from "@/utils/classnames";
+import { useLocalProxy } from "@/utils/local-utils/use-local-proxy";
+import { AnimatePresence, motion } from "motion/react";
+import { Button } from "@/ui/shadcn/button";
+import { Input } from "@/ui/shadcn/input";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/ui/shadcn/tooltip";
+import { CheckIcon, ClipboardListIcon, ClipboardPasteIcon, InfoIcon, PencilIcon, PlusIcon, Trash2Icon, TriangleAlertIcon, Undo2Icon } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
-import { mainApi } from '@/editor/0-core/7-actions/0-main-api.ts';
-import { errorToast } from '@/components/4-dialogs/7-1-dialogs/00-app-dialogs.tsx';
-import { type SegmentTags, segmentTagsSchema } from '@/editor/0-core/8-lib/9-types-core.ts';
-import { CopyClipboardButton } from '@/editor/7-export/0-ui/controls.tsx';
-import invariant from 'tiny-invariant';
+import { mainApi } from "@/editor/0-core/7-actions/0-main-api";
+import { errorToast } from "@/components/4-dialogs/7-1-dialogs/00-app-dialogs";
+import { type SegmentTags, segmentTagsSchema } from "@/editor/0-core/8-lib/9-types-core";
+import { CopyClipboardButton } from "@/editor/7-export/0-ui/controls";
+import invariant from "tiny-invariant";
 
 // Port of upstream components/TagEditor.tsx
 

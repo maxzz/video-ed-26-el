@@ -1,11 +1,11 @@
-import type { ComponentProps, MouseEvent } from 'react';
-import { useTranslation } from 'react-i18next';
-import { useSortable } from '@dnd-kit/sortable';
-import { CSS } from '@dnd-kit/utilities';
-import { FileIcon, XIcon } from 'lucide-react';
-import { ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuTrigger } from '@/ui/shadcn/context-menu';
-import { cn } from '@/utils/classnames';
-import { batchListRemoveFile, onBatchFileSelect } from '@/editor/2-file/index.ts';
+import { type ComponentProps, type MouseEvent } from "react";
+import { useTranslation } from "react-i18next";
+import { useSortable } from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
+import { FileIcon, XIcon } from "lucide-react";
+import { ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuTrigger } from "@/ui/shadcn/context-menu";
+import { cn } from "@/utils/classnames";
+import { batchListRemoveFile, onBatchFileSelect } from "@/editor/2-file";
 
 const sortableTransition = { duration: 150, easing: 'ease-in-out' };
 

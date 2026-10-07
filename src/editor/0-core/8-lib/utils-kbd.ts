@@ -1,5 +1,5 @@
-import i18n from 'i18next';
-import { isMac, isWindows } from '../7-actions/0-main-api.ts';
+import i18n from "i18next";
+import { isMac, isWindows } from "../7-actions/0-main-api";
 
 export function splitKeyboardKeys(keys: string) {
     return keys.split('+');

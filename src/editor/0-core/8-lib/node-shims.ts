@@ -1,5 +1,5 @@
-import type { FileStat } from '@shared/ipc-contract.ts';
-import { mainApi, nodePath } from '../7-actions/0-main-api.ts';
+import { type FileStat } from "@shared/ipc-contract";
+import { mainApi, nodePath } from "../7-actions/0-main-api";
 
 // Node-like `path` and `fs/promises` facades so the ported LosslessCut logic stays close to upstream.
 // path runs synchronously in the preload; fs goes through IPC to the main process.

@@ -1,20 +1,20 @@
-import i18n from 'i18next';
-import invariant from 'tiny-invariant';
-import type { PlaybackMode } from '@/editor/0-core/8-lib/9-types-core.ts';
-import { jotaiDefaultStore } from '@/utils/local-utils/9-jotai-default-store.ts';
-import { userSettings } from '@/editor/0-core/9-state/user-settings.ts';
-import { showPlaybackFailedMessage } from '@/components/4-dialogs/7-1-dialogs/14-show-playback-failed-message.tsx';
-import { toast } from '@/components/4-dialogs/7-0-dialogs/toast.tsx';
-import { adjustRate } from '@/editor/0-core/8-lib/rate-calculator.ts';
-import { getFrameCountRaw } from '@/editor/9-edl/8-lib/edl-formats.ts';
-import { enableAudioTrack, enableVideoTrack } from '@/editor/0-core/8-lib/ffmpeg/streams.ts';
-import { detectedFpsAtom, fileDurationAtom, filePathAtom, isFileOpenedAtom, previewFilePathAtom, usingDummyVideoAtom } from '@/editor/2-file/9-state/a-file-atoms.ts';
-import { cutSegmentsAtom, currentCutSegAtom, currentSegIndexAtom, findSegmentsAtCursor, selectedSegmentsAtom, currentSegIndexSafeAtom } from '@/editor/5-segments/9-state/segments-store.ts';
-import { filterNonMarkers, getPlaybackAction } from '@/editor/5-segments/8-lib/segments.ts';
+import i18n from "i18next";
+import invariant from "tiny-invariant";
+import { type PlaybackMode } from "@/editor/0-core/8-lib/9-types-core";
+import { jotaiDefaultStore } from "@/utils/local-utils/9-jotai-default-store";
+import { userSettings } from "@/editor/0-core/9-state/user-settings";
+import { showPlaybackFailedMessage } from "@/components/4-dialogs/7-1-dialogs/14-show-playback-failed-message";
+import { toast } from "@/components/4-dialogs/7-0-dialogs/toast";
+import { adjustRate } from "@/editor/0-core/8-lib/rate-calculator";
+import { getFrameCountRaw } from "@/editor/9-edl/8-lib/edl-formats";
+import { enableAudioTrack, enableVideoTrack } from "@/editor/0-core/8-lib/ffmpeg/streams";
+import { detectedFpsAtom, fileDurationAtom, filePathAtom, isFileOpenedAtom, previewFilePathAtom, usingDummyVideoAtom } from "@/editor/2-file/9-state/a-file-atoms";
+import { cutSegmentsAtom, currentCutSegAtom, currentSegIndexAtom, findSegmentsAtCursor, selectedSegmentsAtom, currentSegIndexSafeAtom } from "@/editor/5-segments/9-state/segments-store";
+import { filterNonMarkers, getPlaybackAction } from "@/editor/5-segments/8-lib/segments";
 import {
     activeAudioStreamIndexesAtom, activeVideoStreamIndexAtom, commandedTimeAtom, hideCompatPlayerAtom, outputPlaybackRateAtom,
     playbackModeAtom, playbackRateAtom, playerTimeAtom, playingAtom, videoElementAtom,
-} from '../9-state/player-atoms.ts';
+} from "../9-state/player-atoms";
 
 const getVideo = () => jotaiDefaultStore.get(videoElementAtom);
 
