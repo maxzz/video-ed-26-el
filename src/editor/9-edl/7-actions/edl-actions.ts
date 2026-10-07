@@ -7,7 +7,7 @@ import { withErrorHandling } from "@/editor/0-core/9-state/working";
 import { openYouTubeChaptersDialog } from "@/components/4-dialogs/7-1-dialogs/00-app-dialogs";
 import { detectedFpsAtom, fileDurationAtom, filePathAtom } from "@/editor/2-file/9-state/a-file-atoms";
 import { checkFileOpened } from "@/editor/3-player/7-actions/player-actions";
-import { cutSegmentsAtom, selectedSegmentsAtom } from "@/editor/5-segments/9-state/segments-store";
+import { cutSegmentsAtom, selectedSegmentsAtom } from "@/editor/5-segments/9-state/a-segments-store";
 import { loadCutSegments } from "@/editor/5-segments/7-actions/segment-actions";
 import { askForEdlImport, exportEdlFile, readEdlFile } from "../8-lib/edl-store";
 import { formatYouTube } from "../8-lib/edl-formats";

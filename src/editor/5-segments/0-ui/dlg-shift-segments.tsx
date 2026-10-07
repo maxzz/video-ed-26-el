@@ -9,33 +9,44 @@ import { openCustomDialog } from "@/components/4-dialogs/7-0-dialogs/dialogs";
 
 // Port of upstream openShiftSegmentsDialog (GenericDialog.tsx)
 
-type ShiftResult = { startShift?: number; endShift?: number; };
-
-export function openShiftSegmentsDialog({ inputPlaceholder, parseTimecode }: { inputPlaceholder: string; parseTimecode: (s: string) => number | undefined; }) {
+export function open_ShiftSegmentsDialog({ inputPlaceholder, parseTimecode }: { inputPlaceholder: string; parseTimecode: (s: string) => number | undefined; }) {
     const state = proxy({ start: '', end: '' });
-    return openCustomDialog<ShiftResult>((close) => <ShiftSegmentsDialog state={state} inputPlaceholder={inputPlaceholder} parseTimecode={parseTimecode} close={close} />);
+
+    return openCustomDialog<ShiftResult>(
+        (close) => <Body state={state} inputPlaceholder={inputPlaceholder} parseTimecode={parseTimecode} close={close} />
+    );
 }
 
-function ShiftSegmentsDialog({ state, inputPlaceholder, parseTimecode, close }: {
+type ShiftResult = { startShift?: number; endShift?: number; };
+
+function Body({ state, inputPlaceholder, parseTimecode, close }: {
     state: { start: string; end: string; };
     inputPlaceholder: string;
     parseTimecode: (s: string) => number | undefined;
     close: (value?: ShiftResult) => void;
 }) {
-    const { t } = useTranslation();
     const snap = useSnapshot(state, { sync: true });
+    const { t } = useTranslation();
 
     function parseValue(value: string) {
         let parseableValue = value.trim();
-        if (!parseableValue) return undefined;
+        if (!parseableValue) {
+            return undefined;
+        }
         let sign = 1;
         if (parseableValue.startsWith('-')) {
             sign = -1;
             parseableValue = parseableValue.slice(1);
         }
+
         const duration = parseTimecode(parseableValue);
-        if (duration == null || Number.isNaN(duration)) throw new Error('Invalid timecode');
-        if (duration === 0) return undefined;
+        
+        if (duration == null || Number.isNaN(duration)) {
+            throw new Error('Invalid timecode');
+        }
+        if (duration === 0) {
+            return undefined;
+        }
         return duration * sign;
     }
 
@@ -45,7 +56,9 @@ function ShiftSegmentsDialog({ state, inputPlaceholder, parseTimecode, close }: 
             const startShift = parseValue(state.start);
             const endShift = parseValue(state.end);
             // require at least one of them to be set
-            if (startShift == null && endShift == null) return;
+            if (startShift == null && endShift == null) {
+                return;
+            }
             close({ ...(startShift != null && { startShift }), ...(endShift != null && { endShift }) });
         } catch (err) {
             console.warn(err);
@@ -55,8 +68,12 @@ function ShiftSegmentsDialog({ state, inputPlaceholder, parseTimecode, close }: 
     return (
         <DialogContent className="sm:max-w-[50vw]">
             <DialogHeader>
-                <DialogTitle>{t('Shift segments')}</DialogTitle>
-                <DialogDescription>{t('Shift all segments on the timeline by this amount. Negative values will be shifted back, while positive value will be shifted forward in time.')}</DialogDescription>
+                <DialogTitle>
+                    {t('Shift segments')}
+                </DialogTitle>
+                <DialogDescription>
+                    {t('Shift all segments on the timeline by this amount. Negative values will be shifted back, while positive value will be shifted forward in time.')}
+                </DialogDescription>
             </DialogHeader>
 
             <form className="flex flex-col gap-3" onSubmit={handleSubmit}>
@@ -64,14 +81,20 @@ function ShiftSegmentsDialog({ state, inputPlaceholder, parseTimecode, close }: 
                     {t('Shift start by')}
                     <Input value={snap.start} placeholder={inputPlaceholder} autoFocus onChange={(e) => { state.start = e.target.value; }} />
                 </Label>
+
                 <Label className="flex flex-col items-start gap-1">
                     {t('Shift end by')}
                     <Input value={snap.end} placeholder={inputPlaceholder} onChange={(e) => { state.end = e.target.value; }} />
                 </Label>
 
                 <DialogFooter>
-                    <Button type="button" variant="outline" onClick={() => close(undefined)}>{t('Cancel')}</Button>
-                    <Button type="submit">{t('Confirm')}</Button>
+                    <Button type="button" variant="outline" onClick={() => close(undefined)}>
+                        {t('Cancel')}
+                    </Button>
+
+                    <Button type="submit">
+                        {t('Confirm')}
+                    </Button>
                 </DialogFooter>
             </form>
         </DialogContent>

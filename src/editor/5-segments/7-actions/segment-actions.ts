@@ -1,15 +1,17 @@
-import i18n from "i18next";
-import pMap from "p-map";
-import invariant from "tiny-invariant";
-import sortBy from "lodash/sortBy.js";
-import { type DefiniteSegmentBase, type SegmentBase, type StateSegment } from "@/editor/0-core/8-lib/9-types-core";
 import { jotaiDefaultStore } from "@/utils/local-utils/9-jotai-default-store";
+import sortBy from "lodash/sortBy.js";
+import invariant from "tiny-invariant";
+import pMap from "p-map";
+import i18n from "i18next";
+
 import { userSettings } from "@/editor/0-core/9-state/user-settings";
+import { handleError, isWorking, setWorking } from "@/editor/0-core/9-state/working";
+
+import { type DefiniteSegmentBase, type SegmentBase, type StateSegment } from "@/editor/0-core/8-lib/9-types-core";
 import { maxLabelLengthAtom } from "@/editor/0-core/9-state/user-settings";
 import { UserFacingError } from "@/editor/0-core/8-lib/9-error-types";
 import { getFileSize, shuffleArray } from "@/editor/0-core/8-lib/util";
 import { maxSegmentsAllowed } from "@/editor/0-core/8-lib/constants";
-import { handleError, isWorking, setWorking } from "@/editor/0-core/9-state/working";
 import { parseTimecode, timecodePlaceholderAtom } from "@/editor/0-core/9-state/timecode";
 import { askForAlignSegments } from "@/components/4-dialogs/7-1-dialogs/10-ask-for-align-segments";
 import { askForSegmentDuration } from "@/components/4-dialogs/7-1-dialogs/07-ask-for-segment-duration";
@@ -25,17 +27,21 @@ import { checkFileOpened, getRelevantTime } from "@/editor/3-player/7-actions/pl
 import {
     addSegmentColorIndex, combineOverlappingSegments as combineOverlappingSegments2, combineSelectedSegments as combineSelectedSegments2,
     createSegment, filterNonMarkers, invertSegments, isDurationValid, isInitialSegment, makeDurationSegments, sortSegments,
-} from "../8-lib/segments";
+} from "../8-lib/segment-utils";
 import {
     commitSegments, currentCutSegAtom, currentCutSegOrWholeTimelineAtom, currentSegIndexAtom, currentSegIndexSafeAtom,
     cutSegmentsAtom, findSegmentsAtCursor, getCutSegments, resetSegmentsHistory, segColorCounterAtom, selectedSegmentsAtom,
-} from "../9-state/segments-store";
+} from "../9-state/a-segments-store";
 
 // Port of upstream useSegments (detection lives in b-detect, expression dialogs in 5-segments/0-ui)
 
-const offsetSegments = (segments: DefiniteSegmentBase[], offset: number) => segments.map((s) => ({ start: s.start + offset, end: s.end + offset }));
+function offsetSegments(segments: DefiniteSegmentBase[], offset: number) {
+    return segments.map((s) => ({ start: s.start + offset, end: s.end + offset }));
+}
 
-const getFileDuration = () => jotaiDefaultStore.get(fileDurationAtom);
+function getFileDuration() {
+    return jotaiDefaultStore.get(fileDurationAtom);
+}
 
 export function setCurrentSegIndex(index: number | ((old: number) => number)) {
     jotaiDefaultStore.set(currentSegIndexAtom, index);
@@ -52,10 +58,15 @@ export function clearSegColorCounter() {
 
 /** Replaces all segments (one undo step). Clamps times, converts zero length segments into markers and drops the "initial" flag */
 export function setCutSegments(newSegmentsOrFn: StateSegment[] | ((existing: StateSegment[]) => StateSegment[]), clampDuration?: number) {
+
     function clampValue(val: number | undefined) {
-        if (val == null || Number.isNaN(val)) return undefined;
+        if (val == null || Number.isNaN(val)) {
+            return undefined;
+        }
         const clamped = Math.max(val, 0);
-        if (clampDuration == null) return clamped;
+        if (clampDuration == null) {
+            return clamped;
+        }
         return Math.min(clamped, clampDuration);
     }
 
@@ -103,20 +114,31 @@ export function loadCutSegments({ segments, append, clampDuration, getNextCurren
     if (segments.length === 0) throw new UserFacingError(i18n.t('No valid segments found'));
     if (segments.length > maxSegmentsAllowed) throw new UserFacingError(i18n.t('Tried to create too many segments (max {{maxSegmentsAllowed}}.)', { maxSegmentsAllowed }));
 
-    if (!append) clearSegColorCounter();
+    if (!append) {
+        clearSegColorCounter();
+    }
 
-    setCutSegments((existingSegments) => {
-        const needToAppend = append && !isInitialSegment(existingSegments);
-        let newSegments = segments.map((segment, i) => createIndexedSegment({ segment, incrementCount: needToAppend || i > 0 }));
-        if (needToAppend) newSegments = [...existingSegments, ...newSegments];
-        if (getNextCurrentSegIndex) setCurrentSegIndex(getNextCurrentSegIndex(newSegments));
-        return newSegments;
-    }, clampDuration);
+    setCutSegments(
+        (existingSegments) => {
+            const needToAppend = append && !isInitialSegment(existingSegments);
+            let newSegments = segments.map((segment, i) => createIndexedSegment({ segment, incrementCount: needToAppend || i > 0 }));
+            if (needToAppend) {
+                newSegments = [...existingSegments, ...newSegments];
+            }
+            if (getNextCurrentSegIndex) {
+                setCurrentSegIndex(getNextCurrentSegIndex(newSegments));
+            }
+            return newSegments;
+        },
+        clampDuration
+    );
 }
 
 export function deleteCurrentCutSeg() {
     const currentCutSeg = jotaiDefaultStore.get(currentCutSegAtom);
-    if (currentCutSeg == null) return;
+    if (currentCutSeg == null) {
+        return;
+    }
     setCutSegments((existing) => existing.filter((s) => s.segId !== currentCutSeg.segId));
 }
 
@@ -124,14 +146,18 @@ export function removeSegments(removeSegmentIds: string[]) {
     setCutSegments((existingSegments) => {
         const newSegments = existingSegments.filter((seg) => !removeSegmentIds.includes(seg.segId));
         // when removing the last segments, we start over
-        if (newSegments.length === 0) clearSegColorCounter();
+        if (newSegments.length === 0) {
+            clearSegColorCounter();
+        }
         return newSegments;
     });
 }
 
 export function removeSegment(index: number, wholeSegment?: true) {
     const seg = getCutSegments()[index];
-    if (seg == null) return;
+    if (seg == null) {
+        return;
+    }
     if (wholeSegment || seg.end == null) {
         removeSegments([seg.segId]);
     } else {
@@ -180,7 +206,9 @@ export function combineSelectedSegments() {
 }
 
 export function updateSegAtIndex(index: number, newProps: Partial<StateSegment>) {
-    if (index < 0) return;
+    if (index < 0) {
+        return;
+    }
     const cutSegments = getCutSegments();
     const existing = cutSegments[index];
     invariant(existing != null);
@@ -192,7 +220,9 @@ export function updateSegAtIndex(index: number, newProps: Partial<StateSegment>)
 export function setCutTime(type: 'start' | 'end' | 'move', time: number | undefined) {
     const fileDuration = getFileDuration();
     const currentCutSeg = jotaiDefaultStore.get(currentCutSegAtom);
-    if (!isDurationValid(fileDuration) || currentCutSeg == null) return;
+    if (!isDurationValid(fileDuration) || currentCutSeg == null) {
+        return;
+    }
     const currentSegIndexSafe = jotaiDefaultStore.get(currentSegIndexSafeAtom);
 
     const clampStart = (start: number) => Math.min(Math.max(start, 0), fileDuration);
@@ -200,11 +230,15 @@ export function setCutTime(type: 'start' | 'end' | 'move', time: number | undefi
 
     if (type === 'start') {
         invariant(time != null);
-        if (currentCutSeg.end != null && time >= currentCutSeg.end) throw new UserFacingError(i18n.t('Segment start time must precede end time'));
+        if (currentCutSeg.end != null && time >= currentCutSeg.end) {
+            throw new UserFacingError(i18n.t('Segment start time must precede end time'));
+        }
         updateSegAtIndex(currentSegIndexSafe, { start: clampStart(time) });
     }
     if (type === 'end') {
-        if (time != null && time <= currentCutSeg.start) throw new UserFacingError(i18n.t('Segment start time must precede end time'));
+        if (time != null && time <= currentCutSeg.start) {
+            throw new UserFacingError(i18n.t('Segment start time must precede end time'));
+        }
         updateSegAtIndex(currentSegIndexSafe, { end: clampEnd(time) });
     }
     if (type === 'move') {
@@ -224,31 +258,46 @@ export async function modifySelectedSegmentTimes(transformSegment: <T extends Se
 export async function alignSegmentTimesToKeyframes() {
     const videoStream = jotaiDefaultStore.get(activeVideoStreamAtom);
     const filePath = jotaiDefaultStore.get(filePathAtom);
-    if (!videoStream || filePath == null || isWorking()) return;
+    if (!videoStream || filePath == null || isWorking()) {
+        return;
+    }
     try {
         const response = await askForAlignSegments();
-        if (response == null) return;
+        if (response == null) {
+            return;
+        }
         setWorking({ text: i18n.t('Aligning segments to keyframes') });
         const { mode, startOrEnd } = response;
-        await modifySelectedSegmentTimes(async (segment) => {
-            const newSegment = { ...segment };
-            const align = async (key: 'start' | 'end') => {
-                const time = newSegment[key];
-                if (time != null) {
-                    const keyframe = await findKeyframeNearTime({
-                        filePath,
-                        streamIndex: videoStream.index,
-                        time,
-                        mode: mode === 'opposing' ? (key === 'start' ? 'before' : 'after') : mode,
-                    });
-                    if (keyframe == null) throw new UserFacingError(i18n.t('Cannot find any keyframe within 60 seconds of frame {{time}}', { time }));
-                    newSegment[key] = keyframe;
+        await modifySelectedSegmentTimes(
+            async (segment) => {
+                const newSegment = { ...segment };
+
+                const align = async (key: 'start' | 'end') => {
+                    const time = newSegment[key];
+                    if (time != null) {
+                        const keyframe = await findKeyframeNearTime({
+                            filePath,
+                            streamIndex: videoStream.index,
+                            time,
+                            mode: mode === 'opposing' ? (key === 'start' ? 'before' : 'after') : mode,
+                        });
+
+                        if (keyframe == null) {
+                            throw new UserFacingError(i18n.t('Cannot find any keyframe within 60 seconds of frame {{time}}', { time }));
+                        }
+                        newSegment[key] = keyframe;
+                    }
+                };
+
+                if (startOrEnd.includes('start')) {
+                    await align('start');
                 }
-            };
-            if (startOrEnd.includes('start')) await align('start');
-            if (startOrEnd.includes('end')) await align('end');
-            return newSegment;
-        });
+                if (startOrEnd.includes('end')) {
+                    await align('end');
+                }
+                return newSegment;
+            }
+        );
     } catch (err) {
         handleError({ err });
     } finally {
@@ -258,7 +307,10 @@ export async function alignSegmentTimesToKeyframes() {
 
 export function updateSegOrder(index: number, newOrder: number) {
     const cutSegments = getCutSegments();
-    if (newOrder > cutSegments.length - 1 || newOrder < 0) return;
+    if (newOrder > cutSegments.length - 1 || newOrder < 0) {
+        return;
+    }
+
     const newSegments = [...cutSegments];
     const removedSeg = newSegments.splice(index, 1)[0];
     invariant(removedSeg != null);
@@ -271,9 +323,12 @@ export function updateSegOrders(newOrders: string[]) {
     const newSegments = sortBy(getCutSegments(), (seg) => newOrders.indexOf(seg.segId));
     setCutSegments(newSegments);
     const currentCutSeg = jotaiDefaultStore.get(currentCutSegAtom);
+    
     if (currentCutSeg != null) {
         const newCurrentSegIndex = newOrders.indexOf(currentCutSeg.segId);
-        if (newCurrentSegIndex !== -1 && newCurrentSegIndex < newSegments.length) setCurrentSegIndex(newCurrentSegIndex);
+        if (newCurrentSegIndex !== -1 && newCurrentSegIndex < newSegments.length) {
+            setCurrentSegIndex(newCurrentSegIndex);
+        }
     }
 }
 
@@ -285,7 +340,9 @@ export function addSegment() {
     try {
         const fileDuration = getFileDuration();
         const suggestedStart = getRelevantTime();
-        if (fileDuration == null || suggestedStart >= fileDuration) return;
+        if (fileDuration == null || suggestedStart >= fileDuration) {
+            return;
+        }
 
         const cutSegments = getCutSegments();
         const initial = isInitialSegment(cutSegments);
@@ -316,7 +373,9 @@ export function duplicateCurrentSegment() {
 }
 
 export function setCutStart() {
-    if (!checkFileOpened()) return;
+    if (!checkFileOpened()) {
+        return;
+    }
     const relevantTime = getRelevantTime();
     const currentCutSeg = jotaiDefaultStore.get(currentCutSegAtom);
     // https://github.com/mifi/lossless-cut/issues/168
@@ -334,7 +393,9 @@ export function setCutStart() {
 }
 
 export function setCutEnd() {
-    if (!checkFileOpened()) return;
+    if (!checkFileOpened()) {
+        return;
+    }
     try {
         setCutTime('end', getRelevantTime());
     } catch (err) {
@@ -344,22 +405,30 @@ export function setCutEnd() {
 
 export async function labelSegment(index: number) {
     const seg = getCutSegments()[index];
-    if (seg == null) return;
+    if (seg == null) {
+        return;
+    }
     const value = await labelSegmentDialog({ currentName: seg.name, maxLength: jotaiDefaultStore.get(maxLabelLengthAtom) });
-    if (value != null) updateSegAtIndex(index, { name: value });
+    if (value != null) {
+        updateSegAtIndex(index, { name: value });
+    }
 }
 
 export const labelCurrentSegment = () => labelSegment(jotaiDefaultStore.get(currentSegIndexSafeAtom));
 
 export function selectSegments(segmentsToSelect: { segId: string; }[]) {
     const segIdsToSelect = new Set(segmentsToSelect.map(({ segId }) => segId));
-    if (segIdsToSelect.size === 0) return; // no point in selecting none
+    if (segIdsToSelect.size === 0) {
+        return; // no point in selecting none
+    }
     setCutSegmentsRaw((existing) => existing.map(({ selected, ...segment }) => ({ ...segment, selected: selected || segIdsToSelect.has(segment.segId) })));
 }
 
 export function focusSegmentAtCursor() {
     const [index] = findSegmentsAtCursor(getCutSegments(), getRelevantTime());
-    if (index != null) setCurrentSegIndex(index);
+    if (index != null) {
+        setCurrentSegIndex(index);
+    }
 }
 
 export function selectSegmentsAtCursor() {
@@ -379,7 +448,9 @@ export function splitCurrentSegment() {
 
     const segment = cutSegments[index];
     invariant(segment != null);
-    if (segment.start === relevantTime || segment.end === relevantTime) return; // No point
+    if (segment.start === relevantTime || segment.end === relevantTime) {
+        return; // No point
+    }
 
     const getNewName = (oldName: string, suffix: string) => oldName && `${segment.name} ${suffix}`;
     const firstPart = createIndexedSegment({ segment: { name: getNewName(segment.name, '1'), start: segment.start, end: relevantTime }, incrementCount: false });
@@ -392,18 +463,26 @@ export function splitCurrentSegment() {
 
 export async function createNumSegments() {
     const timeline = jotaiDefaultStore.get(currentCutSegOrWholeTimelineAtom);
-    if (!checkFileOpened() || timeline.duration <= 0) return;
+    if (!checkFileOpened() || timeline.duration <= 0) {
+        return;
+    }
     const segments = await createNumSegmentsDialog(timeline.duration);
-    if (!segments) return;
+    if (!segments) {
+        return;
+    }
     deleteCurrentCutSeg();
     loadCutSegments({ segments: offsetSegments(segments, timeline.start), append: true, getNextCurrentSegIndex: (edl) => edl.length - 1, clampDuration: getFileDuration() });
 }
 
 export async function createFixedDurationSegments() {
     const timeline = jotaiDefaultStore.get(currentCutSegOrWholeTimelineAtom);
-    if (!checkFileOpened() || timeline.duration <= 0) return;
+    if (!checkFileOpened() || timeline.duration <= 0) {
+        return;
+    }
     const segmentDuration = await askForSegmentDuration({ totalDuration: timeline.duration, inputPlaceholder: jotaiDefaultStore.get(timecodePlaceholderAtom), parseTimecode });
-    if (segmentDuration == null) return;
+    if (segmentDuration == null) {
+        return;
+    }
     deleteCurrentCutSeg();
     const segments = makeDurationSegments(segmentDuration, timeline.duration);
     loadCutSegments({ segments: offsetSegments(segments, timeline.start), append: true, getNextCurrentSegIndex: (edl) => edl.length - 1, clampDuration: getFileDuration() });
@@ -411,30 +490,42 @@ export async function createFixedDurationSegments() {
 
 export async function createFixedByteSizedSegments() {
     const fileDuration = getFileDuration();
-    if (!checkFileOpened() || !isDurationValid(fileDuration)) return;
+    if (!checkFileOpened() || !isDurationValid(fileDuration)) {
+        return;
+    }
     const mainFileMeta = jotaiDefaultStore.get(mainFileMetaAtom);
     invariant(mainFileMeta != null);
     const fileSize = getFileSize(mainFileMeta.ffprobeMeta.format);
     invariant(fileSize != null);
     const segmentDuration = await createFixedByteSixedSegmentsDialog({ fileDuration, fileSize });
-    if (segmentDuration == null) return;
+    if (segmentDuration == null) {
+        return;
+    }
     loadCutSegments({ segments: makeDurationSegments(segmentDuration, fileDuration), append: true, clampDuration: fileDuration });
 }
 
 export function getSegEstimatedSize(segment: Pick<StateSegment, 'start' | 'end'>) {
     const mainFileMeta = jotaiDefaultStore.get(mainFileMetaAtom);
     const fileDuration = getFileDuration();
-    if (mainFileMeta == null || !isDurationValid(fileDuration) || segment.end == null) return undefined;
+    if (mainFileMeta == null || !isDurationValid(fileDuration) || segment.end == null) {
+        return undefined;
+    }
     const fileSize = getFileSize(mainFileMeta.ffprobeMeta.format);
-    if (fileSize == null) return undefined;
+    if (fileSize == null) {
+        return undefined;
+    }
     return Math.round(((segment.end - segment.start) / fileDuration) * fileSize);
 }
 
 export async function createRandomSegments() {
     const timeline = jotaiDefaultStore.get(currentCutSegOrWholeTimelineAtom);
-    if (!checkFileOpened() || timeline.duration <= 0) return;
+    if (!checkFileOpened() || timeline.duration <= 0) {
+        return;
+    }
     const segments = await createRandomSegmentsDialog(timeline.duration);
-    if (!segments) return;
+    if (!segments) {
+        return;
+    }
     deleteCurrentCutSeg();
     loadCutSegments({ segments: offsetSegments(segments, timeline.start), append: true, getNextCurrentSegIndex: (edl) => edl.length - 1, clampDuration: getFileDuration() });
 }
@@ -444,7 +535,9 @@ export async function createSegmentsFromKeyframes() {
     const videoStream = jotaiDefaultStore.get(activeVideoStreamAtom);
     const filePath = jotaiDefaultStore.get(filePathAtom);
     deleteCurrentCutSeg();
-    if (!videoStream || filePath == null) return;
+    if (!videoStream || filePath == null) {
+        return;
+    }
     const keyframes = (await readFrames({ filePath, from: start, to: end, streamIndex: videoStream.index })).filter((frame) => frame.keyframe);
     const newSegments = mapTimesToSegments(keyframes.map((keyframe) => keyframe.time), true);
     loadCutSegments({ segments: newSegments, append: true, getNextCurrentSegIndex: (edl) => edl.length - 1, clampDuration: getFileDuration() });
@@ -452,7 +545,9 @@ export async function createSegmentsFromKeyframes() {
 
 export async function selectSegmentsByLabel() {
     const value = await selectSegmentsByLabelDialog(jotaiDefaultStore.get(currentCutSegAtom)?.name);
-    if (value == null) return;
+    if (value == null) {
+        return;
+    }
     selectSegments(getCutSegments().filter((seg) => seg.name === value));
 }
 
@@ -462,15 +557,21 @@ export function selectAllMarkers() {
 
 export async function labelSelectedSegments() {
     const firstSelectedSegment = jotaiDefaultStore.get(selectedSegmentsAtom)[0];
-    if (firstSelectedSegment == null) return;
+    if (firstSelectedSegment == null) {
+        return;
+    }
     const value = await labelSegmentDialog({ currentName: firstSelectedSegment.name, maxLength: jotaiDefaultStore.get(maxLabelLengthAtom) });
-    if (value == null) return;
+    if (value == null) {
+        return;
+    }
     setCutSegments((existing) => existing.map((s) => (s.selected ? { ...s, name: value } : s)));
 }
 
 export function maybeCreateFullLengthSegment(newFileDuration: number) {
     // don't use setCutSegments because we want to keep initial: true
-    if (getCutSegments().length > 0 || newFileDuration <= 0) return;
+    if (getCutSegments().length > 0 || newFileDuration <= 0) {
+        return;
+    }
     const segment = { start: 0, end: newFileDuration, initial: true } as const;
     console.log('Creating initial segment', segment);
     commitSegments([createIndexedSegment({ segment })]);
@@ -494,12 +595,16 @@ export const invertSelectedSegments = () => setCutSegmentsRaw((existing) => exis
 
 export function selectOnlyCurrentSegment() {
     const currentCutSeg = jotaiDefaultStore.get(currentCutSegAtom);
-    if (currentCutSeg != null) selectOnlySegment(currentCutSeg);
+    if (currentCutSeg != null) {
+        selectOnlySegment(currentCutSeg);
+    }
 }
 
 export function toggleCurrentSegmentSelected() {
     const currentCutSeg = jotaiDefaultStore.get(currentCutSegAtom);
-    if (currentCutSeg != null) toggleSegmentSelected(currentCutSeg);
+    if (currentCutSeg != null) {
+        toggleSegmentSelected(currentCutSeg);
+    }
 }
 
 export function getSegmentsAtCursor() {

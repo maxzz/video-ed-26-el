@@ -1,31 +1,32 @@
 import { useEffect, useRef, type CSSProperties, type ReactNode } from "react";
 import { useAtomValue } from "jotai";
+import { jotaiDefaultStore } from "@/utils/local-utils/9-jotai-default-store";
+import { cn } from "@/utils/classnames";
 import { motion } from "motion/react";
-import { Trans, useTranslation } from "react-i18next";
 import { closestCenter, DndContext, DragOverlay, PointerSensor, useSensor, useSensors, type DragEndEvent, type DragStartEvent } from "@dnd-kit/core";
 import { arrayMove, SortableContext, verticalListSortingStrategy } from "@dnd-kit/sortable";
 import { restrictToVerticalAxis } from "@dnd-kit/modifiers";
 import { useVirtualizer } from "@tanstack/react-virtual";
 import { ArrowDown01Icon, CircleCheckIcon, ContrastIcon, MinusIcon, PlusIcon, SplitIcon, TagIcon, XIcon } from "lucide-react";
-import { cn } from "@/utils/classnames";
+import { Trans, useTranslation } from "react-i18next";
+
 import { type SegmentColorIndex } from "@/editor/0-core/8-lib/9-types-core";
-import { jotaiDefaultStore } from "@/utils/local-utils/9-jotai-default-store";
 import { formatTimecodeAtom } from "@/editor/0-core/9-state/timecode";
 import { rightBarWidth } from "@/editor/0-core/8-lib/constants";
 import { runAction } from "@/editor/0-core/7-actions/kbd-actions";
 import { actionTitleAtom } from "@/editor/4-timeline/9-state/action-title";
-import { currentSegIndexSafeAtom, cutSegmentsAtom } from "../9-state/segments-store";
+import { currentSegIndexSafeAtom, cutSegmentsAtom } from "../9-state/a-segments-store";
 import {
     darkModeAtom, draggingSegIdAtom, firstSegmentAtCursorAtom, getSegColorAtom, invertCutSegmentsAtom, isOnlyMarkersAtom,
     nextSegColorIndexAtom, segmentListItemsAtom, selectedSegmentsTotalAtom, simpleModeAtom, springAnimationAtom,
-} from "../9-state/seg-ui-atoms";
+} from "../9-state/a-seg-ui-atoms";
 import * as seg from "../7-actions/segment-actions";
 import { reorderSegmentDialog } from "../7-actions/segment-dialogs";
-import { SegmentRowContent, SortableSegmentRow } from "./segment-row";
+import { SegmentRowContent, SortableSegmentRow } from "./1-segment-row";
 
 // Port of upstream SegmentList.tsx (right bar)
 
-export function SegmentList() {
+export function Panel_Segments() {
     const springAnimation = useAtomValue(springAnimationAtom);
     return (
         <motion.div
@@ -36,20 +37,20 @@ export function SegmentList() {
             exit={{ x: rightBarWidth }}
             transition={springAnimation}
         >
-            <SegmentListHeader />
-            <SegmentRows />
+            <Header />
+            <Rows />
             <MarkersNotice />
-            <SegmentListFooter />
+            <Footer />
         </motion.div>
     );
 }
 
-function SegmentListHeader() {
-    const { t } = useTranslation();
+function Header() {
     const items = useAtomValue(segmentListItemsAtom);
     const invertCutSegments = useAtomValue(invertCutSegmentsAtom);
     const isOnlyMarkers = useAtomValue(isOnlyMarkersAtom);
     const actionTitle = useAtomValue(actionTitleAtom);
+    const { t } = useTranslation();
 
     let header: ReactNode;
     if (items.length === 0) {
@@ -64,12 +65,14 @@ function SegmentListHeader() {
 
     return (
         <div className="px-2 py-0.5 text-foreground flex items-center justify-between gap-1">
-            <span className="text-xs">{header}</span>
+            <span className="text-xs">
+                {header}
+            </span>
             <button
-                type="button"
                 className="shrink-0 p-0.5 text-muted-foreground hover:text-foreground cursor-pointer"
-                title={actionTitle(t('Close sidebar'), 'toggleSegmentsList')}
                 onClick={() => runAction('toggleSegmentsList')}
+                title={actionTitle(t('Close sidebar'), 'toggleSegmentsList')}
+                type="button"
             >
                 <XIcon className="size-4" />
             </button>
@@ -77,7 +80,7 @@ function SegmentListHeader() {
     );
 }
 
-function SegmentRows() {
+function Rows() {
     const items = useAtomValue(segmentListItemsAtom);
     const invertCutSegments = useAtomValue(invertCutSegmentsAtom);
     const currentSegIndex = useAtomValue(currentSegIndexSafeAtom);
@@ -98,10 +101,12 @@ function SegmentRows() {
     });
 
     // follow the current segment (the virtualizer instance only exists inside the component)
-    useEffect(() => {
-        if (invertCutSegments || currentSegIndex < 0) return;
-        rowVirtualizer.scrollToIndex(currentSegIndex, { align: 'auto' });
-    }, [currentSegIndex, invertCutSegments, rowVirtualizer]);
+    useEffect(
+        () => {
+            if (invertCutSegments || currentSegIndex < 0) return;
+            rowVirtualizer.scrollToIndex(currentSegIndex, { align: 'auto' });
+        },
+        [currentSegIndex, invertCutSegments, rowVirtualizer]);
 
     function handleDragStart(event: DragStartEvent) {
         jotaiDefaultStore.set(draggingSegIdAtom, String(event.active.id));
@@ -125,22 +130,24 @@ function SegmentRows() {
             <SortableContext items={ids} strategy={verticalListSortingStrategy}>
                 <div ref={scrollerRef} className="grow pr-1 pl-2 overflow-x-hidden overflow-y-scroll">
                     <div className="relative overflow-hidden" style={{ height: rowVirtualizer.getTotalSize() }}>
-                        {rowVirtualizer.getVirtualItems().map((virtualRow) => {
-                            const segment = items[virtualRow.index]!;
-                            const selected = 'selected' in segment ? segment.selected : true;
-                            const isActive = !invertCutSegments && currentSegIndex === virtualRow.index;
-                            return (
-                                <div
-                                    key={segment.segId}
-                                    ref={rowVirtualizer.measureElement}
-                                    className="absolute top-0 left-0 w-full"
-                                    style={{ transform: `translateY(${virtualRow.start}px)` }}
-                                    data-index={virtualRow.index}
-                                >
-                                    <SortableSegmentRow segment={segment} index={virtualRow.index} selected={selected} isActive={isActive} />
-                                </div>
-                            );
-                        })}
+                        {rowVirtualizer.getVirtualItems().map(
+                            (virtualRow) => {
+                                const segment = items[virtualRow.index]!;
+                                const selected = 'selected' in segment ? segment.selected : true;
+                                const isActive = !invertCutSegments && currentSegIndex === virtualRow.index;
+                                return (
+                                    <div
+                                        className="absolute top-0 left-0 w-full"
+                                        style={{ transform: `translateY(${virtualRow.start}px)` }}
+                                        data-index={virtualRow.index}
+                                        key={segment.segId}
+                                        ref={rowVirtualizer.measureElement}
+                                    >
+                                        <SortableSegmentRow segment={segment} index={virtualRow.index} selected={selected} isActive={isActive} />
+                                    </div>
+                                );
+                            }
+                        )}
                     </div>
                 </div>
             </SortableContext>
@@ -153,9 +160,12 @@ function SegmentRows() {
 }
 
 function MarkersNotice() {
-    const { t } = useTranslation();
     const isOnlyMarkers = useAtomValue(isOnlyMarkersAtom);
-    if (!isOnlyMarkers) return null;
+    const { t } = useTranslation();
+    if (!isOnlyMarkers) {
+        return null;
+    }
+
     return (
         <div className="px-3 py-4 text-xs text-muted-foreground">
             {t('Markers are segments without an end time and will not be exported. Convert markers to segments by setting their end time.')}
@@ -163,10 +173,7 @@ function MarkersNotice() {
     );
 }
 
-const footerButtonClasses = 'mx-1 p-0.5 size-6 text-white rounded-sm cursor-pointer';
-const disabledButtonClasses = 'text-muted-foreground bg-muted';
-
-function SegmentListFooter() {
+function Footer() {
     const { t } = useTranslation();
     const cutSegments = useAtomValue(cutSegmentsAtom);
     const currentSegIndex = useAtomValue(currentSegIndexSafeAtom);
@@ -188,53 +195,52 @@ function SegmentListFooter() {
 
     const bg = (enabled: boolean, color: string): { className?: string; style?: CSSProperties; } => (enabled ? { style: { backgroundColor: color } } : { className: disabledButtonClasses });
 
-    return (
-        <>
-            <div className="py-1 border-b flex items-center justify-center">
-                <FooterButton title={actionTitle(t('Add segment'), 'addSegment')} style={{ backgroundColor: nextSegmentColor }} onClick={seg.addSegment}>
-                    <PlusIcon className="size-full" />
-                </FooterButton>
+    return (<>
+        <div className="py-1 border-b flex items-center justify-center">
+            <Button_Footer title={actionTitle(t('Add segment'), 'addSegment')} style={{ backgroundColor: nextSegmentColor }} onClick={seg.addSegment}>
+                <PlusIcon className="size-full" />
+            </Button_Footer>
 
-                <FooterButton
-                    title={actionTitle(t('Remove cutpoint from segment {{segmentNumber}}', { segmentNumber: currentSegIndex + 1 }), 'removeCurrentCutpoint')}
-                    {...bg(cutSegments.length > 0, currentSegColor)}
-                    onClick={() => seg.removeSegment(currentSegIndex)}
-                >
-                    <MinusIcon className="size-full" />
-                </FooterButton>
+            <Button_Footer
+                title={actionTitle(t('Remove cutpoint from segment {{segmentNumber}}', { segmentNumber: currentSegIndex + 1 }), 'removeCurrentCutpoint')}
+                {...bg(cutSegments.length > 0, currentSegColor)}
+                onClick={() => seg.removeSegment(currentSegIndex)}
+            >
+                <MinusIcon className="size-full" />
+            </Button_Footer>
 
-                {!invertCutSegments && !simpleMode && (
-                    <>
-                        <FooterButton title={actionTitle(t('Change segment order'), 'reorderSegsByStartTime')} {...bg(cutSegments.length >= 2, currentSegColor)} onClick={() => reorderSegmentDialog(currentSegIndex)}>
-                            <ArrowDown01Icon className="size-full" />
-                        </FooterButton>
+            {!invertCutSegments && !simpleMode && (<>
+                <Button_Footer title={actionTitle(t('Change segment order'), 'reorderSegsByStartTime')} {...bg(cutSegments.length >= 2, currentSegColor)} onClick={() => reorderSegmentDialog(currentSegIndex)}>
+                    <ArrowDown01Icon className="size-full" />
+                </Button_Footer>
 
-                        <FooterButton title={actionTitle(t('Label segment'), 'labelCurrentSegment')} {...bg(cutSegments.length > 0, currentSegColor)} onClick={() => seg.labelSegment(currentSegIndex)}>
-                            <TagIcon className="size-full" />
-                        </FooterButton>
-                    </>
-                )}
+                <Button_Footer title={actionTitle(t('Label segment'), 'labelCurrentSegment')} {...bg(cutSegments.length > 0, currentSegColor)} onClick={() => seg.labelSegment(currentSegIndex)}>
+                    <TagIcon className="size-full" />
+                </Button_Footer>
+            </>)}
 
-                <FooterButton title={actionTitle(t('Split segment at cursor'), 'splitCurrentSegment')} {...bg(firstSegmentAtCursor != null, segAtCursorColor)} onClick={seg.splitCurrentSegment}>
-                    <SplitIcon className="size-full rotate-90" />
-                </FooterButton>
+            <Button_Footer title={actionTitle(t('Split segment at cursor'), 'splitCurrentSegment')} {...bg(firstSegmentAtCursor != null, segAtCursorColor)} onClick={seg.splitCurrentSegment}>
+                <SplitIcon className="size-full rotate-90" />
+            </Button_Footer>
 
-                {!invertCutSegments && (
-                    <FooterButton title={actionTitle(t('Invert segment selection'), 'invertSelectedSegments')} className={cutSegments.length > 0 ? 'bg-muted-foreground' : disabledButtonClasses} onClick={seg.invertSelectedSegments}>
-                        <CircleCheckIcon className="size-full" />
-                    </FooterButton>
-                )}
-            </div>
+            {!invertCutSegments && (
+                <Button_Footer title={actionTitle(t('Invert segment selection'), 'invertSelectedSegments')} className={cutSegments.length > 0 ? 'bg-muted-foreground' : disabledButtonClasses} onClick={seg.invertSelectedSegments}>
+                    <CircleCheckIcon className="size-full" />
+                </Button_Footer>
+            )}
+        </div>
 
-            <div className="px-2.5 py-1 text-xs border-b flex justify-between">
-                <div>{t('Segments total:')}</div>
-                <div>{formatTimecode({ seconds: segmentsTotal })}</div>
-            </div>
-        </>
-    );
+        <div className="px-2.5 py-1 text-xs border-b flex justify-between">
+            <div>{t('Segments total:')}</div>
+            <div>{formatTimecode({ seconds: segmentsTotal })}</div>
+        </div>
+    </>);
 }
 
-function FooterButton({ title, className, style, onClick, children }: { title: string; className?: string | undefined; style?: CSSProperties | undefined; onClick: () => unknown; children: ReactNode; }) {
+const footerButtonClasses = 'mx-1 p-0.5 size-6 text-white rounded-sm cursor-pointer';
+const disabledButtonClasses = 'text-muted-foreground bg-muted';
+
+function Button_Footer({ title, className, style, onClick, children }: { title: string; className?: string | undefined; style?: CSSProperties | undefined; onClick: () => unknown; children: ReactNode; }) {
     return (
         <button type="button" title={title} className={cn(footerButtonClasses, className)} style={style} onClick={() => { void onClick(); }}>
             {children}

@@ -5,7 +5,7 @@ import { userSettings, userSettingsAtom } from "@/editor/0-core/9-state/user-set
 import { getAppInfo, getFfCommandLine } from "@/editor/0-core/7-actions/0-main-api";
 import { isCuttingEnd, isCuttingStart } from "@/editor/0-core/8-lib/ffmpeg/ffmpeg";
 import { encBitrateAtom, fileDurationAtom, ffmpegCommandLogAtom } from "@/editor/2-file/9-state/a-file-atoms";
-import { segmentsToExportAtom } from "@/editor/5-segments/9-state/segments-store";
+import { segmentsToExportAtom } from "@/editor/5-segments/9-state/a-segments-store";
 import { defaultCutFileTemplate, defaultCutMergedFileTemplate, defaultMergedFileTemplate } from "../8-lib/output-name-template";
 
 // Last commands log (upstream App.tsx appendLastCommandsLog/appendFfmpegCommandLog)

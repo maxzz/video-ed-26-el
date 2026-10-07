@@ -26,8 +26,8 @@ import { projectFileSavePathAtom } from "@/editor/2-file/7-actions/project-auto-
 import { dialog_SendReport_open } from "@/editor/2-file/0-ui/dlg-send-report";
 import { effectiveRotationAtom } from "@/editor/3-player/9-state/a-player-atoms";
 import { checkFileOpened } from "@/editor/3-player/7-actions/player-actions";
-import { cutSegmentsAtom, haveInvalidSegsAtom, segmentsOrInverseAtom, segmentsToExportAtom, selectedSegmentsAtom } from "@/editor/5-segments/9-state/segments-store";
-import { convertSegmentsToChaptersWithGaps, hasAnySegmentOverlap, sortSegments } from "@/editor/5-segments/8-lib/segments";
+import { cutSegmentsAtom, haveInvalidSegsAtom, segmentsOrInverseAtom, segmentsToExportAtom, selectedSegmentsAtom } from "@/editor/5-segments/9-state/a-segments-store";
+import { convertSegmentsToChaptersWithGaps, hasAnySegmentOverlap, sortSegments } from "@/editor/5-segments/8-lib/segment-utils";
 import { copyFileStreamsAtom, copyStreamIdsByFileAtom, exportExtraStreamsAtom, mainCopiedStreamsAtom, nonCopiedExtraStreamsAtom, numStreamsToCopyAtom } from "@/editor/6-streams/9-state/a-streams-store";
 import { formatTsvHuman } from "@/editor/9-edl/8-lib/edl-formats";
 import { areWeCuttingAtom, cutFileTemplateOrDefaultAtom, cutMergedFileTemplateOrDefaultAtom, willMergeAtom } from "../9-state/export-atoms";

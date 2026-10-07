@@ -11,7 +11,7 @@ import { getFrameCountRaw } from "@/editor/9-edl/8-lib/edl-formats";
 import { detectedFpsAtom, fileDurationAtom, hasAudioAtom, hasVideoAtom, isFileOpenedAtom, startTimeOffsetAtom } from "@/editor/2-file/9-state/a-file-atoms";
 import { activeAudioStreamsAtom, commandedTimeAtom, playingAtom, relevantTimeAtom } from "@/editor/3-player/9-state/a-player-atoms";
 import { hoveringTimeAtom } from "@/components/2-main/0-all/a-panels-atoms";
-import { isDurationValid } from "@/editor/5-segments/8-lib/segments";
+import { isDurationValid } from "@/editor/5-segments/8-lib/segment-utils";
 
 // Zoom
 

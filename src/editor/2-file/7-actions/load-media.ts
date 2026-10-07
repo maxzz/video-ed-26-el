@@ -20,9 +20,9 @@ import { findExistingHtml5FriendlyFile, getOutFileExtension, getPathReadAccessEr
 import { checkFileOpened } from "@/editor/3-player/7-actions/player-actions";
 import { fixInvalidDuration } from "@/editor/7-export/8-lib/ffmpeg-operations";
 import { commandedTimeAtom } from "@/editor/3-player/9-state/a-player-atoms";
-import { cutSegmentsAtom } from "@/editor/5-segments/9-state/segments-store";
+import { cutSegmentsAtom } from "@/editor/5-segments/9-state/a-segments-store";
 import { clearSegColorCounter, loadCutSegments, resetSegments } from "@/editor/5-segments/7-actions/segment-actions";
-import { isDurationValid } from "@/editor/5-segments/8-lib/segments";
+import { isDurationValid } from "@/editor/5-segments/8-lib/segment-utils";
 import { copyStreamIdsByFileAtom, setCopyStreamIdsForPath } from "@/editor/6-streams/9-state/a-streams-store";
 import { loadLlcProject } from "@/editor/9-edl/8-lib/edl-store";
 import { loadEdlFile } from "@/editor/9-edl/7-actions/edl-actions";

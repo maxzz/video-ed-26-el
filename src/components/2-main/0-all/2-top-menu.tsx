@@ -6,7 +6,7 @@ import { type EdlExportType, type EdlImportType } from "@/editor/0-core/8-lib/9-
 import { appName, faqUrl, featureRequestUrl, getReleaseUrl, githubUrl, homepageUrl, licensesUrl, thanksUrl, troubleshootingUrl, usageUrl } from "@shared/constants";
 import { getAppInfo } from "@/editor/0-core/7-actions/0-main-api";
 import { newVersionAtom } from "@/editor/f-platform/9-state/platform";
-import { canRedoAtom, canUndoAtom } from "@/editor/5-segments/9-state/segments-store";
+import { canRedoAtom, canUndoAtom } from "@/editor/5-segments/9-state/a-segments-store";
 import { MenuActionItem, modShortcut } from "./8-menu-item";
 
 export function TopMenu_All() {

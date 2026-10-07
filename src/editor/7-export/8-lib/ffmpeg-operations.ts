@@ -16,7 +16,7 @@ import { getEffectiveAvoidNegativeTs, getMapStreamsArgs, getStreamIdsToCopy, isC
 import { needsSmartCut, getCodecParams } from "@/editor/0-core/8-lib/ffmpeg/smartcut";
 import { deleteDispositionValue, type AllFilesMeta, type Chapter, type CopyfileStreams, type LiteFFprobeStream, type ParamsByFile, type SegmentToExport } from "@/editor/0-core/8-lib/9-types-core";
 import { UserFacingError } from "@/editor/0-core/8-lib/9-error-types";
-import { getGuaranteedSegments, isDurationValid } from "@/editor/5-segments/8-lib/segments";
+import { getGuaranteedSegments, isDurationValid } from "@/editor/5-segments/8-lib/segment-utils";
 import { encBitrateAtom, filePathAtom } from "@/editor/2-file/9-state/a-file-atoms";
 import { outputPlaybackRateAtom } from "@/editor/3-player/9-state/a-player-atoms";
 import { appendFfmpegCommandLog, appendLastCommandsLog, getLossyMode, isEncodingAtom } from "../9-state/export-atoms";

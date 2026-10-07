@@ -5,8 +5,8 @@ import { useTranslation } from "react-i18next";
 import { PointerIcon } from "lucide-react";
 
 import { type SegmentColorIndex } from "@/editor/0-core/8-lib/9-types-core";
-import { currentSegIndexSafeAtom, cutSegmentsAtom } from "@/editor/5-segments/9-state/segments-store";
-import { darkModeAtom, getSegColorAtom } from "@/editor/5-segments/9-state/seg-ui-atoms";
+import { currentSegIndexSafeAtom, cutSegmentsAtom } from "@/editor/5-segments/9-state/a-segments-store";
+import { darkModeAtom, getSegColorAtom } from "@/editor/5-segments/9-state/a-seg-ui-atoms";
 import { setCurrentSegIndex } from "@/editor/5-segments/7-actions/segment-actions";
 import { type Side } from "./9-types-playbar";
 

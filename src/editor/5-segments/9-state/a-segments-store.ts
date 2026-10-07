@@ -6,7 +6,7 @@ import { jotaiDefaultStore } from "@/utils/local-utils/9-jotai-default-store";
 import { userSettingsAtom } from "@/editor/0-core/9-state/user-settings";
 import { onFileReset } from "@/editor/0-core/7-actions/2-lifecycle";
 import { fileDurationAtom, fileDurationNonZeroAtom } from "@/editor/2-file/9-state/a-file-atoms";
-import { filterNonMarkers, invertSegments, isDurationValid, sortSegments } from "../8-lib/segments";
+import { filterNonMarkers, invertSegments, isDurationValid, sortSegments } from "../8-lib/segment-utils";
 
 const maxHistory = 100;
 

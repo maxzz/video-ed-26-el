@@ -2,7 +2,7 @@ import { atom } from "jotai";
 import { observe } from "jotai-effect";
 import { jotaiDefaultStore } from "@/utils/local-utils/9-jotai-default-store";
 import { onFileReset } from "@/editor/0-core/7-actions/2-lifecycle";
-import { currentCutSegAtom } from "@/editor/5-segments/9-state/segments-store";
+import { currentCutSegAtom } from "@/editor/5-segments/9-state/a-segments-store";
 
 export { areWeCuttingAtom } from "@/editor/7-export/9-state/export-atoms";
 

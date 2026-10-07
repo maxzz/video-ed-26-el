@@ -9,7 +9,7 @@ import { ffmpegExtractWindow } from "@/editor/0-core/8-lib/constants";
 import { fileDurationNonZeroAtom } from "@/editor/2-file/9-state/a-file-atoms";
 import { playingAtom, relevantTimeAtom } from "@/editor/3-player/9-state/a-player-atoms";
 import { seekRel } from "@/editor/3-player/7-actions/player-actions";
-import { darkModeAtom } from "@/editor/5-segments/9-state/seg-ui-atoms";
+import { darkModeAtom } from "@/editor/5-segments/9-state/a-seg-ui-atoms";
 import { bigWaveformEnabledAtom, waveformsAtom, zoomUnroundedAtom } from "../../9-state/timeline-atoms";
 
 // Port of upstream BigWaveform.tsx. Rendered by the player area when bigWaveformEnabledAtom is true.

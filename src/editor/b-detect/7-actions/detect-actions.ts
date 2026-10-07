@@ -10,7 +10,7 @@ import { blackDetect, detectSceneChanges as ffmpegDetectSceneChanges, silenceDet
 import { fileDurationAtom, filePathAtom } from "@/editor/2-file/9-state/a-file-atoms";
 import { activeAudioStreamIndexesAtom, activeVideoStreamIndexAtom } from "@/editor/3-player/9-state/a-player-atoms";
 import { seekAbs } from "@/editor/3-player/7-actions/player-actions";
-import { currentCutSegOrWholeTimelineAtom } from "@/editor/5-segments/9-state/segments-store";
+import { currentCutSegOrWholeTimelineAtom } from "@/editor/5-segments/9-state/a-segments-store";
 import { deleteCurrentCutSeg, loadCutSegments } from "@/editor/5-segments/7-actions/segment-actions";
 import { appendLastCommandsLog } from "@/editor/7-export/9-state/export-atoms";
 import { getFfmpegParameters, type ParameterDialogParameters, setFfmpegParametersForDialog } from "../9-state/detect-atoms";

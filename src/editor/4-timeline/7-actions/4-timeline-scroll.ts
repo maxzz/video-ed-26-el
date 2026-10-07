@@ -11,7 +11,7 @@ import { fileDurationNonZeroAtom } from "@/editor/2-file/9-state/a-file-atoms";
 import { hoveringTimeAtom } from "@/components/2-main/0-all/a-panels-atoms";
 import { commandedTimeAtom, relevantTimeAtom } from "@/editor/3-player/9-state/a-player-atoms";
 import { seekAbs } from "@/editor/3-player/7-actions/player-actions";
-import { currentCutSegAtom } from "@/editor/5-segments/9-state/segments-store";
+import { currentCutSegAtom } from "@/editor/5-segments/9-state/a-segments-store";
 import { setCutTime } from "@/editor/5-segments/7-actions/segment-actions";
 import { isModifierPressed } from "../8-lib/modifier-keys";
 import { timelineScrollerElementAtom, timelineWrapperElementAtom, zoomAtom, zoomWindowStartTimeAtom } from "../9-state/timeline-atoms";

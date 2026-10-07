@@ -11,7 +11,7 @@ import { showNotification, showOsNotification } from "@/editor/0-core/8-lib/noti
 import { addStreamSourceFile } from "@/editor/6-streams/7-actions/streams-actions";
 import { videoElementAtom } from "@/editor/3-player/9-state/a-player-atoms";
 import { getRelevantTime } from "@/editor/3-player/7-actions/player-actions";
-import { currentCutSegAtom, selectedSegmentsAtom } from "@/editor/5-segments/9-state/segments-store";
+import { currentCutSegAtom, selectedSegmentsAtom } from "@/editor/5-segments/9-state/a-segments-store";
 import { captureFrameFromFfmpeg, captureFrameFromTag, captureFrameToClipboard, captureFramesRange } from "../8-lib/frame-capture";
 import { askExtractFramesAsImages } from "../8-lib/extract-frames-dialog";
 import { openExportFinishedDialog } from "@/components/4-dialogs/7-2-dialogs/finished-dialogs";

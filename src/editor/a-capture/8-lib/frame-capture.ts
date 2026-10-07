@@ -5,7 +5,7 @@ import { formatTimecode } from "@/editor/0-core/9-state/timecode";
 import { fs } from "@/editor/0-core/8-lib/node-shims";
 import { assertFileExists, escapeRegExp, fsOperationWithRetry, getOutDir, getOutPath, getSuffixedFileName, getSuffixedOutPath, transferTimestamps } from "@/editor/0-core/8-lib/util";
 import * as ffmpeg from "@/editor/0-core/8-lib/ffmpeg/ff-remote";
-import { getNumDigits, isDurationValid } from "@/editor/5-segments/8-lib/segments";
+import { getNumDigits, isDurationValid } from "@/editor/5-segments/8-lib/segment-utils";
 import { appendFfmpegCommandLog } from "@/editor/7-export/9-state/export-atoms";
 
 // Port of upstream useFrameCapture

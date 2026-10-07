@@ -9,7 +9,7 @@ import { askForYouTubeInput } from "./youtube-input";
 import { getOutPath } from "@/editor/0-core/8-lib/util";
 import { type EdlExportType, type EdlFileType, type EdlImportType, type GetFrameCount, type LlcProject, type SegmentBase, type StateSegment } from "@/editor/0-core/8-lib/9-types-core";
 import { llcProjectV1Schema, llcProjectV2Schema } from "@/editor/0-core/8-lib/9-types-core";
-import { mapSaveableSegments } from "@/editor/5-segments/8-lib/segments";
+import { mapSaveableSegments } from "@/editor/5-segments/8-lib/segment-utils";
 import { getAppInfo, mainApi } from "@/editor/0-core/7-actions/0-main-api";
 import { basename } from "@/editor/0-core/8-lib/node-shims";
 

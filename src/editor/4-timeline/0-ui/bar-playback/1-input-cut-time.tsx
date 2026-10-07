@@ -9,8 +9,8 @@ import { formatTimecodeAtom, parseTimecode } from "@/editor/0-core/9-state/timec
 import { isExactDurationMatch } from "@/editor/0-core/8-lib/duration";
 import { isFileOpenedAtom, startTimeOffsetAtom } from "@/editor/2-file/9-state/a-file-atoms";
 import { seekAbs } from "@/editor/3-player/7-actions/player-actions";
-import { currentCutSegAtom } from "@/editor/5-segments/9-state/segments-store";
-import { darkModeAtom, getSegColorAtom } from "@/editor/5-segments/9-state/seg-ui-atoms";
+import { currentCutSegAtom } from "@/editor/5-segments/9-state/a-segments-store";
+import { darkModeAtom, getSegColorAtom } from "@/editor/5-segments/9-state/a-seg-ui-atoms";
 import { setCutTime } from "@/editor/5-segments/7-actions/segment-actions";
 import { cutTimeErrorAtoms, cutTimeManualAtoms } from "../../9-state/bottom-bar-atoms";
 import { type Side } from "./9-types-playbar";

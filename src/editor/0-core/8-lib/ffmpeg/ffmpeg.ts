@@ -9,7 +9,7 @@ import z from "zod";
 
 import { pcmAudioCodecs, isMov } from "./streams";
 import { isExecaError } from "../util";
-import { isDurationValid } from "@/editor/5-segments/8-lib/segments";
+import { isDurationValid } from "@/editor/5-segments/8-lib/segment-utils";
 import { type FFprobeChapter, type FFprobeFormat, type FFprobeProbeResult, type FFprobeStream } from "@shared/ffprobe";
 import { parseSrt, parseSrtToSegments } from "@/editor/9-edl/8-lib/edl-formats";
 import { UnsupportedFileError, UserFacingError } from "../9-error-types";

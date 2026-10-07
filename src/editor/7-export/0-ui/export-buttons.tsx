@@ -9,7 +9,7 @@ import { useTranslation } from "react-i18next";
 import { type ExportMode } from "@/editor/0-core/8-lib/9-types-core";
 import { effectiveExportModeAtom, userSettingsAtom } from "@/editor/0-core/9-state/user-settings";
 import { toggleExportConfirmEnabled } from "@/editor/4-timeline/7-actions/3-timeline-actions";
-import { segmentsOrInverseAtom, segmentsToExportAtom } from "@/editor/5-segments/9-state/segments-store";
+import { segmentsOrInverseAtom, segmentsToExportAtom } from "@/editor/5-segments/9-state/a-segments-store";
 import { areWeCuttingAtom } from "../9-state/export-atoms";
 import { onExportPress, setExportMode } from "../7-actions/export-actions";
 

@@ -9,8 +9,8 @@ import { adjustRate } from "@/editor/0-core/8-lib/rate-calculator";
 import { getFrameCountRaw } from "@/editor/9-edl/8-lib/edl-formats";
 import { enableAudioTrack, enableVideoTrack } from "@/editor/0-core/8-lib/ffmpeg/streams";
 import { detectedFpsAtom, fileDurationAtom, filePathAtom, isFileOpenedAtom, previewFilePathAtom, usingDummyVideoAtom } from "@/editor/2-file/9-state/a-file-atoms";
-import { cutSegmentsAtom, currentCutSegAtom, currentSegIndexAtom, findSegmentsAtCursor, selectedSegmentsAtom, currentSegIndexSafeAtom } from "@/editor/5-segments/9-state/segments-store";
-import { filterNonMarkers, getPlaybackAction } from "@/editor/5-segments/8-lib/segments";
+import { cutSegmentsAtom, currentCutSegAtom, currentSegIndexAtom, findSegmentsAtCursor, selectedSegmentsAtom, currentSegIndexSafeAtom } from "@/editor/5-segments/9-state/a-segments-store";
+import { filterNonMarkers, getPlaybackAction } from "@/editor/5-segments/8-lib/segment-utils";
 import {
     activeAudioStreamIndexesAtom, activeVideoStreamIndexAtom, commandedTimeAtom, hideCompatPlayerAtom, outputPlaybackRateAtom,
     playbackModeAtom, playbackRateAtom, playerTimeAtom, playingAtom, videoElementAtom,

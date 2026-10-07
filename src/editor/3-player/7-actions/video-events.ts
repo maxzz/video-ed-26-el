@@ -15,7 +15,7 @@ import { fileDurationAtom, filePathAtom, hasAudioAtom, hasVideoAtom, usingPrevie
 import { html5ifyAndLoadWithPreferences } from "@/editor/2-file/7-actions/html5ify";
 import { isFileDurationValid, showNotNativelySupportedMessage } from "@/editor/2-file/7-actions/load-media";
 import { maybeCreateFullLengthSegment } from "@/editor/5-segments/7-actions/segment-actions";
-import { isDurationValid } from "@/editor/5-segments/8-lib/segments";
+import { isDurationValid } from "@/editor/5-segments/8-lib/segment-utils";
 import { commandedTimeAtom, mediaSourceQualityAtom, videoContainerElementAtom, videoElementAtom } from "../9-state/a-player-atoms";
 import { seekAbs, seekRel } from "./player-actions";
 

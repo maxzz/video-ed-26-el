@@ -1,22 +1,25 @@
-import i18n from "i18next";
+import { jotaiDefaultStore } from "@/utils/local-utils/9-jotai-default-store";
 import { Trans } from "react-i18next";
 import pMap from "p-map";
 import invariant from "tiny-invariant";
+import i18n from "i18next";
+
+import { fireDialog } from "@/components/4-dialogs/7-0-dialogs/dialogs";
+import { UserFacingError } from "@/editor/0-core/8-lib/9-error-types";
+
+import { mainApi } from "@/editor/0-core/7-actions/0-main-api";
+
 import { type StateSegment } from "@/editor/0-core/8-lib/9-types-core";
 import { segmentTagsSchema } from "@/editor/0-core/8-lib/9-types-core";
 import { editSegmentByExpressionHelpUrl, selectSegmentByExpressionHelpUrl } from "@shared/constants";
-import { jotaiDefaultStore } from "@/utils/local-utils/9-jotai-default-store";
-import { fireDialog } from "@/components/4-dialogs/7-0-dialogs/dialogs";
 import { parseTimecode, timecodePlaceholderAtom } from "@/editor/0-core/9-state/timecode";
-import { UserFacingError } from "@/editor/0-core/8-lib/9-error-types";
-import { mainApi } from "@/editor/0-core/7-actions/0-main-api";
 import safeishEval from "@/editor/0-core/8-lib/eval/eval";
 import { openExpressionDialog } from "@/editor/0-core/0-ui/dlg-expression";
 import { editingSegmentTagsAtom, editingSegmentTagsSegmentIndexAtom } from "@/components/2-main/0-all/a-panels-atoms";
 import { fileDurationAtom } from "@/editor/2-file/9-state/a-file-atoms";
-import { getSegmentTags } from "../8-lib/segments";
-import { getCutSegments } from "../9-state/segments-store";
-import { openShiftSegmentsDialog } from "../0-ui/shift-segments-dialog";
+import { getSegmentTags } from "../8-lib/segment-utils";
+import { getCutSegments } from "../9-state/a-segments-store";
+import { open_ShiftSegmentsDialog } from "../0-ui/dlg-shift-segments";
 import { getCurrentSegIndexSafe, modifySelectedSegmentTimes, selectSegments, setCutSegments, updateSegAtIndex, updateSegOrder } from "./segment-actions";
 
 // Segment dialogs from upstream useSegments/App/SegmentList: expressions, tags, reorder, shift
@@ -41,8 +44,6 @@ function expressionError(err: unknown) {
     throw err;
 }
 
-const linkButtonClasses = 'text-primary hover:underline';
-
 export async function selectSegmentsByExpr() {
     const cutSegments = getCutSegments();
 
@@ -56,10 +57,16 @@ export async function selectSegmentsByExpr() {
 
     async function onSubmit(value: string) {
         try {
-            if (value.trim().length === 0) return { error: i18n.t('Please enter a JavaScript expression.') };
+            if (value.trim().length === 0) {
+                return { error: i18n.t('Please enter a JavaScript expression.') };
+            }
             const segmentsToSelect = await getSegmentsToSelect(value);
-            if (segmentsToSelect.length === 0) return { error: i18n.t('No segments match this expression.') };
-            if (segmentsToSelect.length === cutSegments.length) return { error: i18n.t('All segments match this expression.') };
+            if (segmentsToSelect.length === 0) {
+                return { error: i18n.t('No segments match this expression.') };
+            }
+            if (segmentsToSelect.length === cutSegments.length) {
+                return { error: i18n.t('All segments match this expression.') };
+            }
             selectSegments(segmentsToSelect);
             return undefined;
         } catch (err) {
@@ -84,6 +91,8 @@ export async function selectSegmentsByExpr() {
         variables: ['segment.index', 'segment.label', 'segment.start', 'segment.end', 'segment.duration', 'segment.tags.*'],
     });
 }
+
+const linkButtonClasses = 'text-primary hover:underline';
 
 export async function mutateSegmentsByExpr() {
     const cutSegments = getCutSegments();
@@ -114,7 +123,9 @@ export async function mutateSegmentsByExpr() {
 
     async function onSubmit(value: string) {
         try {
-            if (value.trim().length === 0) return { error: i18n.t('Please enter a JavaScript expression.') };
+            if (value.trim().length === 0) {
+                return { error: i18n.t('Please enter a JavaScript expression.') };
+            }
             const mutated = await pMap(cutSegments, async (seg, index) => ({
                 ...seg,
                 ...(seg.selected && await mutateSegment(seg, index, value)),
@@ -145,11 +156,14 @@ export async function mutateSegmentsByExpr() {
     });
 }
 
+//---------------------------------------------------------------------------
 // Segment tags (the dialog is rendered by TimelineHosts)
 
 export function editSegmentTags(index: number) {
     const seg = getCutSegments()[index];
-    if (seg == null) return;
+    if (seg == null) {
+        return;
+    }
     jotaiDefaultStore.set(editingSegmentTagsSegmentIndexAtom, index);
     jotaiDefaultStore.set(editingSegmentTagsAtom, getSegmentTags(seg));
 }
@@ -168,11 +182,14 @@ export function saveSegmentTags() {
     closeSegmentTagsEditor();
 }
 
+//---------------------------------------------------------------------------
 // Reorder
 
 export async function reorderSegmentDialog(index: number) {
     const numSegments = getCutSegments().length;
-    if (numSegments < 2) return;
+    if (numSegments < 2) {
+        return;
+    }
     const { value } = await fireDialog({
         title: `${i18n.t('Change order of segment')} ${index + 1}`,
         text: i18n.t('Please enter a number from 1 to {{n}} to be the new order for the current segment', { n: numSegments }),
@@ -190,8 +207,10 @@ export async function reorderSegmentDialog(index: number) {
 // Shift
 
 export async function shiftAllSegmentTimes() {
-    const shift = await openShiftSegmentsDialog({ inputPlaceholder: jotaiDefaultStore.get(timecodePlaceholderAtom), parseTimecode });
-    if (shift == null) return;
+    const shift = await open_ShiftSegmentsDialog({ inputPlaceholder: jotaiDefaultStore.get(timecodePlaceholderAtom), parseTimecode });
+    if (shift == null) {
+        return;
+    }
     const { startShift, endShift } = shift;
     await modifySelectedSegmentTimes((segment) => {
         const newSegment = { ...segment };

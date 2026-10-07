@@ -7,8 +7,8 @@ import { type StateSegment } from "@/editor/0-core/8-lib/9-types-core";
 import { effectiveExportModeAtom, prefersReducedMotionAtom } from "@/editor/0-core/9-state/user-settings";
 import { formatTimecodeAtom } from "@/editor/0-core/9-state/timecode";
 import { fileDurationNonZeroAtom } from "@/editor/2-file/9-state/a-file-atoms";
-import { currentSegIndexSafeAtom, cutSegmentsAtom, inverseCutSegmentsAtom } from "@/editor/5-segments/9-state/segments-store";
-import { darkModeAtom, getSegColorAtom, invertCutSegmentsAtom, springAnimationAtom } from "@/editor/5-segments/9-state/seg-ui-atoms";
+import { currentSegIndexSafeAtom, cutSegmentsAtom, inverseCutSegmentsAtom } from "@/editor/5-segments/9-state/a-segments-store";
+import { darkModeAtom, getSegColorAtom, invertCutSegmentsAtom, springAnimationAtom } from "@/editor/5-segments/9-state/a-seg-ui-atoms";
 import { setCurrentSegIndex } from "@/editor/5-segments/7-actions/segment-actions";
 
 // Port of upstream TimelineSeg.tsx and BetweenSegments.tsx

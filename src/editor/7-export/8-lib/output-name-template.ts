@@ -7,7 +7,7 @@ import { type FileNameTemplateContext } from "@shared/userTypes";
 
 import { hasDuplicates, filenamify, getOutFileExtension } from "@/editor/0-core/8-lib/util";
 import { getAppInfo, isMac, isWindows } from "@/editor/0-core/7-actions/0-main-api";
-import { getSegmentTags, formatSegNum, getGuaranteedSegments } from "@/editor/5-segments/8-lib/segments";
+import { getSegmentTags, formatSegNum, getGuaranteedSegments } from "@/editor/5-segments/8-lib/segment-utils";
 import { type FileStats, type FormatTimecode, type SegmentToExport } from "@/editor/0-core/8-lib/9-types-core";
 import safeishEval from "@/editor/0-core/8-lib/eval/eval";
 import { UserFacingError } from "@/editor/0-core/8-lib/9-error-types";

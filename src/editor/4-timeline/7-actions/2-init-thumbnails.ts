@@ -4,7 +4,7 @@ import { onFileReset } from "@/editor/0-core/7-actions/2-lifecycle";
 import { renderThumbnails } from "@/editor/0-core/8-lib/ffmpeg/ffmpeg";
 import { isAbortedError } from "@/editor/0-core/8-lib/util";
 import { filePathAtom } from "@/editor/2-file/9-state/a-file-atoms";
-import { isDurationValid } from "@/editor/5-segments/8-lib/segments";
+import { isDurationValid } from "@/editor/5-segments/8-lib/segment-utils";
 import { showThumbnailsAtom, thumbnailsAtom, zoomedDurationAtom, zoomWindowStartTimeAtom } from "../9-state/timeline-atoms";
 
 // Port of upstream useThumbnails: renders a strip of thumbnails for the visible (zoomed) window

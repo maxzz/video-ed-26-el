@@ -10,7 +10,7 @@ import { type ICueSheet, type ITrack } from "cue-parser/lib/types";
 import { z } from "zod";
 
 import { formatDuration } from "@/editor/0-core/8-lib/duration";
-import { invertSegments, sortSegments } from "@/editor/5-segments/8-lib/segments";
+import { invertSegments, sortSegments } from "@/editor/5-segments/8-lib/segment-utils";
 import { type GetFrameCount, type SegmentBase, type SegmentTags } from "@/editor/0-core/8-lib/9-types-core";
 import parseCmx3600 from "./cmx3600";
 import { UserFacingError } from "@/editor/0-core/8-lib/9-error-types";

@@ -5,7 +5,7 @@ import { type BatchFile, type FfmpegCommandLog, type FileStats, type FilesMeta, 
 import { type FileFfprobeMeta } from "@/editor/0-core/8-lib/ffmpeg/ffmpeg";
 
 import { getAudioStreams, getRealVideoStreams, getSubtitleStreams } from "@/editor/0-core/8-lib/ffmpeg/streams";
-import { isDurationValid } from "@/editor/5-segments/8-lib/segments";
+import { isDurationValid } from "@/editor/5-segments/8-lib/segment-utils";
 import { getOutDir } from "@/editor/0-core/8-lib/util";
 import { customOutDirAtom } from "@/editor/0-core/9-state/user-settings";
 import { jotaiDefaultStore } from "@/utils/local-utils/9-jotai-default-store";

@@ -12,7 +12,7 @@ import normalizeWheel from "@/editor/0-core/8-lib/normalize-wheel";
 import { detectedFpsAtom, fileFormatAtom, rotationAtom } from "@/editor/2-file/9-state/a-file-atoms";
 import { hideCompatPlayerAtom } from "@/editor/3-player/9-state/a-player-atoms";
 import { getRelevantTime, seekAbs, seekRel, shortStep } from "@/editor/3-player/7-actions/player-actions";
-import { isDurationValid } from "@/editor/5-segments/8-lib/segments";
+import { isDurationValid } from "@/editor/5-segments/8-lib/segment-utils";
 import { isModifierPressed } from "../8-lib/modifier-keys";
 import { comfortZoomAtom, forceBigWaveformAtom, neighbouringKeyFramesAtom, seekAccelerationAtom, zoomedDurationAtom, zoomUnroundedAtom } from "../9-state/timeline-atoms";
 

@@ -8,7 +8,7 @@ import { MainArea_Toolbar } from "./3-main-area-toolbar";
 import { Bar_Playback } from "@/editor/4-timeline/0-ui/bar-playback/0-bar-playback";
 import { PlayerView, FileHosts } from "@/editor/3-player";
 import { Timeline, TimelineHosts } from "@/editor/4-timeline";
-import { SegmentList } from "@/editor/5-segments";
+import { Panel_Segments } from "@/editor/5-segments/0-ui/0-panel-segments";
 import { ExportHosts } from "@/editor/7-export/0-ui/0-export-hosts";
 import { BatchFilesList, ConcatHosts } from "@/editor/8-concat";
 import { KeyboardHosts } from "@/editor/c-keyboard";
@@ -54,5 +54,5 @@ function BatchArea() {
 function RightBar() {
     const showRightBar = useAtomValue(showRightBarAtom);
     if (!showRightBar) return null;
-    return <SegmentList />;
+    return <Panel_Segments />;
 }

@@ -22,8 +22,8 @@ import { exportConfirmOpenAtom } from "@/components/2-main/0-all/a-panels-atoms"
 import { detectedFpsAtom, fileDurationNonZeroAtom, hasAudioAtom, hasVideoAtom, isFileOpenedAtom, isRotationSetAtom, rotationAtom } from "@/editor/2-file/9-state/a-file-atoms";
 import { outputPlaybackRateAtom, playbackModeAtom, playbackRateAtom, playingAtom } from "@/editor/3-player/9-state/a-player-atoms";
 import * as player from "@/editor/3-player/7-actions/player-actions";
-import { currentCutSegAtom, segmentsToExportAtom, selectedSegmentsAtom } from "@/editor/5-segments/9-state/segments-store";
-import { invertCutSegmentsAtom, simpleModeAtom } from "@/editor/5-segments/9-state/seg-ui-atoms";
+import { currentCutSegAtom, segmentsToExportAtom, selectedSegmentsAtom } from "@/editor/5-segments/9-state/a-segments-store";
+import { invertCutSegmentsAtom, simpleModeAtom } from "@/editor/5-segments/9-state/a-seg-ui-atoms";
 import { setCutEnd, setCutStart } from "@/editor/5-segments/7-actions/segment-actions";
 import { actionTitleAtom } from "../../9-state/action-title";
 import { areWeCuttingAtom } from "../../9-state/bottom-bar-atoms";
