@@ -1,9 +1,11 @@
 import { type MouseEvent as ReactMouseEvent } from "react";
 import { observe } from "jotai-effect";
+import { jotaiDefaultStore } from "@/utils/local-utils/9-jotai-default-store";
 import { animate, type AnimationPlaybackControls } from "motion/react";
 import debounce from "lodash/debounce.js";
-import { jotaiDefaultStore } from "@/utils/local-utils/9-jotai-default-store";
+
 import { prefersReducedMotionAtom, userSettings } from "@/editor/0-core/9-state/user-settings";
+
 import { calculateTimelinePos } from "@/editor/0-core/8-lib/util";
 import { fileDurationNonZeroAtom } from "@/editor/2-file/9-state/a-file-atoms";
 import { hoveringTimeAtom } from "@/components/2-main/0-all/a-panels-atoms";
@@ -16,15 +18,44 @@ import { timelineScrollerElementAtom, timelineWrapperElementAtom, zoomAtom, zoom
 
 // Port of the imperative parts of upstream Timeline.tsx: auto scroll, zoom centering and mouse seeking/segment resizing
 
-let skipScrollEvents = false;
-const stopSkippingScrollEvents = debounce(() => { skipScrollEvents = false; }, 1000);
+// Pan timeline when cursor moves out of timeline window. https://github.com/mifi/lossless-cut/issues/676
+observe(
+    (get) => {
+        const relevantTime = get(relevantTimeAtom);
+        const fileDurationNonZero = get(fileDurationNonZeroAtom);
+        const zoom = get(zoomAtom);
+        const scroller = get(timelineScrollerElementAtom);
+        const wrapper = get(timelineWrapperElementAtom);
+        if (!scroller || !wrapper || skipScrollEvents) {
+            return;
+        }
+
+        const pos = calculateTimelinePos(relevantTime, fileDurationNonZero);
+        if (pos == null) {
+            return;
+        }
+        const timeOfInterestPosPixels = pos * zoom * scroller.offsetWidth;
+
+        if (timeOfInterestPosPixels > scroller.scrollLeft + scroller.offsetWidth) {
+            const scrollLeft = timeOfInterestPosPixels - (scroller.offsetWidth * 0.1);
+            animateScrollLeft(scroller, Math.min(scrollLeft, wrapper.offsetWidth - scroller.offsetWidth));
+        }
+        else if (timeOfInterestPosPixels < scroller.scrollLeft) {
+            const scrollLeft = timeOfInterestPosPixels - (scroller.offsetWidth * 0.9);
+            animateScrollLeft(scroller, Math.max(scrollLeft, 0));
+        }
+    },
+    jotaiDefaultStore);
+
+//---------------------------------------------------------------------------
 
 function suppressScrollerEvents() {
     skipScrollEvents = true;
     stopSkippingScrollEvents();
 }
 
-let scrollAnimation: AnimationPlaybackControls | undefined;
+let skipScrollEvents = false;
+const stopSkippingScrollEvents = debounce(() => { skipScrollEvents = false; }, 1000);
 
 function animateScrollLeft(scroller: HTMLDivElement, target: number) {
     scrollAnimation?.stop();
@@ -37,47 +68,24 @@ function animateScrollLeft(scroller: HTMLDivElement, target: number) {
         damping: 100,
         stiffness: 1000,
         onUpdate: (value) => {
-            if (!skipScrollEvents) scroller.scrollLeft = value; // Don't animate while zooming
+            if (!skipScrollEvents) {
+                scroller.scrollLeft = value; // Don't animate while zooming
+            }
         },
     });
 }
 
-export function onTimelineScroll() {
-    const scroller = jotaiDefaultStore.get(timelineScrollerElementAtom);
-    if (!scroller) return;
-    const zoom = jotaiDefaultStore.get(zoomAtom);
-    jotaiDefaultStore.set(zoomWindowStartTimeAtom, (scroller.scrollLeft / (scroller.offsetWidth * zoom)) * jotaiDefaultStore.get(fileDurationNonZeroAtom));
-}
+let scrollAnimation: AnimationPlaybackControls | undefined;
 
-// Pan timeline when cursor moves out of timeline window. https://github.com/mifi/lossless-cut/issues/676
-observe((get) => {
-    const relevantTime = get(relevantTimeAtom);
-    const fileDurationNonZero = get(fileDurationNonZeroAtom);
-    const zoom = get(zoomAtom);
-    const scroller = get(timelineScrollerElementAtom);
-    const wrapper = get(timelineWrapperElementAtom);
-    if (!scroller || !wrapper || skipScrollEvents) return;
-
-    const pos = calculateTimelinePos(relevantTime, fileDurationNonZero);
-    if (pos == null) return;
-    const timeOfInterestPosPixels = pos * zoom * scroller.offsetWidth;
-
-    if (timeOfInterestPosPixels > scroller.scrollLeft + scroller.offsetWidth) {
-        const scrollLeft = timeOfInterestPosPixels - (scroller.offsetWidth * 0.1);
-        animateScrollLeft(scroller, Math.min(scrollLeft, wrapper.offsetWidth - scroller.offsetWidth));
-    } else if (timeOfInterestPosPixels < scroller.scrollLeft) {
-        const scrollLeft = timeOfInterestPosPixels - (scroller.offsetWidth * 0.9);
-        animateScrollLeft(scroller, Math.max(scrollLeft, 0));
-    }
-}, jotaiDefaultStore);
+//---------------------------------------------------------------------------
 
 // Hover time is only valid until the playback position changes
-observe((get, set) => {
-    get(relevantTimeAtom);
-    set(hoveringTimeAtom, undefined);
-}, jotaiDefaultStore);
-
-let lastZoom = 1;
+observe(
+    (get, set) => {
+        get(relevantTimeAtom);
+        set(hoveringTimeAtom, undefined);
+    },
+    jotaiDefaultStore);
 
 /** Keep cursor in middle while zooming. Called after the wrapper got its new (zoomed) width */
 function onWrapperResize() {
@@ -97,8 +105,23 @@ function onWrapperResize() {
     onTimelineScroll();
 }
 
+let lastZoom = 1;
+
+//---------------------------------------------------------------------------
+
+export function onTimelineScroll() {
+    const scroller = jotaiDefaultStore.get(timelineScrollerElementAtom);
+    if (!scroller) {
+        return;
+    }
+    const zoom = jotaiDefaultStore.get(zoomAtom);
+    jotaiDefaultStore.set(zoomWindowStartTimeAtom, (scroller.scrollLeft / (scroller.offsetWidth * zoom)) * jotaiDefaultStore.get(fileDurationNonZeroAtom));
+}
+
 export function timelineScrollerRef(el: HTMLDivElement | null) {
-    if (!el) return undefined;
+    if (!el) {
+        return undefined;
+    }
     jotaiDefaultStore.set(timelineScrollerElementAtom, el);
     const cancelWheel = (event: WheelEvent) => event.preventDefault();
     el.addEventListener('wheel', cancelWheel, { passive: false });
@@ -109,7 +132,9 @@ export function timelineScrollerRef(el: HTMLDivElement | null) {
 }
 
 export function timelineWrapperRef(el: HTMLDivElement | null) {
-    if (!el) return undefined;
+    if (!el) {
+        return undefined;
+    }
     jotaiDefaultStore.set(timelineWrapperElementAtom, el);
     const resizeObserver = new ResizeObserver(onWrapperResize);
     resizeObserver.observe(el);
@@ -119,21 +144,13 @@ export function timelineWrapperRef(el: HTMLDivElement | null) {
     };
 }
 
+//---------------------------------------------------------------------------
 // Mouse
 
-function getMouseTimelinePos(e: MouseEvent) {
-    const target = jotaiDefaultStore.get(timelineWrapperElementAtom);
-    if (!target) return 0;
-    const rect = target.getBoundingClientRect();
-    const relX = e.pageX - (rect.left + document.body.scrollLeft);
-    return (relX / target.offsetWidth) * jotaiDefaultStore.get(fileDurationNonZeroAtom);
-}
-
-let mouseDown = false;
-let resizingSegment: { operation: 'start' | 'end' | 'move'; offset?: number; } | undefined;
-
 export function onTimelineMouseDown(e: ReactMouseEvent<HTMLElement>) {
-    if (e.nativeEvent.buttons !== 1) return; // not primary button
+    if (e.nativeEvent.buttons !== 1) {
+        return; // not primary button
+    }
 
     const mouseTimelinePos = getMouseTimelinePos(e.nativeEvent);
     seekAbs(mouseTimelinePos);
@@ -157,7 +174,9 @@ export function onTimelineMouseDown(e: ReactMouseEvent<HTMLElement>) {
     mouseDown = true;
 
     function onMouseMove(e2: MouseEvent) {
-        if (!mouseDown) return;
+        if (!mouseDown) {
+            return;
+        }
         const mouseDragTimelinePos = getMouseTimelinePos(e2);
         seekAbs(mouseDragTimelinePos);
         try {
@@ -186,10 +205,27 @@ export function onTimelineMouseDown(e: ReactMouseEvent<HTMLElement>) {
 }
 
 export function onTimelineMouseMove(e: ReactMouseEvent<HTMLDivElement>) {
-    if (!mouseDown) jotaiDefaultStore.set(hoveringTimeAtom, getMouseTimelinePos(e.nativeEvent));
+    if (!mouseDown) {
+        jotaiDefaultStore.set(hoveringTimeAtom, getMouseTimelinePos(e.nativeEvent));
+    }
     e.preventDefault();
 }
 
 export function onTimelineMouseOut() {
     jotaiDefaultStore.set(hoveringTimeAtom, undefined);
 }
+
+function getMouseTimelinePos(e: MouseEvent) {
+    const target = jotaiDefaultStore.get(timelineWrapperElementAtom);
+    if (!target) {
+        return 0;
+    }
+    const rect = target.getBoundingClientRect();
+    const relX = e.pageX - (rect.left + document.body.scrollLeft);
+    return (relX / target.offsetWidth) * jotaiDefaultStore.get(fileDurationNonZeroAtom);
+}
+
+let mouseDown = false;
+let resizingSegment: { operation: 'start' | 'end' | 'move'; offset?: number; } | undefined;
+
+//---------------------------------------------------------------------------

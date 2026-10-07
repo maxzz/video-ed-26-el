@@ -31,7 +31,7 @@ import { currentFrameAtom, displayTimeAtom, isZoomedAtom, keyframesEnabledAtom, 
 import {
     increaseRotation, seekClosestKeyframe, timelineToggleComfortZoom, toggleExportConfirmEnabled, toggleInvertCutSegments, toggleShowKeyframes,
     toggleShowThumbnails, toggleSimpleMode, toggleWaveformMode, zoomAbs,
-} from "../../7-actions/timeline-actions";
+} from "../../7-actions/3-timeline-actions";
 import { Input_CutTime } from "./1-input-cut-time";
 import { Button_JumpSegment, Button_SegmentCutpoint, Button_SetCutpoint } from "./2-button-segment-cut";
 

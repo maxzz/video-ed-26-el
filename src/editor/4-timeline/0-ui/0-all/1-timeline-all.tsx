@@ -16,10 +16,10 @@ import {
     keyFramesInZoomWindowAtom, overviewWaveformAtom, shouldShowKeyframesAtom, shouldShowWaveformAtom, showThumbnailsAtom,
     thumbnailsSortedAtom, waveformEnabledAtom, waveformsAtom, zoomAtom,
 } from "../../9-state/timeline-atoms";
-import { onTimelineWheel } from "../../7-actions/timeline-actions";
+import { onTimelineWheel } from "../../7-actions/3-timeline-actions";
 import { goToTimecode } from "@/editor/3-player/7-actions/video-events";
-import { generateOverviewWaveform } from "../../7-actions/waveform";
-import { onTimelineMouseDown, onTimelineMouseMove, onTimelineMouseOut, onTimelineScroll, timelineScrollerRef, timelineWrapperRef } from "../../7-actions/timeline-scroll";
+import { generateOverviewWaveform } from "../../7-actions/5-waveform";
+import { onTimelineMouseDown, onTimelineMouseMove, onTimelineMouseOut, onTimelineScroll, timelineScrollerRef, timelineWrapperRef } from "../../7-actions/4-timeline-scroll";
 import { BetweenSegmentsList, TimelineSegments } from "./2-timeline-seg";
 
 // Port of upstream Timeline.tsx. Leaf components subscribe to their own atoms so the time markers don't re-render the whole timeline

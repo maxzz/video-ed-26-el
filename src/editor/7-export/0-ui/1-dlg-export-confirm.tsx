@@ -22,7 +22,7 @@ import { closeExportConfirm, exportConfirmOpenAtom, settingsVisibleAtom, streams
 import { encBitrateAtom, fileFormatAtom, numStreamsTotalAtom, outputDirAtom } from "@/editor/2-file/9-state/a-file-atoms";
 import { outputPlaybackRateAtom } from "@/editor/3-player/9-state/a-player-atoms";
 import { neighbouringKeyFramesAtom } from "@/editor/4-timeline/9-state/timeline-atoms";
-import { toggleExportConfirmEnabled } from "@/editor/4-timeline/7-actions/timeline-actions";
+import { toggleExportConfirmEnabled } from "@/editor/4-timeline/7-actions/3-timeline-actions";
 import { currentSegIndexSafeAtom, segmentsOrInverseAtom, segmentsToExportAtom } from "@/editor/5-segments/9-state/segments-store";
 import { mainCopiedThumbnailStreamsAtom, numStreamsToCopyAtom } from "@/editor/6-streams/9-state/a-streams-store";
 import {

@@ -9,12 +9,34 @@ import { showThumbnailsAtom, thumbnailsAtom, zoomedDurationAtom, zoomWindowStart
 
 // Port of upstream useThumbnails: renders a strip of thumbnails for the visible (zoomed) window
 
-let current: { key: string; abortController: AbortController; urls: string[]; } | undefined;
+export function initThumbnails() {
+    // debounced like upstream (300ms)
+    observe(
+        (get) => {
+            const params = {
+                zoomedDuration: get(zoomedDurationAtom),
+                filePath: get(filePathAtom),
+                zoomWindowStartTime: get(zoomWindowStartTimeAtom),
+                showThumbnails: get(showThumbnailsAtom),
+            };
+            const timer = setTimeout(() => startThumbnails(params), 300);
+            return () => clearTimeout(timer);
+        },
+        jotaiDefaultStore);
+
+    onFileReset(stopThumbnails);
+}
+
+//---------------------------------------------------------------------------
 
 function stopThumbnails() {
-    if (current == null) return;
+    if (current == null) {
+        return;
+    }
     current.abortController.abort();
-    if (current.urls.length > 0) console.log('Cleanup thumbnails', current.urls.length);
+    if (current.urls.length > 0) {
+        console.log('Cleanup thumbnails', current.urls.length);
+    }
     current.urls.forEach((url) => URL.revokeObjectURL(url));
     current = undefined;
     jotaiDefaultStore.set(thumbnailsAtom, []);
@@ -22,11 +44,15 @@ function stopThumbnails() {
 
 function startThumbnails(params: { zoomedDuration: number | undefined; filePath: string | undefined; zoomWindowStartTime: number; showThumbnails: boolean; }) {
     const key = JSON.stringify(params);
-    if (current?.key === key) return;
+    if (current?.key === key) {
+        return;
+    }
     stopThumbnails();
 
     const { zoomedDuration, filePath, zoomWindowStartTime, showThumbnails } = params;
-    if (!isDurationValid(zoomedDuration) || !showThumbnails || filePath == null) return;
+    if (!isDurationValid(zoomedDuration) || !showThumbnails || filePath == null) {
+        return;
+    }
 
     const run = { key, abortController: new AbortController(), urls: [] as string[] };
     current = run;
@@ -52,18 +78,4 @@ function startThumbnails(params: { zoomedDuration: number | undefined; filePath:
     });
 }
 
-export function initThumbnails() {
-    // debounced like upstream (300ms)
-    observe((get) => {
-        const params = {
-            zoomedDuration: get(zoomedDurationAtom),
-            filePath: get(filePathAtom),
-            zoomWindowStartTime: get(zoomWindowStartTimeAtom),
-            showThumbnails: get(showThumbnailsAtom),
-        };
-        const timer = setTimeout(() => startThumbnails(params), 300);
-        return () => clearTimeout(timer);
-    }, jotaiDefaultStore);
-
-    onFileReset(stopThumbnails);
-}
+let current: { key: string; abortController: AbortController; urls: string[]; } | undefined;

@@ -1,8 +1,9 @@
 import { type WheelEvent } from "react";
-import i18n from "i18next";
 import { jotaiDefaultStore } from "@/utils/local-utils/9-jotai-default-store";
 import { userSettings } from "@/editor/0-core/9-state/user-settings";
 import { showNotification } from "@/editor/0-core/8-lib/notifications";
+import i18n from "i18next";
+
 import { zoomMax } from "@/editor/0-core/8-lib/constants";
 import { calcShouldShowKeyframes } from "@/editor/0-core/8-lib/util";
 import { isMatroska } from "@/editor/0-core/8-lib/ffmpeg/streams";
@@ -16,21 +17,28 @@ import { isModifierPressed } from "../8-lib/modifier-keys";
 import { comfortZoomAtom, forceBigWaveformAtom, neighbouringKeyFramesAtom, seekAccelerationAtom, zoomedDurationAtom, zoomUnroundedAtom } from "../9-state/timeline-atoms";
 
 export { showNotification };
+export { toggleInvertCutSegments, toggleSimpleMode, toggleExportConfirmEnabled } from "@/editor/0-core/7-actions/settings-toggles";
 
+//---------------------------------------------------------------------------
 // Zoom
 
 export function zoomAbs(fn: (zoom: number) => number) {
     jotaiDefaultStore.set(zoomUnroundedAtom, (z) => Math.min(Math.max(fn(z), 1), zoomMax));
 }
 
-export const zoomRel = (rel: number) => zoomAbs((z) => z + (rel * (1 + (z / 10))));
+export function zoomRel(rel: number) {
+    return zoomAbs((z) => z + (rel * (1 + (z / 10))));
+}
 
 export function timelineToggleComfortZoom() {
     const comfortZoom = jotaiDefaultStore.get(comfortZoomAtom);
-    if (!comfortZoom) return;
+    if (!comfortZoom) {
+        return;
+    }
     zoomAbs((prevZoom) => (prevZoom === 1 ? comfortZoom : 1));
 }
 
+//---------------------------------------------------------------------------
 // Seek
 
 export function seekRelAccelerated(amount: number) {
@@ -43,7 +51,9 @@ export const resetSeekAcceleration = () => jotaiDefaultStore.set(seekAcceleratio
 
 export function seekRelPercent(val: number) {
     const zoomedDuration = jotaiDefaultStore.get(zoomedDurationAtom);
-    if (!isDurationValid(zoomedDuration)) return;
+    if (!isDurationValid(zoomedDuration)) {
+        return;
+    }
     seekRel(val * zoomedDuration);
 }
 
@@ -55,7 +65,9 @@ export function seekClosestKeyframe(direction: number) {
     const detectedFps = jotaiDefaultStore.get(detectedFpsAtom);
     const sigma = detectedFps ? (1 / detectedFps) : 0.1; // because we don't want it to find the keyframe we're currently at.
     const time = findNearestKeyFrameTime({ time: getRelevantTime() + direction * sigma, direction });
-    if (time == null) return;
+    if (time == null) {
+        return;
+    }
     seekAbs(time);
 }
 
@@ -79,6 +91,7 @@ export function onTimelineWheel(wheelEvent: WheelEvent<Element>) {
     }
 }
 
+//---------------------------------------------------------------------------
 // Rotation
 
 export function increaseRotation() {
@@ -90,10 +103,13 @@ export function increaseRotation() {
     }
 }
 
+//---------------------------------------------------------------------------
 // Timeline display toggles
 
 export function toggleWaveformMode() {
-    if (jotaiDefaultStore.get(forceBigWaveformAtom)) return;
+    if (jotaiDefaultStore.get(forceBigWaveformAtom)) {
+        return;
+    }
     const { waveformMode } = userSettings;
     if (waveformMode === 'waveform') {
         userSettings.waveformMode = 'big-waveform';
@@ -117,4 +133,4 @@ export function toggleShowKeyframes() {
     userSettings.keyframesEnabled = enabled;
 }
 
-export { toggleInvertCutSegments, toggleSimpleMode, toggleExportConfirmEnabled } from "@/editor/0-core/7-actions/settings-toggles";
+//---------------------------------------------------------------------------

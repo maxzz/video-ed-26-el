@@ -11,7 +11,7 @@ import { customOutDirAtom, setCustomOutDir, userSettingsAtom } from "@/editor/0-
 import { runAction } from "@/editor/0-core/7-actions/kbd-actions";
 import { settingsVisibleAtom, streamsSelectorShownAtom } from "@/components/2-main/0-all/a-panels-atoms";
 import { filePathAtom, isCustomFormatSelectedAtom, numStreamsTotalAtom } from "@/editor/2-file/9-state/a-file-atoms";
-import { toggleSimpleMode } from "@/editor/4-timeline/7-actions/timeline-actions";
+import { toggleSimpleMode } from "@/editor/4-timeline/7-actions/3-timeline-actions";
 import { enabledStreamsFilterAtom, numStreamsToCopyAtom } from "@/editor/6-streams/9-state/a-streams-store";
 import { changeEnabledStreamsFilter, toggleStripCurrentFilter } from "@/editor/6-streams/7-actions/streams-actions";
 import { toggleOutFormatLocked } from "@/editor/7-export/7-actions/export-actions";

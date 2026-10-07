@@ -1,9 +1,9 @@
 import { registerActions } from "@/editor/0-core/7-actions/kbd-actions";
 import { userSettings } from "@/editor/0-core/9-state/user-settings";
-import * as tl from "@/editor/4-timeline/7-actions/timeline-actions";
-import { readAllKeyframes } from "@/editor/4-timeline/7-actions/keyframes";
-import { generateOverviewWaveform } from "@/editor/4-timeline/7-actions/waveform";
-import { initThumbnails } from "@/editor/4-timeline/7-actions/thumbnails";
+import * as tl from "@/editor/4-timeline/7-actions/3-timeline-actions";
+import { readAllKeyframes } from "@/editor/4-timeline/7-actions/1-init-keyframes";
+import { generateOverviewWaveform } from "@/editor/4-timeline/7-actions/5-waveform";
+import { initThumbnails } from "@/editor/4-timeline/7-actions/2-init-thumbnails";
 
 const seekKeyup = tl.resetSeekAcceleration;
 

@@ -13,7 +13,7 @@ import { showRightBarAtom } from "@/components/2-main/0-all/a-layout-atoms";
 import { fileDurationAtom, filePathAtom, hasVideoAtom, isFileOpenedAtom, isRotationSetAtom } from "@/editor/2-file/9-state/a-file-atoms";
 import { onFilesDrop } from "@/editor/2-file/7-actions/open-files";
 import { bigWaveformEnabledAtom } from "@/editor/4-timeline/9-state/timeline-atoms";
-import { onTimelineWheel } from "@/editor/4-timeline/7-actions/timeline-actions";
+import { onTimelineWheel } from "@/editor/4-timeline/7-actions/3-timeline-actions";
 import { BigWaveform } from "@/editor/4-timeline/0-ui/0-all/3-big-waveform";
 import {
     activeSubtitleAtom, compatPlayerEnabledAtom, compatPlayerRequiredAtom, mediaSourceQualityAtom, playbackVolumeAtom, playerTimeAtom,
