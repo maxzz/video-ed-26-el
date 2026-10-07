@@ -3,16 +3,9 @@ import { useAtomValue } from "jotai";
 import { VideoIcon } from "lucide-react";
 import { jotaiDefaultStore } from "@/utils/local-utils/9-jotai-default-store";
 import { cn } from "@/utils/classnames";
+
 import { compatCanvasElementAtom, compatLoadingAtom, compatShowCanvasAtom, compatVideoElementAtom, effectiveRotationAtom } from "../9-state/player-atoms";
 import "../7-actions/compat-player";
-
-const setCompatVideo = (el: HTMLVideoElement | null) => { jotaiDefaultStore.set(compatVideoElementAtom, el); };
-const setCompatCanvas = (el: HTMLCanvasElement | null) => { jotaiDefaultStore.set(compatCanvasElementAtom, el); };
-
-// prevent video element from stealing focus in fullscreen mode https://github.com/mifi/lossless-cut/issues/543#issuecomment-1868167775
-const blurOnFocus = (e: FocusEvent<HTMLVideoElement>) => e.target.blur();
-
-const onCompatVideoError = (error: unknown) => console.error('video error', error);
 
 /** Port of upstream MediaSourcePlayer. The streaming logic lives in 7-actions/compat-player.ts */
 export function MediaSourcePlayer() {
@@ -47,3 +40,11 @@ export function MediaSourcePlayer() {
         </div>
     );
 }
+
+const setCompatVideo = (el: HTMLVideoElement | null) => { jotaiDefaultStore.set(compatVideoElementAtom, el); };
+const setCompatCanvas = (el: HTMLCanvasElement | null) => { jotaiDefaultStore.set(compatCanvasElementAtom, el); };
+
+// prevent video element from stealing focus in fullscreen mode https://github.com/mifi/lossless-cut/issues/543#issuecomment-1868167775
+const blurOnFocus = (e: FocusEvent<HTMLVideoElement>) => e.target.blur();
+
+const onCompatVideoError = (error: unknown) => console.error('video error', error);

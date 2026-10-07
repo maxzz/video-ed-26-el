@@ -1,8 +1,11 @@
 import { type DragEvent, type FocusEvent, type SyntheticEvent } from "react";
 import { useAtomValue } from "jotai";
+import { jotaiDefaultStore } from "@/utils/local-utils/9-jotai-default-store";
+import { cn } from "@/utils/classnames";
+import { Button } from "@/ui/shadcn/button";
 import { useTranslation } from "react-i18next";
 import { CircleXIcon, MenuIcon, RotateCcwSquareIcon } from "lucide-react";
-import { jotaiDefaultStore } from "@/utils/local-utils/9-jotai-default-store";
+
 import { runAction } from "@/editor/0-core/7-actions/kbd-actions";
 import { calculateTimelinePercent, mediaSourceQualities } from "@/editor/0-core/8-lib/util";
 import { fullscreenAtom } from "@/components/2-main/0-all/a-panels-atoms";
@@ -12,8 +15,6 @@ import { onFilesDrop } from "@/editor/2-file/7-actions/open-files";
 import { bigWaveformEnabledAtom } from "@/editor/4-timeline/9-state/timeline-atoms";
 import { onTimelineWheel } from "@/editor/4-timeline/7-actions/timeline-actions";
 import { BigWaveform } from "@/editor/4-timeline/0-ui/big-waveform";
-import { Button } from "@/ui/shadcn/button";
-import { cn } from "@/utils/classnames";
 import {
     activeSubtitleAtom, compatPlayerEnabledAtom, compatPlayerRequiredAtom, mediaSourceQualityAtom, playbackVolumeAtom, playerTimeAtom,
     shouldShowPlaybackStreamSelectorAtom, videoContainerElementAtom, videoElementAtom,

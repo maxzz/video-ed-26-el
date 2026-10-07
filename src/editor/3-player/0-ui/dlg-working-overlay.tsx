@@ -21,9 +21,16 @@ export function WorkingOverlay() {
                         exit={{ opacity: 0, scale: 0.8 }}
                     >
                         <Loader2Icon className="size-8 text-primary animate-spin" />
-                        <div className="text-center">{working.text}...</div>
+
+                        <div className="text-center">
+                            {working.text}...
+                        </div>
+
                         <ElapsedAndProgress />
-                        <Button variant="outline" size="sm" onClick={abortWorking}><AbortLabel /></Button>
+
+                        <Button variant="outline" size="sm" onClick={abortWorking}>
+                            <AbortLabel />
+                        </Button>
                     </motion.div>
                 </div>
             )}
@@ -48,7 +55,10 @@ function ElapsedAndProgress() {
         {progress != null && (
             <div className="w-full flex flex-col items-center gap-1">
                 <Progress value={progress * 100} className="w-full" />
-                <div className="text-base font-mono">{`${(progress * 100).toFixed(1)} %`}</div>
+                
+                <div className="text-base font-mono">
+                    {`${(progress * 100).toFixed(1)} %`}
+                </div>
             </div>
         )}
     </>);

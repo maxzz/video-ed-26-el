@@ -1,16 +1,17 @@
-import { Fragment, type DragEvent } from "react";
+import { type DragEvent, Fragment  } from "react";
 import { useAtomValue } from "jotai";
 import { useSnapshot } from "valtio";
-import { useTranslation } from "react-i18next";
+import { cn } from "@/utils/classnames";
+import { Button } from "@/ui/shadcn/button";
+import { Kbd } from "@/ui/shadcn/kbd";
 import { MouseIcon } from "lucide-react";
+import { useTranslation } from "react-i18next";
+
 import { type ModifierKey } from "@shared/types";
 import { jotaiDefaultStore } from "@/utils/local-utils/9-jotai-default-store";
 import { userSettings } from "@/editor/0-core/9-state/user-settings";
 import { runAction } from "@/editor/0-core/7-actions/kbd-actions";
 import { getKeyDisplayName, getMetaKeyName, splitKeyboardKeys } from "@/editor/0-core/8-lib/utils-kbd";
-import { Button } from "@/ui/shadcn/button";
-import { Kbd } from "@/ui/shadcn/kbd";
-import { cn } from "@/utils/classnames";
 import { MifiLink } from "@/editor/f-platform/0-ui/mifi-link";
 import { draggingOverDropZoneAtom } from "../9-state/player-atoms";
 
