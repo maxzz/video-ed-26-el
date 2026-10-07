@@ -39,10 +39,10 @@ export function Timeline() {
                 <ContextMenuTrigger asChild>
                     <div>
                         <div
-                            ref={timelineScrollerRef}
                             className="scrollbar-none overflow-x-scroll overflow-y-hidden"
                             onWheel={onTimelineWheel}
                             onScroll={onTimelineScroll}
+                            ref={timelineScrollerRef}
                         >
                             <Timeline_Waveforms />
                             <Timeline_Thumbnails />
@@ -208,8 +208,8 @@ function Timeline_CommandedTimeMarker() {
         return null;
     }
     return (<>
-        <TriangleIcon className="absolute top-0 -mt-1.5 -ml-1.75 size-3.5 text-foreground fill-current rotate-180 pointer-events-none" style={{ left: commandedTimePercent }} />
+        <TriangleIcon className="absolute top-0 -mt-px -ml-0.75 size-1.75 text-foreground fill-current -scale-y-100 pointer-events-none" style={{ left: commandedTimePercent }} />
         <div className="absolute inset-y-0 w-px bg-foreground pointer-events-none" style={{ left: commandedTimePercent }} />
-        <TriangleIcon className="absolute bottom-0 -mb-1.25 -ml-1.75 size-3.5 text-foreground fill-current pointer-events-none" style={{ left: commandedTimePercent }} />
+        <TriangleIcon className="absolute bottom-0 -mb-px -ml-0.75 size-1.75 text-foreground fill-current pointer-events-none" style={{ left: commandedTimePercent }} />
     </>);
 }
