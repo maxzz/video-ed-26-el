@@ -9,7 +9,7 @@ import { type RenderableWaveform } from "@/editor/0-core/8-lib/9-types-core";
 import { userSettingsAtom } from "@/editor/0-core/9-state/user-settings";
 import { calculateTimelinePercent } from "@/editor/0-core/8-lib/util";
 import { fileDurationNonZeroAtom } from "@/editor/2-file/9-state/a-file-atoms";
-import { commandedTimeAtom, playerTimeAtom } from "@/editor/3-player/9-state/player-atoms";
+import { commandedTimeAtom, playerTimeAtom } from "@/editor/3-player/9-state/a-player-atoms";
 import { darkModeAtom, springAnimationAtom } from "@/editor/5-segments/9-state/seg-ui-atoms";
 import {
     keyFramesInZoomWindowAtom, overviewWaveformAtom, shouldShowKeyframesAtom, shouldShowWaveformAtom, showThumbnailsAtom,

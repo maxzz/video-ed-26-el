@@ -20,7 +20,7 @@ import {
 } from "@/components/4-dialogs/7-1-dialogs/00-app-dialogs";
 import { findKeyframeNearTime, mapTimesToSegments, readFrames } from "@/editor/0-core/8-lib/ffmpeg/ffmpeg";
 import { fileDurationAtom, filePathAtom, mainFileMetaAtom } from "@/editor/2-file/9-state/a-file-atoms";
-import { activeVideoStreamAtom } from "@/editor/3-player/9-state/player-atoms";
+import { activeVideoStreamAtom } from "@/editor/3-player/9-state/a-player-atoms";
 import { checkFileOpened, getRelevantTime } from "@/editor/3-player/7-actions/player-actions";
 import {
     addSegmentColorIndex, combineOverlappingSegments as combineOverlappingSegments2, combineSelectedSegments as combineSelectedSegments2,

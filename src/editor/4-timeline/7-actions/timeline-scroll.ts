@@ -7,7 +7,7 @@ import { prefersReducedMotionAtom, userSettings } from "@/editor/0-core/9-state/
 import { calculateTimelinePos } from "@/editor/0-core/8-lib/util";
 import { fileDurationNonZeroAtom } from "@/editor/2-file/9-state/a-file-atoms";
 import { hoveringTimeAtom } from "@/components/2-main/0-all/a-panels-atoms";
-import { commandedTimeAtom, relevantTimeAtom } from "@/editor/3-player/9-state/player-atoms";
+import { commandedTimeAtom, relevantTimeAtom } from "@/editor/3-player/9-state/a-player-atoms";
 import { seekAbs } from "@/editor/3-player/7-actions/player-actions";
 import { currentCutSegAtom } from "@/editor/5-segments/9-state/segments-store";
 import { setCutTime } from "@/editor/5-segments/7-actions/segment-actions";

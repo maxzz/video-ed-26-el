@@ -5,7 +5,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/ui/shadcn/popover";
 import { Slider } from "@/ui/shadcn/slider";
 import { useTranslation } from "react-i18next";
 
-import { playbackVolumeAtom } from "../9-state/player-atoms";
+import { playbackVolumeAtom } from "../9-state/a-player-atoms";
 import { toggleMuted } from "../7-actions/player-actions";
 import { setPlaybackVolume } from "../7-actions/video-events";
 

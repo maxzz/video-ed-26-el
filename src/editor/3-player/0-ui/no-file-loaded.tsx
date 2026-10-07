@@ -12,7 +12,7 @@ import { userSettings } from "@/editor/0-core/9-state/user-settings";
 import { type ModifierKey } from "@shared/types";
 import { runAction } from "@/editor/0-core/7-actions/kbd-actions";
 import { getKeyDisplayName, getMetaKeyName, splitKeyboardKeys } from "@/editor/0-core/8-lib/utils-kbd";
-import { draggingOverDropZoneAtom } from "../9-state/player-atoms";
+import { draggingOverDropZoneAtom } from "../9-state/a-player-atoms";
 import { MifiLink } from "@/editor/f-platform/0-ui/mifi-link";
 
 /** Port of upstream NoFileLoaded: drop zone + hints. Clicking opens the file dialog. The drop itself bubbles up to PlayerView */

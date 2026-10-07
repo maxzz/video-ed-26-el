@@ -4,7 +4,7 @@ import { VideoIcon } from "lucide-react";
 import { jotaiDefaultStore } from "@/utils/local-utils/9-jotai-default-store";
 import { cn } from "@/utils/classnames";
 
-import { compatCanvasElementAtom, compatLoadingAtom, compatShowCanvasAtom, compatVideoElementAtom, effectiveRotationAtom } from "../9-state/player-atoms";
+import { compatCanvasElementAtom, compatLoadingAtom, compatShowCanvasAtom, compatVideoElementAtom, effectiveRotationAtom } from "../9-state/a-player-atoms";
 import "../7-actions/media-source-player-side-effects";
 
 /** Port of upstream MediaSourcePlayer. The streaming logic lives in 7-actions/media-source-player-side-effects.ts */

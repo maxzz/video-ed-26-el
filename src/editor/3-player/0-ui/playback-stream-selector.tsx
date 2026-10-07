@@ -8,7 +8,7 @@ import { Switch } from "@/ui/shadcn/switch";
 import { useTranslation } from "react-i18next";
 
 import { audioStreamsAtom, subtitleStreamsAtom, videoStreamsAtom } from "@/editor/2-file/9-state/a-file-atoms";
-import { activeAudioStreamIndexesAtom, activeSubtitleStreamIndexAtom, activeVideoStreamIndexAtom } from "../9-state/player-atoms";
+import { activeAudioStreamIndexesAtom, activeSubtitleStreamIndexAtom, activeVideoStreamIndexAtom } from "../9-state/a-player-atoms";
 import { onActiveAudioStreamsChange, onActiveVideoStreamChange } from "../7-actions/player-actions";
 import { onActiveSubtitleChange } from "../7-actions/subtitles";
 

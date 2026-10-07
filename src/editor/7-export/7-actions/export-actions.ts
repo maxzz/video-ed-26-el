@@ -24,7 +24,7 @@ import { batchListRemoveFile } from "@/editor/2-file/7-actions/batch-actions";
 import { closeFile, loadMedia, runAndReloadFile, tryFixInvalidDuration } from "@/editor/2-file/7-actions/load-media";
 import { projectFileSavePathAtom } from "@/editor/2-file/7-actions/project-auto-save";
 import { dialog_SendReport_open } from "@/editor/2-file/0-ui/dlg-send-report";
-import { effectiveRotationAtom } from "@/editor/3-player/9-state/player-atoms";
+import { effectiveRotationAtom } from "@/editor/3-player/9-state/a-player-atoms";
 import { checkFileOpened } from "@/editor/3-player/7-actions/player-actions";
 import { cutSegmentsAtom, haveInvalidSegsAtom, segmentsOrInverseAtom, segmentsToExportAtom, selectedSegmentsAtom } from "@/editor/5-segments/9-state/segments-store";
 import { convertSegmentsToChaptersWithGaps, hasAnySegmentOverlap, sortSegments } from "@/editor/5-segments/8-lib/segments";

@@ -19,7 +19,7 @@ import { askForPlaybackRate } from "@/components/4-dialogs/7-1-dialogs/13-ask-fo
 import { getSegColor as getSegColorRaw } from "@/editor/0-core/8-lib/colors";
 import { exportConfirmOpenAtom } from "@/components/2-main/0-all/a-panels-atoms";
 import { detectedFpsAtom, fileDurationNonZeroAtom, hasAudioAtom, hasVideoAtom, isFileOpenedAtom, isRotationSetAtom, rotationAtom } from "@/editor/2-file/9-state/a-file-atoms";
-import { outputPlaybackRateAtom, playbackModeAtom, playbackRateAtom, playingAtom } from "@/editor/3-player/9-state/player-atoms";
+import { outputPlaybackRateAtom, playbackModeAtom, playbackRateAtom, playingAtom } from "@/editor/3-player/9-state/a-player-atoms";
 import * as player from "@/editor/3-player/7-actions/player-actions";
 import { currentCutSegAtom, segmentsToExportAtom, selectedSegmentsAtom } from "@/editor/5-segments/9-state/segments-store";
 import { invertCutSegmentsAtom, simpleModeAtom } from "@/editor/5-segments/9-state/seg-ui-atoms";

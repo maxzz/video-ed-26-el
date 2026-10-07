@@ -8,7 +8,7 @@ import { isAbortedError } from "@/editor/0-core/8-lib/util";
 import { type FfmpegDialog } from "@/editor/0-core/8-lib/ffmpeg/ffmpeg-parameters";
 import { blackDetect, detectSceneChanges as ffmpegDetectSceneChanges, silenceDetect } from "@/editor/0-core/8-lib/ffmpeg/ff-remote";
 import { fileDurationAtom, filePathAtom } from "@/editor/2-file/9-state/a-file-atoms";
-import { activeAudioStreamIndexesAtom, activeVideoStreamIndexAtom } from "@/editor/3-player/9-state/player-atoms";
+import { activeAudioStreamIndexesAtom, activeVideoStreamIndexAtom } from "@/editor/3-player/9-state/a-player-atoms";
 import { seekAbs } from "@/editor/3-player/7-actions/player-actions";
 import { currentCutSegOrWholeTimelineAtom } from "@/editor/5-segments/9-state/segments-store";
 import { deleteCurrentCutSeg, loadCutSegments } from "@/editor/5-segments/7-actions/segment-actions";

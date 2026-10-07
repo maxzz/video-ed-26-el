@@ -9,7 +9,7 @@ import { onFileReset } from "@/editor/0-core/7-actions/2-lifecycle";
 import { ffmpegExtractWindow } from "@/editor/0-core/8-lib/constants";
 import { renderWaveformPng, safeCreateBlob } from "@/editor/0-core/8-lib/ffmpeg/ffmpeg";
 import { fileDurationAtom, filePathAtom } from "@/editor/2-file/9-state/a-file-atoms";
-import { relevantTimeAtom } from "@/editor/3-player/9-state/player-atoms";
+import { relevantTimeAtom } from "@/editor/3-player/9-state/a-player-atoms";
 import { overviewWaveformAtom, waveformAudioStreamAtom, waveformEnabledAtom, waveformsAtom } from "../9-state/timeline-atoms";
 
 // Port of upstream useWaveform

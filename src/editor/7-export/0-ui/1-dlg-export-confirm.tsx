@@ -20,7 +20,7 @@ import { findNearestKeyFrameTime } from "@/editor/0-core/8-lib/ffmpeg/ffmpeg";
 import { isMov as ffmpegIsMov } from "@/editor/0-core/8-lib/ffmpeg/streams";
 import { closeExportConfirm, exportConfirmOpenAtom, settingsVisibleAtom, streamsSelectorShownAtom } from "@/components/2-main/0-all/a-panels-atoms";
 import { encBitrateAtom, fileFormatAtom, numStreamsTotalAtom, outputDirAtom } from "@/editor/2-file/9-state/a-file-atoms";
-import { outputPlaybackRateAtom } from "@/editor/3-player/9-state/player-atoms";
+import { outputPlaybackRateAtom } from "@/editor/3-player/9-state/a-player-atoms";
 import { neighbouringKeyFramesAtom } from "@/editor/4-timeline/9-state/timeline-atoms";
 import { toggleExportConfirmEnabled } from "@/editor/4-timeline/7-actions/timeline-actions";
 import { currentSegIndexSafeAtom, segmentsOrInverseAtom, segmentsToExportAtom } from "@/editor/5-segments/9-state/segments-store";

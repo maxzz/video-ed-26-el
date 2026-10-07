@@ -6,7 +6,7 @@ import { jotaiDefaultStore } from "@/utils/local-utils/9-jotai-default-store";
 import { prefersReducedMotionAtom, userSettingsAtom } from "@/editor/0-core/9-state/user-settings";
 import { onFileReset } from "@/editor/0-core/7-actions/2-lifecycle";
 import { getSegColor } from "@/editor/0-core/8-lib/colors";
-import { commandedTimeAtom } from "@/editor/3-player/9-state/player-atoms";
+import { commandedTimeAtom } from "@/editor/3-player/9-state/a-player-atoms";
 import { isInitialSegment } from "../8-lib/segments";
 import { cutSegmentsAtom, findSegmentsAtCursor, inverseCutSegmentsAtom, segColorCounterAtom, selectedSegmentsAtom } from "./segments-store";
 

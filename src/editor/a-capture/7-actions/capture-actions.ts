@@ -9,7 +9,7 @@ import { getFrameCount } from "@/editor/0-core/9-state/timecode";
 import { detectedFpsAtom, fileDurationAtom, filePathAtom, outputDirAtom, paramsByFileAtom, usingPreviewFileAtom } from "@/editor/2-file/9-state/a-file-atoms";
 import { showNotification, showOsNotification } from "@/editor/0-core/8-lib/notifications";
 import { addStreamSourceFile } from "@/editor/6-streams/7-actions/streams-actions";
-import { videoElementAtom } from "@/editor/3-player/9-state/player-atoms";
+import { videoElementAtom } from "@/editor/3-player/9-state/a-player-atoms";
 import { getRelevantTime } from "@/editor/3-player/7-actions/player-actions";
 import { currentCutSegAtom, selectedSegmentsAtom } from "@/editor/5-segments/9-state/segments-store";
 import { captureFrameFromFfmpeg, captureFrameFromTag, captureFrameToClipboard, captureFramesRange } from "../8-lib/frame-capture";

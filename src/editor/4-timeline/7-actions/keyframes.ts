@@ -7,7 +7,7 @@ import { jotaiDefaultStore } from "@/utils/local-utils/9-jotai-default-store";
 import { handleError, setWorking } from "@/editor/0-core/9-state/working";
 import { ffmpegExtractWindow } from "@/editor/0-core/8-lib/constants";
 import { filePathAtom } from "@/editor/2-file/9-state/a-file-atoms";
-import { activeVideoStreamAtom, commandedTimeAtom } from "@/editor/3-player/9-state/player-atoms";
+import { activeVideoStreamAtom, commandedTimeAtom } from "@/editor/3-player/9-state/a-player-atoms";
 import { currentCutSegOrWholeTimelineAtom } from "@/editor/5-segments/9-state/segments-store";
 import { keyframesEnabledAtom, maxKeyframesAtom, neighbouringKeyFramesMapAtom } from "../9-state/timeline-atoms";
 

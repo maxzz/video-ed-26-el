@@ -18,7 +18,7 @@ import { BigWaveform } from "@/editor/4-timeline/0-ui/big-waveform";
 import {
     activeSubtitleAtom, compatPlayerEnabledAtom, compatPlayerRequiredAtom, mediaSourceQualityAtom, playbackVolumeAtom, playerTimeAtom,
     shouldShowPlaybackStreamSelectorAtom, videoContainerElementAtom, videoElementAtom,
-} from "../9-state/player-atoms";
+} from "../9-state/a-player-atoms";
 import { handleHideCompatPlayerClick, onSeeked, onStartPlaying, onStopPlaying, onTimeUpdate, onVideoAbort, togglePlay } from "../7-actions/player-actions";
 import { incrementMediaSourceQuality, onDurationChange, onVideoError, toggleFullscreenVideo } from "../7-actions/video-events";
 import { MediaSourcePlayer } from "./media-source-player";

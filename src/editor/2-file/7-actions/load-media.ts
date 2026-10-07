@@ -19,7 +19,7 @@ import { toast } from "@/components/4-dialogs/7-0-dialogs/toast";
 import { findExistingHtml5FriendlyFile, getOutFileExtension, getPathReadAccessError, getSuffixedOutPath, havePermissionToReadFile, readFileStats, transferTimestamps } from "@/editor/0-core/8-lib/util";
 import { checkFileOpened } from "@/editor/3-player/7-actions/player-actions";
 import { fixInvalidDuration } from "@/editor/7-export/8-lib/ffmpeg-operations";
-import { commandedTimeAtom } from "@/editor/3-player/9-state/player-atoms";
+import { commandedTimeAtom } from "@/editor/3-player/9-state/a-player-atoms";
 import { cutSegmentsAtom } from "@/editor/5-segments/9-state/segments-store";
 import { clearSegColorCounter, loadCutSegments, resetSegments } from "@/editor/5-segments/7-actions/segment-actions";
 import { isDurationValid } from "@/editor/5-segments/8-lib/segments";

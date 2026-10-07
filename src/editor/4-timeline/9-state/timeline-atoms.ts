@@ -9,7 +9,7 @@ import { onFileReset } from "@/editor/0-core/7-actions/2-lifecycle";
 import { calcShouldShowKeyframes, calcShouldShowWaveform } from "@/editor/0-core/8-lib/util";
 import { getFrameCountRaw } from "@/editor/9-edl/8-lib/edl-formats";
 import { detectedFpsAtom, fileDurationAtom, hasAudioAtom, hasVideoAtom, isFileOpenedAtom, startTimeOffsetAtom } from "@/editor/2-file/9-state/a-file-atoms";
-import { activeAudioStreamsAtom, commandedTimeAtom, playingAtom, relevantTimeAtom } from "@/editor/3-player/9-state/player-atoms";
+import { activeAudioStreamsAtom, commandedTimeAtom, playingAtom, relevantTimeAtom } from "@/editor/3-player/9-state/a-player-atoms";
 import { hoveringTimeAtom } from "@/components/2-main/0-all/a-panels-atoms";
 import { isDurationValid } from "@/editor/5-segments/8-lib/segments";
 

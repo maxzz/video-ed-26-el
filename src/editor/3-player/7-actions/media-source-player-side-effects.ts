@@ -8,7 +8,7 @@ import { filePathAtom } from "@/editor/2-file/9-state/a-file-atoms";
 import {
     activeAudioStreamsAtom, activeVideoStreamAtom, compatCanvasElementAtom, compatLoadingAtom, compatPlayerEnabledAtom, compatShowCanvasAtom,
     compatVideoElementAtom, effectiveRotationAtom, ffmpegHwaccelAtom, hideCompatPlayerAtom, mediaSourceQualityAtom, videoElementAtom,
-} from "../9-state/player-atoms";
+} from "../9-state/a-player-atoms";
 
 // Port of upstream MediaSourcePlayer.startPlayback. Main streams fragmented mp4 from ffmpeg over the media-compat:// protocol,
 // we fetch() it and feed the chunks into a MediaSource of a "slave" <video> that is kept in sync with the master <video>.

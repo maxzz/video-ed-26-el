@@ -14,7 +14,7 @@ import { filterNonMarkers, getPlaybackAction } from "@/editor/5-segments/8-lib/s
 import {
     activeAudioStreamIndexesAtom, activeVideoStreamIndexAtom, commandedTimeAtom, hideCompatPlayerAtom, outputPlaybackRateAtom,
     playbackModeAtom, playbackRateAtom, playerTimeAtom, playingAtom, videoElementAtom,
-} from "../9-state/player-atoms";
+} from "../9-state/a-player-atoms";
 
 const getVideo = () => jotaiDefaultStore.get(videoElementAtom);
 

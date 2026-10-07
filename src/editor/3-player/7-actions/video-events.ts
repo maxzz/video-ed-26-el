@@ -1,6 +1,7 @@
 import i18n from "i18next";
 import invariant from "tiny-invariant";
 import { jotaiDefaultStore } from "@/utils/local-utils/9-jotai-default-store";
+
 import { customOutDirAtom, userSettings } from "@/editor/0-core/9-state/user-settings";
 import { formatTimecode, parseTimecode, promptTimecode, timecodePlaceholderAtom } from "@/editor/0-core/9-state/timecode";
 import { isWorking, setWorking } from "@/editor/0-core/9-state/working";
@@ -15,7 +16,7 @@ import { html5ifyAndLoadWithPreferences } from "@/editor/2-file/7-actions/html5i
 import { isFileDurationValid, showNotNativelySupportedMessage } from "@/editor/2-file/7-actions/load-media";
 import { maybeCreateFullLengthSegment } from "@/editor/5-segments/7-actions/segment-actions";
 import { isDurationValid } from "@/editor/5-segments/8-lib/segments";
-import { commandedTimeAtom, mediaSourceQualityAtom, videoContainerElementAtom, videoElementAtom } from "../9-state/player-atoms";
+import { commandedTimeAtom, mediaSourceQualityAtom, videoContainerElementAtom, videoElementAtom } from "../9-state/a-player-atoms";
 import { seekAbs, seekRel } from "./player-actions";
 
 /** Some files report duration infinity first, then proper duration later. Sometimes after seeking to end of file, duration might change */
@@ -27,13 +28,11 @@ export function onDurationChange(durationNew: number) {
     }
 }
 
-const PIPELINE_ERROR_READ = 2; // e.g. file has been moved after opening https://github.com/mifi/lossless-cut/issues/2423
-const PIPELINE_ERROR_DECODE = 3; // This usually happens when the user presses play or seeks, but the video is not actually playable. To reproduce: "RX100VII PCM audio timecode.MP4" or see https://github.com/mifi/lossless-cut/issues/804
-const MEDIA_ERR_SRC_NOT_SUPPORTED = 4; // Test: issue-668-3.20.1.m2ts - NOTE: DEMUXER_ERROR_COULD_NOT_OPEN and DEMUXER_ERROR_NO_SUPPORTED_STREAMS is also 4
-
 export async function onVideoError() {
     const error = jotaiDefaultStore.get(videoElementAtom)?.error;
-    if (!error) return;
+    if (!error) {
+        return;
+    }
 
     console.error('onVideoError', error.message, error.code);
 
@@ -49,7 +48,9 @@ export async function onVideoError() {
             && !jotaiDefaultStore.get(usingPreviewFileAtom) // if we are already using preview file, we shouldn't try to do it again
             && filePath
         ) {
-            if (isWorking()) return;
+            if (isWorking()) {
+                return;
+            }
             try {
                 setWorking({ text: i18n.t('Converting to supported format') });
 
@@ -67,7 +68,9 @@ export async function onVideoError() {
                     showNotNativelySupportedMessage();
                 }
             } catch (err) {
-                if (err instanceof UserFacingError) throw err;
+                if (err instanceof UserFacingError) {
+                    throw err;
+                }
                 console.error(err);
                 showPlaybackFailedMessage();
             } finally {
@@ -81,8 +84,14 @@ export async function onVideoError() {
     }
 }
 
+const PIPELINE_ERROR_READ = 2; // e.g. file has been moved after opening https://github.com/mifi/lossless-cut/issues/2423
+const PIPELINE_ERROR_DECODE = 3; // This usually happens when the user presses play or seeks, but the video is not actually playable. To reproduce: "RX100VII PCM audio timecode.MP4" or see https://github.com/mifi/lossless-cut/issues/804
+const MEDIA_ERR_SRC_NOT_SUPPORTED = 4; // Test: issue-668-3.20.1.m2ts - NOTE: DEMUXER_ERROR_COULD_NOT_OPEN and DEMUXER_ERROR_NO_SUPPORTED_STREAMS is also 4
+
 export async function goToTimecode() {
-    if (!jotaiDefaultStore.get(filePathAtom)) return;
+    if (!jotaiDefaultStore.get(filePathAtom)) {
+        return;
+    }
     const timecode = await promptTimecode({
         initialValue: formatTimecode({ seconds: jotaiDefaultStore.get(commandedTimeAtom) }),
         title: i18n.t('Seek to timecode'),
@@ -91,14 +100,22 @@ export async function goToTimecode() {
         inputPlaceholder: jotaiDefaultStore.get(timecodePlaceholderAtom),
     });
 
-    if (timecode === undefined) return;
+    if (timecode === undefined) {
+        return;
+    }
 
-    if (timecode.relDirection != null) seekRel(timecode.duration * timecode.relDirection);
-    else seekAbs(timecode.duration);
+    if (timecode.relDirection != null) {
+        seekRel(timecode.duration * timecode.relDirection);
+    }
+    else {
+        seekAbs(timecode.duration);
+    }
 }
 
 export function goToTimecodeDirect({ time: timeStr }: { time: string; }) {
-    if (!jotaiDefaultStore.get(filePathAtom)) return;
+    if (!jotaiDefaultStore.get(filePathAtom)) {
+        return;
+    }
     invariant(timeStr != null);
     const timecode = parseTimecode(timeStr);
     invariant(timecode != null);
@@ -117,8 +134,12 @@ export async function toggleFullscreenVideo() {
         }
         const container = jotaiDefaultStore.get(videoContainerElementAtom);
         invariant(container != null);
-        if (document.fullscreenElement) await document.exitFullscreen();
-        else await container.requestFullscreen({ navigationUI: 'hide' });
+        if (document.fullscreenElement) {
+            await document.exitFullscreen();
+        }
+        else {
+            await container.requestFullscreen({ navigationUI: 'hide' });
+        }
     } catch (err) {
         console.error('Failed to toggle fullscreen', err);
     }
