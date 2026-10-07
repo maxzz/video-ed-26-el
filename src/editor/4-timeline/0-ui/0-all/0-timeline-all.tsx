@@ -5,8 +5,9 @@ import { TriangleIcon } from "lucide-react";
 import { Button } from "@/ui/shadcn/button";
 import { ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuTrigger } from "@/ui/shadcn/context-menu";
 import { cn } from "@/utils/classnames";
-import { type RenderableWaveform } from "@/editor/0-core/8-lib/9-types-core";
 import { userSettingsAtom } from "@/editor/0-core/9-state/user-settings";
+
+import { type RenderableWaveform } from "@/editor/0-core/8-lib/9-types-core";
 import { calculateTimelinePercent } from "@/editor/0-core/8-lib/util";
 import { fileDurationNonZeroAtom } from "@/editor/2-file/9-state/a-file-atoms";
 import { commandedTimeAtom, playerTimeAtom } from "@/editor/3-player/9-state/a-player-atoms";
@@ -61,7 +62,9 @@ function WaveformNotice() {
     const { t } = useTranslation();
     const waveformEnabled = useAtomValue(waveformEnabledAtom);
     const shouldShowWaveform = useAtomValue(shouldShowWaveformAtom);
-    if (!waveformEnabled || shouldShowWaveform) return null;
+    if (!waveformEnabled || shouldShowWaveform) {
+        return null;
+    }
     return (
         <div className="h-9 text-sm text-muted-foreground flex items-center justify-center gap-2">
             {t('Zoom in more to view waveform')}
@@ -80,7 +83,9 @@ function TimelineWaveforms() {
     const zoom = useAtomValue(zoomAtom);
     const { waveformHeight } = useAtomValue(userSettingsAtom);
 
-    if (!waveformEnabled || !shouldShowWaveform || (waveforms.length === 0 && overviewWaveform == null)) return null;
+    if (!waveformEnabled || !shouldShowWaveform || (waveforms.length === 0 && overviewWaveform == null)) {
+        return null;
+    }
 
     return (
         <div className="relative bg-timeline-track" style={{ height: waveformHeight, width: `${zoom * 100}%` }}>
@@ -105,11 +110,11 @@ function WaveformImage({ waveform }: { waveform: RenderableWaveform; }) {
 
     return (
         <img
+            className={cn('absolute h-full [image-rendering:pixelated] pointer-events-none', !darkMode && 'invert')}
+            style={style}
             src={waveform.url}
             draggable={false}
             alt=""
-            className={cn('absolute h-full [image-rendering:pixelated] pointer-events-none', !darkMode && 'invert')}
-            style={style}
         />
     );
 }
@@ -120,7 +125,9 @@ function TimelineThumbnails() {
     const fileDurationNonZero = useAtomValue(fileDurationNonZeroAtom);
     const zoom = useAtomValue(zoomAtom);
 
-    if (!showThumbnails) return null;
+    if (!showThumbnails) {
+        return null;
+    }
 
     return (
         <div className="relative mb-0.75 h-15" style={{ width: `${zoom * 100}%` }}>
@@ -130,11 +137,11 @@ function TimelineThumbnails() {
                 const maxWidthPercent = ((nextThumbTime - thumbnail.time) / fileDurationNonZero) * 100 * 0.9;
                 return (
                     <img
-                        key={thumbnail.url}
-                        src={thumbnail.url}
-                        alt=""
                         className="absolute h-full object-cover border border-white/50 rounded-[15px] rounded-bl-none pointer-events-none"
                         style={{ left: `${leftPercent}%`, maxWidth: `${maxWidthPercent}%` }}
+                        src={thumbnail.url}
+                        alt=""
+                        key={thumbnail.url}
                     />
                 );
             })}
@@ -145,7 +152,7 @@ function TimelineThumbnails() {
 function TimelineTrack() {
     const zoom = useAtomValue(zoomAtom);
     return (
-        <div ref={timelineWrapperRef} className="relative h-9 bg-timeline-track transition-[background-color] duration-500" style={{ width: `${zoom * 100}%` }}>
+        <div className="relative h-9 bg-timeline-track transition-[background-color] duration-500" style={{ width: `${zoom * 100}%` }} ref={timelineWrapperRef}>
             <BetweenSegmentsList />
             <TimelineSegments />
             <TimelineKeyframes />
@@ -163,13 +170,15 @@ function TimelineKeyframes() {
 
     // Don't show keyframes if too packed together (at current zoom). See https://github.com/mifi/lossless-cut/issues/259
     const areKeyframesTooClose = keyFramesInZoomWindow.length > zoom * 200;
-    if (!shouldShowKeyframes || areKeyframesTooClose) return null;
+    if (!shouldShowKeyframes || areKeyframesTooClose) {
+        return null;
+    }
 
     return keyFramesInZoomWindow.map((f) => (
         <div
-            key={f.time}
             className="absolute inset-y-0 -ml-px w-px bg-muted-foreground pointer-events-none"
             style={{ left: `${(f.time / fileDurationNonZero) * 100}%` }}
+            key={f.time}
         />
     ));
 }
@@ -179,12 +188,14 @@ function PlayerTimeMarker() {
     const fileDurationNonZero = useAtomValue(fileDurationNonZeroAtom);
     const springAnimation = useAtomValue(springAnimationAtom);
     const currentTimePercent = calculateTimelinePercent(playerTime, fileDurationNonZero);
-    if (currentTimePercent === undefined) return null;
+    if (currentTimePercent === undefined) {
+        return null;
+    }
     return (
         <motion.div
             className="absolute inset-y-0 w-px bg-foreground pointer-events-none"
-            transition={springAnimation}
             animate={{ left: currentTimePercent }}
+            transition={springAnimation}
         />
     );
 }
@@ -193,12 +204,12 @@ function CommandedTimeMarker() {
     const commandedTime = useAtomValue(commandedTimeAtom);
     const fileDurationNonZero = useAtomValue(fileDurationNonZeroAtom);
     const commandedTimePercent = calculateTimelinePercent(commandedTime, fileDurationNonZero);
-    if (commandedTimePercent === undefined) return null;
-    return (
-        <>
-            <TriangleIcon className="absolute top-0 -mt-1.5 -ml-1.75 size-3.5 text-foreground fill-current rotate-180 pointer-events-none" style={{ left: commandedTimePercent }} />
-            <div className="absolute inset-y-0 w-px bg-foreground pointer-events-none" style={{ left: commandedTimePercent }} />
-            <TriangleIcon className="absolute bottom-0 -mb-1.25 -ml-1.75 size-3.5 text-foreground fill-current pointer-events-none" style={{ left: commandedTimePercent }} />
-        </>
-    );
+    if (commandedTimePercent === undefined) {
+        return null;
+    }
+    return (<>
+        <TriangleIcon className="absolute top-0 -mt-1.5 -ml-1.75 size-3.5 text-foreground fill-current rotate-180 pointer-events-none" style={{ left: commandedTimePercent }} />
+        <div className="absolute inset-y-0 w-px bg-foreground pointer-events-none" style={{ left: commandedTimePercent }} />
+        <TriangleIcon className="absolute bottom-0 -mb-1.25 -ml-1.75 size-3.5 text-foreground fill-current pointer-events-none" style={{ left: commandedTimePercent }} />
+    </>);
 }
