@@ -97,7 +97,7 @@ export async function openYouTubeChaptersDialog(text: string) {
         html: (
             <div className="max-h-75 text-left overflow-y-auto">
                 <p className="mb-2">{i18n.t('Copy to YouTube description/comment:')}</p>
-                <div className="whitespace-pre-wrap select-text text-xs font-semibold">{text}</div>
+                <div className="text-xs font-semibold select-text whitespace-pre-wrap">{text}</div>
             </div>
         ),
     });

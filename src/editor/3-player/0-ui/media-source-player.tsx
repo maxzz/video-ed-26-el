@@ -19,7 +19,7 @@ export function MediaSourcePlayer() {
         <div className="absolute inset-0 size-full bg-black overflow-hidden pointer-events-none">
             <video
                 ref={setCompatVideo}
-                className={cn('absolute inset-0 size-full block object-contain', showCanvas && 'invisible')}
+                className={cn('absolute block inset-0 size-full object-contain', showCanvas && 'invisible')}
                 style={rotateStyle}
                 playsInline
                 tabIndex={-1}

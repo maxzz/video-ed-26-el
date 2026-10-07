@@ -122,18 +122,18 @@ function Segment({ seg, end, segNum, color, isActive, selected, invertCutSegment
             <AnimatePresence>
                 {invertCutSegments && (
                     <motion.div key="trash" className="shrink" initial={{ scale: 0 }} animate={{ scale: 1 }} exit={{ scale: 0 }}>
-                        <Trash2Icon className="mr-0.5 w-full min-w-[.4em] block text-white" />
+                        <Trash2Icon className="block mr-0.5 w-full min-w-[.4em] text-white" />
                     </motion.div>
                 )}
                 {!invertCutSegments && !name && (
                     <motion.div key="save" className="shrink" initial={{ scale: 0 }} animate={{ scale: 1 }} exit={{ scale: 0 }}>
-                        <SaveIcon className="mr-0.5 w-full min-w-[.4em] block text-white" />
+                        <SaveIcon className="block mr-0.5 w-full min-w-[.4em] text-white" />
                     </motion.div>
                 )}
             </AnimatePresence>
 
             {name && <div className="shrink basis-1" />}
-            {name && <div className="shrink whitespace-nowrap min-w-0 text-[11px] overflow-hidden">
+            {name && <div className="shrink min-w-0 text-[11px] overflow-hidden whitespace-nowrap">
                 {name}
             </div>
             }

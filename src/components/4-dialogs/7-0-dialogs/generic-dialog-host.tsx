@@ -105,7 +105,7 @@ function FireDialog({ entry }: { entry: Extract<DialogEntry, { kind: 'fire'; }>;
                     <div className="px-4 py-3 text-xs flex flex-col gap-3">
                         {!title && icon && <FireDialogIcon icon={icon} />}
                         {text && (
-                            <DialogDescription className="whitespace-pre-wrap text-xs text-foreground/90">
+                            <DialogDescription className="text-xs text-foreground/90 whitespace-pre-wrap">
                                 {text}
                             </DialogDescription>
                         )}

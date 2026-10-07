@@ -357,7 +357,7 @@ function Button_Rotation() {
             onClick={increaseRotation}
         >
             <RotateCcwSquareIcon className={cn('size-5', isRotationSet && activeClasses)} />
-            <span className="ml-0.5 inline-block text-xs text-right">{isRotationSet && rotationStr}</span>
+            <span className="inline-block ml-0.5 text-xs text-right">{isRotationSet && rotationStr}</span>
         </Button_Bar>
     );
 }
@@ -375,15 +375,15 @@ function Indicator_DisplayTime() {
             <div className="font-mono tracking-[-0.08em] pointer-events-auto">
                 {formatTimecode({ seconds: displayTime })}
 
-                <span className="ml-2 min-w-[3.5em] inline-block">
+                <span className="inline-block ml-2 min-w-[3.5em]">
                     {getFrameCount(displayTime) ?? 0}
-                    <span className="select-none opacity-50">
+                    <span className="opacity-50 select-none">
                         f
                     </span>
                     {isZoomed && (
                         <span className="ml-2">
                             {Math.round((displayTime / fileDurationNonZero) * 100)}
-                            <span className="select-none opacity-50">
+                            <span className="opacity-50 select-none">
                                 %
                             </span>
                         </span>

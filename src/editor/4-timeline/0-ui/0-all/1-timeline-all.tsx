@@ -28,7 +28,7 @@ export function Timeline() {
     const { t } = useTranslation();
     return (
         <div
-            className="relative shrink-0 select-none border-y"
+            className="shrink-0 relative border-y select-none"
             onMouseDown={onTimelineMouseDown}
             onMouseMove={onTimelineMouseMove}
             onMouseOut={onTimelineMouseOut}

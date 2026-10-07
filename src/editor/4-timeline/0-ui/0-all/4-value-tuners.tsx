@@ -50,7 +50,7 @@ function ValueTunersGuarded({ type }: { type: TunerKey; }) {
 
     return (
         <div className="fixed bottom-0 left-1/2 -translate-x-1/2 m-4 p-5 min-w-80 text-foreground bg-background/70 backdrop-blur-md rounded-2xl shadow-lg z-50">
-            <div className="basis-100 mb-1 flex items-center">
+            <div className="mb-1 basis-100 flex items-center">
                 <div>
                     {def.title}
                 </div>

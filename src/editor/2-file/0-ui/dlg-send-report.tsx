@@ -41,7 +41,7 @@ export function dialog_SendReport_open({ err, message, state }: { err?: unknown;
 
                 <p className="text-muted-foreground">{i18n.t('You might want to redact any sensitive information like paths.')}</p>
 
-                <div className="whitespace-pre-wrap select-text p-1 text-xs font-mono font-semibold text-muted-foreground bg-muted">
+                <div className="p-1 text-xs font-mono font-semibold text-muted-foreground bg-muted select-text whitespace-pre-wrap">
                     {text}
                 </div>
             </div>

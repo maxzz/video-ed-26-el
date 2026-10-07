@@ -16,7 +16,7 @@ import { APP_NAME } from "./a-ui-app-page";
 export function AppLogo({ className, iconClasses, ...rest }: HTMLAttributes<HTMLDivElement> & { iconClasses?: string }) {
     return (
         <ViewTransition name={APP_LOGO_VT_NAME} share="vt-logo-share">
-            <div className={classNames("relative shrink-0 inline-block", className, "z-10")} {...rest}>
+            <div className={classNames("shrink-0 relative inline-block", className, "z-10")} {...rest}>
                 <AppLogoImage className={classNames("block size-full", iconClasses)} />
             </div>
         </ViewTransition>

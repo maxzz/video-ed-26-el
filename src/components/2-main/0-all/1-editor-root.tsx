@@ -19,12 +19,12 @@ export function EditorRoot() {
     const reducedMotion = useAtomValue(prefersReducedMotionAtom);
     return (
         <MotionConfig reducedMotion={reducedMotion ? 'always' : 'user'}>
-            <div className="select-none h-full min-h-0 overflow-hidden flex flex-col">
+            <div className="h-full min-h-0 select-none overflow-hidden flex flex-col">
                 <MainArea_Toolbar />
 
-                <div className="min-h-0 flex-1 flex">
+                <div className="flex-1 min-h-0 flex">
                     <BatchArea />
-                    <div className="relative min-w-0 flex-1 flex flex-col">
+                    <div className="flex-1 relative min-w-0 flex flex-col">
                         <PlayerView />
                     </div>
                     <RightBar />

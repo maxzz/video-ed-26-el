@@ -43,7 +43,7 @@ export function PlayerView() {
     const bigWaveformEnabled = useAtomValue(bigWaveformEnabledAtom);
 
     return (
-        <div ref={setVideoContainer} className="relative min-h-0 bg-background overflow-hidden flex-1" onDragOver={preventDefault} onDrop={onFilesDrop}>
+        <div ref={setVideoContainer} className="flex-1 relative min-h-0 bg-background overflow-hidden" onDragOver={preventDefault} onDrop={onFilesDrop}>
             {!isFileOpened && <NoFileLoaded />}
 
             <div className={cn('absolute inset-0 select-none', (!isFileOpened || !hasVideo || bigWaveformEnabled) && 'invisible')} onWheel={onTimelineWheel}>
@@ -132,7 +132,7 @@ function PlayerControls() {
     const shouldShowPlaybackStreamSelector = useAtomValue(shouldShowPlaybackStreamSelectorAtom);
     const showRightBar = useAtomValue(showRightBarAtom);
     return (
-        <div className="absolute right-0 bottom-0 select-none mb-2.5 mr-1 flex items-end gap-0.5">
+        <div className="absolute right-0 bottom-0 mb-2.5 mr-1 select-none flex items-end gap-0.5">
             <VolumeControl />
 
             {shouldShowPlaybackStreamSelector && <PlaybackStreamSelector />}

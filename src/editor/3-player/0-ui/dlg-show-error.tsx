@@ -31,7 +31,7 @@ export function Dialog_ShowError() {
                 </DialogHeader>
 
                 {error != null && (
-                    <div className="whitespace-pre-wrap select-text max-h-[50vh] text-xs overflow-auto">
+                    <div className="max-h-[50vh] text-xs select-text overflow-auto whitespace-pre-wrap">
                         {error.err instanceof Error ? error.err.message : String(error.err)}
                     </div>
                 )}

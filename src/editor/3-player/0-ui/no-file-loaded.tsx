@@ -25,7 +25,7 @@ export function NoFileLoaded() {
     return (
         <div
             className={cn(
-                'absolute inset-0 whitespace-nowrap select-none m-8 text-muted-foreground transition-colors border-[0.7em] border-dashed rounded-lg flex flex-col items-center justify-center gap-2 cursor-pointer',
+                'absolute inset-0 m-8 text-muted-foreground transition-colors border-[0.7em] border-dashed rounded-lg select-none whitespace-nowrap flex flex-col items-center justify-center gap-2 cursor-pointer',
                 dragging ? 'border-muted-foreground/60' : 'border-muted',
             )}
             onClick={() => runAction('openFilesDialog')}
