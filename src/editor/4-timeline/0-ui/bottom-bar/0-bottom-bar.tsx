@@ -1,5 +1,6 @@
 import { type ComponentProps, type CSSProperties } from "react";
 import { useAtomValue } from "jotai";
+import { jotaiDefaultStore } from "@/utils/local-utils/9-jotai-default-store";
 import { cn } from "@/utils/classnames";
 import { motion } from "motion/react";
 import { Button } from "@/ui/shadcn/button";
@@ -10,10 +11,9 @@ import {
     StepForwardIcon, Trash2Icon, TriangleAlertIcon,
 } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import { userSettings, userSettingsAtom } from "@/editor/0-core/9-state/user-settings";
 
 import { type CaptureFormat } from "@shared/types";
-import { jotaiDefaultStore } from "@/utils/local-utils/9-jotai-default-store";
-import { userSettings, userSettingsAtom } from "@/editor/0-core/9-state/user-settings";
 import { formatTimecodeAtom, getFrameCountAtom } from "@/editor/0-core/9-state/timecode";
 import { hasAction, runAction } from "@/editor/0-core/7-actions/kbd-actions";
 import { askForPlaybackRate } from "@/components/4-dialogs/7-1-dialogs/13-ask-for-playback-rate";
@@ -447,11 +447,11 @@ function LoopSelectedSegmentsButton() {
 
     return (
         <div
-            role="button"
             className={cn('text-[.7em] border border-muted-foreground', roundButtonClasses)}
             style={style}
-            title={actionTitle(t('Play selected segments in order'), 'toggleLoopSelectedSegments')}
             onClick={player.toggleLoopSelectedSegments}
+            title={actionTitle(t('Play selected segments in order'), 'toggleLoopSelectedSegments')}
+            role="button"
         >
             <Icon className="size-3 fill-current" />
         </div>
@@ -459,13 +459,13 @@ function LoopSelectedSegmentsButton() {
 }
 
 function ToggleExportConfirm() {
-    const { t } = useTranslation();
     const { exportConfirmEnabled } = useAtomValue(userSettingsAtom);
+    const { t } = useTranslation();
     return (
         <BarButton
             className={cn(exportConfirmEnabled ? activeClasses : 'text-muted-foreground', exportConfirmEnabled && 'ml-1')}
-            title={t('Show export options screen before exporting?')}
             onClick={toggleExportConfirmEnabled}
+            title={t('Show export options screen before exporting?')}
         >
             <NotebookTextIcon className="size-5.5" />
         </BarButton>
@@ -473,21 +473,29 @@ function ToggleExportConfirm() {
 }
 
 function onExportPress() {
-    if (hasAction('export')) void runAction('export');
-    else jotaiDefaultStore.set(exportConfirmOpenAtom, true);
+    if (hasAction('export')) {
+        void runAction('export');
+    }
+    else {
+        jotaiDefaultStore.set(exportConfirmOpenAtom, true);
+    }
 }
 
 function ExportButton() {
-    const { t } = useTranslation();
     const segmentsToExport = useAtomValue(segmentsToExportAtom);
     const areWeCutting = useAtomValue(areWeCuttingAtom);
     const { autoMerge } = useAtomValue(userSettingsAtom);
+    const { t } = useTranslation();
 
     const CutIcon = areWeCutting ? ScissorsIcon : FileOutputIcon;
 
     let title = t('Export');
-    if (segmentsToExport.length === 1) title = t('Export selection');
-    else if (segmentsToExport.length > 1) title = t('Export {{ num }} segments', { num: segmentsToExport.length });
+    if (segmentsToExport.length === 1) {
+        title = t('Export selection');
+    }
+    else if (segmentsToExport.length > 1) {
+        title = t('Export {{ num }} segments', { num: segmentsToExport.length });
+    }
 
     const text = autoMerge && segmentsToExport.length > 1 ? t('Export+merge') : t('Export');
 
