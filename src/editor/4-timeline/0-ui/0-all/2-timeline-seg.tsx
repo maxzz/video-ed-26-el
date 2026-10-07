@@ -13,7 +13,7 @@ import { setCurrentSegIndex } from "@/editor/5-segments/7-actions/segment-action
 
 // Port of upstream TimelineSeg.tsx and BetweenSegments.tsx
 
-export function TimelineSegments() {
+export function Timeline_Segments() {
     const cutSegments = useAtomValue(cutSegmentsAtom);
     const currentSegIndexSafe = useAtomValue(currentSegIndexSafeAtom);
     const invertCutSegments = useAtomValue(invertCutSegmentsAtom);
@@ -178,7 +178,7 @@ function Marker({ seg, segNum, color, isActive, selected, fileDurationNonZero }:
 
 //---------------------------------------------------------------------------
 
-export function BetweenSegmentsList() {
+export function Timeline_BetweenSegmentsList() {
     const inverseCutSegments = useAtomValue(inverseCutSegmentsAtom);
     const fileDurationNonZero = useAtomValue(fileDurationNonZeroAtom);
     const invertCutSegments = useAtomValue(invertCutSegmentsAtom);

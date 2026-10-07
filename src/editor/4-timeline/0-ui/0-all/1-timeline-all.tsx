@@ -20,7 +20,7 @@ import { onTimelineWheel } from "../../7-actions/3-timeline-actions";
 import { goToTimecode } from "@/editor/3-player/7-actions/video-events";
 import { generateOverviewWaveform } from "../../7-actions/5-waveform";
 import { onTimelineMouseDown, onTimelineMouseMove, onTimelineMouseOut, onTimelineScroll, timelineScrollerRef, timelineWrapperRef } from "../../7-actions/4-timeline-scroll";
-import { BetweenSegmentsList, TimelineSegments } from "./2-timeline-seg";
+import { Timeline_BetweenSegmentsList, Timeline_Segments } from "./2-timeline-seg";
 
 // Port of upstream Timeline.tsx. Leaf components subscribe to their own atoms so the time markers don't re-render the whole timeline
 
@@ -44,9 +44,9 @@ export function Timeline() {
                             onWheel={onTimelineWheel}
                             onScroll={onTimelineScroll}
                         >
-                            <TimelineWaveforms />
-                            <TimelineThumbnails />
-                            <TimelineTrack />
+                            <Timeline_Waveforms />
+                            <Timeline_Thumbnails />
+                            <Timeline_Track />
                         </div>
                     </div>
                 </ContextMenuTrigger>
@@ -75,7 +75,7 @@ function WaveformNotice() {
     );
 }
 
-function TimelineWaveforms() {
+function Timeline_Waveforms() {
     const waveformEnabled = useAtomValue(waveformEnabledAtom);
     const shouldShowWaveform = useAtomValue(shouldShowWaveformAtom);
     const waveforms = useAtomValue(waveformsAtom);
@@ -119,7 +119,7 @@ function WaveformImage({ waveform }: { waveform: RenderableWaveform; }) {
     );
 }
 
-function TimelineThumbnails() {
+function Timeline_Thumbnails() {
     const showThumbnails = useAtomValue(showThumbnailsAtom);
     const thumbnails = useAtomValue(thumbnailsSortedAtom);
     const fileDurationNonZero = useAtomValue(fileDurationNonZeroAtom);
@@ -149,20 +149,20 @@ function TimelineThumbnails() {
     );
 }
 
-function TimelineTrack() {
+function Timeline_Track() {
     const zoom = useAtomValue(zoomAtom);
     return (
         <div className="relative h-9 bg-timeline-track transition-[background-color] duration-500" style={{ width: `${zoom * 100}%` }} ref={timelineWrapperRef}>
-            <BetweenSegmentsList />
-            <TimelineSegments />
-            <TimelineKeyframes />
-            <PlayerTimeMarker />
-            <CommandedTimeMarker />
+            <Timeline_BetweenSegmentsList />
+            <Timeline_Segments />
+            <Timeline_Keyframes />
+            <Timeline_PlayerTimeMarker />
+            <Timeline_CommandedTimeMarker />
         </div>
     );
 }
 
-function TimelineKeyframes() {
+function Timeline_Keyframes() {
     const shouldShowKeyframes = useAtomValue(shouldShowKeyframesAtom);
     const keyFramesInZoomWindow = useAtomValue(keyFramesInZoomWindowAtom);
     const fileDurationNonZero = useAtomValue(fileDurationNonZeroAtom);
@@ -183,7 +183,7 @@ function TimelineKeyframes() {
     ));
 }
 
-function PlayerTimeMarker() {
+function Timeline_PlayerTimeMarker() {
     const playerTime = useAtomValue(playerTimeAtom);
     const fileDurationNonZero = useAtomValue(fileDurationNonZeroAtom);
     const springAnimation = useAtomValue(springAnimationAtom);
@@ -200,7 +200,7 @@ function PlayerTimeMarker() {
     );
 }
 
-function CommandedTimeMarker() {
+function Timeline_CommandedTimeMarker() {
     const commandedTime = useAtomValue(commandedTimeAtom);
     const fileDurationNonZero = useAtomValue(fileDurationNonZeroAtom);
     const commandedTimePercent = calculateTimelinePercent(commandedTime, fileDurationNonZero);
