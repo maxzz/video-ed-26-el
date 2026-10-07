@@ -21,7 +21,7 @@ import {
 import { closeConcatDialog, onConcatClick, setConcatEnableReadFileMeta } from "../7-actions/concat-actions";
 import { onOutputFormatUserChange } from "@/editor/7-export/7-actions/export-actions";
 import { MergedFileNameEditor } from "./merged-file-name-editor";
-import { OutputFormatSelect } from "@/editor/7-export/0-ui/output-format-select";
+import { Select_OutputFormat } from "@/editor/7-export/0-ui/7-output-format-select";
 
 /** Port of upstream components/ConcatDialog.tsx */
 export function Dialog_Concat() {
@@ -83,7 +83,7 @@ function ConcatDialogContent() {
                     <SettingsIcon /> {t('Options')}
                 </Button>
 
-                <OutputFormatSelect
+                <Select_OutputFormat
                     className="max-w-80"
                     disabled={fileFormat == null || detectedFileFormat == null}
                     detectedFileFormat={detectedFileFormat}

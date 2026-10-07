@@ -1,11 +1,12 @@
 import { type ComponentProps, type ReactNode } from "react";
-import { useTranslation } from "react-i18next";
-import { motion, useAnimate } from "motion/react";
-import { CircleHelpIcon, ClipboardIcon } from "lucide-react";
-import { mainApi } from "@/editor/0-core/7-actions/0-main-api";
-import { toast } from "@/components/4-dialogs/7-0-dialogs/toast";
-import { type DialogIcon } from "@/components/4-dialogs/7-0-dialogs/dialogs";
 import { cn } from "@/utils/classnames";
+import { motion, useAnimate } from "motion/react";
+import { toast } from "@/components/4-dialogs/7-0-dialogs/toast";
+import { CircleHelpIcon, ClipboardIcon } from "lucide-react";
+import { useTranslation } from "react-i18next";
+
+import { mainApi } from "@/editor/0-core/7-actions/0-main-api";
+import { type DialogIcon } from "@/components/4-dialogs/7-0-dialogs/dialogs";
 
 export function showHelpText({ icon = 'info', timer = 10000, text }: { icon?: DialogIcon; timer?: number; text: string; }) {
     toast.fire({ icon, timer, text });
@@ -25,8 +26,8 @@ export function HighlightedText({ className, ...rest }: ComponentProps<'button'>
 }
 
 export function CopyClipboardButton({ text, className, children }: { text: string; className?: string; children?: (p: { onClick: () => void; }) => ReactNode; }) {
-    const { t } = useTranslation();
     const [scope, animate] = useAnimate();
+    const { t } = useTranslation();
 
     function onClick() {
         mainApi.writeClipboardText(text);

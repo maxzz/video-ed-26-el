@@ -6,7 +6,7 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } f
 
 import { lastCommandsVisibleAtom, toggleLastCommands } from "@/components/2-main/0-all/a-panels-atoms";
 import { ffmpegCommandLogAtom } from "@/editor/2-file/9-state/a-file-atoms";
-import { CopyClipboardButton } from "./controls";
+import { CopyClipboardButton } from "./7-controls";
 
 // Port of upstream LastCommands.tsx
 

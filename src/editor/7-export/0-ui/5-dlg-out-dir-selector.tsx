@@ -11,10 +11,10 @@ import { changeOutDir, setOutputDir } from "../7-actions/export-actions";
 const changeValue = 'llc_choose_directory';
 const sameAsInputValue = 'llc_same_as_input';
 
-export function OutDirSelector({ children }: { children: ReactNode; }) {
-    const { t } = useTranslation();
+export function Dialog_OutDirSelector({ children }: { children: ReactNode; }) {
     const customOutDir = useAtomValue(customOutDirAtom);
     const { recentCustomOutDirs } = useAtomValue(userSettingsAtom);
+    const { t } = useTranslation();
 
     const history = recentCustomOutDirs.filter((dir) => customOutDir == null || dir !== customOutDir);
 
@@ -34,26 +34,39 @@ export function OutDirSelector({ children }: { children: ReactNode; }) {
 
             <DialogContent className="sm:max-w-xl">
                 <DialogHeader>
-                    <DialogTitle>{t('Working directory')}</DialogTitle>
-                    <DialogDescription>{t('This is where working files and exported files are stored.')}</DialogDescription>
+                    <DialogTitle>
+                        {t('Working directory')}
+                    </DialogTitle>
+                    <DialogDescription>
+                        {t('This is where working files and exported files are stored.')}
+                    </DialogDescription>
                 </DialogHeader>
 
                 <Select value={customOutDir ?? sameAsInputValue} onValueChange={handleChange}>
                     <SelectTrigger className="w-full min-w-0">
                         <SelectValue />
                     </SelectTrigger>
+
                     <SelectContent position="popper">
                         <SelectItem value={changeValue}>{t('Choose directory')}...</SelectItem>
                         {customOutDir != null && <SelectItem value={customOutDir}>{customOutDir}</SelectItem>}
+
                         <SelectItem value={sameAsInputValue}>{t('Same directory as input file')}</SelectItem>
-                        {history.map((dir) => <SelectItem key={dir} value={dir}>{dir}</SelectItem>)}
+                        {history.map(
+                            (dir) => <SelectItem key={dir} value={dir}>{dir}</SelectItem>
+                        )}
                     </SelectContent>
                 </Select>
 
                 <DialogFooter>
-                    <Button variant="outline" onClick={() => { userSettings.recentCustomOutDirs = []; }}>{t('Clear recents')}</Button>
+                    <Button variant="outline" onClick={() => { userSettings.recentCustomOutDirs = []; }}>
+                        {t('Clear recents')}
+                    </Button>
+                    
                     <DialogClose asChild>
-                        <Button>{t('Done')}</Button>
+                        <Button>
+                            {t('Done')}
+                        </Button>
                     </DialogClose>
                 </DialogFooter>
             </DialogContent>

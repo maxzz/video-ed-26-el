@@ -15,9 +15,9 @@ import { toggleSimpleMode } from "@/editor/4-timeline/7-actions/3-timeline-actio
 import { enabledStreamsFilterAtom, numStreamsToCopyAtom } from "@/editor/6-streams/9-state/a-streams-store";
 import { changeEnabledStreamsFilter, toggleStripCurrentFilter } from "@/editor/6-streams/7-actions/streams-actions";
 import { toggleOutFormatLocked } from "@/editor/7-export/7-actions/export-actions";
-import { ExportModeButton } from "@/editor/7-export/0-ui/export-buttons";
-import { OutDirSelector } from "@/editor/7-export/0-ui/out-dir-selector";
-import { CurrentFileOutputFormatSelect } from "@/editor/7-export/0-ui/output-format-select";
+import { Button_ExportMode } from "@/editor/7-export/0-ui/3-export-buttons";
+import { Dialog_OutDirSelector } from "@/editor/7-export/0-ui/5-dlg-out-dir-selector";
+import { Select_CurrentFileOutputFormat } from "@/editor/7-export/0-ui/7-output-format-select";
 
 // Port of upstream TopMenu.tsx
 
@@ -56,13 +56,13 @@ export function MainArea_Toolbar() {
 
             <div className="grow" />
 
-            <OutDirSelector>
+            <Dialog_OutDirSelector>
                 <Button variant="outline" size="xs" title={customOutDir} onDragOver={(e) => e.preventDefault()} onDrop={onWorkingDirDrop}>
                     {customOutDir ? t('Working dir set') : t('Working dir unset')}
                 </Button>
-            </OutDirSelector>
+            </Dialog_OutDirSelector>
 
-            <CurrentFileOutputFormatSelect className="h-6 max-w-28 text-xs" />
+            <Select_CurrentFileOutputFormat className="h-6 max-w-28 text-xs" />
 
             {!simpleMode && (isCustomFormatSelected || outFormatLocked) && (
                 <Button variant="outline" size="icon-xs" className={cn(outFormatLocked && 'text-primary')} title={t('Lock/unlock output format')} onClick={toggleOutFormatLocked}>
@@ -70,7 +70,7 @@ export function MainArea_Toolbar() {
                 </Button>
             )}
 
-            {filePath && <ExportModeButton className="h-6 w-36 text-xs" />}
+            {filePath && <Button_ExportMode className="h-6 w-36 text-xs" />}
 
             <Button variant="outline" size="icon-xs" className={cn(simpleMode && 'text-primary')} title={t('Toggle advanced view')} onClick={toggleSimpleMode}>
                 <BabyIcon />

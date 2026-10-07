@@ -1,7 +1,7 @@
 import { type ReactNode } from "react";
 import { useAtomValue } from "jotai";
-import { motion } from "motion/react";
 import { cn } from "@/utils/classnames";
+import { motion } from "motion/react";
 import { Button } from "@/ui/shadcn/button";
 import { Input } from "@/ui/shadcn/input";
 import { Switch } from "@/ui/shadcn/switch";
@@ -32,11 +32,11 @@ import {
 import { onExportConfirm, toggleKeyframeCut } from "../7-actions/export-actions";
 import { generateCutMergedOutFileNamesFnAtom, generateOutSegFileNamesFnAtom } from "../7-actions/out-file-names";
 import { defaultCutFileTemplate, defaultCutMergedFileTemplate } from "../8-lib/output-name-template";
-import { HelpIcon, HighlightedText, showHelpText } from "./controls";
-import { ExportButton, ExportModeButton, ToggleExportConfirm } from "./export-buttons";
-import { FileNameTemplateEditor } from "./file-name-template-editor";
-import { CurrentFileOutputFormatSelect } from "./output-format-select";
-import { OutDirSelector } from "./out-dir-selector";
+import { HelpIcon, HighlightedText, showHelpText } from "./7-controls";
+import { Button_Export, Button_ExportMode, Button_ToggleExportConfirm } from "./3-export-buttons";
+import { FileNameTemplateEditor } from "./4-file-name-template-editor";
+import { Select_CurrentFileOutputFormat } from "./7-output-format-select";
+import { Dialog_OutDirSelector } from "./5-dlg-out-dir-selector";
 
 // Port of upstream components/ExportConfirm.tsx
 
@@ -186,14 +186,14 @@ function ExportConfirmContent() {
                 notice={specific.exportMode}
                 help={() => showHelpText({ text: exportModeDescription })}
             >
-                <ExportModeButton className="w-44" />
+                <Button_ExportMode className="w-44" />
             </Row>
 
             <Row
                 label={t('Output container format:')}
                 help={() => showHelpText({ text: i18n.t('Defaults to same format as input file. You can losslessly change the file format (container) of the file with this option. Not all formats support all codecs. Matroska/MP4/MOV support the most common codecs. Sometimes it\'s even impossible to export to the same output format as input.') })}
             >
-                <CurrentFileOutputFormatSelect className="w-44" />
+                <Select_CurrentFileOutputFormat className="w-44" />
             </Row>
 
             <Row
@@ -205,9 +205,9 @@ function ExportConfirmContent() {
             </Row>
 
             <Row label={t('Save output to path:')}>
-                <OutDirSelector>
+                <Dialog_OutDirSelector>
                     <HighlightedText className="max-w-80 break-all">{outputDir}</HighlightedText>
-                </OutDirSelector>
+                </Dialog_OutDirSelector>
             </Row>
 
             {canEditSegTemplate && (
@@ -348,12 +348,12 @@ function ExportConfirmContent() {
         </div>
 
         <SheetFooter className="border-t flex-row items-center justify-end gap-2">
-            <ToggleExportConfirm />
+            <Button_ToggleExportConfirm />
             <button type="button" className={cn('max-w-36 text-xs text-left leading-tight cursor-pointer', exportConfirmEnabled ? 'text-foreground' : 'text-muted-foreground')} onClick={toggleExportConfirmEnabled}>
                 {t('Show this page before exporting?')}
             </button>
             {totalNumWarnings > 0 && <NoticeIcon notice={{ warning: true }} className="size-5" />}
-            <ExportButton size="lg" className="ml-2 px-4 text-base" onClick={onExportConfirm} />
+            <Button_Export size="lg" className="ml-2 px-4 text-base" onClick={onExportConfirm} />
         </SheetFooter>
     </>);
 }

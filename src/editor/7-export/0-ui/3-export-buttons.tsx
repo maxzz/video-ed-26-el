@@ -13,7 +13,7 @@ import { segmentsOrInverseAtom, segmentsToExportAtom } from "@/editor/5-segments
 import { areWeCuttingAtom } from "../9-state/export-atoms";
 import { onExportPress, setExportMode } from "../7-actions/export-actions";
 
-export function ExportButton({ className, onClick = onExportPress, ...rest }: Omit<ComponentProps<typeof Button>, 'onClick'> & { onClick?: () => void; }) {
+export function Button_Export({ className, onClick = onExportPress, ...rest }: Omit<ComponentProps<typeof Button>, 'onClick'> & { onClick?: () => void; }) {
     const segmentsToExport = useAtomValue(segmentsToExportAtom);
     const areWeCutting = useAtomValue(areWeCuttingAtom);
     const { autoMerge, simpleMode } = useAtomValue(userSettingsAtom);
@@ -43,7 +43,7 @@ export function ExportButton({ className, onClick = onExportPress, ...rest }: Om
     );
 }
 
-export function ToggleExportConfirm({ className }: { className?: string; }) {
+export function Button_ToggleExportConfirm({ className }: { className?: string; }) {
     const { exportConfirmEnabled } = useAtomValue(userSettingsAtom);
     const { t } = useTranslation();
     return (
@@ -53,7 +53,7 @@ export function ToggleExportConfirm({ className }: { className?: string; }) {
     );
 }
 
-export function ExportModeButton({ className }: { className?: string; }) {
+export function Button_ExportMode({ className }: { className?: string; }) {
     const effectiveExportMode = useAtomValue(effectiveExportModeAtom);
     const selectedSegments = useAtomValue(segmentsOrInverseAtom).selected;
     const { t } = useTranslation();
