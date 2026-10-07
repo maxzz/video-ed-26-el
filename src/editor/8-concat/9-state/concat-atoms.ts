@@ -1,13 +1,13 @@
-import { atom, type Getter } from 'jotai';
-import type { UniqueIdentifier } from '@dnd-kit/core';
-import type { FileFfprobeMeta } from '@/editor/0-core/8-lib/ffmpeg/ffmpeg.ts';
-import type { FileStats } from '@/editor/0-core/8-lib/9-types-core';
-import { customOutDirAtom, maxLabelLengthAtom, userSettingsAtom } from '@/editor/0-core/9-state/user-settings.ts';
-import { getOutDir } from '@/editor/0-core/8-lib/util.ts';
-import { parseRatio } from '@shared/util';
-import { batchFilePathsAtom, batchFilesAtom, exportCountAtom, fileFormatAtom, isCustomFormatSelectedAtom } from '@/editor/2-file/9-state/a-file-atoms';
-import { concatDialogOpenAtom } from '@/components/2-main/0-all/a-panels-atoms';
-import { defaultMergedFileTemplate, generateMergedFileNames, type GeneratedOutFileNames } from '@/editor/7-export/8-lib/output-name-template.ts';
+import { atom, type Getter } from "jotai";
+import { type UniqueIdentifier } from "@dnd-kit/core";
+import { type FileFfprobeMeta } from "@/editor/0-core/8-lib/ffmpeg/ffmpeg";
+import { type FileStats } from "@/editor/0-core/8-lib/9-types-core";
+import { customOutDirAtom, maxLabelLengthAtom, userSettingsAtom } from "@/editor/0-core/9-state/user-settings";
+import { getOutDir } from "@/editor/0-core/8-lib/util";
+import { parseRatio } from "@shared/util";
+import { batchFilePathsAtom, batchFilesAtom, exportCountAtom, fileFormatAtom, isCustomFormatSelectedAtom } from "@/editor/2-file/9-state/a-file-atoms";
+import { concatDialogOpenAtom } from "@/components/2-main/0-all/a-panels-atoms";
+import { defaultMergedFileTemplate, generateMergedFileNames, type GeneratedOutFileNames } from "@/editor/7-export/8-lib/output-name-template";
 
 // Merge files dialog (upstream ConcatDialog). All state here is preserved when the dialog is closed, except the files meta.
 

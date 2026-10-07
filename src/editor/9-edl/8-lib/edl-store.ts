@@ -1,17 +1,17 @@
-import JSON5 from 'json5';
-import i18n from 'i18next';
-import invariant from 'tiny-invariant';
-import { ZodError } from 'zod';
+import JSON5 from "json5";
+import i18n from "i18next";
+import invariant from "tiny-invariant";
+import { ZodError } from "zod";
 
-import type { ICueSheet } from 'cue-parser/lib/types';
-import { parseSrtToSegments, formatSrt, parseCuesheet, parseXmeml, parseFcpXml, parseCsv, parseCutlist, parsePbf, parseEdl, formatCsvHuman, formatTsvHuman, formatCsvFrames, formatCsvSeconds, parseCsvTime, getFrameValParser, parseDvAnalyzerSummaryTxt, parseOtio } from './edl-formats.ts';
-import { askForYouTubeInput } from './youtube-input.ts';
-import { getOutPath } from '@/editor/0-core/8-lib/util.ts';
-import type { EdlExportType, EdlFileType, EdlImportType, GetFrameCount, LlcProject, SegmentBase, StateSegment } from '@/editor/0-core/8-lib/9-types-core.ts';
-import { llcProjectV1Schema, llcProjectV2Schema } from '@/editor/0-core/8-lib/9-types-core.ts';
-import { mapSaveableSegments } from '@/editor/5-segments/8-lib/segments.ts';
-import { getAppInfo, mainApi } from '@/editor/0-core/7-actions/0-main-api.ts';
-import { basename } from '@/editor/0-core/8-lib/node-shims.ts';
+import { type ICueSheet } from "cue-parser/lib/types";
+import { parseSrtToSegments, formatSrt, parseCuesheet, parseXmeml, parseFcpXml, parseCsv, parseCutlist, parsePbf, parseEdl, formatCsvHuman, formatTsvHuman, formatCsvFrames, formatCsvSeconds, parseCsvTime, getFrameValParser, parseDvAnalyzerSummaryTxt, parseOtio } from "./edl-formats";
+import { askForYouTubeInput } from "./youtube-input";
+import { getOutPath } from "@/editor/0-core/8-lib/util";
+import { type EdlExportType, type EdlFileType, type EdlImportType, type GetFrameCount, type LlcProject, type SegmentBase, type StateSegment } from "@/editor/0-core/8-lib/9-types-core";
+import { llcProjectV1Schema, llcProjectV2Schema } from "@/editor/0-core/8-lib/9-types-core";
+import { mapSaveableSegments } from "@/editor/5-segments/8-lib/segments";
+import { getAppInfo, mainApi } from "@/editor/0-core/7-actions/0-main-api";
+import { basename } from "@/editor/0-core/8-lib/node-shims";
 
 const readFile = async (path: string, _encoding: 'utf8') => mainApi.readTextFile(path);
 const writeFile = async (path: string, text: string) => mainApi.writeTextFile(path, text);

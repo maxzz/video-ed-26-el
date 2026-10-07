@@ -1,6 +1,6 @@
-import i18n from 'i18next';
-import { fireDialog } from '@/components/4-dialogs/7-0-dialogs/dialogs.ts';
-import { parseYouTube } from './edl-formats.ts';
+import i18n from "i18next";
+import { fireDialog } from "@/components/4-dialogs/7-0-dialogs/dialogs";
+import { parseYouTube } from "./edl-formats";
 
 export async function askForYouTubeInput({ fileDuration }: { fileDuration?: number | undefined; }) {
     const example = i18n.t('YouTube video description\n00:00 Intro\n00:01 Chapter 2\n00:00:02.123 Chapter 3');

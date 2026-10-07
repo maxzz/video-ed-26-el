@@ -1,19 +1,19 @@
-import { XMLParser } from 'fast-xml-parser';
-import i18n from 'i18next';
-import invariant from 'tiny-invariant';
-import { Duration } from 'luxon';
+import { XMLParser } from "fast-xml-parser";
+import i18n from "i18next";
+import invariant from "tiny-invariant";
+import { Duration } from "luxon";
 
-import { parse as csvParse } from 'csv-parse/browser/esm/sync';
-import { stringify as csvStringify } from 'csv-stringify/browser/esm/sync';
-import sortBy from 'lodash/sortBy';
-import type { ICueSheet, ITrack } from 'cue-parser/lib/types';
-import { z } from 'zod';
+import { parse as csvParse } from "csv-parse/browser/esm/sync";
+import { stringify as csvStringify } from "csv-stringify/browser/esm/sync";
+import sortBy from "lodash/sortBy";
+import { type ICueSheet, type ITrack } from "cue-parser/lib/types";
+import { z } from "zod";
 
-import { formatDuration } from '@/editor/0-core/8-lib/duration.ts';
-import { invertSegments, sortSegments } from '@/editor/5-segments/8-lib/segments.ts';
-import type { GetFrameCount, SegmentBase, SegmentTags } from '@/editor/0-core/8-lib/9-types-core.ts';
-import parseCmx3600 from './cmx3600.ts';
-import { UserFacingError } from '@/editor/0-core/8-lib/9-error-types.ts';
+import { formatDuration } from "@/editor/0-core/8-lib/duration";
+import { invertSegments, sortSegments } from "@/editor/5-segments/8-lib/segments";
+import { type GetFrameCount, type SegmentBase, type SegmentTags } from "@/editor/0-core/8-lib/9-types-core";
+import parseCmx3600 from "./cmx3600";
+import { UserFacingError } from "@/editor/0-core/8-lib/9-error-types";
 
 
 export const getTimeFromFrameNum = (detectedFps: number, frameNum: number) => frameNum / detectedFps;
