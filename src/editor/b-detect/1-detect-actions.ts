@@ -15,8 +15,8 @@ import { seekAbs } from "@/editor/3-player/7-actions/player-actions";
 import { currentCutSegOrWholeTimelineAtom } from "@/editor/5-segments/9-state/a-segments-store";
 import { deleteCurrentCutSeg, loadCutSegments } from "@/editor/5-segments/7-actions/segment-actions";
 import { appendLastCommandsLog } from "@/editor/7-export/9-state/export-atoms";
-import { getFfmpegParameters, type ParameterDialogParameters, setFfmpegParametersForDialog } from "../9-state/detect-atoms";
-import { showDialog_Parameters } from "../0-ui/parameters-dialog";
+import { getFfmpegParameters, type ParameterDialogParameters, setFfmpegParametersForDialog } from "./a-detect-atoms";
+import { showDialog_Parameters } from "./2-parameters-dialog";
 
 // Port of the detection part of upstream useSegments
 

@@ -1,5 +1,5 @@
 import { registerActions } from "@/editor/0-core/7-actions/kbd-actions";
-import { dialog_DetectBlackScenes, dialog_DetectSceneChanges, dialog_DetectSilentScenes } from "@/editor/b-detect/7-actions/detect-actions";
+import { dialog_DetectBlackScenes, dialog_DetectSceneChanges, dialog_DetectSilentScenes } from "@/editor/b-detect/1-detect-actions";
 
 export function register_b_detect() {
     registerActions({

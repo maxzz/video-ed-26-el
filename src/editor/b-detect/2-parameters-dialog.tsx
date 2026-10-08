@@ -10,7 +10,7 @@ import { useTranslation } from "react-i18next";
 import { open_CustomDialog } from "@/components/4-dialogs/7-0-dialogs/1-dialogs";
 import { mainApi } from "@/editor/0-core/7-actions/0-main-api";
 import { type FfmpegDialog, getHint, getLabel } from "@/editor/0-core/8-lib/ffmpeg/ffmpeg-parameters";
-import { type ParameterDialogParameters } from "../9-state/detect-atoms";
+import { type ParameterDialogParameters } from "./a-detect-atoms";
 
 /** Port of upstream useSegments showParametersDialog. Resolves the edited parameters, or undefined if cancelled */
 export function showDialog_Parameters(options: ParametersDialogOptions) {
