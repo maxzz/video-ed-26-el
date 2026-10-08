@@ -2,7 +2,7 @@ import { useSetAtom } from "jotai";
 import { MainPage, APP_NAME, navigateToPageAtom } from "@/components/5-welcome/a-ui-app-page";
 import { AppLogo } from "@/components/5-welcome/2-app-logo";
 import { TopMenu_All } from "../2-main/0-all/2-top-menu";
-import { ButtonCommandPalette, ButtonKeyboardShortcuts } from "./6-btn-keyboard";
+import { Button_CommandPalette, Button_KeyboardShortcuts } from "./6-btn-keyboard";
 import { ButtonOptions } from "./7-btn-options";
 import { ButtonThemeToggle } from "./8-btn-theme-toggle";
 
@@ -23,8 +23,8 @@ export function Header() {
             <TopMenu_All />
 
             <div className="shrink-0 flex items-center gap-2">
-                <ButtonCommandPalette />
-                <ButtonKeyboardShortcuts />
+                <Button_CommandPalette />
+                <Button_KeyboardShortcuts />
                 <ButtonOptions />
                 <ButtonThemeToggle />
             </div>

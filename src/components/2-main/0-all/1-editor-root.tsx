@@ -12,7 +12,7 @@ import { Timeline, TimelineHosts } from "@/editor/4-timeline";
 import { Panel_Segments } from "@/editor/5-segments/0-ui/0-panel-segments";
 import { ExportHosts } from "@/editor/7-export/0-ui/0-export-hosts";
 import { BatchFilesList, ConcatHosts } from "@/editor/8-concat";
-import { KeyboardHosts } from "@/editor/c-keyboard";
+import { KeyboardHosts } from "@/editor/c-keyboard/0-ui/0-keyboard-hosts";
 import { SettingsHosts } from "@/editor/d-settings";
 
 /** LosslessCut-like editor layout. Regions are owned by feature folders, see src/editor/README.md */

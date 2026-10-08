@@ -2,10 +2,10 @@ import { useTranslation } from "react-i18next";
 import { CommandIcon, KeyboardIcon } from "lucide-react";
 import { isMac } from "@/editor/0-core/7-actions/0-main-api";
 import { toggleKeyboardShortcuts } from "@/components/2-main/0-all/a-panels-atoms";
-import { toggleCommandPalette } from "@/editor/c-keyboard";
+import { toggleCommandPalette } from "@/editor/c-keyboard/7-actions/command-palette";
 import { Button } from "@/ui/shadcn/button";
 
-export function ButtonCommandPalette() {
+export function Button_CommandPalette() {
     const { t } = useTranslation();
 
     return (
@@ -22,7 +22,7 @@ export function ButtonCommandPalette() {
     );
 }
 
-export function ButtonKeyboardShortcuts() {
+export function Button_KeyboardShortcuts() {
     const { t } = useTranslation();
 
     return (

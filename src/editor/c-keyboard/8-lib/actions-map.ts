@@ -1,6 +1,7 @@
 import i18n from "i18next";
-import orderBy from "lodash/orderBy.js";
-import uniq from "lodash/uniq.js";
+import orderBy from "lodash/orderBy";
+import uniq from "lodash/uniq";
+
 import { type KeyboardAction, type ModifierKey } from "@shared/types";
 import { allModifiers, altModifiers, controlModifiers, getMetaKeyName, metaModifiers, shiftModifiers } from "@/editor/0-core/8-lib/utils-kbd";
 
@@ -29,8 +30,8 @@ export function getActionCategories() {
 }
 
 export function getActionsMap(): ActionsMap {
-    const t = i18n.t.bind(i18n);
     const c = getActionCategories();
+    const t = i18n.t.bind(i18n);
 
     return {
         toggleLastCommands: { name: t('Last ffmpeg commands') },
@@ -186,8 +187,8 @@ export function getActionsMap(): ActionsMap {
 
 /** Titles of registered actions that cannot be bound to keys (menu/API only), shown in the command palette */
 export function getExtraActionsMap(): Record<string, ActionInfo> {
-    const t = i18n.t.bind(i18n);
     const c = getActionCategories();
+    const t = i18n.t.bind(i18n);
     return {
         toggleCommandPalette: { name: t('Command palette') },
         promptDownloadMediaUrl: { name: t('Open URL'), category: c.other },
@@ -203,14 +204,18 @@ export function humanizeActionName(name: string) {
     return words.charAt(0).toUpperCase() + words.slice(1);
 }
 
-export const getModifierKeyNames = (): Record<ModifierKey, string> => ({
-    ctrl: i18n.t('Ctrl'),
-    shift: i18n.t('Shift'),
-    alt: i18n.t('Alt'),
-    meta: getMetaKeyName(),
-});
+export function getModifierKeyNames(): Record<ModifierKey, string> {
+    return ({
+        ctrl: i18n.t('Ctrl'),
+        shift: i18n.t('Shift'),
+        alt: i18n.t('Alt'),
+        meta: getMetaKeyName(),
+    });
+}
 
-export const getModifier = (key: ModifierKey) => getModifierKeyNames()[key];
+export function getModifier(key: ModifierKey) {
+    return getModifierKeyNames()[key];
+}
 
 /**
  * Normalizes pressed key codes to a binding: modifiers first (shift, ctrl, alt, meta), then the single non-modifier key.
@@ -219,7 +224,10 @@ export const getModifier = (key: ModifierKey) => getModifierKeyNames()[key];
 export function fixKeys(keys: string[]) {
     const uniqed = uniq(keys);
     const nonModifierKeys = keys.filter((key) => !allModifiers.has(key));
-    if (nonModifierKeys.length !== 1) return [];
+    if (nonModifierKeys.length !== 1) {
+        return [];
+    }
+    
     return orderBy(uniqed, [
         (key) => !shiftModifiers.has(key),
         (key) => !controlModifiers.has(key),

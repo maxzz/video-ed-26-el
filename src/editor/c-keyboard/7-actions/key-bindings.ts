@@ -1,8 +1,10 @@
-import i18n from "i18next";
-import { type KeyBinding, type KeyboardAction } from "@shared/types";
 import { jotaiDefaultStore } from "@/utils/local-utils/9-jotai-default-store";
-import { resetUserSetting, userSettings } from "@/editor/0-core/9-state/user-settings";
+import i18n from "i18next";
+
 import { dialog_Confirm } from "@/components/4-dialogs/7-1-dialogs/00-app-dialogs";
+import { resetUserSetting, userSettings } from "@/editor/0-core/9-state/user-settings";
+
+import { type KeyBinding, type KeyboardAction } from "@shared/types";
 import { type KeyboardLayoutMap } from "@/editor/0-core/8-lib/9-types-core";
 import { creatingBindingAtom, keyboardLayoutMapAtom, recordedKeysAtom } from "../9-state/keyboard-atoms";
 import { getActionsMap } from "../8-lib/actions-map";
@@ -25,8 +27,12 @@ export function setKeyBindings(update: (existing: KeyBinding[]) => KeyBinding[])
 
 export async function resetKeyBindings() {
     // double confirmation like upstream
-    if (!(await dialog_Confirm({ description: i18n.t('Are you sure you want to reset all keyboard bindings?') }))) return;
-    if (!(await dialog_Confirm({ description: i18n.t('Are you sure you want to reset all keyboard bindings?') }))) return;
+    if (!(await dialog_Confirm({ description: i18n.t('Are you sure you want to reset all keyboard bindings?') }))) {
+        return;
+    }
+    if (!(await dialog_Confirm({ description: i18n.t('Are you sure you want to reset all keyboard bindings?') }))) {
+        return;
+    }
     await resetUserSetting('keyBindings');
 }
 
@@ -34,15 +40,19 @@ export async function resetKeyBindings() {
 export function removeInvalidKeyBindings() {
     const actionsMap = getActionsMap();
     const valid = userSettings.keyBindings.filter(({ action }) => actionsMap[action]);
+
     if (valid.length !== userSettings.keyBindings.length) {
         console.log(`Auto deleting ${userSettings.keyBindings.length - valid.length} invalid key binding(s)`);
         userSettings.keyBindings = valid;
     }
 }
 
-export async function deleteKeyBinding({ action, keys }: KeyBinding) {
-    if (!(await dialog_Confirm({ description: i18n.t('Are you sure?'), danger: true }))) return;
+export async function askDialog_deleteKeyBinding({ action, keys }: KeyBinding) {
+    if (!(await dialog_Confirm({ description: i18n.t('Are you sure?'), danger: true }))) {
+        return;
+    }
     console.log('Delete key binding', action, keys);
+
     setKeyBindings((existing) => existing.filter((b) => !(b.keys === keys && b.action === action)));
 }
 
@@ -63,7 +73,7 @@ export function clearRecordedKeys() {
     jotaiDefaultStore.set(recordedKeysAtom, []);
 }
 
-export async function confirmNewKeyBinding(action: KeyboardAction, keys: string[]) {
+export async function askDialog_confirmNewKeyBinding(action: KeyboardAction, keys: string[]) {
     const keysStr = keys.join('+');
     console.log('New key binding', action, keysStr);
 

@@ -15,7 +15,7 @@ import { langNames, type SupportedLanguage } from "@shared/i18n";
 import { type CaptureFormat, type Config, type EnableImportChapters, type ModifierKey, type TimecodeFormat } from "@shared/types";
 import { getEnableImportChaptersOptions, isStoreBuild } from "@/editor/0-core/8-lib/util";
 import { settingsVisibleAtom, showAdvancedSettingsAtom, toggleKeyboardShortcuts } from "@/components/2-main/0-all/a-panels-atoms";
-import { getModifierKeyNames } from "@/editor/c-keyboard";
+import { getModifierKeyNames } from "@/editor/c-keyboard/8-lib/actions-map";
 import { askForCleanupChoices } from "@/editor/7-export/7-actions/export-actions";
 import { changeCustomFfPath, clearCustomFfPath, requestTuner, setLanguage, setShowAdvancedSettings, toggleExportConfirmEnabled, toggleStoreProjectInWorkingDir } from "../7-actions/settings-actions";
 import { SectionHeader, SettingRow, SettingSelect } from "./settings-rows";

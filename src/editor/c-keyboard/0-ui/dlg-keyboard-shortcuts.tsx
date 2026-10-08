@@ -13,43 +13,49 @@ import { Button } from "@/ui/shadcn/button";
 import { Input } from "@/ui/shadcn/input";
 import { Kbd } from "@/ui/shadcn/kbd";
 import { shortcutsSearchAtom } from "../9-state/keyboard-atoms";
-import { deleteKeyBinding, resetKeyBindings, startCreatingBinding } from "../7-actions/key-bindings";
+import { askDialog_deleteKeyBinding, resetKeyBindings, startCreatingBinding } from "../7-actions/key-bindings";
 import { type ActionInfo, getActionCategories, getActionsMap, getModifier } from "../8-lib/actions-map";
-import { KeyCombo } from "./key-combo";
+import { KeyCombo } from "./2-key-combo";
 
 // Port of upstream components/KeyboardShortcuts.tsx
 
-export function KeyboardShortcutsDialog() {
-    const { t } = useTranslation();
+export function Dialog_KeyboardShortcuts() {
     const [open, setOpen] = useAtom(keyboardShortcutsVisibleAtom);
+    const { t } = useTranslation();
 
     return (
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogContent className="p-0 w-[min(46rem,calc(100vw-2rem))] max-w-none! h-[min(80vh,52rem)] text-xs overflow-hidden gap-0 flex flex-col">
                 <DialogHeader className="px-4 py-3 border-b">
-                    <DialogTitle className="text-sm">{t('Keyboard & mouse shortcuts')}</DialogTitle>
-                    <DialogDescription className="sr-only">{t('Keyboard & mouse shortcuts')}</DialogDescription>
+                    <DialogTitle className="text-sm">
+                        {t('Keyboard & mouse shortcuts')}
+                    </DialogTitle>
+                    <DialogDescription className="sr-only">
+                        {t('Keyboard & mouse shortcuts')}
+                    </DialogDescription>
                 </DialogHeader>
 
-                {open && <ShortcutsBody />}
+                {open && <Body />}
             </DialogContent>
         </Dialog>
     );
 }
 
-function ShortcutsBody() {
-    const { t } = useTranslation();
+function Body() {
     const [searchQuery, setSearchQuery] = useAtom(shortcutsSearchAtom);
+    const { t } = useTranslation();
     const query = searchQuery.toLowerCase().trim();
     const isSearching = query !== '';
 
     const actionsMap = getActionsMap();
-    const actionEntries = (Object.entries(actionsMap) as [KeyboardAction, ActionInfo][]).filter(([action, { name, category }]) => (
-        !isSearching
-        || action.toLowerCase().includes(query)
-        || name.toLowerCase().includes(query)
-        || (category != null && category.toLowerCase().includes(query))
-    ));
+    const actionEntries = (Object.entries(actionsMap) as [KeyboardAction, ActionInfo][]).filter(
+        ([action, { name, category }]) => (
+            !isSearching
+            || action.toLowerCase().includes(query)
+            || name.toLowerCase().includes(query)
+            || (category != null && category.toLowerCase().includes(query))
+        )
+    );
     const categoriesWithActions = Object.entries(groupBy(actionEntries, ([, { category }]) => category));
 
     return (<>
@@ -58,17 +64,21 @@ function ShortcutsBody() {
         </div>
 
         <div className="px-4 pb-4 min-h-0 overflow-y-auto flex-1">
-            {categoriesWithActions.map(([category, entries]) => (
-                <section key={category}>
-                    {category !== 'undefined' && (
-                        <h3 className="sticky top-0 pt-4 pb-1.5 text-sm font-semibold bg-background z-10">{category}</h3>
-                    )}
+            {categoriesWithActions.map(
+                ([category, entries]) => (
+                    <section key={category}>
+                        {category !== 'undefined' && (
+                            <h3 className="sticky top-0 pt-4 pb-1.5 text-sm font-semibold bg-background z-10">{category}</h3>
+                        )}
 
-                    {entries.map(([action, { name }]) => <ActionRow key={action} action={action} name={name} />)}
+                        {entries.map(
+                            ([action, { name }]) => <ActionRow key={action} action={action} name={name} />
+                        )}
 
-                    {!isSearching && <ExtraLines category={category} />}
-                </section>
-            ))}
+                        {!isSearching && <ExtraLines category={category} />}
+                    </section>
+                )
+            )}
 
             {categoriesWithActions.length === 0 && (
                 <div className="py-8 text-center text-muted-foreground">{t('No results')}</div>
@@ -85,8 +95,8 @@ function ShortcutsBody() {
 }
 
 function ActionRow({ action, name }: { action: KeyboardAction; name: string; }) {
-    const { t } = useTranslation();
     const { keyBindings } = useAtomValue(userSettingsAtom);
+    const { t } = useTranslation();
     const bindings = keyBindings.filter((kb) => kb.action === action);
 
     function trigger() {
@@ -97,7 +107,9 @@ function ActionRow({ action, name }: { action: KeyboardAction; name: string; }) 
     return (
         <div className="py-1 border-b border-border/60 flex items-center gap-2">
             <div className="min-w-0 flex-1">
-                <div className="truncate" title={action}>{name}</div>
+                <div className="truncate" title={action}>
+                    {name}
+                </div>
                 <div className="text-[0.65rem] text-muted-foreground/70 flex items-center gap-1" title={t('API action name: {{action}}', { action })}>
                     {action}
                     <Button className="size-4" variant="ghost" size="icon-xs" title={action} onClick={trigger}>
@@ -107,15 +119,22 @@ function ActionRow({ action, name }: { action: KeyboardAction; name: string; }) 
             </div>
 
             <div className="flex flex-col items-end gap-0.5">
-                {bindings.map((binding) => (
-                    <div key={binding.keys} className="flex items-center gap-1.5">
-                        <KeyCombo keys={binding.keys} />
-                        <Button variant="ghost" size="icon-xs" title={t('Remove key binding')} onClick={() => deleteKeyBinding(binding)}>
-                            <Trash2Icon />
-                        </Button>
-                    </div>
-                ))}
-                {bindings.length === 0 && <span className="text-muted-foreground">{t('No binding')}</span>}
+                {bindings.map(
+                    (binding) => (
+                        <div key={binding.keys} className="flex items-center gap-1.5">
+                            <KeyCombo keys={binding.keys} />
+
+                            <Button variant="ghost" size="icon-xs" title={t('Remove key binding')} onClick={() => askDialog_deleteKeyBinding(binding)}>
+                                <Trash2Icon />
+                            </Button>
+                        </div>
+                    )
+                )}
+                {bindings.length === 0 && (
+                    <span className="text-muted-foreground">
+                        {t('No binding')}
+                    </span>
+                )}
             </div>
 
             <Button variant="outline" size="icon-xs" title={t('Bind new key to action')} onClick={() => startCreatingBinding(action)}>
@@ -126,8 +145,9 @@ function ActionRow({ action, name }: { action: KeyboardAction; name: string; }) 
 }
 
 function ExtraLines({ category }: { category: string; }) {
-    const { t } = useTranslation();
     const { mouseWheelZoomModifierKey, mouseWheelFrameSeekModifierKey, mouseWheelKeyframeSeekModifierKey, segmentMouseModifierKey } = useAtomValue(userSettingsAtom);
+    const { t } = useTranslation();
+
     const c = getActionCategories();
     const wheelText = t('Mouse scroll/wheel up/down');
 
@@ -141,6 +161,7 @@ function ExtraLines({ category }: { category: string; }) {
             </div>
         );
     }
+
     if (category === c.segmentsAndCutpoints) {
         return (
             <div className="mt-2">
@@ -148,16 +169,27 @@ function ExtraLines({ category }: { category: string; }) {
             </div>
         );
     }
+
     return null;
 }
 
 function MouseRow({ text, mouseText, modifier }: { text: ReactNode; mouseText: ReactNode; modifier?: ModifierKey; }) {
     return (
         <div className="py-1 border-b border-border/60 flex items-center gap-2">
-            <span className="flex-1">{text}</span>
-            {modifier && <Kbd className="text-foreground/80 border">{getModifier(modifier)}</Kbd>}
+            <span className="flex-1">
+                {text}
+            </span>
+            {modifier && (
+                <Kbd className="text-foreground/80 border">
+                    {getModifier(modifier)}
+                </Kbd>
+            )}
+            
             <MouseIcon className="size-3.5" />
-            <span className="text-muted-foreground">{mouseText}</span>
+            
+            <span className="text-muted-foreground">
+                {mouseText}
+            </span>
         </div>
     );
 }
