@@ -7,6 +7,7 @@ import { useTranslation } from "react-i18next";
 
 import { settingsVisibleAtom, showAdvancedSettingsAtom } from "@/components/2-main/0-all/a-panels-atoms";
 import { prefersReducedMotionAtom } from "@/editor/0-core/9-state/user-settings";
+import { appSettings } from "@/store/1-ui-settings";
 import { Section_General } from "./4-sections/1-section-general";
 import { Section_ExportOptions } from "./4-sections/2-section-export";
 import { Section_Snapshots } from "./4-sections/3-section-snapshots";
@@ -30,6 +31,10 @@ const settingsSections: { id: SettingsSectionId; titleKey: string; Panel: Compon
     { id: 'prompts', titleKey: 'Prompts and dialogs', Panel: Section_Prompts },
     { id: 'other', titleKey: 'Other', Panel: Section_Other, advancedOnly: true },
 ];
+
+function sectionIdAt(sections: readonly { id: SettingsSectionId; }[], index: number): SettingsSectionId {
+    return sections[index]?.id ?? sections[0]?.id ?? 'general';
+}
 
 export function Dialog_Settings() {
     const [open, setOpen] = useAtom(settingsVisibleAtom);
@@ -61,10 +66,10 @@ export function Dialog_Settings() {
 function Body() {
     const { t } = useTranslation();
     const showAdvancedSettings = useAtomValue(showAdvancedSettingsAtom);
-    const [section, setSection] = useState<SettingsSectionId>('general');
-
     const sections = settingsSections.filter((item) => showAdvancedSettings || !item.advancedOnly);
-    const active = sections.some((item) => item.id === section) ? section : 'general';
+    const [section, setSection] = useState(() => sectionIdAt(sections, appSettings.settingsTabIndex));
+
+    const active = sections.some((item) => item.id === section) ? section : sections[0].id;
     const panelRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
@@ -74,6 +79,14 @@ function Body() {
     const activeSection = sections.find((item) => item.id === active) ?? sections[0];
     const Panel = activeSection?.Panel;
 
+    function selectSection(id: SettingsSectionId) {
+        setSection(id);
+        const index = sections.findIndex((item) => item.id === id);
+        if (index >= 0) {
+            appSettings.settingsTabIndex = index;
+        }
+    }
+
     return (
         <div className="min-w-0 min-h-0 flex flex-1 gap-0">
             <TabSelect<SettingsSectionId>
@@ -82,7 +95,7 @@ function Body() {
                 items={sections.map((item) => ({ value: item.id, label: t(item.titleKey) }))}
                 orientation="vertical"
                 value={active}
-                onValueChange={setSection}
+                onValueChange={selectSection}
             />
 
             <div ref={panelRef} className="min-w-0 min-h-0 overflow-y-auto flex-1">

@@ -18,6 +18,10 @@ function isWelcomeTransition(value: unknown): value is WelcomeTransition {
     return Object.values<unknown>(WelcomeTransition).includes(value);
 }
 
+function isSettingsTabIndex(value: unknown): value is number {
+    return typeof value === 'number' && Number.isInteger(value) && value >= 0;
+}
+
 export interface AppSettings {
     theme: ThemeMode;            // Theme mode
     showWelcome: boolean;        // Show the Welcome page at startup
@@ -25,6 +29,7 @@ export interface AppSettings {
     showStatusBar: boolean;      // Show the status bar on the main page
     panelSizes: PanelSizes;      // ResizablePanelGroup panel sizes
     expandedSections: string[];  // Expanded accordion sections by name
+    settingsTabIndex: number;    // Selected settings-dialog tab, by index in the tab list
 }
 
 const DEFAULT_SETTINGS: AppSettings = {
@@ -34,6 +39,7 @@ const DEFAULT_SETTINGS: AppSettings = {
     showStatusBar: true,
     panelSizes: getValidPanelSizes(),
     expandedSections: ['resizable-panels', 'pierre-trees'],
+    settingsTabIndex: 0,
 };
 
 // Load settings from localStorage
@@ -51,6 +57,7 @@ function loadSettings(): AppSettings {
                 welcomeTransition: isWelcomeTransition(parsed.welcomeTransition) ? parsed.welcomeTransition : DEFAULT_SETTINGS.welcomeTransition,
                 panelSizes: getValidPanelSizes(parsed.panelSizes),
                 expandedSections: parsed.expandedSections ?? DEFAULT_SETTINGS.expandedSections,
+                settingsTabIndex: isSettingsTabIndex(parsed.settingsTabIndex) ? parsed.settingsTabIndex : DEFAULT_SETTINGS.settingsTabIndex,
             };
         }
     } catch (e) {
