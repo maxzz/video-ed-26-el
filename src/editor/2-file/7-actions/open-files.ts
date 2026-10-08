@@ -1,12 +1,14 @@
 import i18n from "i18next";
 import invariant from "tiny-invariant";
 import { jotaiDefaultStore } from "@/utils/local-utils/9-jotai-default-store";
+
+import { mainApi } from "@/editor/0-core/7-actions/0-main-api";
 import { customOutDirAtom, userSettings } from "@/editor/0-core/9-state/user-settings";
 import { isWorking, setWorking, withErrorHandling } from "@/editor/0-core/9-state/working";
+import { show_ErrorToast, dialog_PromptDownloadMediaUrl } from "@/components/4-dialogs/7-1-dialogs/00-app-dialogs";
+
 import { showDialog_Open } from "@/components/4-dialogs/7-1-dialogs/01-show-open-dialog";
 import { askDialog_ForFileOpenAction, type OpenFileResponse } from "@/components/4-dialogs/7-1-dialogs/04-ask-for-file-open-action";
-import { show_ErrorToast, dialog_PromptDownloadMediaUrl } from "@/components/4-dialogs/7-1-dialogs/00-app-dialogs";
-import { mainApi } from "@/editor/0-core/7-actions/0-main-api";
 import { basename, fs } from "@/editor/0-core/8-lib/node-shims";
 import { getDownloadMediaOutPath, getImportProjectType, readDirRecursively, readVideoTs, resolvePathIfNeeded } from "@/editor/0-core/8-lib/util";
 import { concatDialogOpenAtom, streamsSelectorShownAtom } from "@/components/2-main/0-all/a-panels-atoms";
@@ -22,7 +24,9 @@ import { loadMedia, userOpenSingleFile } from "./load-media";
 export async function userOpenFiles(newFilePathsIn?: string[]) {
     await withErrorHandling(async () => {
         let newFilePaths = newFilePathsIn;
-        if (!newFilePaths || newFilePaths.length === 0) return;
+        if (!newFilePaths || newFilePaths.length === 0) {
+            return;
+        }
 
         console.log('userOpenFiles');
         console.log(newFilePaths.join('\n'));
@@ -40,6 +44,7 @@ export async function userOpenFiles(newFilePathsIn?: string[]) {
         // Only allow opening regular files
         for (const path of newFilePaths) {
             const fileStat = await fs.lstat(path);
+
             if (!fileStat.isFile()) {
                 show_ErrorToast(i18n.t('Cannot open anything else than regular files'));
                 console.warn('Not a file:', path);
@@ -61,7 +66,9 @@ export async function userOpenFiles(newFilePathsIn?: string[]) {
             newFilePaths = await readVideoTs(firstNewFilePath);
         }
 
-        if (isWorking()) return;
+        if (isWorking()) {
+            return;
+        }
         try {
             setWorking({ text: i18n.t('Loading file') });
 
@@ -85,22 +92,38 @@ export async function userOpenFiles(newFilePathsIn?: string[]) {
             }
 
             if (isFileOpened && newFilePaths.length === 1) {
-                if (isLlcProject) inputOptions.project = i18n.t('Load segments from the new file, but keep the current media');
-                else if (filePathLowerCase.endsWith('.srt')) inputOptions.subtitles = i18n.t('Convert subtitiles into segments');
+                if (isLlcProject) {
+                    inputOptions.project = i18n.t('Load segments from the new file, but keep the current media');
+                }
+                else if (filePathLowerCase.endsWith('.srt')) {
+                    inputOptions.subtitles = i18n.t('Convert subtitiles into segments');
+                }
                 inputOptions.tracks = i18n.t('Include all tracks from the new file');
             }
 
-            if (isFileOpened) inputOptions.mergeWithCurrentFile = i18n.t('Merge/concatenate with current file');
-            if (jotaiDefaultStore.get(batchFilesAtom).length > 0 || newFilePaths.length > 1) inputOptions.addToBatch = i18n.t('Add the file to the batch list');
+            if (isFileOpened) {
+                inputOptions.mergeWithCurrentFile = i18n.t('Merge/concatenate with current file');
+            }
+            if (jotaiDefaultStore.get(batchFilesAtom).length > 0 || newFilePaths.length > 1) {
+                inputOptions.addToBatch = i18n.t('Add the file to the batch list');
+            }
 
             const inputOptionsKeys = Object.keys(inputOptions) as OpenFileResponse[];
             const { enableAskForFileOpenAction } = userSettings;
 
             let openFileResponse: OpenFileResponse | undefined;
-            if (inputOptionsKeys.length === 1) [openFileResponse] = inputOptionsKeys;
-            if (!enableAskForFileOpenAction && inputOptionsKeys.length > 1) openFileResponse = 'addToBatch';
-            if (enableAskForFileOpenAction && inputOptionsKeys.length > 1) openFileResponse = await askDialog_ForFileOpenAction(Object.entries(inputOptions) as [OpenFileResponse, string][]);
-            else if (newFilePaths.length === 1) openFileResponse = 'open';
+            if (inputOptionsKeys.length === 1) {
+                [openFileResponse] = inputOptionsKeys;
+            }
+            if (!enableAskForFileOpenAction && inputOptionsKeys.length > 1) {
+                openFileResponse = 'addToBatch';
+            }
+            if (enableAskForFileOpenAction && inputOptionsKeys.length > 1) {
+                openFileResponse = await askDialog_ForFileOpenAction(Object.entries(inputOptions) as [OpenFileResponse, string][]);
+            }
+            else if (newFilePaths.length === 1) {
+                openFileResponse = 'open';
+            }
 
             if (openFileResponse === 'open') {
                 await userOpenSingleFile({ path: firstNewFilePath, isLlcProject });
@@ -147,14 +170,18 @@ export async function openFilesDialog() {
     // On Windows and Linux an open dialog can not be both a file selector and a directory selector, so if you set `properties` to `['openFile', 'openDirectory']` on these platforms, a directory selector will be shown. #1995
     const lastOpenedPath = jotaiDefaultStore.get(lastOpenedPathAtom);
     const { canceled, filePaths } = await showDialog_Open({ properties: ['openFile', 'multiSelections'], ...(lastOpenedPath != null && { defaultPath: lastOpenedPath }), title: i18n.t('Open file') });
-    if (canceled) return;
+    if (canceled) {
+        return;
+    }
     await userOpenFiles(filePaths);
 }
 
 export async function openDirDialog() {
     const lastOpenedPath = jotaiDefaultStore.get(lastOpenedPathAtom);
     const { canceled, filePaths } = await showDialog_Open({ properties: ['openDirectory', 'multiSelections'], ...(lastOpenedPath != null && { defaultPath: lastOpenedPath }), title: i18n.t('Open folder') });
-    if (canceled) return;
+    if (canceled) {
+        return;
+    }
     await userOpenFiles(filePaths);
 }
 
@@ -169,7 +196,9 @@ export async function promptDownloadMediaUrlWrapper() {
             }
             const outPath = getDownloadMediaOutPath(newCustomOutDir, `downloaded-media-${Date.now()}.mkv`);
             const downloaded = await dialog_PromptDownloadMediaUrl(outPath);
-            if (downloaded) await loadMedia({ filePath: outPath });
+            if (downloaded) {
+                await loadMedia({ filePath: outPath });
+            }
         }, i18n.t('Failed to download URL'));
     } finally {
         setWorking(undefined);
@@ -185,7 +214,9 @@ interface DropEventLike {
 export async function onFilesDrop(ev: DropEventLike) {
     ev.preventDefault();
     const filePaths = getDroppedFilePaths(ev.dataTransfer);
-    if (filePaths.length === 0) return;
+    if (filePaths.length === 0) {
+        return;
+    }
     await mainApi.focusWindow();
     await userOpenFiles(filePaths);
 }
@@ -195,7 +226,9 @@ export async function handleStreamSourceFileDrop(ev: DropEventLike) {
     ev.preventDefault();
     await withErrorHandling(async () => {
         const filePaths = getDroppedFilePaths(ev.dataTransfer);
-        if (filePaths.length !== 1) return;
+        if (filePaths.length !== 1) {
+            return;
+        }
         await mainApi.focusWindow();
         await addStreamSourceFile(filePaths[0]!);
     });
