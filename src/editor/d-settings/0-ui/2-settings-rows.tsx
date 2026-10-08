@@ -2,14 +2,6 @@ import { type ReactNode } from "react";
 import { motion } from "motion/react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/ui/shadcn/select";
 
-export function SectionHeader({ title }: { title: ReactNode; }) { // nice sticky header
-    return (
-        <h3 className="sticky top-0 pt-4 pb-1.5 text-sm font-semibold bg-background border-b z-10">
-            {title}
-        </h3>
-    );
-}
-
 /** One setting: description on the left, control on the right (upstream Settings table row) */
 export function SettingRow({ label, details, children }: { label: ReactNode; details?: ReactNode; children: ReactNode; }) {
     return (
