@@ -6,13 +6,17 @@ export type ParameterDialogParameters = Record<string, string>;
 
 /** Last used parameters of the detection dialogs, remembered while the app is running (upstream useSegments ffmpegParameters) */
 export const ffmpegParametersAtom = atom<Record<FfmpegDialog, ParameterDialogParameters>>(
-    Object.fromEntries(Object.entries(allFfmpegParameters).map(([dialogType, parameters]) => [
-        dialogType,
-        Object.fromEntries(Object.entries(parameters).map(([key, { value }]) => [key, value])),
-    ])) as Record<FfmpegDialog, ParameterDialogParameters>,
+    Object.fromEntries(Object.entries(allFfmpegParameters).map(
+        ([dialogType, parameters]) => [
+            dialogType,
+            Object.fromEntries(Object.entries(parameters).map(([key, { value }]) => [key, value])),
+        ]
+    )) as Record<FfmpegDialog, ParameterDialogParameters>,
 );
 
-export const getFfmpegParameters = (dialogType: FfmpegDialog) => jotaiDefaultStore.get(ffmpegParametersAtom)[dialogType];
+export function getFfmpegParameters(dialogType: FfmpegDialog) {
+    return jotaiDefaultStore.get(ffmpegParametersAtom)[dialogType];
+}
 
 export function setFfmpegParametersForDialog(dialogType: FfmpegDialog, newParams: ParameterDialogParameters) {
     jotaiDefaultStore.set(ffmpegParametersAtom, (existing) => ({ ...existing, [dialogType]: { ...existing[dialogType], ...newParams } }));

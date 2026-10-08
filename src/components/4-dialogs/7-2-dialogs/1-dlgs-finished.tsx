@@ -97,7 +97,9 @@ function FinishedList({ title, hasWarnings, warnings, notices, testText }: { tit
 
 export async function openDialog_CleanupFiles(cleanupChoicesInitial: CleanupChoicesType) {
     const choices = proxy<CleanupChoicesType>({ ...cleanupChoicesInitial });
-    return open_CustomDialog<CleanupChoicesType>((close) => <CleanupFilesDialogContent choices={choices} close={close} />);
+    return open_CustomDialog<CleanupChoicesType>(
+        (close) => <CleanupFilesDialogContent choices={choices} close={close} />
+    );
 }
 
 function CleanupFilesDialogContent({ choices, close }: { choices: CleanupChoicesType; close: (value?: CleanupChoicesType) => void; }) {
@@ -163,7 +165,9 @@ export function CheckRow({ label, checked, disabled, onChange }: { label: ReactN
 
 export async function openDialog_Decimate() {
     const state = proxy({ fps: '20', n: '1' });
-    return open_CustomDialog<{ n: number; fps: number; }>((close) => <DecimateDialogContent state={state} close={close} />);
+    return open_CustomDialog<{ n: number; fps: number; }>(
+        (close) => <DecimateDialogContent state={state} close={close} />
+    );
 }
 
 function DecimateDialogContent({ state, close }: { state: { fps: string; n: string; }; close: (value?: { n: number; fps: number; }) => void; }) {

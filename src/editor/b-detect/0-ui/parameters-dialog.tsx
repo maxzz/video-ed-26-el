@@ -12,6 +12,17 @@ import { mainApi } from "@/editor/0-core/7-actions/0-main-api";
 import { type FfmpegDialog, getHint, getLabel } from "@/editor/0-core/8-lib/ffmpeg/ffmpeg-parameters";
 import { type ParameterDialogParameters } from "../9-state/detect-atoms";
 
+/** Port of upstream useSegments showParametersDialog. Resolves the edited parameters, or undefined if cancelled */
+export function showDialog_Parameters(options: ParametersDialogOptions) {
+    const state = proxy({
+        ...options.parameters
+    });
+
+    return open_CustomDialog<ParameterDialogParameters>(
+        (close) => <Body options={options} state={state} close={close} />
+    );
+}
+
 interface ParametersDialogOptions {
     title?: string | undefined;
     description?: string | undefined;
@@ -20,19 +31,13 @@ interface ParametersDialogOptions {
     docUrl?: string | undefined;
 }
 
-/** Port of upstream useSegments showParametersDialog. Resolves the edited parameters, or undefined if cancelled */
-export function showParametersDialog(options: ParametersDialogOptions) {
-    const state = proxy({ ...options.parameters });
-    return open_CustomDialog<ParameterDialogParameters>((close) => <ParametersDialogContent options={options} state={state} close={close} />);
-}
-
-function ParametersDialogContent({ options: { title, description, dialogType, parameters, docUrl }, state, close }: {
+function Body({ options: { title, description, dialogType, parameters, docUrl }, state, close }: {
     options: ParametersDialogOptions;
     state: ParameterDialogParameters;
     close: (value?: ParameterDialogParameters) => void;
 }) {
-    const { t } = useTranslation();
     const snap = useSnapshot(state, { sync: true });
+    const { t } = useTranslation();
 
     function handleSubmit(e: FormEvent) {
         e.preventDefault();
@@ -42,8 +47,12 @@ function ParametersDialogContent({ options: { title, description, dialogType, pa
     return (
         <DialogContent className="sm:max-w-[80vw]">
             <DialogHeader>
-                <DialogTitle>{title}</DialogTitle>
-                <DialogDescription className={description ? undefined : 'sr-only'}>{description ?? title}</DialogDescription>
+                <DialogTitle>
+                    {title}
+                </DialogTitle>
+                <DialogDescription className={description ? undefined : 'sr-only'}>
+                    {description ?? title}
+                </DialogDescription>
             </DialogHeader>
 
             {docUrl && (
@@ -55,21 +64,35 @@ function ParametersDialogContent({ options: { title, description, dialogType, pa
             )}
 
             <form className="flex flex-col gap-3" onSubmit={handleSubmit}>
-                {Object.keys(parameters).map((key, i) => {
-                    const id = `parameter-${key}`;
-                    const hint = getHint(dialogType, key);
-                    return (
-                        <div key={key} className="flex flex-col gap-1">
-                            <Label htmlFor={id} className="font-mono">{getLabel(dialogType, key) || key}</Label>
-                            <Input id={id} autoFocus={i === 0} value={snap[key] ?? ''} onChange={(e) => { state[key] = e.target.value; }} />
-                            {hint && <div className="text-xs text-muted-foreground">{hint}</div>}
-                        </div>
-                    );
-                })}
+                {Object.keys(parameters).map(
+                    (key, i) => {
+                        const id = `parameter-${key}`;
+                        const hint = getHint(dialogType, key);
+                        return (
+                            <div key={key} className="flex flex-col gap-1">
+                                <Label htmlFor={id} className="font-mono">
+                                    {getLabel(dialogType, key) || key}
+                                </Label>
+
+                                <Input id={id} autoFocus={i === 0} value={snap[key] ?? ''} onChange={(e) => { state[key] = e.target.value; }} />
+
+                                {hint && (
+                                    <div className="text-xs text-muted-foreground">
+                                        {hint}
+                                    </div>
+                                )}
+                            </div>
+                        );
+                    }
+                )}
 
                 <DialogFooter>
-                    <Button type="button" variant="outline" onClick={() => close(undefined)}>{t('Cancel')}</Button>
-                    <Button type="submit">{t('Confirm')}</Button>
+                    <Button type="button" variant="outline" onClick={() => close(undefined)}>
+                        {t('Cancel')}
+                    </Button>
+                    <Button type="submit">
+                        {t('Confirm')}
+                    </Button>
                 </DialogFooter>
             </form>
         </DialogContent>

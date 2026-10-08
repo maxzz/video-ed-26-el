@@ -9,7 +9,9 @@ import { getAppCompareReleasesUrl, getAppReleaseUrl } from "../8-lib/versions";
 
 /** Port of upstream WhatsNew.tsx. We have no bundled release highlights, so it links to the release notes */
 export async function openWhatsNewDialog({ fromVersion, toVersion }: { fromVersion: string; toVersion: string; }) {
-    await open_CustomDialog<void>((close) => <WhatsNewDialogContent fromVersion={fromVersion} toVersion={toVersion} close={close} />);
+    await open_CustomDialog<void>(
+        (close) => <WhatsNewDialogContent fromVersion={fromVersion} toVersion={toVersion} close={close} />
+    );
 }
 
 function WhatsNewDialogContent({ fromVersion, toVersion, close }: { fromVersion: string; toVersion: string; close: () => void; }) {
