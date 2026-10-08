@@ -7,10 +7,9 @@ import { appName, faqUrl, featureRequestUrl, getReleaseUrl, githubUrl, homepageU
 import { getAppInfo } from "@/editor/0-core/7-actions/0-main-api";
 import { newVersionAtom } from "@/editor/f-platform/9-state/a-platform";
 import { canRedoAtom, canUndoAtom } from "@/editor/5-segments/9-state/a-segments-store";
-import { MenuActionItem, modShortcut } from "../2-main/0-all/8-menu-item";
+import { MenuActionItem, modShortcut } from "./8-menu-item";
 
 export function TopMenu_All() {
-    const newVersion = useAtomValue(newVersionAtom);
     return (
         <Menubar className="grow p-0 min-w-0 h-auto bg-transparent border-0 rounded-none">
             <TopMenu_File />
@@ -19,14 +18,14 @@ export function TopMenu_All() {
             <TopMenu_ViewM />
             <TopMenu_Tools />
             <TopMenu_Help />
-            {newVersion != null && <TopMenu_NewVersion version={newVersion} />}
+            <TopMenu_NewVersion />
         </Menubar>
     );
 }
 
 function TopMenu_File() {
-    const { t } = useTranslation();
     const { isMac } = getAppInfo();
+    const { t } = useTranslation();
     return (
         <MenubarMenu>
             <MenubarTrigger>{t('File')}</MenubarTrigger>
@@ -100,9 +99,9 @@ const exportFormats = [
 ] as const satisfies readonly (readonly [string, EdlExportType])[];
 
 function TopMenu_Edit() {
-    const { t } = useTranslation();
     const canUndo = useAtomValue(canUndoAtom);
     const canRedo = useAtomValue(canRedoAtom);
+    const { t } = useTranslation();
     return (
         <MenubarMenu>
             <MenubarTrigger>{t('Edit')}</MenubarTrigger>
@@ -160,8 +159,8 @@ function TopMenu_Segments() {
 }
 
 function TopMenu_ViewM() {
-    const { t } = useTranslation();
     const { isWindows } = getAppInfo();
+    const { t } = useTranslation();
     return (
         <MenubarMenu>
             <MenubarTrigger>{t('View')}</MenubarTrigger>
@@ -205,8 +204,8 @@ function TopMenu_Tools() {
 }
 
 function TopMenu_Help() {
-    const { t } = useTranslation();
     const { isMac, paths } = getAppInfo();
+    const { t } = useTranslation();
     return (
         <MenubarMenu>
             <MenubarTrigger>{t('Help')}</MenubarTrigger>
@@ -232,13 +231,18 @@ function TopMenu_Help() {
     );
 }
 
-function TopMenu_NewVersion({ version }: { version: string; }) {
+function TopMenu_NewVersion() {
+    const newVersion = useAtomValue(newVersionAtom);
     const { t } = useTranslation();
+    if (newVersion == null) {
+        return null;
+    }
+
     return (
         <MenubarMenu>
             <MenubarTrigger>{t('New version!')}</MenubarTrigger>
             <MenubarContent>
-                <MenuActionItem label={t('Download {{version}}', { version })} action={{ what: 'openExternal', url: getReleaseUrl(version) }} />
+                <MenuActionItem label={t('Download {{version}}', { version: newVersion })} action={{ what: 'openExternal', url: getReleaseUrl(newVersion) }} />
             </MenubarContent>
         </MenubarMenu>
     );

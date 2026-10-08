@@ -31,4 +31,6 @@ export function getAppInfo(): AppInfo {
     return appInfoValue;
 }
 
-export const getFfCommandLine = (cmd: FfCommand, args: readonly string[]) => getFfCommandLineShared(cmd, args, isWindows);
+export function getFfCommandLine(cmd: FfCommand, args: readonly string[]) {
+    return getFfCommandLineShared(cmd, args, isWindows);
+}
