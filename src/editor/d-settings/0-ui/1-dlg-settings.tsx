@@ -29,7 +29,7 @@ export function Dialog_Settings() {
 
     return (
         <Dialog open={open} onOpenChange={setOpen}>
-            <DialogContent className="p-0 w-[min(52rem,calc(100vw-2rem))] max-w-none! h-[min(85vh,56rem)] text-xs overflow-hidden gap-0 flex flex-col">
+            <DialogContent className="p-0 w-[min(52rem,calc(100vw-2rem))] h-[min(85vh,56rem)] text-xs overflow-hidden gap-0 flex flex-col">
                 <DialogHeader className="px-4 py-3 border-b">
                     <DialogTitle className="text-sm">
                         {t('Settings')}
@@ -61,12 +61,11 @@ function Body() {
 
     const modifierKeyNames = getModifierKeyNames();
 
-    const languageOptions: [string, string][] = [
-        ['system', t('System language')],
-        ...Object.entries(langNames),
-    ];
+    const languageOptions: [string, string][] = [['system', t('System language')], ...Object.entries(langNames)];
 
     return (<>
+        <SectionHeader title={t('General')} />
+
         <SettingRow label={<span className="flex items-center gap-1.5"><GlobeIcon className="size-3.5" /> App language</span>}>
             <SettingSelect
                 value={s.language ?? 'system'}
