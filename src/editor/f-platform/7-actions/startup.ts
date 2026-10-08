@@ -1,12 +1,15 @@
 import i18n from "i18next";
 import { jotaiDefaultStore } from "@/utils/local-utils/9-jotai-default-store";
+
 import { userSettings } from "@/editor/0-core/9-state/user-settings";
+
 import { getAppInfo, mainEvents } from "@/editor/0-core/7-actions/0-main-api";
+
 import { isStoreBuild } from "@/editor/0-core/8-lib/util";
-import { mifiLinkAtom, newVersionAtom } from "../9-state/platform";
+import { mifiLinkAtom, newVersionAtom } from "../9-state/a-platform";
 import { parseMifiLink, shouldShowWhatsNew } from "../8-lib/versions";
-import { openWhatsNewDialog } from "../0-ui/whats-new-dialog";
-import { showNewVersionNotice } from "../0-ui/new-version-notice";
+import { openDialog_WhatsNew } from "../0-ui/1-dlg-whats-new";
+import { showNotice_NewVersion } from "../0-ui/3-new-version-notice";
 
 const mifiConfigUrl = 'https://losslesscut.mifi.no/config.json';
 
@@ -18,7 +21,7 @@ function setNewVersion(version: string | undefined) {
         return;
     }
     jotaiDefaultStore.set(newVersionAtom, version);
-    setTimeout(() => showNewVersionNotice(version), noticeDelayMs);
+    setTimeout(() => showNotice_NewVersion(version), noticeDelayMs);
 }
 
 async function loadMifiLink() {
@@ -41,7 +44,7 @@ function checkWhatsNew() {
     }
     userSettings.lastAppVersion = version;
     if (shouldShowWhatsNew(lastVersion, version)) {
-        openWhatsNewDialog({ fromVersion: lastVersion, toVersion: version });
+        openDialog_WhatsNew({ fromVersion: lastVersion, toVersion: version });
     }
 }
 
@@ -54,14 +57,14 @@ function runPlatformStartup() {
     }
 }
 
-let initialized = false;
-
 /**
  * Feature modules are imported before initEditor() has loaded app info and user settings,
  * so start once i18n is initialized, which is the last step of initEditor().
  */
 export function initPlatform() {
-    if (initialized) return;
+    if (initialized) {
+        return;
+    }
     initialized = true;
 
     // the main process update check usually finishes after the window has loaded
@@ -77,3 +80,5 @@ export function initPlatform() {
         i18n.on('initialized', onInitialized);
     }
 }
+
+let initialized = false;

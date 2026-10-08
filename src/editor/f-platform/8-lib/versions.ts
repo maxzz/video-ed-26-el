@@ -1,18 +1,25 @@
 import { homepageUrl } from "@shared/constants";
 
 // Release links of this app (shared/constants.ts getReleaseUrl/compareReleasesUrl point to upstream LosslessCut)
-export const getAppReleaseUrl = (version: string) => `${homepageUrl}/releases/tag/v${version}`;
-export const getAppCompareReleasesUrl = (fromVersion: string, toVersion: string) => `${homepageUrl}/compare/v${fromVersion}...v${toVersion}`;
+export function getAppReleaseUrl(version: string) {
+    return `${homepageUrl}/releases/tag/v${version}`;
+}
+export function getAppCompareReleasesUrl(fromVersion: string, toVersion: string) {
+    return `${homepageUrl}/compare/v${fromVersion}...v${toVersion}`;
+}
 
 const versionRegex = /^v?\d+(\.\d+)*(-.*)?$/;
 
-export const isValidVersion = (version: string | undefined): version is string => version != null && versionRegex.test(version);
+export function isValidVersion(version: string | undefined): version is string {
+    return version != null && versionRegex.test(version);
+}
 
 /** Numeric comparison of dotted versions, ignoring prerelease tags. Returns < 0 if a < b */
 export function compareVersions(a: string, b: string) {
     const parse = (v: string) => v.replace(/^v/, '').split('-')[0]!.split('.').map((n) => parseInt(n, 10) || 0);
     const pa = parse(a);
     const pb = parse(b);
+    
     for (let i = 0; i < Math.max(pa.length, pb.length); i += 1) {
         const diff = (pa[i] ?? 0) - (pb[i] ?? 0);
         if (diff !== 0) {
