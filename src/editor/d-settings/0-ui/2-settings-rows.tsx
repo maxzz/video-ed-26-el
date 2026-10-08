@@ -19,9 +19,16 @@ export function SettingRow({ label, details, children }: { label: ReactNode; det
             animate={{ opacity: 1 }}
         >
             <div className="min-w-0 flex-1">
-                <div>{label}</div>
-                {details && <div className="mt-1 text-[0.7rem] text-muted-foreground">{details}</div>}
+                <div>
+                    {label}
+                </div>
+                {details && (
+                    <div className="mt-1 text-[0.7rem] text-muted-foreground">
+                        {details}
+                    </div>
+                )}
             </div>
+
             <div className="shrink-0 max-w-[50%] flex flex-wrap items-center justify-end gap-1.5">
                 {children}
             </div>
@@ -42,10 +49,15 @@ export function SettingSelect<T extends string>({ value, options, onChange, disa
             <SelectTrigger className={className ?? 'max-w-60 min-w-36 text-xs'} size="sm">
                 <SelectValue />
             </SelectTrigger>
+
             <SelectContent position="popper" align="end">
-                {entries.map(([key, label]) => (
-                    <SelectItem key={key} value={key} className="text-xs">{label}</SelectItem>
-                ))}
+                {entries.map(
+                    ([key, label]) => (
+                        <SelectItem key={key} value={key} className="text-xs">
+                            {label}
+                        </SelectItem>
+                    )
+                )}
             </SelectContent>
         </Select>
     );

@@ -11,42 +11,46 @@ import { userSettings } from "@/editor/0-core/9-state/user-settings";
 import { AppOptions } from "@/components/4-dialogs/8-3-options/1-app-options";
 import { defaultConfig } from "@shared/default-config";
 
-import { langNames, type SupportedLanguage } from "@shared/i18n";
+import { type SupportedLanguage, langNames } from "@shared/i18n";
 import { type CaptureFormat, type Config, type EnableImportChapters, type ModifierKey, type TimecodeFormat } from "@shared/types";
 import { getEnableImportChaptersOptions, isStoreBuild } from "@/editor/0-core/8-lib/util";
 import { settingsVisibleAtom, showAdvancedSettingsAtom, toggleKeyboardShortcuts } from "@/components/2-main/0-all/a-panels-atoms";
 import { getModifierKeyNames } from "@/editor/c-keyboard/8-lib/actions-map";
 import { askForCleanupChoices } from "@/editor/7-export/7-actions/export-actions";
-import { changeCustomFfPath, clearCustomFfPath, requestTuner, setLanguage, setShowAdvancedSettings, toggleExportConfirmEnabled, toggleStoreProjectInWorkingDir } from "../7-actions/settings-actions";
-import { SectionHeader, SettingRow, SettingSelect } from "./settings-rows";
-import { OutDirSelector } from "./out-dir-selector";
+import { changeCustomFfPath, clearCustomFfPath, requestTuner, setLanguage, setShowAdvancedSettings, toggleExportConfirmEnabled, toggleStoreProjectInWorkingDir } from "../7-actions/8-settings-actions";
+import { SectionHeader, SettingRow, SettingSelect } from "./2-settings-rows";
+import { DropdownMenu_OutDirSelector } from "./3-menu-out-dir-selector";
 
 // Port of upstream components/Settings.tsx
 
-export function SettingsDialog() {
-    const { t } = useTranslation();
+export function Dialog_Settings() {
     const [open, setOpen] = useAtom(settingsVisibleAtom);
+    const { t } = useTranslation();
 
     return (
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogContent className="p-0 w-[min(52rem,calc(100vw-2rem))] max-w-none! h-[min(85vh,56rem)] text-xs overflow-hidden gap-0 flex flex-col">
                 <DialogHeader className="px-4 py-3 border-b">
-                    <DialogTitle className="text-sm">{t('Settings')}</DialogTitle>
-                    <DialogDescription className="text-xs">{t('Hover mouse over buttons in the main interface to see which function they have')}</DialogDescription>
+                    <DialogTitle className="text-sm">
+                        {t('Settings')}
+                    </DialogTitle>
+                    <DialogDescription className="text-xs">
+                        {t('Hover mouse over buttons in the main interface to see which function they have')}
+                    </DialogDescription>
                 </DialogHeader>
 
                 <div className="px-4 pb-4 min-h-0 overflow-y-auto flex-1">
-                    {open && <SettingsBody />}
+                    {open && <Body />}
                 </div>
             </DialogContent>
         </Dialog>
     );
 }
 
-function SettingsBody() {
-    const { t } = useTranslation();
+function Body() {
     const s = useSnapshot(userSettings);
     const showAdvancedSettings = useAtomValue(showAdvancedSettingsAtom);
+    const { t } = useTranslation();
 
     const timecodeFormatOptions: Record<TimecodeFormat, string> = {
         frameCount: t('Frame counts'),
@@ -139,7 +143,7 @@ function SettingsBody() {
         </SettingRow>
 
         <SettingRow label={t('Working directory')} details={t('This is where working files and exported files are stored.')}>
-            <OutDirSelector />
+            <DropdownMenu_OutDirSelector />
         </SettingRow>
 
         {showAdvancedSettings && (<>
@@ -380,6 +384,7 @@ function TunerSetting({ text, onClick }: { text: string; onClick: () => void; })
 function AppOptionsSection() {
     return (<>
         <SectionHeader title="Application" />
+
         <div className="py-2 flex flex-col gap-3">
             <AppOptions />
         </div>

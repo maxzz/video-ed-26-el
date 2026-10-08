@@ -23,7 +23,9 @@ export async function setLanguage(language: SupportedLanguage | null) {
 
 export async function changeCustomFfPath() {
     const newCustomFfPath = await askDialog_ForFfPath(userSettings.customFfPath);
-    if (newCustomFfPath == null) return;
+    if (newCustomFfPath == null) {
+        return;
+    }
     userSettings.customFfPath = newCustomFfPath;
 }
 
@@ -33,7 +35,9 @@ export function clearCustomFfPath() {
 
 export async function changeOutDir() {
     const newOutDir = await askDialog_ForOutDir(jotaiDefaultStore.get(customOutDirAtom));
-    if (newOutDir) setCustomOutDir(newOutDir);
+    if (newOutDir) {
+        setCustomOutDir(newOutDir);
+    }
 }
 
 export function clearRecentOutDirs() {
