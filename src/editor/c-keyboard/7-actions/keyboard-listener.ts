@@ -7,7 +7,7 @@ import { isWindows } from "@/editor/0-core/7-actions/0-main-api";
 import { type KeyBinding, type KeyboardAction } from "@shared/types";
 import { isAnyDialogOpenAtom } from "@/components/4-dialogs/7-0-dialogs/1-dialogs";
 import { getKeyupAction, hasAction, runAction } from "@/editor/0-core/7-actions/kbd-actions";
-import { type MenuAction, runMenuAction } from "@/editor/0-core/menu-actions";
+import { type MenuAction, runMenuAction } from "@/components/1-header/1-top-menu-actions";
 import { allModifiers, altModifiers, controlModifiers, metaModifiers, shiftModifiers } from "@/editor/0-core/8-lib/utils-kbd";
 import { anyPanelOpenAtom, closeExportConfirm, commandPaletteOpenAtom, exportConfirmOpenAtom } from "@/components/2-main/0-all/a-panels-atoms";
 import { creatingBindingAtom } from "../9-state/keyboard-atoms";
