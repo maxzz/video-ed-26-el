@@ -5,14 +5,14 @@ import { Button } from "@/ui/shadcn/button";
 import { Input } from "@/ui/shadcn/input";
 import { Label } from "@/ui/shadcn/label";
 import { DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/ui/shadcn/dialog";
-import { openCustomDialog } from "@/components/4-dialogs/7-0-dialogs/dialogs";
+import { open_CustomDialog } from "@/components/4-dialogs/7-0-dialogs/1-dialogs";
 
 // Port of upstream openShiftSegmentsDialog (GenericDialog.tsx)
 
 export function open_ShiftSegmentsDialog({ inputPlaceholder, parseTimecode }: { inputPlaceholder: string; parseTimecode: (s: string) => number | undefined; }) {
     const state = proxy({ start: '', end: '' });
 
-    return openCustomDialog<ShiftResult>(
+    return open_CustomDialog<ShiftResult>(
         (close) => <Body state={state} inputPlaceholder={inputPlaceholder} parseTimecode={parseTimecode} close={close} />
     );
 }

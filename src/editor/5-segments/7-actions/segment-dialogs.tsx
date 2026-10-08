@@ -4,7 +4,7 @@ import pMap from "p-map";
 import invariant from "tiny-invariant";
 import i18n from "i18next";
 
-import { fireDialog } from "@/components/4-dialogs/7-0-dialogs/dialogs";
+import { fire_Dialog } from "@/components/4-dialogs/7-0-dialogs/1-dialogs";
 import { UserFacingError } from "@/editor/0-core/8-lib/9-error-types";
 
 import { mainApi } from "@/editor/0-core/7-actions/0-main-api";
@@ -190,7 +190,7 @@ export async function reorderSegmentDialog(index: number) {
     if (numSegments < 2) {
         return;
     }
-    const { value } = await fireDialog({
+    const { value } = await fire_Dialog({
         title: `${i18n.t('Change order of segment')} ${index + 1}`,
         text: i18n.t('Please enter a number from 1 to {{n}} to be the new order for the current segment', { n: numSegments }),
         input: 'text',

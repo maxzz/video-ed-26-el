@@ -3,10 +3,10 @@ import invariant from "tiny-invariant";
 import { jotaiDefaultStore } from "@/utils/local-utils/9-jotai-default-store";
 import { customOutDirAtom, effectiveExportModeAtom, hideAllNotificationsAtom, prefersReducedMotionAtom, setCustomOutDir, userSettings } from "@/editor/0-core/9-state/user-settings";
 import { isWorking, setProgress, setWorking, withErrorHandling } from "@/editor/0-core/9-state/working";
-import { askForOutDir } from "@/components/4-dialogs/7-1-dialogs/02-ask-for-out-dir";
-import { showExportFailedDialog } from "@/components/4-dialogs/7-1-dialogs/11-show-export-failed-dialog";
-import { type CleanupChoicesType, confirmDialog, deleteFiles, errorToast } from "@/components/4-dialogs/7-1-dialogs/00-app-dialogs";
-import { showDiskFull, showMuxNotSupported, showOutputNotWritable, showRefuseToOverwrite } from "@/components/4-dialogs/7-1-dialogs/24-dlg-error-toasts";
+import { askDialog_ForOutDir } from "@/components/4-dialogs/7-1-dialogs/02-ask-for-out-dir";
+import { showDialog_ExportFailed } from "@/components/4-dialogs/7-1-dialogs/11-show-export-failed-dialog";
+import { type CleanupChoicesType, dialog_Confirm, dialog_DeleteFiles, show_ErrorToast } from "@/components/4-dialogs/7-1-dialogs/00-app-dialogs";
+import { showDialog_DiskFull, showDialog_MuxNotSupported, showDialog_OutputNotWritable, showDialog_RefuseToOverwrite } from "@/components/4-dialogs/7-1-dialogs/24-dlg-error-toasts";
 import { UserFacingError } from "@/editor/0-core/8-lib/9-error-types";
 import { isIphoneHevc, isProblematicAvc1, RefuseOverwriteError } from "@/editor/0-core/8-lib/ffmpeg/ffmpeg";
 import { isMatroska } from "@/editor/0-core/8-lib/ffmpeg/streams";
@@ -59,7 +59,7 @@ function getReportState() {
 }
 
 export async function handleExportFailed(err: unknown) {
-    const sendErrorReport = await showExportFailedDialog({ fileFormat: jotaiDefaultStore.get(fileFormatAtom), safeOutputFileName: userSettings.safeOutputFileName });
+    const sendErrorReport = await showDialog_ExportFailed({ fileFormat: jotaiDefaultStore.get(fileFormatAtom), safeOutputFileName: userSettings.safeOutputFileName });
     if (sendErrorReport) dialog_SendReport_open({ err, state: getReportState() });
 }
 
@@ -69,22 +69,22 @@ export function handleFfmpegFailure(err: unknown) {
         console.error('stderr:', getStdioString(err.stderr));
 
         if (isOutOfSpaceError(err)) {
-            showDiskFull();
+            showDialog_DiskFull();
             return true;
         }
         if (isMuxNotSupported(err)) {
-            showMuxNotSupported();
+            showDialog_MuxNotSupported();
             return true;
         }
     }
 
     if (err instanceof OutputNotWritableError) {
-        showOutputNotWritable();
+        showDialog_OutputNotWritable();
         return true;
     }
 
     if (err instanceof UserFacingError) {
-        errorToast(err.message);
+        show_ErrorToast(err.message);
         return true;
     }
     return false;
@@ -115,7 +115,7 @@ export async function cleanupFiles(cleanupChoices2: CleanupChoicesType) {
         if (cleanupChoices2.trashProjectFile && savedPaths.projectFilePath) pathsToDelete.push(savedPaths.projectFilePath);
         if (cleanupChoices2.trashSourceFile && savedPaths.sourceFilePath) pathsToDelete.push(savedPaths.sourceFilePath);
 
-        await deleteFiles({ paths: pathsToDelete, deleteIfTrashFails: cleanupChoices2.deleteIfTrashFails, signal: abortController.signal });
+        await dialog_DeleteFiles({ paths: pathsToDelete, deleteIfTrashFails: cleanupChoices2.deleteIfTrashFails, signal: abortController.signal });
     }, i18n.t('Unable to delete file'));
 }
 
@@ -147,12 +147,12 @@ export async function onExportConfirm() {
     emitEvent({ eventName: 'export-start', path: filePath });
 
     if (jotaiDefaultStore.get(numStreamsToCopyAtom) === 0) {
-        errorToast(i18n.t('No tracks selected for export'));
+        show_ErrorToast(i18n.t('No tracks selected for export'));
         return;
     }
 
     if (jotaiDefaultStore.get(haveInvalidSegsAtom)) {
-        errorToast(i18n.t('Start time must be before end time'));
+        show_ErrorToast(i18n.t('Start time must be before end time'));
         return;
     }
 
@@ -179,7 +179,7 @@ export async function onExportConfirm() {
         if (segmentsToChaptersOnly) {
             const sortedSegments = sortSegments(jotaiDefaultStore.get(segmentsOrInverseAtom).selected);
             if (hasAnySegmentOverlap(sortedSegments)) {
-                errorToast(i18n.t('Make sure you have no overlapping segments.'));
+                show_ErrorToast(i18n.t('Make sure you have no overlapping segments.'));
                 return;
             }
             // matroska supports gaps, so we can use segments directly
@@ -370,7 +370,7 @@ export function toggleSafeOutputFileName() {
 }
 
 export async function changeOutDir() {
-    const newOutDir = await askForOutDir(jotaiDefaultStore.get(outputDirAtom));
+    const newOutDir = await askDialog_ForOutDir(jotaiDefaultStore.get(outputDirAtom));
     if (newOutDir) setCustomOutDir(newOutDir);
 }
 
@@ -422,11 +422,11 @@ async function extractStreamsWithFeedback({ streams, workingText, successText, o
         showOsNotification(failText);
 
         if (err instanceof RefuseOverwriteError) {
-            showRefuseToOverwrite();
+            showDialog_RefuseToOverwrite();
         } else if (err instanceof UserFacingError) {
-            errorToast(err.message);
+            show_ErrorToast(err.message);
         } else {
-            errorToast(failText);
+            show_ErrorToast(failText);
             console.error(failText, err);
         }
     } finally {
@@ -437,7 +437,7 @@ async function extractStreamsWithFeedback({ streams, workingText, successText, o
 export async function extractAllStreams() {
     if (!jotaiDefaultStore.get(filePathAtom)) return;
 
-    if (!(await confirmDialog({ description: i18n.t('Please confirm that you want to extract all tracks as separate files'), confirmButtonText: i18n.t('Extract all tracks') }))) return;
+    if (!(await dialog_Confirm({ description: i18n.t('Please confirm that you want to extract all tracks as separate files'), confirmButtonText: i18n.t('Extract all tracks') }))) return;
 
     if (isWorking()) return;
     jotaiDefaultStore.set(streamsSelectorShownAtom, false);

@@ -1,9 +1,9 @@
 import i18n from "i18next";
 import invariant from "tiny-invariant";
 import { setCustomOutDir } from "@/editor/0-core/9-state/user-settings";
-import { askForOutDir } from "@/components/4-dialogs/7-1-dialogs/02-ask-for-out-dir";
-import { showOpenDialog } from "@/components/4-dialogs/7-1-dialogs/01-show-open-dialog";
-import { errorToast } from "@/components/4-dialogs/7-1-dialogs/00-app-dialogs";
+import { askDialog_ForOutDir } from "@/components/4-dialogs/7-1-dialogs/02-ask-for-out-dir";
+import { showDialog_Open } from "@/components/4-dialogs/7-1-dialogs/01-show-open-dialog";
+import { show_ErrorToast } from "@/components/4-dialogs/7-1-dialogs/00-app-dialogs";
 import { DirectoryAccessDeclinedError } from "@/editor/0-core/8-lib/9-error-types";
 import { mainApi } from "@/editor/0-core/7-actions/0-main-api";
 import { fs } from "@/editor/0-core/8-lib/node-shims";
@@ -15,7 +15,7 @@ import { checkDirWriteAccess, getFileDir, getOutDir } from "@/editor/0-core/8-li
 const masMode = false;
 
 export async function askForInputDir(defaultPath?: string | undefined) {
-    const { filePaths } = await showOpenDialog({
+    const { filePaths } = await showDialog_Open({
         properties: ['openDirectory', 'createDirectory'],
         ...(defaultPath != null && { defaultPath }),
         title: i18n.t('Please confirm folder'),
@@ -34,7 +34,7 @@ export async function ensureAccessToSourceDir(inputPath: string) {
         if (await checkDirWriteAccess(inputFileDir)) break;
 
         if (!masMode) {
-            errorToast(i18n.t('You have no write access to the directory of this file'));
+            show_ErrorToast(i18n.t('You have no write access to the directory of this file'));
             throw new DirectoryAccessDeclinedError();
         }
 
@@ -63,12 +63,12 @@ export async function ensureWritableOutDir({ inputPath, outDir }: { inputPath?: 
     const hasDirWriteAccess = effectiveOutDirPath != null && await checkDirWriteAccess(effectiveOutDirPath);
     if (!hasDirWriteAccess) {
         if (masMode) {
-            const newOutDir = await askForOutDir(effectiveOutDirPath);
+            const newOutDir = await askDialog_ForOutDir(effectiveOutDirPath);
             if (!newOutDir) throw new DirectoryAccessDeclinedError();
             setCustomOutDir(newOutDir);
             newCustomOutDir = newOutDir;
         } else {
-            errorToast(i18n.t('You have no write access to the directory of this file, please select a custom working dir'));
+            show_ErrorToast(i18n.t('You have no write access to the directory of this file, please select a custom working dir'));
             setCustomOutDir(undefined);
             throw new DirectoryAccessDeclinedError();
         }

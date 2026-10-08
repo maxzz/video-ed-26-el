@@ -1,7 +1,7 @@
 import { type KeyBinding, type KeyboardAction } from "@shared/types";
 import { jotaiDefaultStore } from "@/utils/local-utils/9-jotai-default-store";
 import { userSettingsAtom } from "@/editor/0-core/9-state/user-settings";
-import { isAnyDialogOpenAtom } from "@/components/4-dialogs/7-0-dialogs/dialogs";
+import { isAnyDialogOpenAtom } from "@/components/4-dialogs/7-0-dialogs/1-dialogs";
 import { getKeyupAction, hasAction, runAction } from "@/editor/0-core/7-actions/kbd-actions";
 import { isWindows } from "@/editor/0-core/7-actions/0-main-api";
 import { runMenuAction, type MenuAction } from "@/editor/0-core/menu-actions";

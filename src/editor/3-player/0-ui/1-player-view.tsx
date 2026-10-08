@@ -26,16 +26,6 @@ import { NoFileLoaded } from "./no-file-loaded";
 import { PlaybackStreamSelector } from "./playback-stream-selector";
 import { VolumeControl } from "./volume-control";
 
-const setVideoElement = (el: HTMLVideoElement | null) => { jotaiDefaultStore.set(videoElementAtom, el); };
-const setVideoContainer = (el: HTMLDivElement | null) => { jotaiDefaultStore.set(videoContainerElementAtom, el); };
-
-const handleDurationChange = (e: SyntheticEvent<HTMLVideoElement>) => onDurationChange(e.currentTarget.duration);
-const handleTimeUpdate = (e: SyntheticEvent<HTMLVideoElement>) => onTimeUpdate(e.currentTarget.currentTime);
-const handleClick = () => togglePlay();
-// prevent video element from stealing focus in fullscreen mode https://github.com/mifi/lossless-cut/issues/543#issuecomment-1868167775
-const handleFocus = (e: FocusEvent<HTMLVideoElement>) => e.target.blur();
-const preventDefault = (e: DragEvent) => e.preventDefault();
-
 /** The middle part of the editor (also shown in fullscreen): video, compat player, drop zone and player overlays */
 export function PlayerView() {
     const isFileOpened = useAtomValue(isFileOpenedAtom);
@@ -100,12 +90,15 @@ function CompatPlayer() {
 }
 
 function CompatPlayerBanner() {
-    const { t } = useTranslation();
     const compatPlayerEnabled = useAtomValue(compatPlayerEnabledAtom);
     const compatPlayerRequired = useAtomValue(compatPlayerRequiredAtom);
     const isRotationSet = useAtomValue(isRotationSetAtom);
     const mediaSourceQuality = useAtomValue(mediaSourceQualityAtom);
-    if (!compatPlayerEnabled) return null;
+    const { t } = useTranslation();
+    
+    if (!compatPlayerEnabled) {
+        return null;
+    }
 
     return (
         <div className="absolute top-0 left-0 right-0 mt-3 ml-3 text-sm text-foreground/70 flex items-center gap-1 pointer-events-none">
@@ -148,12 +141,26 @@ function PlayerControls() {
 
 function FullscreenProgress() {
     const fullscreen = useAtomValue(fullscreenAtom);
-    if (!fullscreen) return null;
+    if (!fullscreen) {
+        return null;
+    }
     return <FullscreenProgressBar />;
 }
+
+//---------------------------------------------------------------------------
 
 function FullscreenProgressBar() {
     const playerTime = useAtomValue(playerTimeAtom);
     const fileDuration = useAtomValue(fileDurationAtom);
     return <div className="absolute bottom-0 left-0 h-0.5 bg-red-600" style={{ width: calculateTimelinePercent(playerTime, fileDuration) }} />;
 }
+
+const setVideoElement = (el: HTMLVideoElement | null) => { jotaiDefaultStore.set(videoElementAtom, el); };
+const setVideoContainer = (el: HTMLDivElement | null) => { jotaiDefaultStore.set(videoContainerElementAtom, el); };
+
+const handleDurationChange = (e: SyntheticEvent<HTMLVideoElement>) => onDurationChange(e.currentTarget.duration);
+const handleTimeUpdate = (e: SyntheticEvent<HTMLVideoElement>) => onTimeUpdate(e.currentTarget.currentTime);
+const handleClick = () => togglePlay();
+// prevent video element from stealing focus in fullscreen mode https://github.com/mifi/lossless-cut/issues/543#issuecomment-1868167775
+const handleFocus = (e: FocusEvent<HTMLVideoElement>) => e.target.blur();
+const preventDefault = (e: DragEvent) => e.preventDefault();

@@ -5,9 +5,9 @@ import { type FFprobeStream } from "@shared/ffprobe";
 import { jotaiDefaultStore } from "@/utils/local-utils/9-jotai-default-store";
 import { customOutDirAtom, userSettings } from "@/editor/0-core/9-state/user-settings";
 import { isWorking, setProgress, setWorking } from "@/editor/0-core/9-state/working";
-import { showConcatFailedDialog } from "@/components/4-dialogs/7-1-dialogs/12-show-concat-failed-dialog";
-import { errorToast } from "@/components/4-dialogs/7-1-dialogs/00-app-dialogs";
-import { showDiskFull, showMuxNotSupported, showOutputNotWritable } from "@/components/4-dialogs/7-1-dialogs/24-dlg-error-toasts";
+import { showDialog_ConcatFailed } from "@/components/4-dialogs/7-1-dialogs/12-show-concat-failed-dialog";
+import { show_ErrorToast } from "@/components/4-dialogs/7-1-dialogs/00-app-dialogs";
+import { showDialog_DiskFull, showDialog_MuxNotSupported, showDialog_OutputNotWritable } from "@/components/4-dialogs/7-1-dialogs/24-dlg-error-toasts";
 import { DirectoryAccessDeclinedError, UserFacingError } from "@/editor/0-core/8-lib/9-error-types";
 import { createChaptersFromSegments } from "@/editor/0-core/8-lib/ffmpeg/ffmpeg";
 import { parsePath } from "@/editor/0-core/8-lib/node-shims";
@@ -58,7 +58,7 @@ function getSettingsForReport() {
 }
 
 async function handleConcatFailed(err: unknown, reportState: object) {
-    const sendErrorReport = await showConcatFailedDialog({ fileFormat: jotaiDefaultStore.get(fileFormatAtom) });
+    const sendErrorReport = await showDialog_ConcatFailed({ fileFormat: jotaiDefaultStore.get(fileFormatAtom) });
     if (sendErrorReport) openSendReportDialog({ err, state: { ...getSettingsForReport(), ...reportState } });
 }
 
@@ -158,22 +158,22 @@ export async function userConcatFiles({ paths, includeAllStreams, streams, fileF
             console.error('stderr:', getStdioString(err.stderr));
 
             if (isOutOfSpaceError(err)) {
-                showDiskFull();
+                showDialog_DiskFull();
                 return;
             }
             if (isMuxNotSupported(err)) {
-                showMuxNotSupported();
+                showDialog_MuxNotSupported();
                 return;
             }
         }
 
         if (err instanceof OutputNotWritableError) {
-            showOutputNotWritable();
+            showDialog_OutputNotWritable();
             return;
         }
 
         if (err instanceof UserFacingError) {
-            errorToast(err.message);
+            show_ErrorToast(err.message);
             return;
         }
 

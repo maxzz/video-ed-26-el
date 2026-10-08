@@ -1,6 +1,6 @@
 import { useTranslation } from "react-i18next";
 import { mainApi } from "@/editor/0-core/7-actions/0-main-api";
-import { toast } from "@/components/4-dialogs/7-0-dialogs/toast";
+import { toast } from "@/components/4-dialogs/7-0-dialogs/3-toast";
 import { getAppReleaseUrl } from "../8-lib/versions";
 
 export function showNewVersionNotice(version: string) {

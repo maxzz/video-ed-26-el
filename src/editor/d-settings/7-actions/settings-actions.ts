@@ -1,8 +1,8 @@
 import { type SupportedLanguage } from "@shared/i18n";
 import { jotaiDefaultStore } from "@/utils/local-utils/9-jotai-default-store";
 import { customOutDirAtom, setCustomOutDir, userSettings } from "@/editor/0-core/9-state/user-settings";
-import { askForFfPath } from "@/components/4-dialogs/7-1-dialogs/03-ask-for-ff-path";
-import { askForOutDir } from "@/components/4-dialogs/7-1-dialogs/02-ask-for-out-dir";
+import { askDialog_ForFfPath } from "@/components/4-dialogs/7-1-dialogs/03-ask-for-ff-path";
+import { askDialog_ForOutDir } from "@/components/4-dialogs/7-1-dialogs/02-ask-for-out-dir";
 import { settingsVisibleAtom, showAdvancedSettingsAtom, tunerVisibleAtom, type TunerType } from "@/components/2-main/0-all/a-panels-atoms";
 import { changeLanguage } from "@/editor/e-i18n/i18n";
 
@@ -22,7 +22,7 @@ export async function setLanguage(language: SupportedLanguage | null) {
 }
 
 export async function changeCustomFfPath() {
-    const newCustomFfPath = await askForFfPath(userSettings.customFfPath);
+    const newCustomFfPath = await askDialog_ForFfPath(userSettings.customFfPath);
     if (newCustomFfPath == null) return;
     userSettings.customFfPath = newCustomFfPath;
 }
@@ -32,7 +32,7 @@ export function clearCustomFfPath() {
 }
 
 export async function changeOutDir() {
-    const newOutDir = await askForOutDir(jotaiDefaultStore.get(customOutDirAtom));
+    const newOutDir = await askDialog_ForOutDir(jotaiDefaultStore.get(customOutDirAtom));
     if (newOutDir) setCustomOutDir(newOutDir);
 }
 

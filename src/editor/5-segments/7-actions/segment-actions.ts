@@ -13,12 +13,12 @@ import { UserFacingError } from "@/editor/0-core/8-lib/9-error-types";
 import { getFileSize, shuffleArray } from "@/editor/0-core/8-lib/util";
 import { maxSegmentsAllowed } from "@/editor/0-core/8-lib/constants";
 import { parseTimecode, timecodePlaceholderAtom } from "@/editor/0-core/9-state/timecode";
-import { askForAlignSegments } from "@/components/4-dialogs/7-1-dialogs/10-ask-for-align-segments";
-import { askForSegmentDuration } from "@/components/4-dialogs/7-1-dialogs/07-ask-for-segment-duration";
+import { askDialog_ForAlignSegments } from "@/components/4-dialogs/7-1-dialogs/10-ask-for-align-segments";
+import { askDialog_ForSegmentDuration } from "@/components/4-dialogs/7-1-dialogs/07-ask-for-segment-duration";
 import {
-    createFixedByteSixedSegments as createFixedByteSixedSegmentsDialog,
-    createNumSegments as createNumSegmentsDialog, createRandomSegments as createRandomSegmentsDialog, errorToast,
-    labelSegmentDialog, selectSegmentsByLabelDialog, toastError,
+    createDialog_FixedByteSixedSegments as createFixedByteSixedSegmentsDialog,
+    createNumSegments as createNumSegmentsDialog, createRandomSegments as createRandomSegmentsDialog, show_ErrorToast,
+    dialog_LabelSegment, dialog_SelectSegmentsByLabel, toastError,
 } from "@/components/4-dialogs/7-1-dialogs/00-app-dialogs";
 import { findKeyframeNearTime, mapTimesToSegments, readFrames } from "@/editor/0-core/8-lib/ffmpeg/ffmpeg";
 import { fileDurationAtom, filePathAtom, mainFileMetaAtom } from "@/editor/2-file/9-state/a-file-atoms";
@@ -174,7 +174,7 @@ export function invertAllSegments() {
     const sortedSegments = sortSegments(jotaiDefaultStore.get(selectedSegmentsAtom));
     const inverseSegmentsAndMarkers = invertSegments(sortedSegments, true, true, fileDuration);
     if (inverseSegmentsAndMarkers.length === 0) {
-        errorToast(i18n.t('Make sure you have no overlapping segments.'));
+        show_ErrorToast(i18n.t('Make sure you have no overlapping segments.'));
         return;
     }
     // preserve segColorIndex (which represent colors) when inverting
@@ -187,7 +187,7 @@ export function fillSegmentsGaps() {
     const sortedSegments = sortSegments(jotaiDefaultStore.get(selectedSegmentsAtom).map(({ end, ...rest }) => ({ ...rest, end: end ?? rest.start })));
     const inverseSegmentsAndMarkers = invertSegments(sortedSegments, true, true, fileDuration);
     if (inverseSegmentsAndMarkers.length === 0) {
-        errorToast(i18n.t('Make sure you have no overlapping segments.'));
+        show_ErrorToast(i18n.t('Make sure you have no overlapping segments.'));
         return;
     }
     const newSegments = inverseSegmentsAndMarkers.map(({ name: _ignored, ...segment }) => createIndexedSegment({ segment, incrementCount: true }));
@@ -262,7 +262,7 @@ export async function alignSegmentTimesToKeyframes() {
         return;
     }
     try {
-        const response = await askForAlignSegments();
+        const response = await askDialog_ForAlignSegments();
         if (response == null) {
             return;
         }
@@ -408,7 +408,7 @@ export async function labelSegment(index: number) {
     if (seg == null) {
         return;
     }
-    const value = await labelSegmentDialog({ currentName: seg.name, maxLength: jotaiDefaultStore.get(maxLabelLengthAtom) });
+    const value = await dialog_LabelSegment({ currentName: seg.name, maxLength: jotaiDefaultStore.get(maxLabelLengthAtom) });
     if (value != null) {
         updateSegAtIndex(index, { name: value });
     }
@@ -442,7 +442,7 @@ export function splitCurrentSegment() {
     const [index] = findSegmentsAtCursor(cutSegments, relevantTime);
 
     if (index == null) {
-        errorToast(i18n.t('No segment to split. Please move cursor over the segment you want to split'));
+        show_ErrorToast(i18n.t('No segment to split. Please move cursor over the segment you want to split'));
         return;
     }
 
@@ -479,7 +479,7 @@ export async function createFixedDurationSegments() {
     if (!checkFileOpened() || timeline.duration <= 0) {
         return;
     }
-    const segmentDuration = await askForSegmentDuration({ totalDuration: timeline.duration, inputPlaceholder: jotaiDefaultStore.get(timecodePlaceholderAtom), parseTimecode });
+    const segmentDuration = await askDialog_ForSegmentDuration({ totalDuration: timeline.duration, inputPlaceholder: jotaiDefaultStore.get(timecodePlaceholderAtom), parseTimecode });
     if (segmentDuration == null) {
         return;
     }
@@ -544,7 +544,7 @@ export async function createSegmentsFromKeyframes() {
 }
 
 export async function selectSegmentsByLabel() {
-    const value = await selectSegmentsByLabelDialog(jotaiDefaultStore.get(currentCutSegAtom)?.name);
+    const value = await dialog_SelectSegmentsByLabel(jotaiDefaultStore.get(currentCutSegAtom)?.name);
     if (value == null) {
         return;
     }
@@ -560,7 +560,7 @@ export async function labelSelectedSegments() {
     if (firstSelectedSegment == null) {
         return;
     }
-    const value = await labelSegmentDialog({ currentName: firstSelectedSegment.name, maxLength: jotaiDefaultStore.get(maxLabelLengthAtom) });
+    const value = await dialog_LabelSegment({ currentName: firstSelectedSegment.name, maxLength: jotaiDefaultStore.get(maxLabelLengthAtom) });
     if (value == null) {
         return;
     }

@@ -1,10 +1,10 @@
 import i18n from "i18next";
-import { fireDialog } from "../7-0-dialogs/dialogs";
+import { fire_Dialog } from "../7-0-dialogs/1-dialogs";
 
 export const maxSegments = 1000;
 
-export async function askForNumSegments() {
-    const { value } = await fireDialog({
+export async function askDialog_ForNumSegments() {
+    const { value } = await fire_Dialog({
         input: 'number',
         inputAttributes: { min: String(0), max: String(maxSegments) },
         showCancelButton: true,
@@ -16,6 +16,9 @@ export async function askForNumSegments() {
             return i18n.t('Please input a valid number of segments');
         },
     });
-    if (value == null) return undefined;
+    
+    if (value == null) {
+        return undefined;
+    }
     return parseInt(value, 10);
 }

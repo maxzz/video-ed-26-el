@@ -5,10 +5,10 @@ import { jotaiDefaultStore } from "@/utils/local-utils/9-jotai-default-store";
 import { customOutDirAtom, userSettings } from "@/editor/0-core/9-state/user-settings";
 import { formatTimecode, parseTimecode, promptTimecode, timecodePlaceholderAtom } from "@/editor/0-core/9-state/timecode";
 import { isWorking, setWorking } from "@/editor/0-core/9-state/working";
-import { showPlaybackFailedMessage } from "@/components/4-dialogs/7-1-dialogs/14-show-playback-failed-message";
+import { showMessage_PlaybackFailed } from "@/components/4-dialogs/7-1-dialogs/14-show-playback-failed-message";
 import { toastError } from "@/components/4-dialogs/7-1-dialogs/00-app-dialogs";
 import { UserFacingError } from "@/editor/0-core/8-lib/9-error-types";
-import { toast } from "@/components/4-dialogs/7-0-dialogs/toast";
+import { toast } from "@/components/4-dialogs/7-0-dialogs/3-toast";
 import { mediaSourceQualities } from "@/editor/0-core/8-lib/util";
 import { fullscreenAtom } from "@/components/2-main/0-all/a-panels-atoms";
 import { fileDurationAtom, filePathAtom, hasAudioAtom, hasVideoAtom, usingPreviewFileAtom } from "@/editor/2-file/9-state/a-file-atoms";
@@ -72,7 +72,7 @@ export async function onVideoError() {
                     throw err;
                 }
                 console.error(err);
-                showPlaybackFailedMessage();
+                showMessage_PlaybackFailed();
             } finally {
                 setWorking(undefined);
             }

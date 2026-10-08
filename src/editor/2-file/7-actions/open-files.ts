@@ -3,9 +3,9 @@ import invariant from "tiny-invariant";
 import { jotaiDefaultStore } from "@/utils/local-utils/9-jotai-default-store";
 import { customOutDirAtom, userSettings } from "@/editor/0-core/9-state/user-settings";
 import { isWorking, setWorking, withErrorHandling } from "@/editor/0-core/9-state/working";
-import { showOpenDialog } from "@/components/4-dialogs/7-1-dialogs/01-show-open-dialog";
-import { askForFileOpenAction, type OpenFileResponse } from "@/components/4-dialogs/7-1-dialogs/04-ask-for-file-open-action";
-import { errorToast, promptDownloadMediaUrl } from "@/components/4-dialogs/7-1-dialogs/00-app-dialogs";
+import { showDialog_Open } from "@/components/4-dialogs/7-1-dialogs/01-show-open-dialog";
+import { askDialog_ForFileOpenAction, type OpenFileResponse } from "@/components/4-dialogs/7-1-dialogs/04-ask-for-file-open-action";
+import { show_ErrorToast, dialog_PromptDownloadMediaUrl } from "@/components/4-dialogs/7-1-dialogs/00-app-dialogs";
 import { mainApi } from "@/editor/0-core/7-actions/0-main-api";
 import { basename, fs } from "@/editor/0-core/8-lib/node-shims";
 import { getDownloadMediaOutPath, getImportProjectType, readDirRecursively, readVideoTs, resolvePathIfNeeded } from "@/editor/0-core/8-lib/util";
@@ -41,7 +41,7 @@ export async function userOpenFiles(newFilePathsIn?: string[]) {
         for (const path of newFilePaths) {
             const fileStat = await fs.lstat(path);
             if (!fileStat.isFile()) {
-                errorToast(i18n.t('Cannot open anything else than regular files'));
+                show_ErrorToast(i18n.t('Cannot open anything else than regular files'));
                 console.warn('Not a file:', path);
                 return;
             }
@@ -99,7 +99,7 @@ export async function userOpenFiles(newFilePathsIn?: string[]) {
             let openFileResponse: OpenFileResponse | undefined;
             if (inputOptionsKeys.length === 1) [openFileResponse] = inputOptionsKeys;
             if (!enableAskForFileOpenAction && inputOptionsKeys.length > 1) openFileResponse = 'addToBatch';
-            if (enableAskForFileOpenAction && inputOptionsKeys.length > 1) openFileResponse = await askForFileOpenAction(Object.entries(inputOptions) as [OpenFileResponse, string][]);
+            if (enableAskForFileOpenAction && inputOptionsKeys.length > 1) openFileResponse = await askDialog_ForFileOpenAction(Object.entries(inputOptions) as [OpenFileResponse, string][]);
             else if (newFilePaths.length === 1) openFileResponse = 'open';
 
             if (openFileResponse === 'open') {
@@ -146,14 +146,14 @@ export async function openFiles(filePaths: string[]) {
 export async function openFilesDialog() {
     // On Windows and Linux an open dialog can not be both a file selector and a directory selector, so if you set `properties` to `['openFile', 'openDirectory']` on these platforms, a directory selector will be shown. #1995
     const lastOpenedPath = jotaiDefaultStore.get(lastOpenedPathAtom);
-    const { canceled, filePaths } = await showOpenDialog({ properties: ['openFile', 'multiSelections'], ...(lastOpenedPath != null && { defaultPath: lastOpenedPath }), title: i18n.t('Open file') });
+    const { canceled, filePaths } = await showDialog_Open({ properties: ['openFile', 'multiSelections'], ...(lastOpenedPath != null && { defaultPath: lastOpenedPath }), title: i18n.t('Open file') });
     if (canceled) return;
     await userOpenFiles(filePaths);
 }
 
 export async function openDirDialog() {
     const lastOpenedPath = jotaiDefaultStore.get(lastOpenedPathAtom);
-    const { canceled, filePaths } = await showOpenDialog({ properties: ['openDirectory', 'multiSelections'], ...(lastOpenedPath != null && { defaultPath: lastOpenedPath }), title: i18n.t('Open folder') });
+    const { canceled, filePaths } = await showDialog_Open({ properties: ['openDirectory', 'multiSelections'], ...(lastOpenedPath != null && { defaultPath: lastOpenedPath }), title: i18n.t('Open folder') });
     if (canceled) return;
     await userOpenFiles(filePaths);
 }
@@ -164,11 +164,11 @@ export async function promptDownloadMediaUrlWrapper() {
         await withErrorHandling(async () => {
             const newCustomOutDir = await ensureWritableOutDir({ outDir: jotaiDefaultStore.get(customOutDirAtom) });
             if (newCustomOutDir == null) {
-                errorToast(i18n.t('Please select a working directory first'));
+                show_ErrorToast(i18n.t('Please select a working directory first'));
                 return;
             }
             const outPath = getDownloadMediaOutPath(newCustomOutDir, `downloaded-media-${Date.now()}.mkv`);
-            const downloaded = await promptDownloadMediaUrl(outPath);
+            const downloaded = await dialog_PromptDownloadMediaUrl(outPath);
             if (downloaded) await loadMedia({ filePath: outPath });
         }, i18n.t('Failed to download URL'));
     } finally {

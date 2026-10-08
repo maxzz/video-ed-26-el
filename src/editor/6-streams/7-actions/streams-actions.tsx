@@ -5,7 +5,7 @@ import { changeEnabledStreamsExpressionHelpUrl } from "@shared/constants";
 import { jotaiDefaultStore } from "@/utils/local-utils/9-jotai-default-store";
 import { withErrorHandling } from "@/editor/0-core/9-state/working";
 import { mainApi } from "@/editor/0-core/7-actions/0-main-api";
-import { showOpenDialog } from "@/components/4-dialogs/7-1-dialogs/01-show-open-dialog";
+import { showDialog_Open } from "@/components/4-dialogs/7-1-dialogs/01-show-open-dialog";
 import { readFileFfprobeMeta } from "@/editor/0-core/8-lib/ffmpeg/ffmpeg";
 import { type FileParams, type ParamsByFile, type StreamParams } from "@/editor/0-core/8-lib/9-types-core";
 import { openExpressionDialog } from "@/editor/0-core/0-ui/dlg-expression";
@@ -67,7 +67,7 @@ export function removeExternalFile(path: string) {
 
 export async function showIncludeExternalStreamsDialog() {
     await withErrorHandling(async () => {
-        const { canceled, filePaths } = await showOpenDialog({ properties: ['openFile'], title: i18n.t('Include more tracks from other file') });
+        const { canceled, filePaths } = await showDialog_Open({ properties: ['openFile'], title: i18n.t('Include more tracks from other file') });
         const [firstFilePath] = filePaths;
         if (canceled || firstFilePath == null) return;
         await addStreamSourceFile(firstFilePath);

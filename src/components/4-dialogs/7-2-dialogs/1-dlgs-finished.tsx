@@ -3,7 +3,7 @@ import { proxy, useSnapshot } from "valtio";
 import i18n from "i18next";
 import { useTranslation } from "react-i18next";
 import { CircleCheckIcon, InfoIcon } from "lucide-react";
-import { openCustomDialog } from "@/components/4-dialogs/7-0-dialogs/dialogs";
+import { open_CustomDialog } from "@/components/4-dialogs/7-0-dialogs/1-dialogs";
 import { showItemInFolder } from "@/editor/0-core/8-lib/util";
 import { type CleanupChoice, type CleanupChoicesType, ListItem, Notices, OutputIncorrectSeeHelpMenu, UnorderedList, Warnings } from "@/components/4-dialogs/7-1-dialogs/00-app-dialogs";
 import { Button } from "@/ui/shadcn/button";
@@ -18,7 +18,7 @@ import { cn } from "@/utils/classnames";
 //---------------------------------------------------------------------------
 
 export async function openDialog_ExportFinished({ filePath, children, className }: { filePath: string; children: ReactNode; className?: string; }) {
-    const response = await openCustomDialog<boolean>(
+    const response = await open_CustomDialog<boolean>(
         (close) => (
             <DialogContent className={cn('sm:max-w-xl', className)}>
                 <DialogHeader>
@@ -97,7 +97,7 @@ function FinishedList({ title, hasWarnings, warnings, notices, testText }: { tit
 
 export async function openDialog_CleanupFiles(cleanupChoicesInitial: CleanupChoicesType) {
     const choices = proxy<CleanupChoicesType>({ ...cleanupChoicesInitial });
-    return openCustomDialog<CleanupChoicesType>((close) => <CleanupFilesDialogContent choices={choices} close={close} />);
+    return open_CustomDialog<CleanupChoicesType>((close) => <CleanupFilesDialogContent choices={choices} close={close} />);
 }
 
 function CleanupFilesDialogContent({ choices, close }: { choices: CleanupChoicesType; close: (value?: CleanupChoicesType) => void; }) {
@@ -163,7 +163,7 @@ export function CheckRow({ label, checked, disabled, onChange }: { label: ReactN
 
 export async function openDialog_Decimate() {
     const state = proxy({ fps: '20', n: '1' });
-    return openCustomDialog<{ n: number; fps: number; }>((close) => <DecimateDialogContent state={state} close={close} />);
+    return open_CustomDialog<{ n: number; fps: number; }>((close) => <DecimateDialogContent state={state} close={close} />);
 }
 
 function DecimateDialogContent({ state, close }: { state: { fps: string; n: string; }; close: (value?: { n: number; fps: number; }) => void; }) {

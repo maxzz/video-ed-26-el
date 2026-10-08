@@ -1,8 +1,8 @@
 import i18n from "i18next";
-import { fireDialog } from "../7-0-dialogs/dialogs";
+import { fire_Dialog } from "../7-0-dialogs/1-dialogs";
 
-export async function askForImportChapters() {
-    const { isConfirmed } = await fireDialog({
+export async function askDialog_ForImportChapters() {
+    const { isConfirmed } = await fire_Dialog({
         icon: 'question',
         text: i18n.t('This file has embedded chapters. Do you want to import the chapters as cut-segments?'),
         showCancelButton: true,

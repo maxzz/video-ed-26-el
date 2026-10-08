@@ -7,7 +7,7 @@ import { Label } from "@/ui/shadcn/label";
 import { RadioGroup, RadioGroupItem } from "@/ui/shadcn/radio-group";
 import i18n from "i18next";
 
-import { openCustomDialog } from "@/components/4-dialogs/7-0-dialogs/dialogs";
+import { open_CustomDialog } from "@/components/4-dialogs/7-0-dialogs/1-dialogs";
 import { type Html5ifyMode } from "@shared/types";
 
 /** Port of upstream askForHtml5ifySpeed (useHtml5ify) */
@@ -24,7 +24,7 @@ export async function dialogAsync_askForHtml5ifySpeed({ allowedOptions, showReme
         remember: !!initialOption,
     });
 
-    return openCustomDialog<Html5ifyChoice>((close) => (
+    return open_CustomDialog<Html5ifyChoice>((close) => (
         <Body state={state} options={options} showRemember={!!showRemember} close={close} />
     ));
 }

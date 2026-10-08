@@ -1,10 +1,10 @@
 import i18n from "i18next";
-import { fireDialog } from "@/components/4-dialogs/7-0-dialogs/dialogs";
+import { fire_Dialog } from "@/components/4-dialogs/7-0-dialogs/1-dialogs";
 import { parseYouTube } from "./edl-formats";
 
 export async function askForYouTubeInput({ fileDuration }: { fileDuration?: number | undefined; }) {
     const example = i18n.t('YouTube video description\n00:00 Intro\n00:01 Chapter 2\n00:00:02.123 Chapter 3');
-    const { value } = await fireDialog({
+    const { value } = await fire_Dialog({
         title: i18n.t('Import text chapters / YouTube'),
         input: 'textarea',
         inputPlaceholder: example,

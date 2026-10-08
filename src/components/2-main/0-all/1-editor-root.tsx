@@ -1,7 +1,8 @@
 import { useAtomValue } from "jotai";
 import { MotionConfig } from "motion/react";
+
 import { prefersReducedMotionAtom } from "@/editor/0-core/9-state/user-settings";
-import { Dialog_GenericHost } from "@/components/4-dialogs/7-0-dialogs/generic-dialog-host";
+import { Dialog_GenericHost } from "@/components/4-dialogs/7-0-dialogs/2-generic-dialog-host";
 import { batchFilesAtom } from "@/editor/2-file/9-state/a-file-atoms";
 import { showRightBarAtom } from "./a-layout-atoms";
 import { MainArea_Toolbar } from "./3-main-area-toolbar";
@@ -23,11 +24,11 @@ export function EditorRoot() {
                 <MainArea_Toolbar />
 
                 <div className="flex-1 min-h-0 flex">
-                    <BatchArea />
+                    <BatchFilesList_Guard />
                     <div className="flex-1 relative min-w-0 flex flex-col">
                         <PlayerView />
                     </div>
-                    <RightBar />
+                    <Panel_Segments_Guard />
                 </div>
 
                 <Timeline />
@@ -45,13 +46,13 @@ export function EditorRoot() {
     );
 }
 
-function BatchArea() {
+function BatchFilesList_Guard() {
     const batchFiles = useAtomValue(batchFilesAtom);
     if (batchFiles.length === 0) return null;
     return <BatchFilesList />;
 }
 
-function RightBar() {
+function Panel_Segments_Guard() {
     const showRightBar = useAtomValue(showRightBarAtom);
     if (!showRightBar) return null;
     return <Panel_Segments />;

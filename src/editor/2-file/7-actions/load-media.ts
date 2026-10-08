@@ -7,15 +7,15 @@ import { customOutDirAtom, effectiveExportModeAtom, hideAllNotificationsAtom, us
 import { formatTimecode, promptTimecode, timecodePlaceholderAtom } from "@/editor/0-core/9-state/timecode";
 import { isWorking, setProgress, setWorking, withErrorHandling } from "@/editor/0-core/9-state/working";
 import { resetAllFileState } from "@/editor/0-core/7-actions/2-lifecycle";
-import { askForImportChapters } from "@/components/4-dialogs/7-1-dialogs/05-ask-for-import-chapters";
-import { confirmDialog, errorToast } from "@/components/4-dialogs/7-1-dialogs/00-app-dialogs";
+import { askDialog_ForImportChapters } from "@/components/4-dialogs/7-1-dialogs/05-ask-for-import-chapters";
+import { dialog_Confirm, show_ErrorToast } from "@/components/4-dialogs/7-1-dialogs/00-app-dialogs";
 import { DirectoryAccessDeclinedError } from "@/editor/0-core/8-lib/9-error-types";
 import { getDefaultOutFormat, getStreamFps, getTimecodeFromStreams, mapRecommendedDefaultFormat, readFileFfprobeMeta, tryMapChaptersToEdl } from "@/editor/0-core/8-lib/ffmpeg/ffmpeg";
 import { doesPlayerSupportHevcPlayback, getAudioStreams, getRealVideoStreams, isAudioDefinitelyNotSupported, shouldCopyStreamByDefault, willPlayerProperlyHandleVideo } from "@/editor/0-core/8-lib/ffmpeg/streams";
 import { mainApi } from "@/editor/0-core/7-actions/0-main-api";
 import { basename, dirname, join } from "@/editor/0-core/8-lib/node-shims";
 import { showNotification } from "@/editor/0-core/8-lib/notifications";
-import { toast } from "@/components/4-dialogs/7-0-dialogs/toast";
+import { toast } from "@/components/4-dialogs/7-0-dialogs/3-toast";
 import { findExistingHtml5FriendlyFile, getOutFileExtension, getPathReadAccessError, getSuffixedOutPath, havePermissionToReadFile, readFileStats, transferTimestamps } from "@/editor/0-core/8-lib/util";
 import { checkFileOpened } from "@/editor/3-player/7-actions/player-actions";
 import { fixInvalidDuration } from "@/editor/7-export/8-lib/ffmpeg-operations";
@@ -56,7 +56,7 @@ export function closeFile() {
 
 export async function closeFileWithConfirm() {
     if (!jotaiDefaultStore.get(isFileOpenedAtom) || isWorking()) return;
-    if (userSettings.askBeforeClose && !(await confirmDialog({ description: i18n.t('Are you sure you want to close the current file?') }))) return;
+    if (userSettings.askBeforeClose && !(await dialog_Confirm({ description: i18n.t('Are you sure you want to close the current file?') }))) return;
     closeFile();
 }
 
@@ -84,14 +84,14 @@ export async function loadMedia({ filePath: fp, projectPath }: { filePath: strin
 
             // OK, we didn't find a project file, instead maybe try to create project (segments) from chapters
             const edl = tryMapChaptersToEdl(chapters);
-            if (edl.length > 0 && (enableImportChapters === 'always' || (enableImportChapters === 'ask' && (await askForImportChapters())))) {
+            if (edl.length > 0 && (enableImportChapters === 'always' || (enableImportChapters === 'ask' && (await askDialog_ForImportChapters())))) {
                 console.log('Convert chapters to segments', edl);
                 loadCutSegments({ segments: edl, append: false });
             }
         } catch (err) {
             if (err instanceof DirectoryAccessDeclinedError) throw err;
             console.error('EDL load failed, but continuing', err);
-            errorToast(`${i18n.t('Failed to load segments')} (${err instanceof Error && err.message})`);
+            show_ErrorToast(`${i18n.t('Failed to load segments')} (${err instanceof Error && err.message})`);
         }
     }
 
@@ -104,13 +104,13 @@ export async function loadMedia({ filePath: fp, projectPath }: { filePath: strin
             if (pathReadAccessErrorCode === 'ENOENT') errorMessage = i18n.t('The media you tried to open does not exist');
             else if (['EACCES', 'EPERM'].includes(pathReadAccessErrorCode)) errorMessage = i18n.t('You do not have permission to access this file');
             else errorMessage = i18n.t('Could not open media due to error {{errorCode}}', { errorCode: pathReadAccessErrorCode });
-            errorToast(errorMessage);
+            show_ErrorToast(errorMessage);
             return;
         }
 
         // Not sure why this one is needed, but I think sometimes fs.access doesn't fail but it fails when actually trying to read
         if (!(await havePermissionToReadFile(fp))) {
-            errorToast(i18n.t('You do not have permission to access this file'));
+            show_ErrorToast(i18n.t('You do not have permission to access this file'));
             return;
         }
 
@@ -228,7 +228,7 @@ export async function userOpenSingleFile({ path: pathIn, isLlcProject }: { path:
         const mediaFilePath = join(dirname(path), mediaFileName);
 
         if (!(await mainApi.pathExists(mediaFilePath))) {
-            errorToast(i18n.t('The media file referenced by the project file you tried to open does not exist in the same directory as the project file: {{mediaFileName}}', { mediaFileName }));
+            show_ErrorToast(i18n.t('The media file referenced by the project file you tried to open does not exist in the same directory as the project file: {{mediaFileName}}', { mediaFileName }));
             return;
         }
 

@@ -1,17 +1,19 @@
 import i18n from "i18next";
-import { fireDialog } from "../7-0-dialogs/dialogs";
+import { fire_Dialog } from "../7-0-dialogs/1-dialogs";
 
-export async function askForPlaybackRate({ detectedFps, outputPlaybackRate }: { detectedFps: number | undefined; outputPlaybackRate: number; }) {
+export async function askDialog_ForPlaybackRate({ detectedFps, outputPlaybackRate }: { detectedFps: number | undefined; outputPlaybackRate: number; }) {
     const fps = detectedFps || 1;
     const currentFps = fps * outputPlaybackRate;
 
     function parseValue(v: string) {
-        if (v.trim() === '') return 1;
+        if (v.trim() === '') {
+            return 1;
+        }
         const newFps = parseFloat(v);
         return Number.isNaN(newFps) ? undefined : newFps / fps;
     }
 
-    const { value, isConfirmed } = await fireDialog({
+    const { value, isConfirmed } = await fire_Dialog({
         title: i18n.t('Change FPS'),
         input: 'text',
         inputValue: currentFps.toFixed(5),
@@ -19,6 +21,9 @@ export async function askForPlaybackRate({ detectedFps, outputPlaybackRate }: { 
         showCancelButton: true,
         inputValidator: (v) => (parseValue(v) != null ? null : i18n.t('Please enter a valid number.')),
     });
-    if (!isConfirmed || value == null) return undefined;
+
+    if (!isConfirmed || value == null) {
+        return undefined;
+    }
     return parseValue(value);
 }

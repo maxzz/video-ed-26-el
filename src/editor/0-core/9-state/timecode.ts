@@ -1,7 +1,7 @@
 import { atom } from "jotai";
 import i18n from "i18next";
 import { jotaiDefaultStore } from "../../../utils/local-utils/9-jotai-default-store";
-import { fireDialog } from "../../../components/4-dialogs/7-0-dialogs/dialogs";
+import { fire_Dialog } from "../../../components/4-dialogs/7-0-dialogs/1-dialogs";
 
 import { type FormatTimecode, type ParseTimecode } from "../8-lib/9-types-core";
 import { getFrameCountRaw } from "@/editor/9-edl/8-lib/edl-formats";
@@ -78,7 +78,7 @@ export async function promptTimecode({ initialValue, title, description, inputPl
         return duration != null && !Number.isNaN(duration) ? { duration, relDirection } : undefined;
     }
 
-    const { value, isConfirmed } = await fireDialog({
+    const { value, isConfirmed } = await fire_Dialog({
         title,
         text: description,
         input: 'text',

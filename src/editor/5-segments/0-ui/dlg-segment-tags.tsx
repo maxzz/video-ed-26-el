@@ -12,7 +12,7 @@ import { useTranslation } from "react-i18next";
 import { mainApi } from "@/editor/0-core/7-actions/0-main-api";
 import { type SegmentTags } from "@/editor/0-core/8-lib/9-types-core";
 import { segmentTagsSchema } from "@/editor/0-core/8-lib/9-types-core";
-import { errorToast } from "@/components/4-dialogs/7-1-dialogs/00-app-dialogs";
+import { show_ErrorToast } from "@/components/4-dialogs/7-1-dialogs/00-app-dialogs";
 import { editingSegmentTagsAtom, editingSegmentTagsSegmentIndexAtom } from "@/components/2-main/0-all/a-panels-atoms";
 import { closeSegmentTagsEditor, saveSegmentTags } from "../7-actions/segment-dialogs";
 
@@ -99,7 +99,7 @@ async function onPasteClick() {
     try {
         onTagsChange(segmentTagsSchema.parse(JSON.parse(text)));
     } catch (err) {
-        if (err instanceof Error) errorToast(err.message);
+        if (err instanceof Error) show_ErrorToast(err.message);
     }
 }
 

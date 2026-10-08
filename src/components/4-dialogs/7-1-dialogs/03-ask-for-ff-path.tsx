@@ -1,8 +1,8 @@
 import i18n from "i18next";
-import { showOpenDialog } from "./01-show-open-dialog";
+import { showDialog_Open } from "./01-show-open-dialog";
 
-export async function askForFfPath(defaultPath?: string | undefined) {
-    const { filePaths } = await showOpenDialog({
+export async function askDialog_ForFfPath(defaultPath?: string | undefined) {
+    const { filePaths } = await showDialog_Open({
         properties: ['openDirectory'],
         ...(defaultPath != null && { defaultPath }),
         title: i18n.t('Select custom FFmpeg directory'),

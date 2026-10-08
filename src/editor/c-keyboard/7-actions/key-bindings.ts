@@ -2,7 +2,7 @@ import i18n from "i18next";
 import { type KeyBinding, type KeyboardAction } from "@shared/types";
 import { jotaiDefaultStore } from "@/utils/local-utils/9-jotai-default-store";
 import { resetUserSetting, userSettings } from "@/editor/0-core/9-state/user-settings";
-import { confirmDialog } from "@/components/4-dialogs/7-1-dialogs/00-app-dialogs";
+import { dialog_Confirm } from "@/components/4-dialogs/7-1-dialogs/00-app-dialogs";
 import { type KeyboardLayoutMap } from "@/editor/0-core/8-lib/9-types-core";
 import { creatingBindingAtom, keyboardLayoutMapAtom, recordedKeysAtom } from "../9-state/keyboard-atoms";
 import { getActionsMap } from "../8-lib/actions-map";
@@ -25,8 +25,8 @@ export function setKeyBindings(update: (existing: KeyBinding[]) => KeyBinding[])
 
 export async function resetKeyBindings() {
     // double confirmation like upstream
-    if (!(await confirmDialog({ description: i18n.t('Are you sure you want to reset all keyboard bindings?') }))) return;
-    if (!(await confirmDialog({ description: i18n.t('Are you sure you want to reset all keyboard bindings?') }))) return;
+    if (!(await dialog_Confirm({ description: i18n.t('Are you sure you want to reset all keyboard bindings?') }))) return;
+    if (!(await dialog_Confirm({ description: i18n.t('Are you sure you want to reset all keyboard bindings?') }))) return;
     await resetUserSetting('keyBindings');
 }
 
@@ -41,7 +41,7 @@ export function removeInvalidKeyBindings() {
 }
 
 export async function deleteKeyBinding({ action, keys }: KeyBinding) {
-    if (!(await confirmDialog({ description: i18n.t('Are you sure?'), danger: true }))) return;
+    if (!(await dialog_Confirm({ description: i18n.t('Are you sure?'), danger: true }))) return;
     console.log('Delete key binding', action, keys);
     setKeyBindings((existing) => existing.filter((b) => !(b.keys === keys && b.action === action)));
 }
@@ -69,7 +69,7 @@ export async function confirmNewKeyBinding(action: KeyboardAction, keys: string[
 
     const duplicate = userSettings.keyBindings.find((b) => b.keys === keysStr);
     if (duplicate) {
-        const isConfirmed = await confirmDialog({
+        const isConfirmed = await dialog_Confirm({
             confirmButtonText: i18n.t('Replace'),
             description: i18n.t('Combination is already bound to "{{alreadyBoundKey}}". Do you want to replace the existing binding?', { alreadyBoundKey: getActionsMap()[duplicate.action]?.name }),
         });

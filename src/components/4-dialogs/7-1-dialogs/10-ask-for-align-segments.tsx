@@ -1,13 +1,16 @@
 import i18n from "i18next";
+import { fire_Dialog } from "../7-0-dialogs/1-dialogs";
+
 import { type FindKeyframeMode } from "../../../editor/0-core/8-lib/ffmpeg/ffmpeg";
-import { fireDialog } from "../7-0-dialogs/dialogs";
-import { askForSegmentsStartOrEnd } from "./09-ask-for-segments-start-or-end";
+import { askDialog_ForSegmentsStartOrEnd } from "./09-ask-for-segments-start-or-end";
 
-export async function askForAlignSegments() {
-    const startOrEnd = await askForSegmentsStartOrEnd(i18n.t('Do you want to align the segment start or end timestamps to keyframes?'));
-    if (startOrEnd == null) return undefined;
+export async function askDialog_ForAlignSegments() {
+    const startOrEnd = await askDialog_ForSegmentsStartOrEnd(i18n.t('Do you want to align the segment start or end timestamps to keyframes?'));
+    if (startOrEnd == null) {
+        return undefined;
+    }
 
-    const { value: mode } = await fireDialog<FindKeyframeMode | 'opposing'>({
+    const { value: mode } = await fire_Dialog<FindKeyframeMode | 'opposing'>({
         input: 'radio',
         showCancelButton: true,
         inputOptions: {
@@ -19,6 +22,9 @@ export async function askForAlignSegments() {
         inputValue: 'before',
         text: i18n.t('Do you want to align segment times to the nearest, previous or next keyframe?'),
     });
-    if (mode == null) return undefined;
+    
+    if (mode == null) {
+        return undefined;
+    }
     return { mode, startOrEnd };
 }

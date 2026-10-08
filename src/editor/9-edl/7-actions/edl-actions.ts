@@ -4,7 +4,7 @@ import { jotaiDefaultStore } from "@/utils/local-utils/9-jotai-default-store";
 import { customOutDirAtom } from "@/editor/0-core/9-state/user-settings";
 import { getFrameCount } from "@/editor/0-core/9-state/timecode";
 import { withErrorHandling } from "@/editor/0-core/9-state/working";
-import { openYouTubeChaptersDialog } from "@/components/4-dialogs/7-1-dialogs/00-app-dialogs";
+import { openDialog_YouTubeChaptersDialog } from "@/components/4-dialogs/7-1-dialogs/00-app-dialogs";
 import { detectedFpsAtom, fileDurationAtom, filePathAtom } from "@/editor/2-file/9-state/a-file-atoms";
 import { checkFileOpened } from "@/editor/3-player/7-actions/player-actions";
 import { cutSegmentsAtom, selectedSegmentsAtom } from "@/editor/5-segments/9-state/a-segments-store";
@@ -31,7 +31,7 @@ export async function importEdlFile(type: EdlImportType) {
 
 export async function exportYouTube() {
     if (!checkFileOpened()) return;
-    await openYouTubeChaptersDialog(formatYouTube(jotaiDefaultStore.get(cutSegmentsAtom) as StateSegment[]));
+    await openDialog_YouTubeChaptersDialog(formatYouTube(jotaiDefaultStore.get(cutSegmentsAtom) as StateSegment[]));
 }
 
 /** Native menu: File > Export project > <type>. Exports the selected segments */

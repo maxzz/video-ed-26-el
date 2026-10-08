@@ -10,7 +10,7 @@ import { CheckIcon, ClipboardListIcon, ClipboardPasteIcon, InfoIcon, PencilIcon,
 import { useTranslation } from "react-i18next";
 
 import { mainApi } from "@/editor/0-core/7-actions/0-main-api";
-import { errorToast } from "@/components/4-dialogs/7-1-dialogs/00-app-dialogs";
+import { show_ErrorToast } from "@/components/4-dialogs/7-1-dialogs/00-app-dialogs";
 import { type SegmentTags, segmentTagsSchema } from "@/editor/0-core/8-lib/9-types-core";
 import { CopyClipboardButton } from "@/editor/7-export/0-ui/7-controls";
 import invariant from "tiny-invariant";
@@ -60,7 +60,7 @@ export function TagEditor({ existingTags = emptyObject, customTags = emptyObject
         try {
             onTagsChange(segmentTagsSchema.parse(JSON.parse(text)));
         } catch (e) {
-            if (e instanceof Error) errorToast(e.message);
+            if (e instanceof Error) show_ErrorToast(e.message);
         }
     }
 

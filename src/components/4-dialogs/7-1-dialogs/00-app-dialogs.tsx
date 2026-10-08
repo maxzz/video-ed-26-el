@@ -5,15 +5,15 @@ import pMap from "p-map";
 import { CircleHelpIcon, InfoIcon, TriangleAlertIcon } from "lucide-react";
 import { mainApi } from "../../../editor/0-core/7-actions/0-main-api";
 import { testFailFsOperation, trashFile, unlinkWithRetry } from "../../../editor/0-core/8-lib/util";
-import { fireDialog } from "../7-0-dialogs/dialogs";
-import { toast } from "../7-0-dialogs/toast";
-import { askForNumSegments, maxSegments } from "./06-ask-for-num-segments";
-import { askForSegmentsRandomDurationRange } from "./08-ask-for-segments-random-duration-range";
+import { fire_Dialog } from "../7-0-dialogs/1-dialogs";
+import { toast } from "../7-0-dialogs/3-toast";
+import { askDialog_ForNumSegments, maxSegments } from "./06-ask-for-num-segments";
+import { askDialog_ForSegmentsRandomDurationRange } from "./08-ask-for-segments-random-duration-range";
 
 // Port of upstream dialogs/index.tsx (SweetAlert dialogs replaced by fireDialog)
 
 export async function createNumSegments(totalDuration: number) {
-    const numSegments = await askForNumSegments();
+    const numSegments = await askDialog_ForNumSegments();
     if (numSegments == null) {
         return undefined;
     }
@@ -51,9 +51,9 @@ function parseBytesHuman(str: string) {
     return size;
 }
 
-export async function createFixedByteSixedSegments({ fileDuration, fileSize }: { fileDuration: number; fileSize: number; }) {
+export async function createDialog_FixedByteSixedSegments({ fileDuration, fileSize }: { fileDuration: number; fileSize: number; }) {
     const example = '100 MB';
-    const { value } = await fireDialog({
+    const { value } = await fire_Dialog({
         input: 'text',
         showCancelButton: true,
         inputValue: example,
@@ -70,7 +70,7 @@ export async function createFixedByteSixedSegments({ fileDuration, fileSize }: {
 }
 
 export async function createRandomSegments(totalDuration: number) {
-    const response = await askForSegmentsRandomDurationRange();
+    const response = await askDialog_ForSegmentsRandomDurationRange();
     if (response == null) {
         return undefined;
     }
@@ -87,8 +87,8 @@ export async function createRandomSegments(totalDuration: number) {
     return edl;
 }
 
-export async function openYouTubeChaptersDialog(text: string) {
-    const { isConfirmed } = await fireDialog({
+export async function openDialog_YouTubeChaptersDialog(text: string) {
+    const { isConfirmed } = await fire_Dialog({
         showCloseButton: true,
         showCancelButton: true,
         title: i18n.t('YouTube Chapters'),
@@ -101,11 +101,14 @@ export async function openYouTubeChaptersDialog(text: string) {
             </div>
         ),
     });
-    if (isConfirmed) await mainApi.writeClipboardText(text);
+
+    if (isConfirmed) {
+        await mainApi.writeClipboardText(text);
+    }
 }
 
-export async function labelSegmentDialog({ currentName, maxLength }: { currentName: string; maxLength: number; }) {
-    const { value } = await fireDialog({
+export async function dialog_LabelSegment({ currentName, maxLength }: { currentName: string; maxLength: number; }) {
+    const { value } = await fire_Dialog({
         showCancelButton: true,
         title: i18n.t('Label current segment'),
         inputValue: currentName,
@@ -115,8 +118,8 @@ export async function labelSegmentDialog({ currentName, maxLength }: { currentNa
     return value;
 }
 
-export async function selectSegmentsByLabelDialog(currentName?: string | undefined) {
-    const { value } = await fireDialog({
+export async function dialog_SelectSegmentsByLabel(currentName?: string | undefined) {
+    const { value } = await fire_Dialog({
         showCancelButton: true,
         title: i18n.t('Select segments by label'),
         inputValue: currentName ?? '',
@@ -125,7 +128,11 @@ export async function selectSegmentsByLabelDialog(currentName?: string | undefin
     return value;
 }
 
-export const UnorderedList = ({ children }: { children: ReactNode; }) => <ul className="pl-1 flex flex-col gap-1">{children}</ul>;
+//---------------------------------------------------------------------------
+
+export function UnorderedList({ children }: { children: ReactNode; }) {
+    return <ul className="pl-1 flex flex-col gap-1">{children}</ul>;
+}
 
 export const ListItem = ({ icon, className, children }: { icon: ReactNode; className?: string; children: ReactNode; }) => (
     <li className={`flex items-start gap-1.5 ${className ?? ''}`}>
@@ -134,37 +141,47 @@ export const ListItem = ({ icon, className, children }: { icon: ReactNode; class
     </li>
 );
 
-export const Notices = ({ notices }: { notices: string[]; }) => notices.map((msg) => (
-    <ListItem key={msg} icon={<InfoIcon />} className="text-blue-600 dark:text-blue-400">{msg}</ListItem>
-));
+export function Notices({ notices }: { notices: string[]; }) {
+    return notices.map((msg) => (
+        <ListItem key={msg} icon={<InfoIcon />} className="text-blue-600 dark:text-blue-400">{msg}</ListItem>
+    ));
+}
 
-export const Warnings = ({ warnings }: { warnings: string[]; }) => warnings.map((msg) => (
-    <ListItem key={msg} icon={<TriangleAlertIcon />} className="text-amber-600 dark:text-amber-400">{msg}</ListItem>
-));
+export function Warnings({ warnings }: { warnings: string[]; }) {
+    return warnings.map((msg) => (
+        <ListItem key={msg} icon={<TriangleAlertIcon />} className="text-amber-600 dark:text-amber-400">{msg}</ListItem>
+    ));
+}
 
 export const OutputIncorrectSeeHelpMenu = () => (
     <ListItem icon={<CircleHelpIcon />}>{i18n.t('If output does not look right, see the Help menu.')}</ListItem>
 );
 
-export async function promptDownloadMediaUrl(outPath: string) {
-    const { value } = await fireDialog({
+//---------------------------------------------------------------------------
+
+export async function dialog_PromptDownloadMediaUrl(outPath: string) {
+    const { value } = await fire_Dialog({
         title: i18n.t('Open media from URL'),
         input: 'text',
         inputPlaceholder: 'https://example.com/video.m3u8',
         text: i18n.t('Losslessly download a whole media file from the specified URL, mux it into an mkv file and open it in LosslessCut. This can be useful if you need to download a video from a website, e.g. a HLS streaming video. For example in Chrome you can open Developer Tools and view the network traffic, find the playlist (e.g. m3u8) and copy paste its URL here.'),
         showCancelButton: true,
     });
-    if (!value) return false;
+    if (!value) {
+        return false;
+    }
     await mainApi.ffDownloadMediaUrl(value, outPath);
     return true;
 }
 
-export async function deleteFiles({ paths, deleteIfTrashFails, signal }: { paths: string[]; deleteIfTrashFails?: boolean | undefined; signal: AbortSignal; }) {
+export async function dialog_DeleteFiles({ paths, deleteIfTrashFails, signal }: { paths: string[]; deleteIfTrashFails?: boolean | undefined; signal: AbortSignal; }) {
     const failedToTrashFiles: string[] = [];
 
     for (const path of paths) {
         try {
-            if (testFailFsOperation) throw new Error('test trash failure');
+            if (testFailFsOperation) {
+                throw new Error('test trash failure');
+            }
             await trashFile(path);
             signal.throwIfAborted();
         } catch (err) {
@@ -176,7 +193,7 @@ export async function deleteFiles({ paths, deleteIfTrashFails, signal }: { paths
     if (failedToTrashFiles.length === 0) return;
 
     if (!deleteIfTrashFails) {
-        const { isConfirmed } = await fireDialog({
+        const { isConfirmed } = await fire_Dialog({
             icon: 'warning',
             text: i18n.t('Unable to move file to trash. Do you want to permanently delete it?'),
             confirmButtonText: i18n.t('Permanently delete'),
@@ -189,21 +206,21 @@ export async function deleteFiles({ paths, deleteIfTrashFails, signal }: { paths
     await pMap(failedToTrashFiles, async (path) => unlinkWithRetry(path, { signal }), { concurrency: 5 });
 }
 
-export { toastError } from "../7-0-dialogs/toast";
+export { toastError } from "../7-0-dialogs/3-toast";
 
-export function errorToast(text: string) {
+export function show_ErrorToast(text: string) {
     toast.fire({ icon: 'error', text });
 }
 
 /** Simple confirmation (port of upstream GenericDialog confirmDialog) */
-export async function confirmDialog({ title, description, confirmButtonText, cancelButtonText, danger }: {
+export async function dialog_Confirm({ title, description, confirmButtonText, cancelButtonText, danger }: {
     title?: ReactNode;
     description: ReactNode;
     confirmButtonText?: ReactNode;
     cancelButtonText?: ReactNode;
     danger?: boolean;
 }) {
-    const { isConfirmed } = await fireDialog({
+    const { isConfirmed } = await fire_Dialog({
         title: title ?? i18n.t('Confirm'),
         text: description,
         showCancelButton: true,

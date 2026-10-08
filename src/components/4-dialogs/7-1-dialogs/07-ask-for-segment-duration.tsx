@@ -1,15 +1,12 @@
 import i18n from "i18next";
-import { formatDuration } from "../../../editor/0-core/8-lib/duration";
+import { fire_Dialog } from "../7-0-dialogs/1-dialogs";
+
 import { type ParseTimecode } from "../../../editor/0-core/8-lib/9-types-core";
-import { fireDialog } from "../7-0-dialogs/dialogs";
+import { formatDuration } from "../../../editor/0-core/8-lib/duration";
 import { maxSegments } from "./06-ask-for-num-segments";
 
-export async function askForSegmentDuration({ totalDuration, inputPlaceholder, parseTimecode }: {
-    totalDuration: number;
-    inputPlaceholder: string;
-    parseTimecode: ParseTimecode;
-}) {
-    const { value } = await fireDialog({
+export async function askDialog_ForSegmentDuration({ totalDuration, inputPlaceholder, parseTimecode }: { totalDuration: number; inputPlaceholder: string; parseTimecode: ParseTimecode; }) {
+    const { value } = await fire_Dialog({
         input: 'text',
         showCancelButton: true,
         inputValue: inputPlaceholder,
@@ -26,6 +23,9 @@ export async function askForSegmentDuration({ totalDuration, inputPlaceholder, p
             return i18n.t('Please input a valid duration. Example: {{example}}', { example: inputPlaceholder });
         },
     });
-    if (value == null) return undefined;
+    
+    if (value == null) {
+        return undefined;
+    }
     return parseTimecode(value);
 }

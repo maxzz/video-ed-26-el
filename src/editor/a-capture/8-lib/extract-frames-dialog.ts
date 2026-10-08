@@ -1,11 +1,11 @@
 import i18n from "i18next";
-import { fireDialog } from "@/components/4-dialogs/7-0-dialogs/dialogs";
+import { fire_Dialog } from "@/components/4-dialogs/7-0-dialogs/1-dialogs";
 
 // Port of upstream dialogs/extractFrames.tsx
 
 export async function askDialog_ExtractFramesAsImages({ segmentsNumFrames, plural, fps }: { segmentsNumFrames: number; plural: boolean; fps: number; }) {
 
-    const { value: captureChoice } = await fireDialog<CaptureChoice>({
+    const { value: captureChoice } = await fire_Dialog<CaptureChoice>({
         text: i18n.t(plural ? 'Extract frames of the selected segments as images' : 'Extract frames of the current segment as images'),
         icon: 'question',
         input: 'radio',
@@ -105,7 +105,7 @@ export async function askDialog_ExtractFramesAsImages({ segmentsNumFrames, plura
     estimatedMaxNumFiles += 1; // just to be sure
 
     if (estimatedMaxNumFiles > 1000) {
-        const { isConfirmed } = await fireDialog({
+        const { isConfirmed } = await fire_Dialog({
             icon: 'warning',
             text: i18n.t('Note that depending on input parameters, up to {{estimatedMaxNumFiles}} files may be produced!', { estimatedMaxNumFiles }),
             showCancelButton: true,
@@ -122,6 +122,6 @@ export async function askDialog_ExtractFramesAsImages({ segmentsNumFrames, plura
 type CaptureChoice = 'thumbnailFilter' | 'selectNthSec' | 'selectNthFrame' | 'selectScene' | 'everyFrame';
 
 async function askValue({ text, inputLabel, inputValue, input = 'text' }: { text: string; inputLabel: string; inputValue: string; input?: 'text' | 'number'; }) {
-    const { value } = await fireDialog({ text, icon: 'question', input, inputLabel, inputValue, showCancelButton: true });
+    const { value } = await fire_Dialog({ text, icon: 'question', input, inputLabel, inputValue, showCancelButton: true });
     return value;
 }

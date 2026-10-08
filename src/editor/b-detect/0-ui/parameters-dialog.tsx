@@ -1,12 +1,13 @@
 import { type FormEvent } from "react";
 import { proxy, useSnapshot } from "valtio";
-import { useTranslation } from "react-i18next";
-import { LinkIcon } from "lucide-react";
 import { Button } from "@/ui/shadcn/button";
 import { Input } from "@/ui/shadcn/input";
 import { Label } from "@/ui/shadcn/label";
 import { DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/ui/shadcn/dialog";
-import { openCustomDialog } from "@/components/4-dialogs/7-0-dialogs/dialogs";
+import { LinkIcon } from "lucide-react";
+import { useTranslation } from "react-i18next";
+
+import { open_CustomDialog } from "@/components/4-dialogs/7-0-dialogs/1-dialogs";
 import { mainApi } from "@/editor/0-core/7-actions/0-main-api";
 import { type FfmpegDialog, getHint, getLabel } from "@/editor/0-core/8-lib/ffmpeg/ffmpeg-parameters";
 import { type ParameterDialogParameters } from "../9-state/detect-atoms";
@@ -22,7 +23,7 @@ interface ParametersDialogOptions {
 /** Port of upstream useSegments showParametersDialog. Resolves the edited parameters, or undefined if cancelled */
 export function showParametersDialog(options: ParametersDialogOptions) {
     const state = proxy({ ...options.parameters });
-    return openCustomDialog<ParameterDialogParameters>((close) => <ParametersDialogContent options={options} state={state} close={close} />);
+    return open_CustomDialog<ParameterDialogParameters>((close) => <ParametersDialogContent options={options} state={state} close={close} />);
 }
 
 function ParametersDialogContent({ options: { title, description, dialogType, parameters, docUrl }, state, close }: {

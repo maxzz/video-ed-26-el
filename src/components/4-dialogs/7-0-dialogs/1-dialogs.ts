@@ -59,11 +59,7 @@ export type DialogEntry =
 /** Stack of open dialogs, the last one is on top */
 export const dialogStackAtom = atom<DialogEntry[]>([]);
 
-function removeDialog(id: string) {
-    jotaiDefaultStore.set(dialogStackAtom, (prev) => prev.filter((entry) => entry.id !== id));
-}
-
-export async function fireDialog<T = string>(options: FireDialogOptions): Promise<FireDialogResult<T>> {
+export async function fire_Dialog<T = string>(options: FireDialogOptions): Promise<FireDialogResult<T>> {
     return new Promise((resolve) => {
         const id = nanoid();
         const input = proxy<FireDialogInputState>({
@@ -71,6 +67,7 @@ export async function fireDialog<T = string>(options: FireDialogOptions): Promis
             checked: options.inputValue === true,
             error: undefined,
         });
+
         const entry: DialogEntry = {
             id,
             kind: 'fire',
@@ -81,12 +78,18 @@ export async function fireDialog<T = string>(options: FireDialogOptions): Promis
                 resolve(result as FireDialogResult<T>);
             },
         };
+
+        // Add the entry to the dialog stack
         jotaiDefaultStore.set(dialogStackAtom, (prev) => [...prev, entry]);
     });
 }
 
+function removeDialog(id: string) {
+    jotaiDefaultStore.set(dialogStackAtom, (prev) => prev.filter((entry) => entry.id !== id));
+}
+
 /** Opens any React content as a dialog. `close(value)` resolves the promise; Escape/outside click resolves undefined */
-export async function openCustomDialog<T>(render: (close: (value?: T) => void) => ReactNode): Promise<T | undefined> {
+export async function open_CustomDialog<T>(render: (close: (value?: T) => void) => ReactNode): Promise<T | undefined> {
     return new Promise((resolve) => {
         const id = nanoid();
         const entry: DialogEntry = {
@@ -102,7 +105,7 @@ export async function openCustomDialog<T>(render: (close: (value?: T) => void) =
     });
 }
 
-export function closeAllDialogs() {
+export function close_AllDialogs() {
     for (const entry of jotaiDefaultStore.get(dialogStackAtom)) {
         if (entry.kind === 'fire') {
             entry.resolve({ isConfirmed: false, isDenied: false, isDismissed: true });

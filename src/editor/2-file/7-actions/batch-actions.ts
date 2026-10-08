@@ -4,7 +4,7 @@ import { type BatchFile } from "@/editor/0-core/8-lib/9-types-core";
 import { jotaiDefaultStore } from "@/utils/local-utils/9-jotai-default-store";
 import { userSettings } from "@/editor/0-core/9-state/user-settings";
 import { isWorking, setWorking, withErrorHandling } from "@/editor/0-core/9-state/working";
-import { confirmDialog } from "@/components/4-dialogs/7-1-dialogs/00-app-dialogs";
+import { dialog_Confirm } from "@/components/4-dialogs/7-1-dialogs/00-app-dialogs";
 import { mainApi } from "@/editor/0-core/7-actions/0-main-api";
 import { basename } from "@/editor/0-core/8-lib/node-shims";
 import { batchFilesAtom, filePathAtom, selectedBatchFilesAtom } from "../9-state/a-file-atoms";
@@ -87,7 +87,7 @@ export function onBatchFileSelect(path: string) {
 }
 
 export async function closeBatch() {
-    if (userSettings.askBeforeClose && !(await confirmDialog({ description: i18n.t('Are you sure you want to close the loaded batch of files?') }))) return;
+    if (userSettings.askBeforeClose && !(await dialog_Confirm({ description: i18n.t('Are you sure you want to close the loaded batch of files?') }))) return;
     setBatchFiles([]);
     setSelectedBatchFiles([]);
 }

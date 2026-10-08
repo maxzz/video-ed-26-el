@@ -7,7 +7,7 @@ import i18n from "i18next";
 import { jotaiDefaultStore } from "@/utils/local-utils/9-jotai-default-store";
 import { type StateSegment } from "@/editor/0-core/8-lib/9-types-core";
 import { customOutDirAtom, userSettingsAtom } from "@/editor/0-core/9-state/user-settings";
-import { errorToast } from "@/components/4-dialogs/7-1-dialogs/00-app-dialogs";
+import { show_ErrorToast } from "@/components/4-dialogs/7-1-dialogs/00-app-dialogs";
 import { getAppInfo } from "@/editor/0-core/7-actions/0-main-api";
 import { getSuffixedOutPath } from "@/editor/0-core/8-lib/util";
 import { cutSegmentsAtom } from "@/editor/5-segments/9-state/a-segments-store";
@@ -89,7 +89,7 @@ async function save(operation: SaveOperation | undefined) {
         await saveLlcProject({ savePath: operation.projectFileSavePath, mediaFilePath: operation.filePath, cutSegments: operation.cutSegments });
         lastSaveOperation = operation;
     } catch (err) {
-        errorToast(i18n.t('Unable to save project file'));
+        show_ErrorToast(i18n.t('Unable to save project file'));
         console.error('Failed to save project file', err);
     }
 }

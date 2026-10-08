@@ -10,7 +10,7 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/ui/shadcn/table";
 import { cn } from "@/utils/classnames";
 import { setCustomOutDir, userSettings } from "@/editor/0-core/9-state/user-settings";
-import { askForOutDir } from "@/components/4-dialogs/7-1-dialogs/02-ask-for-out-dir";
+import { askDialog_ForOutDir } from "@/components/4-dialogs/7-1-dialogs/02-ask-for-out-dir";
 import { isMov } from "@/editor/0-core/8-lib/ffmpeg/streams";
 import { basename } from "@/editor/0-core/8-lib/node-shims";
 import { alwaysConcatMultipleFilesAtom, batchFilePathsAtom, detectedFileFormatAtom, fileFormatAtom } from "@/editor/2-file/9-state/a-file-atoms";
@@ -136,7 +136,7 @@ function OutputDirRow() {
     const outputDir = useAtomValue(concatOutputDirAtom);
 
     async function changeOutDir() {
-        const newOutDir = await askForOutDir(outputDir);
+        const newOutDir = await askDialog_ForOutDir(outputDir);
         if (newOutDir) setCustomOutDir(newOutDir);
     }
 

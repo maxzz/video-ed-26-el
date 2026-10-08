@@ -1,8 +1,6 @@
 import { type FormEvent } from "react";
 import { useAtomValue } from "jotai";
 import { useSnapshot } from "valtio";
-import i18n from "i18next";
-import { CircleAlertIcon, CircleCheckIcon, CircleHelpIcon, InfoIcon, TriangleAlertIcon } from "lucide-react";
 import { classNames } from "@/utils";
 import { Button } from "@/ui/shadcn/button";
 import { Input } from "@/ui/shadcn/input";
@@ -12,20 +10,23 @@ import { Label } from "@/ui/shadcn/label";
 import { RadioGroup, RadioGroupItem } from "@/ui/shadcn/radio-group";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/ui/shadcn/select";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/ui/shadcn/dialog";
-import { type DialogEntry, type DialogIcon, type FireDialogInputState, type FireDialogOptions, dialogStackAtom } from "./dialogs";
+import { CircleAlertIcon, CircleCheckIcon, CircleHelpIcon, InfoIcon, TriangleAlertIcon } from "lucide-react";
+import i18n from "i18next";
+
+import { type DialogEntry, type DialogIcon, type FireDialogInputState, type FireDialogOptions, dialogStackAtom } from "./1-dialogs";
 
 export function Dialog_GenericHost() {
     const stack = useAtomValue(dialogStackAtom);
     return (<>
         {stack.map((entry) => (
             entry.kind === 'fire'
-                ? <FireDialog key={entry.id} entry={entry} />
-                : <CustomDialog key={entry.id} entry={entry} />
+                ? <Dialog_Fire key={entry.id} entry={entry} />
+                : <Dialog_Custom key={entry.id} entry={entry} />
         ))}
     </>);
 }
 
-function CustomDialog({ entry }: { entry: Extract<DialogEntry, { kind: 'custom'; }>; }) {
+function Dialog_Custom({ entry }: { entry: Extract<DialogEntry, { kind: 'custom'; }>; }) {
     return (
         <Dialog open onOpenChange={(open) => !open && entry.resolve(undefined)}>
             {entry.render(entry.resolve)}
@@ -33,7 +34,7 @@ function CustomDialog({ entry }: { entry: Extract<DialogEntry, { kind: 'custom';
     );
 }
 
-function FireDialog({ entry }: { entry: Extract<DialogEntry, { kind: 'fire'; }>; }) {
+function Dialog_Fire({ entry }: { entry: Extract<DialogEntry, { kind: 'fire'; }>; }) {
     const { options, input, resolve } = entry;
     const {
         title, text, html, icon,
@@ -48,10 +49,12 @@ function FireDialog({ entry }: { entry: Extract<DialogEntry, { kind: 'fire'; }>;
 
     function confirm(e?: FormEvent) {
         e?.preventDefault();
+
         if (options.input === 'checkbox') {
             resolve({ isConfirmed: true, isDenied: false, isDismissed: false, value: input.checked });
             return;
         }
+
         if (options.input) {
             const error = options.inputValidator?.(input.value);
             if (error) {
@@ -61,6 +64,7 @@ function FireDialog({ entry }: { entry: Extract<DialogEntry, { kind: 'fire'; }>;
             resolve({ isConfirmed: true, isDenied: false, isDismissed: false, value: input.value });
             return;
         }
+
         resolve({ isConfirmed: true, isDenied: false, isDismissed: false, value: 'true' });
     }
 
@@ -109,8 +113,11 @@ function FireDialog({ entry }: { entry: Extract<DialogEntry, { kind: 'fire'; }>;
                                 {text}
                             </DialogDescription>
                         )}
+                        
                         {!text && <DialogDescription className="sr-only">{i18n.t('Dialog')}</DialogDescription>}
+                        
                         {html}
+                        
                         {options.input && <FireDialogInput options={options} input={input} />}
                     </div>
 

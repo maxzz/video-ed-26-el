@@ -1,12 +1,12 @@
 import { type ComponentProps, type ReactNode } from "react";
 import { cn } from "@/utils/classnames";
 import { motion, useAnimate } from "motion/react";
-import { toast } from "@/components/4-dialogs/7-0-dialogs/toast";
+import { toast } from "@/components/4-dialogs/7-0-dialogs/3-toast";
 import { CircleHelpIcon, ClipboardIcon } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
 import { mainApi } from "@/editor/0-core/7-actions/0-main-api";
-import { type DialogIcon } from "@/components/4-dialogs/7-0-dialogs/dialogs";
+import { type DialogIcon } from "@/components/4-dialogs/7-0-dialogs/1-dialogs";
 
 export function showHelpText({ icon = 'info', timer = 10000, text }: { icon?: DialogIcon; timer?: number; text: string; }) {
     toast.fire({ icon, timer, text });

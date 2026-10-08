@@ -28,7 +28,7 @@ async function flush() {
             await mainApi.configSet(key, JSON.parse(JSON.stringify(userSettings[key] ?? null)));
         } catch (err) {
             console.error('Failed to set config', key, err);
-            const { toastError } = await import('../../../components/4-dialogs/7-0-dialogs/toast.tsx');
+            const { toastError } = await import('../../../components/4-dialogs/7-0-dialogs/3-toast.tsx');
             toastError(i18n.t('Unable to save your preferences. Try to disable any anti-virus'));
         }
     }

@@ -16,7 +16,7 @@ import { userSettings, userSettingsAtom } from "@/editor/0-core/9-state/user-set
 import { type CaptureFormat } from "@shared/types";
 import { formatTimecodeAtom, getFrameCountAtom } from "@/editor/0-core/9-state/timecode";
 import { hasAction, runAction } from "@/editor/0-core/7-actions/kbd-actions";
-import { askForPlaybackRate } from "@/components/4-dialogs/7-1-dialogs/13-ask-for-playback-rate";
+import { askDialog_ForPlaybackRate } from "@/components/4-dialogs/7-1-dialogs/13-ask-for-playback-rate";
 import { getSegColor as getSegColorRaw } from "@/editor/0-core/8-lib/colors";
 import { exportConfirmOpenAtom } from "@/components/2-main/0-all/a-panels-atoms";
 import { detectedFpsAtom, fileDurationNonZeroAtom, hasAudioAtom, hasVideoAtom, isFileOpenedAtom, isRotationSetAtom, rotationAtom } from "@/editor/2-file/9-state/a-file-atoms";
@@ -319,7 +319,7 @@ function Indicator_PlaybackRate() {
 }
 
 async function handleChangePlaybackRateClick() {
-    const newRate = await askForPlaybackRate({ detectedFps: jotaiDefaultStore.get(detectedFpsAtom), outputPlaybackRate: jotaiDefaultStore.get(outputPlaybackRateAtom) });
+    const newRate = await askDialog_ForPlaybackRate({ detectedFps: jotaiDefaultStore.get(detectedFpsAtom), outputPlaybackRate: jotaiDefaultStore.get(outputPlaybackRateAtom) });
     if (newRate != null) {
         player.setOutputPlaybackRate(newRate);
     }

@@ -1,6 +1,6 @@
 import i18n from "i18next";
 import { Trans } from "react-i18next";
-import { fireDialog } from "../7-0-dialogs/dialogs";
+import { fire_Dialog } from "../7-0-dialogs/1-dialogs";
 
 export const MovSuggestion = ({ fileFormat }: { fileFormat: string | undefined; }) => (fileFormat === 'mp4' ? <li><Trans>Change output <b>Format</b> from <b>MP4</b> to <b>MOV</b></Trans></li> : null);
 export const OutputFormatSuggestion = () => <li><Trans>Select a different output <b>Format</b> (<b>matroska</b> and <b>mp4</b> support most codecs)</Trans></li>;
@@ -9,7 +9,7 @@ export const DifferentFileSuggestion = () => <li><Trans>Try with a <b>Different 
 export const HelpSuggestion = () => <li><Trans>See <b>Help</b></Trans> menu</li>;
 export const ErrorReportSuggestion = () => <li><Trans>If nothing helps, you can send an <b>Error report</b></Trans></li>;
 
-export async function showExportFailedDialog({ fileFormat, safeOutputFileName }: { fileFormat: string | undefined; safeOutputFileName: boolean; }) {
+export async function showDialog_ExportFailed({ fileFormat, safeOutputFileName }: { fileFormat: string | undefined; safeOutputFileName: boolean; }) {
     const html = (
         <div className="text-left">
             <Trans>Try one of the following before exporting again:</Trans>
@@ -26,6 +26,16 @@ export async function showExportFailedDialog({ fileFormat, safeOutputFileName }:
             </ol>
         </div>
     );
-    const { isConfirmed } = await fireDialog({ title: i18n.t('Unable to export this file'), icon: 'error', html, showCancelButton: true, cancelButtonText: i18n.t('OK'), confirmButtonText: i18n.t('Report'), focusCancel: true });
+
+    const { isConfirmed } = await fire_Dialog({
+        title: i18n.t('Unable to export this file'),
+        icon: 'error',
+        html,
+        showCancelButton: true,
+        cancelButtonText: i18n.t('OK'),
+        confirmButtonText: i18n.t('Report'),
+        focusCancel: true,
+    });
+    
     return isConfirmed;
 }
