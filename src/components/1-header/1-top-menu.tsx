@@ -7,7 +7,7 @@ import { appName, faqUrl, featureRequestUrl, getReleaseUrl, githubUrl, homepageU
 import { getAppInfo } from "@/editor/0-core/7-actions/0-main-api";
 import { newVersionAtom } from "@/editor/f-platform/9-state/a-platform";
 import { canRedoAtom, canUndoAtom } from "@/editor/5-segments/9-state/a-segments-store";
-import { MenuActionItem, modShortcut } from "./8-menu-item";
+import { MenuActionItem, modShortcut } from "../2-main/0-all/8-menu-item";
 
 export function TopMenu_All() {
     const newVersion = useAtomValue(newVersionAtom);
