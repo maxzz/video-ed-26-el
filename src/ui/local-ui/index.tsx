@@ -1,4 +1,5 @@
 export * from "./4-select-tm";
+export * from "./5-tab-select";
 //export * from "./7-toaster";
 
 export * from "./8-image-holder";
