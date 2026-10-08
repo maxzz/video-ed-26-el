@@ -1,10 +1,12 @@
 import { type ComponentType, useEffect, useRef, useState } from "react";
 import { useAtom, useAtomValue } from "jotai";
+import { MotionConfig } from "motion/react";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/ui/shadcn/dialog";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/ui/shadcn/tabs";
+import { TabSelect } from "@/ui/local-ui/5-tab-select";
 import { useTranslation } from "react-i18next";
 
 import { settingsVisibleAtom, showAdvancedSettingsAtom } from "@/components/2-main/0-all/a-panels-atoms";
+import { prefersReducedMotionAtom } from "@/editor/0-core/9-state/user-settings";
 import { Section_General } from "./4-sections/1-section-general";
 import { Section_ExportOptions } from "./4-sections/2-section-export";
 import { Section_Snapshots } from "./4-sections/3-section-snapshots";
@@ -31,6 +33,7 @@ const settingsSections: { id: SettingsSectionId; titleKey: string; Panel: Compon
 
 export function Dialog_Settings() {
     const [open, setOpen] = useAtom(settingsVisibleAtom);
+    const reducedMotion = useAtomValue(prefersReducedMotionAtom);
     const { t } = useTranslation();
 
     return (
@@ -45,9 +48,11 @@ export function Dialog_Settings() {
                     </DialogDescription>
                 </DialogHeader>
 
-                <div className="min-h-0 overflow-hidden flex flex-1">
-                    {open && <Body />}
-                </div>
+                <MotionConfig reducedMotion={reducedMotion ? "always" : "user"}>
+                    <div className="min-h-0 overflow-hidden flex flex-1">
+                        {open && <Body />}
+                    </div>
+                </MotionConfig>
             </DialogContent>
         </Dialog>
     );
@@ -66,34 +71,27 @@ function Body() {
         panelRef.current?.scrollTo(0, 0);
     }, [active]);
 
+    const activeSection = sections.find((item) => item.id === active) ?? sections[0];
+    const Panel = activeSection?.Panel;
+
     return (
-        <Tabs
-            orientation="vertical"
-            value={active}
-            onValueChange={(value) => setSection(value as SettingsSectionId)}
-            className="min-w-0 min-h-0 flex flex-1 gap-0"
-        >
-            <div className="shrink-0 min-h-0 w-60 bg-muted/30 border-r overflow-y-auto">
-                <TabsList className="p-2 w-full bg-transparent rounded-none flex-col items-stretch justify-start gap-0.5">
-                    {sections.map((item) => (
-                        <TabsTrigger
-                            key={item.id}
-                            value={item.id}
-                            className="whitespace-normal px-2.5 py-2 w-full h-auto text-left flex-none justify-start"
-                        >
-                            {t(item.titleKey)}
-                        </TabsTrigger>
-                    ))}
-                </TabsList>
-            </div>
+        <div className="min-w-0 min-h-0 flex flex-1 gap-0">
+            <TabSelect<SettingsSectionId>
+                aria-label={t('Settings')}
+                className="shrink-0 min-h-0 w-60 bg-muted/30 border-r overflow-y-auto"
+                items={sections.map((item) => ({ value: item.id, label: t(item.titleKey) }))}
+                orientation="vertical"
+                value={active}
+                onValueChange={setSection}
+            />
 
             <div ref={panelRef} className="min-w-0 min-h-0 overflow-y-auto flex-1">
-                {sections.map(({ id, Panel }) => (
-                    <TabsContent key={id} value={id} className="px-4 py-2 text-xs">
+                {Panel && (
+                    <div className="px-4 py-2 text-xs">
                         <Panel />
-                    </TabsContent>
-                ))}
+                    </div>
+                )}
             </div>
-        </Tabs>
+        </div>
     );
 }
