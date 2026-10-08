@@ -1,6 +1,7 @@
 import pMap from "p-map";
-import { type CaptureFormat } from "@shared/types";
 import { userSettings } from "@/editor/0-core/9-state/user-settings";
+
+import { type CaptureFormat } from "@shared/types";
 import { formatTimecode } from "@/editor/0-core/9-state/timecode";
 import { fs } from "@/editor/0-core/8-lib/node-shims";
 import { assertFileExists, escapeRegExp, fsOperationWithRetry, getOutDir, getOutPath, getSuffixedFileName, getSuffixedOutPath, transferTimestamps } from "@/editor/0-core/8-lib/util";
@@ -9,33 +10,6 @@ import { getNumDigits, isDurationValid } from "@/editor/5-segments/8-lib/segment
 import { appendFfmpegCommandLog } from "@/editor/7-export/9-state/export-atoms";
 
 // Port of upstream useFrameCapture
-
-const extensionByFormat: Record<CaptureFormat, string> = { jpeg: 'jpeg', png: 'png', webp: 'webp' };
-
-async function getFrameFromVideo(video: HTMLVideoElement, format: CaptureFormat, quality: number) {
-    const canvas = document.createElement('canvas');
-    canvas.width = video.videoWidth;
-    canvas.height = video.videoHeight;
-    canvas.getContext('2d')!.drawImage(video, 0, 0);
-
-    const blob = await new Promise<Blob | null>((resolve) => canvas.toBlob(resolve, `image/${format}`, quality));
-    if (blob == null) throw new Error('Failed to capture frame from video element');
-    // Chromium silently falls back to png for unsupported formats, so derive the extension from what we got
-    const actualFormat = (blob.type.replace(/^image\//, '') || format) as CaptureFormat;
-    return { data: new Uint8Array(await blob.arrayBuffer()), ext: extensionByFormat[actualFormat] ?? actualFormat };
-}
-
-function transferCaptureTimestamps({ filePath, outPath, time, fileDuration }: { filePath: string; outPath: string; time: number; fileDuration: number | undefined; }) {
-    return transferTimestamps({
-        inPath: filePath,
-        outPath,
-        cutFrom: time,
-        cutTo: time,
-        duration: isDurationValid(fileDuration) ? fileDuration : undefined,
-        treatInputFileModifiedTimeAsStart: userSettings.treatInputFileModifiedTimeAsStart,
-        treatOutputFileModifiedTimeAsStart: userSettings.treatOutputFileModifiedTimeAsStart,
-    });
-}
 
 export async function captureFramesRange({ customOutDir, filePath, fps, fromTime, toTime, estimatedMaxNumFiles, captureFormat, quality, filter, onProgress, outputTimestamps }: {
     customOutDir: string | undefined;
@@ -80,20 +54,28 @@ export async function captureFramesRange({ customOutDir, filePath, fps, fromTime
     const regexp = new RegExp(`^${escapeRegExp(getSuffixedFileName(filePath, tmpSuffix))}(\\d+)`);
     const matches = files.flatMap((fileName) => {
         const match = fileName.match(regexp);
-        if (!match) return [];
+        if (!match) {
+            return [];
+        }
         const frameNum = parseInt(match[1]!, 10);
-        if (Number.isNaN(frameNum) || frameNum < 0) return [];
+        if (Number.isNaN(frameNum) || frameNum < 0) {
+            return [];
+        }
         return [{ fileName, frameNum }];
     });
 
     console.log('Renaming temp files...');
-    const outPaths = await pMap(matches, async ({ fileName, frameNum }) => {
-        const duration = formatTimecode({ seconds: fromTime + (frameNum / fps), fileNameFriendly: true });
-        const renameFromPath = getOutPath({ customOutDir, filePath, fileName });
-        const renameToPath = getOutPath({ customOutDir, filePath, fileName: getSuffixedFileName(filePath, getSuffix(duration)) });
-        await fsOperationWithRetry(async () => fs.rename(renameFromPath, renameToPath));
-        return renameToPath;
-    }, { concurrency: 1 });
+
+    const outPaths = await pMap(matches,
+        async ({ fileName, frameNum }) => {
+            const duration = formatTimecode({ seconds: fromTime + (frameNum / fps), fileNameFriendly: true });
+            const renameFromPath = getOutPath({ customOutDir, filePath, fileName });
+            const renameToPath = getOutPath({ customOutDir, filePath, fileName: getSuffixedFileName(filePath, getSuffix(duration)) });
+            await fsOperationWithRetry(async () => fs.rename(renameFromPath, renameToPath));
+            return renameToPath;
+        },
+        { concurrency: 1 }
+    );
 
     return outPaths[0];
 }
@@ -140,3 +122,32 @@ export async function captureFrameFromTag({ customOutDir, filePath, time, captur
 export const captureFrameToClipboard = async ({ filePath, time, quality }: { filePath: string; time: number; quality: number; }) => (
     ffmpeg.captureFrameToClipboard({ timestamp: time, videoPath: filePath, quality })
 );
+
+const extensionByFormat: Record<CaptureFormat, string> = { jpeg: 'jpeg', png: 'png', webp: 'webp' };
+
+async function getFrameFromVideo(video: HTMLVideoElement, format: CaptureFormat, quality: number) {
+    const canvas = document.createElement('canvas');
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
+    canvas.getContext('2d')!.drawImage(video, 0, 0);
+
+    const blob = await new Promise<Blob | null>((resolve) => canvas.toBlob(resolve, `image/${format}`, quality));
+    if (blob == null) {
+        throw new Error('Failed to capture frame from video element');
+    }
+    // Chromium silently falls back to png for unsupported formats, so derive the extension from what we got
+    const actualFormat = (blob.type.replace(/^image\//, '') || format) as CaptureFormat;
+    return { data: new Uint8Array(await blob.arrayBuffer()), ext: extensionByFormat[actualFormat] ?? actualFormat };
+}
+
+function transferCaptureTimestamps({ filePath, outPath, time, fileDuration }: { filePath: string; outPath: string; time: number; fileDuration: number | undefined; }) {
+    return transferTimestamps({
+        inPath: filePath,
+        outPath,
+        cutFrom: time,
+        cutTo: time,
+        duration: isDurationValid(fileDuration) ? fileDuration : undefined,
+        treatInputFileModifiedTimeAsStart: userSettings.treatInputFileModifiedTimeAsStart,
+        treatOutputFileModifiedTimeAsStart: userSettings.treatOutputFileModifiedTimeAsStart,
+    });
+}

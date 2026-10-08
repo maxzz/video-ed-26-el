@@ -34,7 +34,7 @@ import { areWeCuttingAtom, cutFileTemplateOrDefaultAtom, cutMergedFileTemplateOr
 import { concatCutSegments, cutMultiple, decimate, extractStreams, fixInvalidDuration, OutputNotWritableError, tryDeleteFiles } from "../8-lib/ffmpeg-operations";
 import { defaultCutFileTemplate } from "../8-lib/output-name-template";
 import { showNotification, showOsNotification } from "@/editor/0-core/8-lib/notifications";
-import { openCleanupFilesDialog, openCutFinishedDialog, openDecimateDialog, openExportFinishedDialog } from "../../../components/4-dialogs/7-2-dialogs/finished-dialogs";
+import { openDialog_CleanupFiles, openDialog_CutFinished, openDialog_Decimate, openDialog_ExportFinished } from "../../../components/4-dialogs/7-2-dialogs/1-dlgs-finished";
 import { generateCutMergedOutFileNames, generateOutSegFileNames } from "./out-file-names";
 
 // Port of the export flow of upstream App.tsx
@@ -120,7 +120,7 @@ export async function cleanupFiles(cleanupChoices2: CleanupChoicesType) {
 }
 
 export async function askForCleanupChoices() {
-    const trashResponse = await openCleanupFilesDialog(userSettings.cleanupChoices);
+    const trashResponse = await openDialog_CleanupFiles(userSettings.cleanupChoices);
     if (trashResponse != null) userSettings.cleanupChoices = trashResponse; // Store for next time, if not canceled
     return trashResponse;
 }
@@ -314,7 +314,7 @@ export async function onExportConfirm() {
         invariant(revealPath != null);
         if (!jotaiDefaultStore.get(hideAllNotificationsAtom)) {
             showOsNotification(i18n.t('Export finished'));
-            openCutFinishedDialog({ filePath: revealPath, warnings: [...warnings], notices: [...notices] });
+            openDialog_CutFinished({ filePath: revealPath, warnings: [...warnings], notices: [...notices] });
         }
 
         increaseExportCount();
@@ -416,7 +416,7 @@ async function extractStreamsWithFeedback({ streams, workingText, successText, o
         const [firstExtractedPath] = await extractStreams({ customOutDir: jotaiDefaultStore.get(customOutDirAtom), streams });
         if (!jotaiDefaultStore.get(hideAllNotificationsAtom) && firstExtractedPath != null) {
             showOsNotification(osSuccessText);
-            openExportFinishedDialog({ filePath: firstExtractedPath, children: successText });
+            openDialog_ExportFinished({ filePath: firstExtractedPath, children: successText });
         }
     } catch (err) {
         showOsNotification(failText);
@@ -467,7 +467,7 @@ export { tryFixInvalidDuration };
 
 export async function tryDecimate() {
     if (!checkFileOpened()) return;
-    const params = await openDecimateDialog();
+    const params = await openDialog_Decimate();
     if (params == null) return;
     await runAndReloadFile({
         operation: async ({ filePath: fp, outPath }) => decimate({ filePath: fp, outPath, ...params }),

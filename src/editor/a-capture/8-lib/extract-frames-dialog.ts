@@ -3,14 +3,8 @@ import { fireDialog } from "@/components/4-dialogs/7-0-dialogs/dialogs";
 
 // Port of upstream dialogs/extractFrames.tsx
 
-type CaptureChoice = 'thumbnailFilter' | 'selectNthSec' | 'selectNthFrame' | 'selectScene' | 'everyFrame';
+export async function askDialog_ExtractFramesAsImages({ segmentsNumFrames, plural, fps }: { segmentsNumFrames: number; plural: boolean; fps: number; }) {
 
-async function askValue({ text, inputLabel, inputValue, input = 'text' }: { text: string; inputLabel: string; inputValue: string; input?: 'text' | 'number'; }) {
-    const { value } = await fireDialog({ text, icon: 'question', input, inputLabel, inputValue, showCancelButton: true });
-    return value;
-}
-
-export async function askExtractFramesAsImages({ segmentsNumFrames, plural, fps }: { segmentsNumFrames: number; plural: boolean; fps: number; }) {
     const { value: captureChoice } = await fireDialog<CaptureChoice>({
         text: i18n.t(plural ? 'Extract frames of the selected segments as images' : 'Extract frames of the current segment as images'),
         icon: 'question',
@@ -27,7 +21,9 @@ export async function askExtractFramesAsImages({ segmentsNumFrames, plural, fps 
         } satisfies Record<CaptureChoice, string>,
     });
 
-    if (!captureChoice) return undefined;
+    if (!captureChoice) {
+        return undefined;
+    }
 
     let filter: string | undefined;
     let estimatedMaxNumFiles = segmentsNumFrames;
@@ -38,9 +34,13 @@ export async function askExtractFramesAsImages({ segmentsNumFrames, plural, fps 
             inputLabel: i18n.t('Enter the max number of seconds between each image (decimal)'),
             inputValue: '5',
         });
-        if (value == null) return undefined;
+        if (value == null) {
+            return undefined;
+        }
         const intervalFrames = Math.round(parseFloat(value) * fps);
-        if (Number.isNaN(intervalFrames) || intervalFrames < 1 || intervalFrames > 1000) return undefined; // a too large value uses a lot of memory
+        if (Number.isNaN(intervalFrames) || intervalFrames < 1 || intervalFrames > 1000) {
+            return undefined; // a too large value uses a lot of memory
+        }
 
         filter = `thumbnail=${intervalFrames}`;
         estimatedMaxNumFiles = Math.round(segmentsNumFrames / intervalFrames);
@@ -55,9 +55,13 @@ export async function askExtractFramesAsImages({ segmentsNumFrames, plural, fps 
                 inputValue: '30',
                 input: 'number',
             });
-            if (value == null) return undefined;
+            if (value == null) {
+                return undefined;
+            }
             const intervalFrames = parseInt(value, 10);
-            if (Number.isNaN(intervalFrames) || intervalFrames < 1) return undefined;
+            if (Number.isNaN(intervalFrames) || intervalFrames < 1) {
+                return undefined;
+            }
             nthFrame = intervalFrames;
         } else {
             const value = await askValue({
@@ -65,9 +69,13 @@ export async function askExtractFramesAsImages({ segmentsNumFrames, plural, fps 
                 inputLabel: i18n.t('Enter the number of seconds between each image (decimal)'),
                 inputValue: '5',
             });
-            if (value == null) return undefined;
+            if (value == null) {
+                return undefined;
+            }
             const intervalFrames = Math.round(parseFloat(value) * fps);
-            if (Number.isNaN(intervalFrames) || intervalFrames < 1) return undefined;
+            if (Number.isNaN(intervalFrames) || intervalFrames < 1) {
+                return undefined;
+            }
             nthFrame = intervalFrames;
         }
 
@@ -81,9 +89,13 @@ export async function askExtractFramesAsImages({ segmentsNumFrames, plural, fps 
             inputLabel: i18n.t('Enter a decimal number between 0 and 1 (sane values are 0.3 - 0.5)'),
             inputValue: '0.4',
         });
-        if (value == null) return undefined;
+        if (value == null) {
+            return undefined;
+        }
         const minSceneChange = parseFloat(value);
-        if (Number.isNaN(minSceneChange) || minSceneChange <= 0 || minSceneChange >= 1) return undefined;
+        if (Number.isNaN(minSceneChange) || minSceneChange <= 0 || minSceneChange >= 1) {
+            return undefined;
+        }
 
         filter = `select=gt(scene\\,${minSceneChange})`;
         // we don't know estimatedMaxNumFiles here
@@ -99,8 +111,17 @@ export async function askExtractFramesAsImages({ segmentsNumFrames, plural, fps 
             showCancelButton: true,
             confirmButtonText: i18n.t('Confirm'),
         });
-        if (!isConfirmed) return undefined;
+        if (!isConfirmed) {
+            return undefined;
+        }
     }
 
     return { filter, estimatedMaxNumFiles };
+}
+
+type CaptureChoice = 'thumbnailFilter' | 'selectNthSec' | 'selectNthFrame' | 'selectScene' | 'everyFrame';
+
+async function askValue({ text, inputLabel, inputValue, input = 'text' }: { text: string; inputLabel: string; inputValue: string; input?: 'text' | 'number'; }) {
+    const { value } = await fireDialog({ text, icon: 'question', input, inputLabel, inputValue, showCancelButton: true });
+    return value;
 }

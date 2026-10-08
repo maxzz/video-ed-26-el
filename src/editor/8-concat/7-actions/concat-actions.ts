@@ -21,7 +21,7 @@ import { concatDialogOpenAtom } from "@/components/2-main/0-all/a-panels-atoms";
 import { concatFiles, maybeMkDeepOutDir, OutputNotWritableError } from "@/editor/7-export/8-lib/ffmpeg-operations";
 import { type GeneratedOutFileNames } from "@/editor/7-export/8-lib/output-name-template";
 import { showOsNotification } from "@/editor/0-core/8-lib/notifications";
-import { openConcatFinishedDialog } from "@/components/4-dialogs/7-2-dialogs/finished-dialogs";
+import { openDialog_ConcatFinished } from "@/components/4-dialogs/7-2-dialogs/1-dlgs-finished";
 import {
     concatClearBatchFilesAfterConcatAtom, concatEnableReadFileMetaAtom, concatFilesMetaAtom, concatFirstPathAtom, concatIncludeAllStreamsAtom,
     concatMergedFileTemplateAtom, concatOutputDirAtom, concatTempMergedFileTemplateAtom, generateConcatFileNames,
@@ -146,7 +146,7 @@ export async function userConcatFiles({ paths, includeAllStreams, streams, fileF
 
         if (userSettings.hideNotifications !== 'all') {
             showOsNotification(i18n.t('Merge finished'));
-            openConcatFinishedDialog({ filePath: outPath, notices: [...notices], warnings: [...warnings] });
+            openDialog_ConcatFinished({ filePath: outPath, notices: [...notices], warnings: [...warnings] });
         }
     } catch (err) {
         if (err instanceof DirectoryAccessDeclinedError || isAbortedError(err)) return;

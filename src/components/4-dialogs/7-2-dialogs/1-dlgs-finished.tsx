@@ -15,43 +15,39 @@ import { cn } from "@/utils/classnames";
 
 // Port of the dialogs of upstream components/GenericDialog.tsx useDialog()
 
-export async function openExportFinishedDialog({ filePath, children, className }: { filePath: string; children: ReactNode; className?: string; }) {
-    const response = await openCustomDialog<boolean>((close) => (
-        <DialogContent className={cn('sm:max-w-xl', className)}>
-            <DialogHeader>
-                <DialogTitle>{i18n.t('Success!')}</DialogTitle>
-                <DialogDescription className="sr-only">{i18n.t('Success!')}</DialogDescription>
-            </DialogHeader>
+//---------------------------------------------------------------------------
 
-            <div className="text-sm">{children}</div>
+export async function openDialog_ExportFinished({ filePath, children, className }: { filePath: string; children: ReactNode; className?: string; }) {
+    const response = await openCustomDialog<boolean>(
+        (close) => (
+            <DialogContent className={cn('sm:max-w-xl', className)}>
+                <DialogHeader>
+                    <DialogTitle>{i18n.t('Success!')}</DialogTitle>
+                    <DialogDescription className="sr-only">{i18n.t('Success!')}</DialogDescription>
+                </DialogHeader>
 
-            <DialogFooter>
-                <Button variant="outline" onClick={() => close(false)}>{i18n.t('Close')}</Button>
-                <Button autoFocus onClick={() => close(true)}>{i18n.t('Show')}</Button>
-            </DialogFooter>
-        </DialogContent>
-    ));
+                <div className="text-sm">{children}</div>
 
-    if (response) showItemInFolder(filePath);
-}
-
-function FinishedList({ title, hasWarnings, warnings, notices, testText }: { title: string; hasWarnings: boolean; warnings: string[]; notices: string[]; testText: string; }) {
-    return (
-        <UnorderedList>
-            <ListItem icon={<CircleCheckIcon />} className={cn('font-bold', hasWarnings ? 'text-amber-600 dark:text-amber-400' : 'text-green-600 dark:text-green-400')}>{title}</ListItem>
-            <Warnings warnings={warnings} />
-            <ListItem icon={<InfoIcon />}>{testText}</ListItem>
-            <OutputIncorrectSeeHelpMenu />
-            <Notices notices={notices} />
-        </UnorderedList>
+                <DialogFooter>
+                    <Button variant="outline" onClick={() => close(false)}>{i18n.t('Close')}</Button>
+                    <Button autoFocus onClick={() => close(true)}>{i18n.t('Show')}</Button>
+                </DialogFooter>
+            </DialogContent>
+        )
     );
+
+    if (response) {
+        showItemInFolder(filePath);
+    }
 }
 
-export async function openCutFinishedDialog({ filePath, warnings, notices }: { filePath: string; warnings: string[]; notices: string[]; }) {
+//---------------------------------------------------------------------------
+
+export async function openDialog_CutFinished({ filePath, warnings, notices }: { filePath: string; warnings: string[]; notices: string[]; }) {
     const hasWarnings = warnings.length > 0;
 
     // https://github.com/mifi/lossless-cut/issues/2048
-    await openExportFinishedDialog({
+    await openDialog_ExportFinished({
         filePath,
         className: 'sm:max-w-3xl',
         children: (
@@ -66,10 +62,10 @@ export async function openCutFinishedDialog({ filePath, warnings, notices }: { f
     });
 }
 
-export async function openConcatFinishedDialog({ filePath, warnings, notices }: { filePath: string; warnings: string[]; notices: string[]; }) {
+export async function openDialog_ConcatFinished({ filePath, warnings, notices }: { filePath: string; warnings: string[]; notices: string[]; }) {
     const hasWarnings = warnings.length > 0;
 
-    await openExportFinishedDialog({
+    await openDialog_ExportFinished({
         filePath,
         className: 'sm:max-w-3xl',
         children: (
@@ -84,9 +80,22 @@ export async function openConcatFinishedDialog({ filePath, warnings, notices }: 
     });
 }
 
+function FinishedList({ title, hasWarnings, warnings, notices, testText }: { title: string; hasWarnings: boolean; warnings: string[]; notices: string[]; testText: string; }) {
+    return (
+        <UnorderedList>
+            <ListItem icon={<CircleCheckIcon />} className={cn('font-bold', hasWarnings ? 'text-amber-600 dark:text-amber-400' : 'text-green-600 dark:text-green-400')}>{title}</ListItem>
+            <Warnings warnings={warnings} />
+            <ListItem icon={<InfoIcon />}>{testText}</ListItem>
+            <OutputIncorrectSeeHelpMenu />
+            <Notices notices={notices} />
+        </UnorderedList>
+    );
+}
+
+//---------------------------------------------------------------------------
 // Cleanup choices
 
-export async function openCleanupFilesDialog(cleanupChoicesInitial: CleanupChoicesType) {
+export async function openDialog_CleanupFiles(cleanupChoicesInitial: CleanupChoicesType) {
     const choices = proxy<CleanupChoicesType>({ ...cleanupChoicesInitial });
     return openCustomDialog<CleanupChoicesType>((close) => <CleanupFilesDialogContent choices={choices} close={close} />);
 }
@@ -149,9 +158,10 @@ export function CheckRow({ label, checked, disabled, onChange }: { label: ReactN
     );
 }
 
+//---------------------------------------------------------------------------
 // Decimate
 
-export async function openDecimateDialog() {
+export async function openDialog_Decimate() {
     const state = proxy({ fps: '20', n: '1' });
     return openCustomDialog<{ n: number; fps: number; }>((close) => <DecimateDialogContent state={state} close={close} />);
 }
