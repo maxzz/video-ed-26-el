@@ -7,7 +7,6 @@ import { TopMenu_All } from "../1-top-menu/0-top-menu";
 import { ButtonOptions } from "./7-3-btn-options";
 import { ButtonThemeToggle } from "./7-2-btn-theme-toggle";
 import { ButtonSegments } from "./7-1-btn-segments";
-import { ButtonExportConfirm } from "./7-4-btn-export-confirm";
 
 export function Header() {
     const navigate = useSetAtom(navigateToPageAtom);
@@ -30,7 +29,6 @@ export function Header() {
                 {isFileOpened && <Button_Export size="xs" />}
 
                 <div className="flex items-center gap-px">
-                    <ButtonExportConfirm />
                     <ButtonSegments />
                     <ButtonThemeToggle />
                     <ButtonOptions />
