@@ -2,15 +2,15 @@ import { useSetAtom } from "jotai";
 import { MainPage, navigateToPageAtom } from "@/components/5-welcome/a-ui-app-page";
 import { AppLogo } from "@/components/5-welcome/2-app-logo";
 import { TopMenu_All } from "../1-top-menu/0-top-menu";
-import { ButtonOptions } from "./7-btn-options";
-import { ButtonThemeToggle } from "./8-btn-theme-toggle";
-import { ButtonSegments } from "./9-btn-segments";
+import { ButtonOptions } from "./7-3-btn-options";
+import { ButtonThemeToggle } from "./7-2-btn-theme-toggle";
+import { ButtonSegments } from "./7-1-btn-segments";
 
 export function Header() {
     const navigate = useSetAtom(navigateToPageAtom);
 
     return (
-        <header className="px-3 py-1 bg-background border-b border-border flex items-center gap-2">
+        <header className="px-3 py-1 bg-background border-b border-border flex items-center gap-1">
             <button
                 className="shrink-0 -ml-1 px-1 py-0.5 text-sm font-semibold hover:bg-muted rounded flex items-center gap-2 cursor-pointer"
                 onClick={() => navigate(MainPage.welcome)}
@@ -22,7 +22,7 @@ export function Header() {
 
             <TopMenu_All />
 
-            <div className="shrink-0 flex items-center gap-2">
+            <div className="shrink-0 flex items-center gap-px">
                 <ButtonSegments />
                 <ButtonThemeToggle />
                 <ButtonOptions />

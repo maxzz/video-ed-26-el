@@ -15,7 +15,7 @@ export function ButtonSegments() {
             title={t("Segments")}
             type="button"
         >
-            <PanelRightIcon className="size-3.5" />
+            <PanelRightIcon className="size-3.5 stroke-[1.25px]" />
         </Button>
     );
 }

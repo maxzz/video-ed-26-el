@@ -18,8 +18,8 @@ export function ButtonThemeToggle() {
             type="button"
         >
             {isDark
-                ? <IconLight className="size-3 stroke-1!" />
-                : <IconDark className="size-3 stroke-1!" />
+                ? <IconLight className="size-3.5" />
+                : <IconDark className="size-3" />
             }
         </Button>
     );
