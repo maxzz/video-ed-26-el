@@ -86,7 +86,7 @@ function setCutSegmentsRaw(fn: (existing: StateSegment[]) => StateSegment[]) {
     commitSegments(fn(getCutSegments()));
 }
 
-export function clearSegments() {
+export function tmcmd_clearSegments() {
     clearSegColorCounter();
     setCutSegments([]);
 }
@@ -98,7 +98,7 @@ export function resetSegments() {
     jotaiDefaultStore.set(currentSegIndexAtom, 0);
 }
 
-export function shuffleSegments() {
+export function tmcmd_shuffleSegments() {
     setCutSegments((existing) => [
         ...existing.filter((s) => !s.selected),
         ...shuffleArray(existing.filter((s) => s.selected)),
@@ -168,7 +168,7 @@ export function removeSegment(index: number, wholeSegment?: true) {
 
 export const getCurrentSegIndexSafe = () => jotaiDefaultStore.get(currentSegIndexSafeAtom);
 
-export function invertAllSegments() {
+export function tmcmd_invertAllSegments() {
     const fileDuration = getFileDuration();
     // treat markers as 0 length
     const sortedSegments = sortSegments(jotaiDefaultStore.get(selectedSegmentsAtom));
@@ -181,7 +181,7 @@ export function invertAllSegments() {
     setCutSegments(inverseSegmentsAndMarkers.map((inverseSegment, index) => addSegmentColorIndex(createSegment(inverseSegment), index)), fileDuration);
 }
 
-export function fillSegmentsGaps() {
+export function tmcmd_fillSegmentsGaps() {
     const fileDuration = getFileDuration();
     // treat markers as 0 length
     const sortedSegments = sortSegments(jotaiDefaultStore.get(selectedSegmentsAtom).map(({ end, ...rest }) => ({ ...rest, end: end ?? rest.start })));
@@ -194,14 +194,14 @@ export function fillSegmentsGaps() {
     setCutSegments((existing) => [...existing, ...newSegments]);
 }
 
-export function combineOverlappingSegments() {
+export function tmcmd_combineOverlappingSegments() {
     setCutSegments((existing) => [
         ...existing.filter((s) => !s.selected),
         ...combineOverlappingSegments2(existing.filter((s) => s.selected)), // only process selected
     ]);
 }
 
-export function combineSelectedSegments() {
+export function tmcmd_combineSelectedSegments() {
     setCutSegments((existing) => combineSelectedSegments2(existing));
 }
 
@@ -255,7 +255,7 @@ export async function modifySelectedSegmentTimes(transformSegment: <T extends Se
     setCutSegments(newSegments, getFileDuration());
 }
 
-export async function alignSegmentTimesToKeyframes() {
+export async function tmcmd_alignSegmentTimesToKeyframes() {
     const videoStream = jotaiDefaultStore.get(activeVideoStreamAtom);
     const filePath = jotaiDefaultStore.get(filePathAtom);
     if (!videoStream || filePath == null || isWorking()) {
@@ -332,7 +332,7 @@ export function updateSegOrders(newOrders: string[]) {
     }
 }
 
-export function reorderSegsByStartTime() {
+export function tmcmd_reorderSegsByStartTime() {
     setCutSegments(sortBy(getCutSegments(), (seg) => seg.start));
 }
 
@@ -436,7 +436,7 @@ export function selectSegmentsAtCursor() {
     selectSegments(findSegmentsAtCursor(cutSegments, getRelevantTime()).flatMap((index) => (cutSegments[index] ? [cutSegments[index]] : [])));
 }
 
-export function splitCurrentSegment() {
+export function tmcmd_splitCurrentSegment() {
     const relevantTime = getRelevantTime();
     const cutSegments = getCutSegments();
     const [index] = findSegmentsAtCursor(cutSegments, relevantTime);
@@ -461,7 +461,7 @@ export function splitCurrentSegment() {
     setCutSegments(newSegments);
 }
 
-export async function createNumSegments() {
+export async function tmcmd_createNumSegments() {
     const timeline = jotaiDefaultStore.get(currentCutSegOrWholeTimelineAtom);
     if (!checkFileOpened() || timeline.duration <= 0) {
         return;
@@ -474,7 +474,7 @@ export async function createNumSegments() {
     loadCutSegments({ segments: offsetSegments(segments, timeline.start), append: true, getNextCurrentSegIndex: (edl) => edl.length - 1, clampDuration: getFileDuration() });
 }
 
-export async function createFixedDurationSegments() {
+export async function tmcmd_createFixedDurationSegments() {
     const timeline = jotaiDefaultStore.get(currentCutSegOrWholeTimelineAtom);
     if (!checkFileOpened() || timeline.duration <= 0) {
         return;
@@ -488,7 +488,7 @@ export async function createFixedDurationSegments() {
     loadCutSegments({ segments: offsetSegments(segments, timeline.start), append: true, getNextCurrentSegIndex: (edl) => edl.length - 1, clampDuration: getFileDuration() });
 }
 
-export async function createFixedByteSizedSegments() {
+export async function tmcmd_createFixedByteSizedSegments() {
     const fileDuration = getFileDuration();
     if (!checkFileOpened() || !isDurationValid(fileDuration)) {
         return;
@@ -517,7 +517,7 @@ export function getSegEstimatedSize(segment: Pick<StateSegment, 'start' | 'end'>
     return Math.round(((segment.end - segment.start) / fileDuration) * fileSize);
 }
 
-export async function createRandomSegments() {
+export async function tmcmd_createRandomSegments() {
     const timeline = jotaiDefaultStore.get(currentCutSegOrWholeTimelineAtom);
     if (!checkFileOpened() || timeline.duration <= 0) {
         return;
@@ -530,7 +530,7 @@ export async function createRandomSegments() {
     loadCutSegments({ segments: offsetSegments(segments, timeline.start), append: true, getNextCurrentSegIndex: (edl) => edl.length - 1, clampDuration: getFileDuration() });
 }
 
-export async function createSegmentsFromKeyframes() {
+export async function tmcmd_createSegmentsFromKeyframes() {
     const { start, end } = jotaiDefaultStore.get(currentCutSegOrWholeTimelineAtom);
     const videoStream = jotaiDefaultStore.get(activeVideoStreamAtom);
     const filePath = jotaiDefaultStore.get(filePathAtom);

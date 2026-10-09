@@ -3,7 +3,7 @@ import { mainApi } from "@/editor/0-core/7-actions/0-main-api";
 import { openFilesActionArgsSchema } from "@/editor/0-core/8-lib/9-types-core";
 import { onAppReady } from "@/editor/0-core/7-actions/2-lifecycle";
 import {
-    askStartTimeOffset, tmcmd_closeFileWithConfirm, makeCursorTimeZero, openSendReportDialogWithState, reloadFile, tmcmd_tryFixInvalidDuration,
+    tmcmd_askStartTimeOffset, tmcmd_closeFileWithConfirm, makeCursorTimeZero, tmcmd_openSendReportDialogWithState, reloadFile, tmcmd_tryFixInvalidDuration,
 } from "@/editor/2-file/7-actions/load-media";
 import { tmcmd_openDirDialog, openFiles, tmcmd_openFilesDialog, tmcmd_promptDownloadMediaUrlWrapper } from "@/editor/2-file/7-actions/open-files";
 import { batchFileJump, batchOpenSelectedFile, tmcmd_closeBatch } from "@/editor/2-file/7-actions/batch-actions";
@@ -26,11 +26,11 @@ export function register_2_file() {
         convertFormatCurrentFile: () => tmcmd_userHtml5ifyCurrentFile(),
         html5ify: () => tmcmd_userHtml5ifyCurrentFile({ ignoreRememberedValue: true }),
         convertFormatBatch,
-        setStartTimeOffset: askStartTimeOffset,
+        setStartTimeOffset: tmcmd_askStartTimeOffset,
         makeCursorTimeZero,
         reloadFile,
         fixInvalidDuration: tmcmd_tryFixInvalidDuration,
-        openSendReportDialog: (err?: unknown) => { openSendReportDialogWithState(err); },
+        openSendReportDialog: (err?: unknown) => { tmcmd_openSendReportDialogWithState(err); },
         quit: () => mainApi.quitApp(),
     });
 

@@ -1,71 +1,71 @@
-import { mutateSegmentsByExpr as mutateSegmentsByExprImpl, selectSegmentsByExpr as selectSegmentsByExprImpl, shiftAllSegmentTimes as shiftAllSegmentTimesImpl } from "@/editor/5-segments/7-actions/segment-dialogs";
+import { tmcmd_mutateSegmentsByExpr, tmcmd_selectSegmentsByExpr, tmcmd_shiftAllSegmentTimes } from "@/editor/5-segments/7-actions/segment-dialogs";
 import {
-    alignSegmentTimesToKeyframes as alignSegmentTimesToKeyframesImpl, clearSegments as clearSegmentsImpl, combineOverlappingSegments as combineOverlappingSegmentsImpl,
-    combineSelectedSegments as combineSelectedSegmentsImpl, createFixedByteSizedSegments as createFixedByteSizedSegmentsImpl, createFixedDurationSegments as createFixedDurationSegmentsImpl,
-    createNumSegments as createNumSegmentsImpl, createRandomSegments as createRandomSegmentsImpl, fillSegmentsGaps as fillSegmentsGapsImpl, invertAllSegments as invertAllSegmentsImpl,
-    reorderSegsByStartTime as reorderSegsByStartTimeImpl, shuffleSegments as shuffleSegmentsImpl, splitCurrentSegment as splitCurrentSegmentImpl,
+    tmcmd_alignSegmentTimesToKeyframes, tmcmd_clearSegments, tmcmd_combineOverlappingSegments,
+    tmcmd_combineSelectedSegments, tmcmd_createFixedByteSizedSegments, tmcmd_createFixedDurationSegments,
+    tmcmd_createNumSegments, tmcmd_createRandomSegments, tmcmd_fillSegmentsGaps, tmcmd_invertAllSegments,
+    tmcmd_reorderSegsByStartTime, tmcmd_shuffleSegments, tmcmd_splitCurrentSegment,
 } from "@/editor/5-segments/7-actions/segment-actions";
 
 export function createNumSegments() {
-    return createNumSegmentsImpl();
+    return tmcmd_createNumSegments();
 }
 
 export function createFixedDurationSegments() {
-    return createFixedDurationSegmentsImpl();
+    return tmcmd_createFixedDurationSegments();
 }
 
 export function createFixedByteSizedSegments() {
-    return createFixedByteSizedSegmentsImpl();
+    return tmcmd_createFixedByteSizedSegments();
 }
 
 export function createRandomSegments() {
-    return createRandomSegmentsImpl();
+    return tmcmd_createRandomSegments();
 }
 
 export function reorderSegsByStartTime() {
-    reorderSegsByStartTimeImpl();
+    tmcmd_reorderSegsByStartTime();
 }
 
 export function shuffleSegments() {
-    shuffleSegmentsImpl();
+    tmcmd_shuffleSegments();
 }
 
 export function combineOverlappingSegments() {
-    combineOverlappingSegmentsImpl();
+    tmcmd_combineOverlappingSegments();
 }
 
 export function combineSelectedSegments() {
-    combineSelectedSegmentsImpl();
+    tmcmd_combineSelectedSegments();
 }
 
 export function splitCurrentSegment() {
-    splitCurrentSegmentImpl();
+    tmcmd_splitCurrentSegment();
 }
 
 export function invertAllSegments() {
-    invertAllSegmentsImpl();
+    tmcmd_invertAllSegments();
 }
 
 export function fillSegmentsGaps() {
-    fillSegmentsGapsImpl();
+    tmcmd_fillSegmentsGaps();
 }
 
 export function shiftAllSegmentTimes() {
-    return shiftAllSegmentTimesImpl();
+    return tmcmd_shiftAllSegmentTimes();
 }
 
 export function alignSegmentTimesToKeyframes() {
-    return alignSegmentTimesToKeyframesImpl();
+    return tmcmd_alignSegmentTimesToKeyframes();
 }
 
 export function selectSegmentsByExpr() {
-    return selectSegmentsByExprImpl();
+    return tmcmd_selectSegmentsByExpr();
 }
 
 export function mutateSegmentsByExpr() {
-    return mutateSegmentsByExprImpl();
+    return tmcmd_mutateSegmentsByExpr();
 }
 
 export function clearSegments() {
-    clearSegmentsImpl();
+    tmcmd_clearSegments();
 }

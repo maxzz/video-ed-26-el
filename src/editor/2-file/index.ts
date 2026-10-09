@@ -1,7 +1,7 @@
 // Public API of the file feature (open, close, load media, batch, html5ify, project auto-save).
 export {
     loadMedia, userOpenSingleFile, closeFile, tmcmd_closeFileWithConfirm as closeFileWithConfirm, runAndReloadFile, reloadFile,
-    askStartTimeOffset, setStartTimeOffset, makeCursorTimeZero, openSendReportDialogWithState, isFileDurationValid, tmcmd_tryFixInvalidDuration as tryFixInvalidDuration,
+    tmcmd_askStartTimeOffset as askStartTimeOffset, setStartTimeOffset, makeCursorTimeZero, tmcmd_openSendReportDialogWithState as openSendReportDialogWithState, isFileDurationValid, tmcmd_tryFixInvalidDuration as tryFixInvalidDuration,
     showNotification, showNotNativelySupportedMessage, showPreviewFileLoadedMessage,
 } from "./7-actions/load-media";
 export {

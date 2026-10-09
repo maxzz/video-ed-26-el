@@ -6,7 +6,7 @@ import { useTranslation } from "react-i18next";
 
 import { userSettings } from "@/editor/0-core/9-state/user-settings";
 import { type ModifierKey } from "@shared/types";
-import { toggleKeyboardShortcuts } from "@/components/2-main/0-all/a-panels-atoms";
+import { tmcmd_toggleKeyboardShortcuts } from "@/components/2-main/0-all/a-panels-atoms";
 import { getModifierKeyNames } from "@/editor/c-keyboard/8-lib/actions-map";
 import { requestTuner } from "../../7-actions/8-settings-actions";
 import { SettingRow, SettingSelect } from "../2-settings-rows";
@@ -18,7 +18,7 @@ export function Section_Input() {
 
     return (<>
         <SettingRow label={t('Keyboard & mouse shortcuts')}>
-            <Button variant="outline" size="sm" onClick={toggleKeyboardShortcuts}>
+            <Button variant="outline" size="sm" onClick={tmcmd_toggleKeyboardShortcuts}>
                 <KeyboardIcon />
                 {t('Keyboard & mouse shortcuts')}
             </Button>

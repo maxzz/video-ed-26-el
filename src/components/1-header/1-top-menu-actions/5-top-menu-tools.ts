@@ -1,38 +1,38 @@
-import { toggleLastCommands as toggleLastCommandsImpl } from "@/components/2-main/0-all/a-panels-atoms";
-import { askStartTimeOffset } from "@/editor/2-file/7-actions/load-media";
-import { readAllKeyframes as readAllKeyframesImpl } from "@/editor/4-timeline/7-actions/1-init-keyframes";
-import { createSegmentsFromKeyframes as createSegmentsFromKeyframesImpl } from "@/editor/5-segments/7-actions/segment-actions";
-import { concatBatch as concatBatchImpl } from "@/editor/8-concat/7-actions/concat-actions";
-import { dialog_DetectBlackScenes as detectBlackScenesImpl, dialog_DetectSceneChanges as detectSceneChangesImpl, dialog_DetectSilentScenes as detectSilentScenesImpl } from "@/editor/b-detect/1-detect-actions";
+import { tmcmd_toggleLastCommands } from "@/components/2-main/0-all/a-panels-atoms";
+import { tmcmd_askStartTimeOffset } from "@/editor/2-file/7-actions/load-media";
+import { tmcmd_readAllKeyframes } from "@/editor/4-timeline/7-actions/1-init-keyframes";
+import { tmcmd_createSegmentsFromKeyframes } from "@/editor/5-segments/7-actions/segment-actions";
+import { tmcmd_concatBatch } from "@/editor/8-concat/7-actions/concat-actions";
+import { tmcmd_dialog_DetectBlackScenes, tmcmd_dialog_DetectSceneChanges, tmcmd_dialog_DetectSilentScenes } from "@/editor/b-detect/1-detect-actions";
 
 export function concatBatch() {
-    concatBatchImpl();
+    tmcmd_concatBatch();
 }
 
 export function setStartTimeOffset() {
-    return askStartTimeOffset();
+    return tmcmd_askStartTimeOffset();
 }
 
 export function detectBlackScenes() {
-    return detectBlackScenesImpl();
+    return tmcmd_dialog_DetectBlackScenes();
 }
 
 export function detectSilentScenes() {
-    return detectSilentScenesImpl();
+    return tmcmd_dialog_DetectSilentScenes();
 }
 
 export function detectSceneChanges() {
-    return detectSceneChangesImpl();
+    return tmcmd_dialog_DetectSceneChanges();
 }
 
 export function readAllKeyframes() {
-    return readAllKeyframesImpl();
+    return tmcmd_readAllKeyframes();
 }
 
 export function createSegmentsFromKeyframes() {
-    return createSegmentsFromKeyframesImpl();
+    return tmcmd_createSegmentsFromKeyframes();
 }
 
 export function toggleLastCommands() {
-    toggleLastCommandsImpl();
+    tmcmd_toggleLastCommands();
 }

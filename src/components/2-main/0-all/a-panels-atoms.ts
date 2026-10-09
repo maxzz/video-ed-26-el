@@ -47,8 +47,8 @@ export const anyPanelOpenAtom = atom(
 
 export function closeExportConfirm() { jotaiDefaultStore.set(exportConfirmOpenAtom, false); }
 export function tmcmd_toggleSettings() { jotaiDefaultStore.set(settingsVisibleAtom, (v) => !v); }
-export function toggleLastCommands() { jotaiDefaultStore.set(lastCommandsVisibleAtom, (v) => !v); }
-export function toggleKeyboardShortcuts() { jotaiDefaultStore.set(keyboardShortcutsVisibleAtom, (v) => !v); }
+export function tmcmd_toggleLastCommands() { jotaiDefaultStore.set(lastCommandsVisibleAtom, (v) => !v); }
+export function tmcmd_toggleKeyboardShortcuts() { jotaiDefaultStore.set(keyboardShortcutsVisibleAtom, (v) => !v); }
 export function toggleStreamsSelector() { jotaiDefaultStore.set(streamsSelectorShownAtom, (v) => !v); }
 
 onFileReset(() => {

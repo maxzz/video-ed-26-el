@@ -15,7 +15,7 @@ import { jumpSegEnd, jumpSegStart } from "@/editor/3-player/7-actions/player-act
 import { getSegmentTags } from "../8-lib/segment-utils";
 import { darkModeAtom, getSegColorAtom, invertCutSegmentsAtom } from "../9-state/a-seg-ui-atoms";
 import * as seg from "../7-actions/segment-actions";
-import { editSegmentTags, mutateSegmentsByExpr, reorderSegmentDialog, selectSegmentsByExpr } from "../7-actions/segment-dialogs";
+import { editSegmentTags, tmcmd_mutateSegmentsByExpr, reorderSegmentDialog, tmcmd_selectSegmentsByExpr } from "../7-actions/segment-dialogs";
 
 // Port of upstream SegmentList.tsx Segment
 
@@ -199,11 +199,11 @@ function SegmentContextMenuContent({ segment, index }: { segment: StateSegment; 
         { label: t('Deselect all segments'), click: seg.deselectAllSegments },
         { label: t('Select all markers'), click: seg.selectAllMarkers },
         { label: t('Select segments by label'), click: seg.selectSegmentsByLabel },
-        { label: t('Select segments by expression'), click: selectSegmentsByExpr },
+        { label: t('Select segments by expression'), click: tmcmd_selectSegmentsByExpr },
         { label: t('Invert selected segments'), click: seg.invertSelectedSegments },
         'separator',
         { label: t('Label selected segments'), click: seg.labelSelectedSegments },
-        { label: t('Edit segments by expression'), click: mutateSegmentsByExpr },
+        { label: t('Edit segments by expression'), click: tmcmd_mutateSegmentsByExpr },
         { label: t('Extract frames from selected segments as image files'), click: () => runAction('extractSelectedSegmentsFramesAsImages') },
         { label: t('Remove selected segments'), click: seg.removeSelectedSegments },
         'separator',

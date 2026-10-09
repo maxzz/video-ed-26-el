@@ -3,7 +3,7 @@ import { jotaiDefaultStore } from "@/utils/local-utils/9-jotai-default-store";
 import { runAction } from "@/editor/0-core/7-actions/kbd-actions";
 import { commandPaletteOpenAtom } from "@/components/2-main/0-all/a-panels-atoms";
 
-export function toggleCommandPalette() {
+export function tmcmd_toggleCommandPalette() {
     jotaiDefaultStore.set(commandPaletteOpenAtom, (v) => !v);
 }
 

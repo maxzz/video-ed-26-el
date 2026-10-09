@@ -434,7 +434,7 @@ async function extractStreamsWithFeedback({ streams, workingText, successText, o
     }
 }
 
-export async function extractAllStreams() {
+export async function tmcmd_extractAllStreams() {
     if (!jotaiDefaultStore.get(filePathAtom)) return;
 
     if (!(await dialog_Confirm({ description: i18n.t('Please confirm that you want to extract all tracks as separate files'), confirmButtonText: i18n.t('Extract all tracks') }))) return;

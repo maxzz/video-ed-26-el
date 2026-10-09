@@ -301,7 +301,7 @@ export function setStartTimeOffset(offset: number) {
     jotaiDefaultStore.set(startTimeOffsetAtom, offset);
 }
 
-export async function askStartTimeOffset() {
+export async function tmcmd_askStartTimeOffset() {
     const startTimeOffset = jotaiDefaultStore.get(startTimeOffsetAtom);
     const newStartTimeOffset = await promptTimecode({
         initialValue: formatTimecode({ seconds: startTimeOffset }),
@@ -322,7 +322,7 @@ export function makeCursorTimeZero() {
 }
 
 /** Port of upstream openSendReportDialogWithState */
-export function openSendReportDialogWithState(err?: unknown) {
+export function tmcmd_openSendReportDialogWithState(err?: unknown) {
     const { keyBindings: _keyBindings, ...settings } = userSettings;
     const state = {
         ...settings,

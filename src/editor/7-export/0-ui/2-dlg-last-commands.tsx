@@ -4,7 +4,7 @@ import { jotaiDefaultStore } from "@/utils/local-utils/9-jotai-default-store";
 import { Button } from "@/ui/shadcn/button";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/ui/shadcn/dialog";
 
-import { lastCommandsVisibleAtom, toggleLastCommands } from "@/components/2-main/0-all/a-panels-atoms";
+import { lastCommandsVisibleAtom, tmcmd_toggleLastCommands } from "@/components/2-main/0-all/a-panels-atoms";
 import { ffmpegCommandLogAtom } from "@/editor/2-file/9-state/a-file-atoms";
 import { CopyClipboardButton } from "./7-controls";
 
@@ -18,7 +18,7 @@ export function Dialog_LastCommands() {
     const sorted = [...ffmpegCommandLog].sort((a, b) => b.time.getTime() - a.time.getTime());
 
     return (
-        <Dialog open={visible} onOpenChange={toggleLastCommands}>
+        <Dialog open={visible} onOpenChange={tmcmd_toggleLastCommands}>
             <DialogContent className="max-h-[85vh] sm:max-w-[90vw] flex flex-col">
                 <DialogHeader>
                     <DialogTitle>{t('Last ffmpeg commands')}</DialogTitle>

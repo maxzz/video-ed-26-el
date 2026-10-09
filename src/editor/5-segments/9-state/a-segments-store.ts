@@ -48,8 +48,8 @@ export function resetSegmentsHistory() {
 
 onFileReset(resetSegmentsHistory);
 
-export const undoSegments = () => segmentsHistory.undo();
-export const redoSegments = () => segmentsHistory.redo();
+export const tmcmd_undoSegments = () => segmentsHistory.undo();
+export const tmcmd_redoSegments = () => segmentsHistory.redo();
 
 // Other segment state
 
