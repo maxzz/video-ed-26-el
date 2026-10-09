@@ -44,7 +44,7 @@ function expressionError(err: unknown) {
     throw err;
 }
 
-export async function tmcmd_selectSegmentsByExpr() {
+export async function tmcmd_segments_selectSegmentsByExpr() {
     const cutSegments = getCutSegments();
 
     const matchSegment = async (seg: StateSegment, index: number, expr: string) => (
@@ -94,7 +94,7 @@ export async function tmcmd_selectSegmentsByExpr() {
 
 const linkButtonClasses = 'text-primary hover:underline';
 
-export async function tmcmd_mutateSegmentsByExpr() {
+export async function tmcmd_segments_mutateSegmentsByExpr() {
     const cutSegments = getCutSegments();
 
     async function mutateSegment(seg: StateSegment, index: number, expr: string) {
@@ -206,7 +206,7 @@ export async function reorderSegmentDialog(index: number) {
 
 // Shift
 
-export async function tmcmd_shiftAllSegmentTimes() {
+export async function tmcmd_segments_shiftAllSegmentTimes() {
     const shift = await open_ShiftSegmentsDialog({ inputPlaceholder: jotaiDefaultStore.get(timecodePlaceholderAtom), parseTimecode });
     if (shift == null) {
         return;

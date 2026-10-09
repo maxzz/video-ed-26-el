@@ -166,7 +166,7 @@ export async function openFiles(filePaths: string[]) {
     await userOpenFiles(filePaths.map((p) => resolvePathIfNeeded(p)));
 }
 
-export async function tmcmd_openFilesDialog() {
+export async function tmcmd_file_openFilesDialog() {
     // On Windows and Linux an open dialog can not be both a file selector and a directory selector, so if you set `properties` to `['openFile', 'openDirectory']` on these platforms, a directory selector will be shown. #1995
     const lastOpenedPath = jotaiDefaultStore.get(lastOpenedPathAtom);
     const { canceled, filePaths } = await showDialog_Open({ properties: ['openFile', 'multiSelections'], ...(lastOpenedPath != null && { defaultPath: lastOpenedPath }), title: i18n.t('Open file') });
@@ -176,7 +176,7 @@ export async function tmcmd_openFilesDialog() {
     await userOpenFiles(filePaths);
 }
 
-export async function tmcmd_openDirDialog() {
+export async function tmcmd_file_openDirDialog() {
     const lastOpenedPath = jotaiDefaultStore.get(lastOpenedPathAtom);
     const { canceled, filePaths } = await showDialog_Open({ properties: ['openDirectory', 'multiSelections'], ...(lastOpenedPath != null && { defaultPath: lastOpenedPath }), title: i18n.t('Open folder') });
     if (canceled) {
@@ -185,7 +185,7 @@ export async function tmcmd_openDirDialog() {
     await userOpenFiles(filePaths);
 }
 
-export async function tmcmd_promptDownloadMediaUrlWrapper() {
+export async function tmcmd_file_promptDownloadMediaUrlWrapper() {
     try {
         setWorking({ text: i18n.t('Downloading URL') });
         await withErrorHandling(async () => {

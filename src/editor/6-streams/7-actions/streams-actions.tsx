@@ -15,7 +15,7 @@ import { applyEnabledStreamsFilter, enabledStreamsFilterAtom, filterEnabledStrea
 
 // Port of the streams related parts of upstream App.tsx and useStreamsMeta
 
-export function tmcmd_showStreamsSelector() {
+export function tmcmd_edit_showStreamsSelector() {
     jotaiDefaultStore.set(streamsSelectorShownAtom, true);
 }
 

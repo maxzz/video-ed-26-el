@@ -15,7 +15,7 @@ import { keyframesEnabledAtom, maxKeyframesAtom, neighbouringKeyFramesMapAtom } 
 
 // Port of upstream useKeyframes
 
-export async function tmcmd_readAllKeyframes() {
+export async function tmcmd_tools_readAllKeyframes() {
     const { start, end } = jotaiDefaultStore.get(currentCutSegOrWholeTimelineAtom);
     const filePath = jotaiDefaultStore.get(filePathAtom);
     const videoStream = jotaiDefaultStore.get(activeVideoStreamAtom);

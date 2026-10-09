@@ -37,7 +37,7 @@ async function askDialog_Parameters(dialogType: FfmpegDialog, docUrl?: string) {
 
 //---------------------------------------------------------------------------
 
-export async function tmcmd_dialog_DetectBlackScenes() {
+export async function tmcmd_tools_dialog_DetectBlackScenes() {
     const { start, end } = jotaiDefaultStore.get(currentCutSegOrWholeTimelineAtom);
     const parameters = await askDialog_Parameters('blackdetect', 'https://ffmpeg.org/ffmpeg-filters.html#blackdetect');
     if (parameters == null) {
@@ -64,7 +64,7 @@ function getBoundingMode({ mode }: ParameterDialogParameters) {
 
 //---------------------------------------------------------------------------
 
-export async function tmcmd_dialog_DetectSilentScenes() {
+export async function tmcmd_tools_dialog_DetectSilentScenes() {
     const { start, end } = jotaiDefaultStore.get(currentCutSegOrWholeTimelineAtom);
     const parameters = await askDialog_Parameters('silencedetect', 'https://ffmpeg.org/ffmpeg-filters.html#silencedetect');
     if (parameters == null) {
@@ -85,7 +85,7 @@ export async function tmcmd_dialog_DetectSilentScenes() {
 
 //---------------------------------------------------------------------------
 
-export async function tmcmd_dialog_DetectSceneChanges() {
+export async function tmcmd_tools_dialog_DetectSceneChanges() {
     const { start, end } = jotaiDefaultStore.get(currentCutSegOrWholeTimelineAtom);
     const parameters = await askDialog_Parameters('sceneChange');
     if (parameters == null) {

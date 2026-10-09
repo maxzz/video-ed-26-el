@@ -12,7 +12,7 @@ import { allModifiers, altModifiers, controlModifiers, metaModifiers, shiftModif
 import { anyPanelOpenAtom, closeExportConfirm, commandPaletteOpenAtom, exportConfirmOpenAtom } from "@/components/2-main/0-all/a-panels-atoms";
 import { creatingBindingAtom } from "../9-state/keyboard-atoms";
 import { addRecordedKey, updateKeyboardLayout } from "./key-bindings";
-import { tmcmd_toggleCommandPalette } from "./command-palette";
+import { tmcmd_view_toggleCommandPalette } from "./command-palette";
 
 // Port of upstream hooks/useKeyboard.ts, installed once at startup instead of in a component effect.
 
@@ -36,7 +36,7 @@ function onKeyDown(e: KeyboardEvent) {
         const paletteOpen = jotaiDefaultStore.get(commandPaletteOpenAtom);
 
         if (paletteOpen || (!jotaiDefaultStore.get(isAnyDialogOpenAtom) && !jotaiDefaultStore.get(anyPanelOpenAtom))) {
-            tmcmd_toggleCommandPalette();
+            tmcmd_view_toggleCommandPalette();
             e.preventDefault();
             e.stopPropagation();
         }

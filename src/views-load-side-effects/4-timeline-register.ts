@@ -1,7 +1,7 @@
 import { registerActions } from "@/editor/0-core/7-actions/kbd-actions";
 import { userSettings } from "@/editor/0-core/9-state/user-settings";
 import * as tl from "@/editor/4-timeline/7-actions/3-timeline-actions";
-import { tmcmd_readAllKeyframes } from "@/editor/4-timeline/7-actions/1-init-keyframes";
+import { tmcmd_tools_readAllKeyframes } from "@/editor/4-timeline/7-actions/1-init-keyframes";
 import { generateOverviewWaveform } from "@/editor/4-timeline/7-actions/5-waveform";
 import { initThumbnails } from "@/editor/4-timeline/7-actions/2-init-thumbnails";
 
@@ -25,7 +25,7 @@ export function register_4_timeline() {
         seekForwardsPercent: () => tl.seekRelPercent(0.01),
         seekBackwardsKeyframe: () => tl.seekClosestKeyframe(-1),
         seekForwardsKeyframe: () => tl.seekClosestKeyframe(1),
-        readAllKeyframes: tmcmd_readAllKeyframes,
+        readAllKeyframes: tmcmd_tools_readAllKeyframes,
         toggleWaveformMode: tl.toggleWaveformMode,
         toggleShowThumbnails: tl.toggleShowThumbnails,
         toggleShowKeyframes: tl.toggleShowKeyframes,

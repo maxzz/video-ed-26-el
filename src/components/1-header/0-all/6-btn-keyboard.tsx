@@ -1,8 +1,8 @@
 import { useTranslation } from "react-i18next";
 import { CommandIcon, KeyboardIcon } from "lucide-react";
 import { isMac } from "@/editor/0-core/7-actions/0-main-api";
-import { tmcmd_toggleKeyboardShortcuts } from "@/components/2-main/0-all/a-panels-atoms";
-import { tmcmd_toggleCommandPalette } from "@/editor/c-keyboard/7-actions/command-palette";
+import { tmcmd_help_toggleKeyboardShortcuts } from "@/components/2-main/0-all/a-panels-atoms";
+import { tmcmd_view_toggleCommandPalette } from "@/editor/c-keyboard/7-actions/command-palette";
 import { Button } from "@/ui/shadcn/button";
 
 export function Button_CommandPalette() {
@@ -13,7 +13,7 @@ export function Button_CommandPalette() {
             className="size-6 rounded"
             variant="ghost"
             size="icon"
-            onClick={tmcmd_toggleCommandPalette}
+            onClick={tmcmd_view_toggleCommandPalette}
             title={`${t("Command palette")} (${isMac ? "⌘K" : "Ctrl+K"})`}
             type="button"
         >
@@ -30,7 +30,7 @@ export function Button_KeyboardShortcuts() {
             className="size-6 rounded"
             variant="ghost"
             size="icon"
-            onClick={tmcmd_toggleKeyboardShortcuts}
+            onClick={tmcmd_help_toggleKeyboardShortcuts}
             title={t("Keyboard & mouse shortcuts")}
             type="button"
         >

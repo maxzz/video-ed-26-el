@@ -3,4 +3,4 @@
 export { BatchFilesList } from "./0-ui/3-batch-files-list";
 export { ConcatHosts } from "./0-ui/0-concat-hosts";
 
-export { tmcmd_concatBatch as concatBatch, userConcatFiles } from "./7-actions/concat-actions";
+export { tmcmd_tools_concatBatch as concatBatch, userConcatFiles } from "./7-actions/concat-actions";

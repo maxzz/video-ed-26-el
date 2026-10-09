@@ -54,7 +54,7 @@ export function closeFile() {
     resetSegments();
 }
 
-export async function tmcmd_closeFileWithConfirm() {
+export async function tmcmd_file_closeFileWithConfirm() {
     if (!jotaiDefaultStore.get(isFileOpenedAtom) || isWorking()) return;
     if (userSettings.askBeforeClose && !(await dialog_Confirm({ description: i18n.t('Are you sure you want to close the current file?') }))) return;
     closeFile();
@@ -280,7 +280,7 @@ export async function runAndReloadFile({ operation, loadingText, errorText = i18
     }
 }
 
-export async function tmcmd_tryFixInvalidDuration() {
+export async function tmcmd_file_tryFixInvalidDuration() {
     await runAndReloadFile({
         operation: async ({ filePath, outPath }) => {
             const path = await fixInvalidDuration({ filePath, outPath, onProgress: setProgress });
@@ -301,7 +301,7 @@ export function setStartTimeOffset(offset: number) {
     jotaiDefaultStore.set(startTimeOffsetAtom, offset);
 }
 
-export async function tmcmd_askStartTimeOffset() {
+export async function tmcmd_tools_askStartTimeOffset() {
     const startTimeOffset = jotaiDefaultStore.get(startTimeOffsetAtom);
     const newStartTimeOffset = await promptTimecode({
         initialValue: formatTimecode({ seconds: startTimeOffset }),
@@ -322,7 +322,7 @@ export function makeCursorTimeZero() {
 }
 
 /** Port of upstream openSendReportDialogWithState */
-export function tmcmd_openSendReportDialogWithState(err?: unknown) {
+export function tmcmd_help_openSendReportDialogWithState(err?: unknown) {
     const { keyBindings: _keyBindings, ...settings } = userSettings;
     const state = {
         ...settings,

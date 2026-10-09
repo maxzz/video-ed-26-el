@@ -25,7 +25,7 @@ import { type ContentDispositionOptions, contentDispositionOptionsSchema, delete
 import { streamsSelectorShownAtom } from "@/components/2-main/0-all/a-panels-atoms";
 import { externalFilesMetaAtom, fileDurationAtom, filePathAtom, mainFileChaptersAtom, mainFileFormatDataAtom, mainStreamsAtom, paramsByFileAtom, shortestFlagAtom } from "@/editor/2-file/9-state/a-file-atoms";
 import { loadCutSegments } from "@/editor/5-segments/7-actions/segment-actions";
-import { tmcmd_extractAllStreams, extractSingleStream } from "@/editor/7-export/7-actions/export-actions";
+import { tmcmd_edit_extractAllStreams, extractSingleStream } from "@/editor/7-export/7-actions/export-actions";
 import { copyStreamIdsByFileAtom, isCopyingStreamIdIn, nonCopiedExtraStreamsAtom, setCopyStreamIdsForPath, toggleCopyAllStreamsForPath, toggleCopyStreamId, toggleCopyStreamIds } from "../9-state/a-streams-store";
 import { setEditingFile, setEditingStream } from "../9-state/a-streams-ui-atoms";
 import { addStreamSourceFile, changeEnabledStreamsFilter, removeExternalFile, showIncludeExternalStreamsDialog, updateStreamParams } from "../7-actions/streams-actions";
@@ -330,7 +330,7 @@ function FileHeading({ path, format, chapters, isMainFile }: { path: string; for
                 <Button variant="outline" size="icon-sm" title={t('Edit file metadata')} onClick={() => setEditingFile(path)}><PencilIcon /></Button>
                 <Button variant="outline" size="icon-sm" title={t('Toggle all tracks')} onClick={() => toggleCopyAllStreamsForPath(path)}><EyeIcon /></Button>
                 {isMainFile && <Button variant="outline" size="icon-sm" title={t('Filter tracks')} onClick={changeEnabledStreamsFilter}><FilterIcon /></Button>}
-                {isMainFile && <Button variant="outline" size="icon-sm" title={t('Export each track as individual files')} onClick={tmcmd_extractAllStreams}><FileOutputIcon /></Button>}
+                {isMainFile && <Button variant="outline" size="icon-sm" title={t('Export each track as individual files')} onClick={tmcmd_edit_extractAllStreams}><FileOutputIcon /></Button>}
                 {!isMainFile && <Button variant="outline" size="icon-sm" title={t('Delete')} onClick={() => removeFile(path)}><Trash2Icon /></Button>}
             </div>
         </div>

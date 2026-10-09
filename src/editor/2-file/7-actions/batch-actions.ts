@@ -86,7 +86,7 @@ export function onBatchFileSelect(path: string) {
     else setSelectedBatchFiles([path]);
 }
 
-export async function tmcmd_closeBatch() {
+export async function tmcmd_file_closeBatch() {
     if (userSettings.askBeforeClose && !(await dialog_Confirm({ description: i18n.t('Are you sure you want to close the loaded batch of files?') }))) return;
     setBatchFiles([]);
     setSelectedBatchFiles([]);

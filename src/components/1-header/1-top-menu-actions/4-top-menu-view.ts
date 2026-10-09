@@ -1,5 +1,5 @@
-import { tmcmd_toggleCommandPalette } from "@/editor/c-keyboard/7-actions/command-palette";
+import { tmcmd_view_toggleCommandPalette } from "@/editor/c-keyboard/7-actions/command-palette";
 
 export function toggleCommandPalette() {
-    tmcmd_toggleCommandPalette();
+    tmcmd_view_toggleCommandPalette();
 }

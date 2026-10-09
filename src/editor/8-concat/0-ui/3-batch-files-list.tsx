@@ -11,7 +11,7 @@ import { batchFilesAtom, filePathAtom, selectedBatchFilesAtom } from "@/editor/2
 import { closeBatch, convertFormatBatch, handleBatchFilesDrop } from "@/editor/2-file";
 import { batchDraggingIdAtom, batchSortDescAtom } from "../9-state/concat-atoms";
 import { onBatchDragCancel, onBatchDragEnd, onBatchDragStart, sortBatchFiles } from "../7-actions/batch-list-actions";
-import { tmcmd_concatBatch } from "../7-actions/concat-actions";
+import { tmcmd_tools_concatBatch } from "../7-actions/concat-actions";
 import { Menu_BatchFile, BatchFileDragOverlay } from "./2-menu-batch-file";
 
 const mySpring = { type: 'spring' as const, damping: 50, stiffness: 700 };
@@ -51,7 +51,7 @@ export function BatchFilesList() {
                 <Button variant="ghost" size="icon-xs" title={t('Sort items')} onClick={sortBatchFiles}>
                     <SortIcon />
                 </Button>
-                <Button size="icon-xs" title={`${t('Merge/concatenate files')}...`} onClick={tmcmd_concatBatch}>
+                <Button size="icon-xs" title={`${t('Merge/concatenate files')}...`} onClick={tmcmd_tools_concatBatch}>
                     <CombineIcon />
                 </Button>
                 <Button variant="ghost" size="icon-xs" className="text-muted-foreground" title={t('Close batch')} onClick={() => closeBatch()}>

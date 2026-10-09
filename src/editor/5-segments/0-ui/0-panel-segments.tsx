@@ -219,7 +219,7 @@ function Footer() {
                 </Button_Footer>
             </>)}
 
-            <Button_Footer title={actionTitle(t('Split segment at cursor'), 'splitCurrentSegment')} {...bg(firstSegmentAtCursor != null, segAtCursorColor)} onClick={seg.tmcmd_splitCurrentSegment}>
+            <Button_Footer title={actionTitle(t('Split segment at cursor'), 'splitCurrentSegment')} {...bg(firstSegmentAtCursor != null, segAtCursorColor)} onClick={seg.tmcmd_segments_splitCurrentSegment}>
                 <SplitIcon className="size-full rotate-90" />
             </Button_Footer>
 

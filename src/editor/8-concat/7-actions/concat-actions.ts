@@ -30,7 +30,7 @@ import {
 // Port of upstream App.tsx userConcatFiles/concatBatch and the actions of components/ConcatDialog.tsx
 
 /** Opens the merge dialog, or the open files dialog if there is nothing to merge yet */
-export function tmcmd_concatBatch() {
+export function tmcmd_tools_concatBatch() {
     if (jotaiDefaultStore.get(batchFilesAtom).length < 2) {
         openFilesDialog();
         return;

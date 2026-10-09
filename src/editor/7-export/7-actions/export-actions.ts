@@ -21,7 +21,7 @@ import {
     isFileOpenedAtom, isRotationSetAtom, mainFileFormatDataAtom, mainStreamsAtom, outputDirAtom, paramsByFileAtom, previewFilePathAtom, rotationAtom, shortestFlagAtom,
 } from "@/editor/2-file/9-state/a-file-atoms";
 import { batchListRemoveFile } from "@/editor/2-file/7-actions/batch-actions";
-import { closeFile, loadMedia, runAndReloadFile, tmcmd_tryFixInvalidDuration } from "@/editor/2-file/7-actions/load-media";
+import { closeFile, loadMedia, runAndReloadFile, tmcmd_file_tryFixInvalidDuration } from "@/editor/2-file/7-actions/load-media";
 import { projectFileSavePathAtom } from "@/editor/2-file/7-actions/project-auto-save";
 import { dialog_SendReport_open } from "@/editor/2-file/0-ui/dlg-send-report";
 import { effectiveRotationAtom } from "@/editor/3-player/9-state/a-player-atoms";
@@ -434,7 +434,7 @@ async function extractStreamsWithFeedback({ streams, workingText, successText, o
     }
 }
 
-export async function tmcmd_extractAllStreams() {
+export async function tmcmd_edit_extractAllStreams() {
     if (!jotaiDefaultStore.get(filePathAtom)) return;
 
     if (!(await dialog_Confirm({ description: i18n.t('Please confirm that you want to extract all tracks as separate files'), confirmButtonText: i18n.t('Extract all tracks') }))) return;
@@ -463,9 +463,9 @@ export async function extractSingleStream(index: number) {
 
 // Operations that create a new file and load it
 
-export { tmcmd_tryFixInvalidDuration };
+export { tmcmd_file_tryFixInvalidDuration };
 
-export async function tmcmd_tryDecimate() {
+export async function tmcmd_file_tryDecimate() {
     if (!checkFileOpened()) return;
     const params = await openDialog_Decimate();
     if (params == null) return;
