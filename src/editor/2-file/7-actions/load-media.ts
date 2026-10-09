@@ -54,7 +54,7 @@ export function closeFile() {
     resetSegments();
 }
 
-export async function closeFileWithConfirm() {
+export async function tmcmd_closeFileWithConfirm() {
     if (!jotaiDefaultStore.get(isFileOpenedAtom) || isWorking()) return;
     if (userSettings.askBeforeClose && !(await dialog_Confirm({ description: i18n.t('Are you sure you want to close the current file?') }))) return;
     closeFile();
@@ -280,7 +280,7 @@ export async function runAndReloadFile({ operation, loadingText, errorText = i18
     }
 }
 
-export async function tryFixInvalidDuration() {
+export async function tmcmd_tryFixInvalidDuration() {
     await runAndReloadFile({
         operation: async ({ filePath, outPath }) => {
             const path = await fixInvalidDuration({ filePath, outPath, onProgress: setProgress });

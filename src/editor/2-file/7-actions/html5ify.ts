@@ -25,7 +25,7 @@ async function html5ifyAndLoad(cod: string | undefined, fp: string, speed: Html5
     }
 }
 
-export async function userHtml5ifyCurrentFile({ ignoreRememberedValue }: { ignoreRememberedValue?: boolean; } = {}) {
+export async function tmcmd_userHtml5ifyCurrentFile({ ignoreRememberedValue }: { ignoreRememberedValue?: boolean; } = {}) {
     const filePath = jotaiDefaultStore.get(filePathAtom);
     if (!filePath) return;
     const hasAudio = jotaiDefaultStore.get(hasAudioAtom);

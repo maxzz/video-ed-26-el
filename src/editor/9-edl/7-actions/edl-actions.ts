@@ -19,7 +19,7 @@ export async function loadEdlFile({ path, type, append = false }: { path: string
 }
 
 /** Native menu: File > Import project > <type> */
-export async function importEdlFile(type: EdlImportType) {
+export async function tmcmd_importEdlFile(type: EdlImportType) {
     if (!checkFileOpened()) return;
 
     await withErrorHandling(async () => {
@@ -29,15 +29,15 @@ export async function importEdlFile(type: EdlImportType) {
     }, i18n.t('Failed to import project file'));
 }
 
-export async function exportYouTube() {
+export async function tmcmd_exportYouTube() {
     if (!checkFileOpened()) return;
     await openDialog_YouTubeChaptersDialog(formatYouTube(jotaiDefaultStore.get(cutSegmentsAtom) as StateSegment[]));
 }
 
 /** Native menu: File > Export project > <type>. Exports the selected segments */
-export async function tryExportEdlFile(type: EdlExportType | 'youtube') {
+export async function tmcmd_tryExportEdlFile(type: EdlExportType | 'youtube') {
     if (type === 'youtube') {
-        await exportYouTube();
+        await tmcmd_exportYouTube();
         return;
     }
     const selectedSegments = jotaiDefaultStore.get(selectedSegmentsAtom);

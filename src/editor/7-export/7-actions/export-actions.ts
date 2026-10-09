@@ -21,7 +21,7 @@ import {
     isFileOpenedAtom, isRotationSetAtom, mainFileFormatDataAtom, mainStreamsAtom, outputDirAtom, paramsByFileAtom, previewFilePathAtom, rotationAtom, shortestFlagAtom,
 } from "@/editor/2-file/9-state/a-file-atoms";
 import { batchListRemoveFile } from "@/editor/2-file/7-actions/batch-actions";
-import { closeFile, loadMedia, runAndReloadFile, tryFixInvalidDuration } from "@/editor/2-file/7-actions/load-media";
+import { closeFile, loadMedia, runAndReloadFile, tmcmd_tryFixInvalidDuration } from "@/editor/2-file/7-actions/load-media";
 import { projectFileSavePathAtom } from "@/editor/2-file/7-actions/project-auto-save";
 import { dialog_SendReport_open } from "@/editor/2-file/0-ui/dlg-send-report";
 import { effectiveRotationAtom } from "@/editor/3-player/9-state/a-player-atoms";
@@ -463,9 +463,9 @@ export async function extractSingleStream(index: number) {
 
 // Operations that create a new file and load it
 
-export { tryFixInvalidDuration };
+export { tmcmd_tryFixInvalidDuration };
 
-export async function tryDecimate() {
+export async function tmcmd_tryDecimate() {
     if (!checkFileOpened()) return;
     const params = await openDialog_Decimate();
     if (params == null) return;
