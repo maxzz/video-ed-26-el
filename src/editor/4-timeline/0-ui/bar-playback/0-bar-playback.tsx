@@ -6,9 +6,9 @@ import { motion } from "motion/react";
 import { Button } from "@/ui/shadcn/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/ui/shadcn/select";
 import {
-    AudioWaveformIcon, CameraIcon, ChevronLeftIcon, ChevronRightIcon, ContrastIcon, FileOutputIcon, GaugeIcon, ImagesIcon, KeyIcon,
-    KeyRoundIcon, NotebookTextIcon, PauseIcon, PlayIcon, RotateCcwSquareIcon, ScissorsIcon, SkipBackIcon, SkipForwardIcon, StepBackIcon,
-    StepForwardIcon, Trash2Icon, TriangleAlertIcon,
+    AudioWaveformIcon, CameraIcon, ChevronLeftIcon, ChevronRightIcon, ContrastIcon, GaugeIcon, ImagesIcon, KeyIcon,
+    KeyRoundIcon, PauseIcon, PlayIcon, RotateCcwSquareIcon, SkipBackIcon, SkipForwardIcon, StepBackIcon,
+    StepForwardIcon, Trash2Icon,
 } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { userSettings, userSettingsAtom } from "@/editor/0-core/9-state/user-settings";
@@ -18,18 +18,16 @@ import { formatTimecodeAtom, getFrameCountAtom } from "@/editor/0-core/9-state/t
 import { hasAction, runAction } from "@/editor/0-core/7-actions/kbd-actions";
 import { askDialog_ForPlaybackRate } from "@/components/4-dialogs/7-1-dialogs/13-ask-for-playback-rate";
 import { getSegColor as getSegColorRaw } from "@/editor/0-core/8-lib/colors";
-import { exportConfirmOpenAtom } from "@/components/2-main/0-all/a-panels-atoms";
 import { detectedFpsAtom, fileDurationNonZeroAtom, hasAudioAtom, hasVideoAtom, isFileOpenedAtom, isRotationSetAtom, rotationAtom } from "@/editor/2-file/9-state/a-file-atoms";
 import { outputPlaybackRateAtom, playbackModeAtom, playbackRateAtom, playingAtom } from "@/editor/3-player/9-state/a-player-atoms";
 import * as player from "@/editor/3-player/7-actions/player-actions";
-import { currentCutSegAtom, segmentsToExportAtom, selectedSegmentsAtom } from "@/editor/5-segments/9-state/a-segments-store";
+import { currentCutSegAtom, selectedSegmentsAtom } from "@/editor/5-segments/9-state/a-segments-store";
 import { invertCutSegmentsAtom, simpleModeAtom } from "@/editor/5-segments/9-state/a-seg-ui-atoms";
 import { setCutEnd, setCutStart } from "@/editor/5-segments/7-actions/segment-actions";
 import { actionTitleAtom } from "../../9-state/action-title";
-import { areWeCuttingAtom } from "../../9-state/bottom-bar-atoms";
 import { currentFrameAtom, displayTimeAtom, isZoomedAtom, keyframesEnabledAtom, showThumbnailsAtom, waveformModeAtom, zoomAtom } from "../../9-state/timeline-atoms";
 import {
-    increaseRotation, seekClosestKeyframe, timelineToggleComfortZoom, toggleExportConfirmEnabled, toggleInvertCutSegments, toggleShowKeyframes,
+    increaseRotation, seekClosestKeyframe, timelineToggleComfortZoom, toggleInvertCutSegments, toggleShowKeyframes,
     toggleShowThumbnails, toggleWaveformMode, zoomAbs,
 } from "../../7-actions/3-timeline-actions";
 import { Input_CutTime } from "./1-input-cut-time";
@@ -56,10 +54,6 @@ function BottomBarTopRow() {
 
     return (
         <div className={cn('select-none flex items-center justify-between', !isFileOpened && 'opacity-50')}>
-            <div className="flex items-center" style={{ flexBasis: leftRightWidth }}>
-                {!simpleMode && <ViewToggles />}
-            </div>
-
             <div className="grow" />
 
             {!simpleMode && (<>
@@ -109,13 +103,29 @@ function BottomBarTopRow() {
             </>)}
 
             <div className="grow" />
-
-            <div style={{ flexBasis: leftRightWidth }} />
         </div>
     );
 }
 
-const leftRightWidth = 100;
+/** Waveform, zoom, and related controls shown in the status bar. */
+export function BarPlayback_StatusControls() {
+    const isFileOpened = useAtomValue(isFileOpenedAtom);
+    const simpleMode = useAtomValue(simpleModeAtom);
+    const hasVideo = useAtomValue(hasVideoAtom);
+
+    return (
+        <div className="flex items-center gap-1.5">
+            {!simpleMode && <ViewToggles />}
+            <Button_InvertCutMode />
+            {isFileOpened && !simpleMode && (<>
+                <Button_ZoomControls />
+                <Indicator_PlaybackRate />
+                <Button_Fps />
+            </>)}
+            {isFileOpened && !simpleMode && hasVideo && <Button_Rotation />}
+        </div>
+    );
+}
 
 function ViewToggles() {
     const { t } = useTranslation();
@@ -187,24 +197,11 @@ function BottomBarBottomRow() {
     const isFileOpened = useAtomValue(isFileOpenedAtom);
     const simpleMode = useAtomValue(simpleModeAtom);
     const hasVideo = useAtomValue(hasVideoAtom);
-    const { exportConfirmEnabled } = useAtomValue(userSettingsAtom);
     const actionTitle = useAtomValue(actionTitleAtom);
     const { t } = useTranslation();
 
     return (
-        <div className="relative px-1 py-0.5 h-8 flex items-center justify-between gap-2">
-            <Button_InvertCutMode />
-
-            {isFileOpened && !simpleMode && (<>
-                <Button_ZoomControls />
-                <Indicator_PlaybackRate />
-                <Button_Fps />
-            </>)}
-
-            {isFileOpened && !simpleMode && hasVideo && <Button_Rotation />}
-
-            <div className="grow" />
-
+        <div className="relative px-1 py-0.5 h-8 flex items-center justify-end gap-2">
             <Indicator_DisplayTime />
 
             {!simpleMode && isFileOpened && (
@@ -223,15 +220,6 @@ function BottomBarBottomRow() {
             )}
 
             {isFileOpened && <Button_LoopSelectedSegments />}
-
-            {!exportConfirmEnabled && (
-                <span title={t('Export options screen is disabled, and you will not see any important notices or warnings.')}>
-                    <TriangleAlertIcon className="ml-1 size-4 text-destructive" />
-                </span>
-            )}
-            {(!simpleMode || !exportConfirmEnabled) && <Button_ToggleExportConfirm />}
-
-            {isFileOpened && <Button_Export />}
         </div>
     );
 }
@@ -436,59 +424,6 @@ function Button_LoopSelectedSegments() {
         </div>
     );
 }
-
-function Button_ToggleExportConfirm() {
-    const { exportConfirmEnabled } = useAtomValue(userSettingsAtom);
-    const { t } = useTranslation();
-    return (
-        <Button_Bar
-            className={cn(exportConfirmEnabled ? activeClasses : 'text-muted-foreground', exportConfirmEnabled && 'ml-1')}
-            onClick={toggleExportConfirmEnabled}
-            title={t('Show export options screen before exporting?')}
-        >
-            <NotebookTextIcon className="size-5.5" />
-        </Button_Bar>
-    );
-}
-
-//---------------------------------------------------------------------------
-
-function Button_Export() {
-    const segmentsToExport = useAtomValue(segmentsToExportAtom);
-    const areWeCutting = useAtomValue(areWeCuttingAtom);
-    const { autoMerge } = useAtomValue(userSettingsAtom);
-    const { t } = useTranslation();
-
-    const CutIcon = areWeCutting ? ScissorsIcon : FileOutputIcon;
-
-    let title = t('Export');
-    if (segmentsToExport.length === 1) {
-        title = t('Export selection');
-    }
-    else if (segmentsToExport.length > 1) {
-        title = t('Export {{ num }} segments', { num: segmentsToExport.length });
-    }
-
-    const text = autoMerge && segmentsToExport.length > 1 ? t('Export+merge') : t('Export');
-
-    return (
-        <Button size="sm" className="whitespace-nowrap" title={title} onClick={(e) => { e.currentTarget.blur(); onExportPress(); }}>
-            <CutIcon />
-            {text}
-        </Button>
-    );
-}
-
-function onExportPress() {
-    if (hasAction('export')) {
-        void runAction('export');
-    }
-    else {
-        jotaiDefaultStore.set(exportConfirmOpenAtom, true);
-    }
-}
-
-//---------------------------------------------------------------------------
 
 function Button_Bar({ className, ...rest }: ComponentProps<'button'>) {
     return <button type="button" className={cn('shrink-0 hover:text-foreground cursor-pointer', className)} {...rest} />;

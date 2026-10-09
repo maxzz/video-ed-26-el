@@ -7,6 +7,8 @@ import { useTranslation } from "react-i18next";
 
 import { settingsVisibleAtom, showAdvancedSettingsAtom } from "@/components/2-main/0-all/a-panels-atoms";
 import { prefersReducedMotionAtom } from "@/editor/0-core/9-state/user-settings";
+import { isFileOpenedAtom } from "@/editor/2-file/9-state/a-file-atoms";
+import { Button_Export } from "@/editor/7-export/0-ui/3-export-buttons";
 import { appSettings } from "@/store/1-ui-settings";
 import { Section_General } from "./4-sections/1-section-general";
 import { Section_ExportOptions } from "./4-sections/2-section-export";
@@ -39,6 +41,7 @@ function sectionIdAt(sections: readonly { id: SettingsSectionId; }[], index: num
 export function Dialog_Settings() {
     const [open, setOpen] = useAtom(settingsVisibleAtom);
     const reducedMotion = useAtomValue(prefersReducedMotionAtom);
+    const isFileOpened = useAtomValue(isFileOpenedAtom);
     const { t } = useTranslation();
 
     return (
@@ -58,6 +61,12 @@ export function Dialog_Settings() {
                         {open && <Body />}
                     </div>
                 </MotionConfig>
+
+                {isFileOpened && (
+                    <div className="px-4 py-2 border-t flex justify-end">
+                        <Button_Export size="sm" />
+                    </div>
+                )}
             </DialogContent>
         </Dialog>
     );

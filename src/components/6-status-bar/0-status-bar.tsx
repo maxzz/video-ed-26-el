@@ -15,6 +15,7 @@ import { toggleOutFormatLocked } from "@/editor/7-export/7-actions/export-action
 import { Button_ExportMode } from "@/editor/7-export/0-ui/3-export-buttons";
 import { Dialog_OutDirSelector } from "@/editor/7-export/0-ui/5-dlg-out-dir-selector";
 import { Select_CurrentFileOutputFormat } from "@/editor/7-export/0-ui/7-output-format-select";
+import { BarPlayback_StatusControls } from "@/editor/4-timeline/0-ui/bar-playback/0-bar-playback";
 
 /** Bottom bar on the main page. Holds track, working-directory, and export controls. */
 export function StatusBar({ className, ...rest }: HTMLAttributes<HTMLDivElement>) {
@@ -22,7 +23,7 @@ export function StatusBar({ className, ...rest }: HTMLAttributes<HTMLDivElement>
         <div
             role="status"
             aria-label="Status"
-            className={classNames("px-1.5 h-8 text-xs text-foreground bg-background border-t border-border flex flex-wrap items-center justify-between gap-1.5", className)}
+            className={classNames("px-1.5 min-h-8 text-xs text-foreground bg-background border-t border-border flex flex-wrap items-center justify-between gap-1.5", className)}
             {...rest}
         >
             <StatusBar_Controls />
@@ -44,6 +45,8 @@ function StatusBar_Controls() {
 
     return (<>
         <div className="flex items-center gap-1.5">
+            <BarPlayback_StatusControls />
+
             {filePath && (<>
                 <Button variant="outline" size="xs" onClick={() => jotaiDefaultStore.set(streamsSelectorShownAtom, true)}>
                     <ListIcon />
