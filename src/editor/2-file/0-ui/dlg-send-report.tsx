@@ -35,11 +35,14 @@ export function dialog_SendReport_open({ err, message, state }: { err?: unknown;
                 <div className="flex items-center gap-2">
                     {i18n.t('Include the following text:')}
                     <Button variant="outline" size="sm" onClick={copyText}>
-                        <CopyIcon /> {i18n.t('Copy to clipboard')}
+                        <CopyIcon />
+                        {i18n.t('Copy to clipboard')}
                     </Button>
                 </div>
 
-                <p className="text-muted-foreground">{i18n.t('You might want to redact any sensitive information like paths.')}</p>
+                <p className="text-muted-foreground">
+                    {i18n.t('You might want to redact any sensitive information like paths.')}
+                </p>
 
                 <div className="p-1 text-xs font-mono font-semibold text-muted-foreground bg-muted select-text whitespace-pre-wrap">
                     {text}
@@ -51,7 +54,7 @@ export function dialog_SendReport_open({ err, message, state }: { err?: unknown;
 
 function ExternalLink({ url, children }: { url: string; children: string; }) {
     return (
-        <button type="button" className="text-primary hover:underline cursor-pointer" onClick={() => mainApi.openExternal(url)}>
+        <button className="text-primary hover:underline cursor-pointer" onClick={() => mainApi.openExternal(url)} type="button">
             {children}
         </button>
     );

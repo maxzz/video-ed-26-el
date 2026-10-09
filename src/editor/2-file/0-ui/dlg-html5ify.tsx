@@ -24,9 +24,11 @@ export async function dialogAsync_askForHtml5ifySpeed({ allowedOptions, showReme
         remember: !!initialOption,
     });
 
-    return open_CustomDialog<Html5ifyChoice>((close) => (
-        <Body state={state} options={options} showRemember={!!showRemember} close={close} />
-    ));
+    return open_CustomDialog<Html5ifyChoice>(
+        (close) => (
+            <Body state={state} options={options} showRemember={!!showRemember} close={close} />
+        )
+    );
 }
 
 function getAvailableOptions(): Record<Html5ifyMode, string> {
@@ -57,25 +59,29 @@ function Body({ state, options, showRemember, close }: {
     showRemember: boolean;
     close: (value?: Html5ifyChoice) => void;
 }) {
-    const { t } = useTranslation();
     const snap = useSnapshot(state);
+    const { t } = useTranslation();
 
     return (
         <DialogContent className="max-w-2xl">
             <DialogHeader>
-                <DialogTitle>{t('Convert to supported format')}</DialogTitle>
+                <DialogTitle>
+                    {t('Convert to supported format')}
+                </DialogTitle>
                 <DialogDescription className="text-xs">
                     {t('These options will let you convert files to a format that is supported by the player. You can try different options and see which works with your file. Note that the conversion is for preview only. When you run an export, the output will still be lossless with full quality')}
                 </DialogDescription>
             </DialogHeader>
 
             <RadioGroup value={snap.option} onValueChange={(value) => { state.option = value as Html5ifyMode; }}>
-                {options.map(([value, label]) => (
-                    <Label key={value} className="text-xs font-normal flex items-center gap-2">
-                        <RadioGroupItem value={value} />
-                        {label}
-                    </Label>
-                ))}
+                {options.map(
+                    ([value, label]) => (
+                        <Label key={value} className="text-xs font-normal flex items-center gap-2">
+                            <RadioGroupItem value={value} />
+                            {label}
+                        </Label>
+                    )
+                )}
             </RadioGroup>
 
             {showRemember && (
@@ -86,8 +92,12 @@ function Body({ state, options, showRemember, close }: {
             )}
 
             <DialogFooter>
-                <Button variant="outline" onClick={() => close(undefined)}>{t('Cancel')}</Button>
-                <Button onClick={() => close({ selectedOption: state.option, rememberChoice: state.remember })}>{t('OK')}</Button>
+                <Button variant="outline" onClick={() => close(undefined)}>
+                    {t('Cancel')}
+                </Button>
+                <Button onClick={() => close({ selectedOption: state.option, rememberChoice: state.remember })}>
+                    {t('OK')}
+                </Button>
             </DialogFooter>
         </DialogContent>
     );

@@ -1,10 +1,12 @@
 import { atom } from "jotai";
+import { jotaiDefaultStore } from "../../../utils/local-utils/9-jotai-default-store";
 import { proxy, snapshot, subscribe } from "valtio";
 import i18n from "i18next";
+
+import { mainApi } from "../7-actions/0-main-api";
+
 import { type Config } from "@shared/types";
 import { defaultConfig } from "@shared/default-config";
-import { mainApi } from "../7-actions/0-main-api";
-import { jotaiDefaultStore } from "../../../utils/local-utils/9-jotai-default-store";
 
 /**
  * User settings (electron-store `Config`). Mutate directly: `userSettings.keyframeCut = true`.
@@ -15,14 +17,13 @@ export const userSettings = proxy<Config>(structuredClone(defaultConfig));
 /** Immutable snapshot of userSettings, updated on every change, for use in Jotai derived atoms */
 export const userSettingsAtom = atom<Readonly<Config>>(snapshot(userSettings) as Config);
 
-const pendingKeys = new Set<keyof Config>();
-let flushTimer: ReturnType<typeof setTimeout> | undefined;
-let loaded = false;
+//---------------------------------------------------------------------------
 
 async function flush() {
     flushTimer = undefined;
     const keys = [...pendingKeys];
     pendingKeys.clear();
+
     for (const key of keys) {
         try {
             await mainApi.configSet(key, JSON.parse(JSON.stringify(userSettings[key] ?? null)));
@@ -34,15 +35,26 @@ async function flush() {
     }
 }
 
-subscribe(userSettings, (ops) => {
-    jotaiDefaultStore.set(userSettingsAtom, snapshot(userSettings) as Config);
-    if (!loaded) return;
-    for (const [, path] of ops) {
-        const key = path[0];
-        if (typeof key === 'string') pendingKeys.add(key as keyof Config);
+const pendingKeys = new Set<keyof Config>();
+
+//---------------------------------------------------------------------------
+
+subscribe(userSettings,
+    (ops) => {
+        jotaiDefaultStore.set(userSettingsAtom, snapshot(userSettings) as Config);
+        if (!loaded) return;
+        for (const [, path] of ops) {
+            const key = path[0];
+            if (typeof key === 'string') pendingKeys.add(key as keyof Config);
+        }
+        flushTimer ??= setTimeout(flush, 300);
     }
-    flushTimer ??= setTimeout(flush, 300);
-});
+);
+
+let flushTimer: ReturnType<typeof setTimeout> | undefined;
+let loaded = false;
+
+//---------------------------------------------------------------------------
 
 /** Must be awaited before the first render */
 export async function loadUserSettings() {
@@ -63,12 +75,16 @@ export async function resetUserSetting<K extends keyof Config>(key: K) {
     userSettings[key] = structuredClone(defaultConfig[key]);
 }
 
+//---------------------------------------------------------------------------
+
 // Derived values used throughout the app
 
-export const customOutDirAtom = atom((get) => {
-    const { enableCustomOutDir, recentCustomOutDirs } = get(userSettingsAtom);
-    return enableCustomOutDir ? recentCustomOutDirs[0] : undefined;
-});
+export const customOutDirAtom = atom(
+    (get) => {
+        const { enableCustomOutDir, recentCustomOutDirs } = get(userSettingsAtom);
+        return enableCustomOutDir ? recentCustomOutDirs[0] : undefined;
+    }
+);
 
 export function setCustomOutDir(newDir: string | undefined) {
     if (newDir) {
@@ -79,20 +95,38 @@ export function setCustomOutDir(newDir: string | undefined) {
     }
 }
 
+//---------------------------------------------------------------------------
+
 export const prefersReducedMotionAtom = atom((get) => {
     const { reducedMotion } = get(userSettingsAtom);
-    if (reducedMotion !== 'user') return reducedMotion === 'always';
+    if (reducedMotion !== 'user') {
+        return reducedMotion === 'always';
+    }
     return typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 });
 
-export const effectiveExportModeAtom = atom((get) => {
-    const { segmentsToChaptersOnly, autoMerge, autoDeleteMergedSegments } = get(userSettingsAtom);
-    if (segmentsToChaptersOnly) return 'segments_to_chapters' as const;
-    if (autoMerge && autoDeleteMergedSegments) return 'merge' as const;
-    if (autoMerge) return 'merge+separate' as const;
-    return 'separate' as const;
-});
+//---------------------------------------------------------------------------
 
-export const maxLabelLengthAtom = atom((get) => (get(userSettingsAtom).safeOutputFileName ? 100 : 500));
+export const effectiveExportModeAtom = atom(
+    (get) => {
+        const { segmentsToChaptersOnly, autoMerge, autoDeleteMergedSegments } = get(userSettingsAtom);
+        if (segmentsToChaptersOnly) {
+            return 'segments_to_chapters' as const;
+        }
+        if (autoMerge && autoDeleteMergedSegments) {
+            return 'merge' as const;
+        }
+        if (autoMerge) {
+            return 'merge+separate' as const;
+        }
+        return 'separate' as const;
+    }
+);
 
-export const hideAllNotificationsAtom = atom((get) => get(userSettingsAtom).hideNotifications === 'all');
+export const maxLabelLengthAtom = atom(
+    (get) => (get(userSettingsAtom).safeOutputFileName ? 100 : 500)
+);
+
+export const hideAllNotificationsAtom = atom(
+    (get) => get(userSettingsAtom).hideNotifications === 'all'
+);

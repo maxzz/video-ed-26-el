@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 import { Button } from "@/ui/shadcn/button";
 import { Input } from "@/ui/shadcn/input";
 import { DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/ui/shadcn/dialog";
+
 import { open_CustomDialog } from "../../../components/4-dialogs/7-0-dialogs/1-dialogs";
 
 export interface ExpressionDialogOptions {
@@ -17,15 +18,19 @@ export interface ExpressionDialogOptions {
 }
 
 /** JavaScript expression prompt (upstream ExpressionDialog). Resolves true when submitted successfully */
-export function openExpressionDialog(options: ExpressionDialogOptions): Promise<boolean | undefined> {
-    const state = proxy({ value: options.inputValue ?? '', error: undefined as string | undefined, busy: false });
+export function openDialog_Expression(options: ExpressionDialogOptions): Promise<boolean | undefined> {
+    const state = proxy({
+        value: options.inputValue ?? '',
+        error: undefined as string | undefined,
+        busy: false,
+    });
 
     return open_CustomDialog<boolean>(
-        (close) => <ExpressionDlgBody options={options} state={state} close={close} />
+        (close) => <Body options={options} state={state} close={close} />
     );
 }
 
-function ExpressionDlgBody({ options, state, close }: {
+function Body({ options, state, close }: {
     options: ExpressionDialogOptions;
     state: { value: string; error: string | undefined; busy: boolean; };
     close: (value?: boolean) => void;

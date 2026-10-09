@@ -15,9 +15,6 @@ export function onAppReady(handler: Handler) {
     }
 }
 
-const appReadyHandlers: Handler[] = [];
-let appReady = false;
-
 export function runAppReadyHandlers() {
     appReady = true;
     for (const handler of appReadyHandlers.splice(0)) {
@@ -28,6 +25,9 @@ export function runAppReadyHandlers() {
         }
     }
 }
+
+const appReadyHandlers: Handler[] = [];
+let appReady = false;
 
 //---------------------------------------------------------------------------
 

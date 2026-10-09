@@ -5,7 +5,9 @@ let initialized = false;
 
 /** Subscribes to main process events once, at startup (not in a React effect) */
 export function initIpcEvents() {
-    if (initialized) return;
+    if (initialized) {
+        return;
+    }
     initialized = true;
 
     // native menu and context menu
@@ -14,15 +16,17 @@ export function initIpcEvents() {
     });
 
     // HTTP API
-    mainEvents.on('apiAction', async ({ id, action, args }) => {
-        console.log('API action:', action, args);
-        try {
-            const found = await runAction(action, ...(args ?? []));
-            if (!found) console.error(`Action not found: ${action}`);
-        } finally {
-            await mainApi.apiActionResponse(id);
+    mainEvents.on('apiAction',
+        async ({ id, action, args }) => {
+            console.log('API action:', action, args);
+            try {
+                const found = await runAction(action, ...(args ?? []));
+                if (!found) console.error(`Action not found: ${action}`);
+            } finally {
+                await mainApi.apiActionResponse(id);
+            }
         }
-    });
+    );
 
     // files from the command line, second instance or macOS open-file
     mainEvents.on('openFiles', (paths) => {

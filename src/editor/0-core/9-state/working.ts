@@ -7,17 +7,14 @@ import { jotaiDefaultStore } from "../../../utils/local-utils/9-jotai-default-st
 
 // Port of upstream useLoading + useErrorHandling
 
+//---------------------------------------------------------------------------
+
 export interface WorkingState {
     text: string;
     abortController?: AbortController | undefined;
 }
 
 export const workingAtom = atom<WorkingState | undefined>(undefined);
-
-/** 0..1 or undefined when no operation with progress is running */
-export const progressAtom = atom<number | undefined>(undefined);
-
-//---------------------------------------------------------------------------
 
 export function isWorking() {
     return jotaiDefaultStore.get(workingAtom) != null;
@@ -27,14 +24,20 @@ export function setWorking(valOrBool?: WorkingState | true | undefined) {
     jotaiDefaultStore.set(workingAtom, valOrBool === true ? { text: i18n.t('Loading') } : valOrBool);
 }
 
-export function setProgress(progress: number | undefined) {
-    jotaiDefaultStore.set(progressAtom, progress);
-}
-
 export function abortWorking() {
     console.log('User clicked abort');
+
     abortFfmpegs();
     jotaiDefaultStore.get(workingAtom)?.abortController?.abort();
+}
+
+//---------------------------------------------------------------------------
+
+/** 0..1 or undefined when no operation with progress is running */
+export const progressAtom = atom<number | undefined>(undefined);
+
+export function setProgress(progress: number | undefined) {
+    jotaiDefaultStore.set(progressAtom, progress);
 }
 
 //---------------------------------------------------------------------------
@@ -48,6 +51,7 @@ export const genericErrorAtom = atom<GenericError | undefined>(undefined);
 
 export function handleError({ title, err }: GenericError) {
     console.error('handleError', title, err);
+
     jotaiDefaultStore.set(genericErrorAtom, { title, err });
 }
 
@@ -58,7 +62,9 @@ export async function withErrorHandling(operation: () => Promise<void>, errorMsg
     try {
         await operation();
     } catch (err) {
-        if (err instanceof DirectoryAccessDeclinedError || isAbortedError(err)) return;
+        if (err instanceof DirectoryAccessDeclinedError || isAbortedError(err)) {
+            return;
+        }
 
         if (err instanceof UnsupportedFileError) {
             console.error(err);
@@ -72,3 +78,5 @@ export async function withErrorHandling(operation: () => Promise<void>, errorMsg
 
 export type WithErrorHandling = typeof withErrorHandling;
 export type SetWorking = typeof setWorking;
+
+//---------------------------------------------------------------------------

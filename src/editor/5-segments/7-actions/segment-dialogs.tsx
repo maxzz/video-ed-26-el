@@ -14,7 +14,7 @@ import { segmentTagsSchema } from "@/editor/0-core/8-lib/9-types-core";
 import { editSegmentByExpressionHelpUrl, selectSegmentByExpressionHelpUrl } from "@shared/constants";
 import { parseTimecode, timecodePlaceholderAtom } from "@/editor/0-core/9-state/timecode";
 import safeishEval from "@/editor/0-core/8-lib/eval/eval";
-import { openExpressionDialog } from "@/editor/0-core/0-ui/dlg-expression";
+import { openDialog_Expression } from "@/editor/0-core/0-ui/dlg-expression";
 import { editingSegmentTagsAtom, editingSegmentTagsSegmentIndexAtom } from "@/components/2-main/0-all/a-panels-atoms";
 import { fileDurationAtom } from "@/editor/2-file/9-state/a-file-atoms";
 import { getSegmentTags } from "../8-lib/segment-utils";
@@ -74,7 +74,7 @@ export async function tmcmd_segments_selectSegmentsByExpr() {
         }
     }
 
-    await openExpressionDialog({
+    await openDialog_Expression({
         onSubmit,
         confirmButtonText: i18n.t('Select segments'),
         examples: [
@@ -137,7 +137,7 @@ export async function tmcmd_segments_mutateSegmentsByExpr() {
         }
     }
 
-    await openExpressionDialog({
+    await openDialog_Expression({
         onSubmit,
         confirmButtonText: i18n.t('Apply change'),
         examples: [

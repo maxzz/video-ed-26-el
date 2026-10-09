@@ -75,7 +75,9 @@ export async function userOpenFiles(newFilePathsIn?: string[]) {
             // If it's a project file (not llc) and we have an already opened file, import segments from the project
             const matchingImportProjectType = getImportProjectType(firstNewFilePath);
             if (matchingImportProjectType) {
-                if (!checkFileOpened()) return;
+                if (!checkFileOpened()) {
+                    return;
+                }
                 await loadEdlFile({ path: firstNewFilePath, type: matchingImportProjectType, append: true });
                 return;
             }

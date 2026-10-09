@@ -1,21 +1,23 @@
+import { jotaiDefaultStore } from "@/utils/local-utils/9-jotai-default-store";
+import { toast } from "@/components/4-dialogs/7-0-dialogs/3-toast";
 import i18n from "i18next";
 import invariant from "tiny-invariant";
+
+import { mainApi } from "@/editor/0-core/7-actions/0-main-api";
+import { isWorking, setProgress, setWorking, withErrorHandling } from "@/editor/0-core/9-state/working";
+import { basename, dirname, join } from "@/editor/0-core/8-lib/node-shims";
+
 import { type FFprobeChapter } from "@shared/ffprobe";
 import { parseFfprobeDuration } from "@shared/util";
-import { jotaiDefaultStore } from "@/utils/local-utils/9-jotai-default-store";
 import { customOutDirAtom, effectiveExportModeAtom, hideAllNotificationsAtom, userSettings } from "@/editor/0-core/9-state/user-settings";
 import { formatTimecode, promptTimecode, timecodePlaceholderAtom } from "@/editor/0-core/9-state/timecode";
-import { isWorking, setProgress, setWorking, withErrorHandling } from "@/editor/0-core/9-state/working";
 import { resetAllFileState } from "@/editor/0-core/7-actions/2-lifecycle";
 import { askDialog_ForImportChapters } from "@/components/4-dialogs/7-1-dialogs/05-ask-for-import-chapters";
 import { dialog_Confirm, show_ErrorToast } from "@/components/4-dialogs/7-1-dialogs/00-app-dialogs";
 import { DirectoryAccessDeclinedError } from "@/editor/0-core/8-lib/9-error-types";
 import { getDefaultOutFormat, getStreamFps, getTimecodeFromStreams, mapRecommendedDefaultFormat, readFileFfprobeMeta, tryMapChaptersToEdl } from "@/editor/0-core/8-lib/ffmpeg/ffmpeg";
 import { doesPlayerSupportHevcPlayback, getAudioStreams, getRealVideoStreams, isAudioDefinitelyNotSupported, shouldCopyStreamByDefault, willPlayerProperlyHandleVideo } from "@/editor/0-core/8-lib/ffmpeg/streams";
-import { mainApi } from "@/editor/0-core/7-actions/0-main-api";
-import { basename, dirname, join } from "@/editor/0-core/8-lib/node-shims";
 import { showNotification } from "@/editor/0-core/8-lib/notifications";
-import { toast } from "@/components/4-dialogs/7-0-dialogs/3-toast";
 import { findExistingHtml5FriendlyFile, getOutFileExtension, getPathReadAccessError, getSuffixedOutPath, havePermissionToReadFile, readFileStats, transferTimestamps } from "@/editor/0-core/8-lib/util";
 import { checkFileOpened } from "@/editor/3-player/7-actions/player-actions";
 import { fixInvalidDuration } from "@/editor/7-export/8-lib/ffmpeg-operations";
@@ -40,6 +42,8 @@ hevcPlaybackSupportedPromise.catch((err: unknown) => console.error(err));
 
 export { showNotification };
 
+//---------------------------------------------------------------------------
+
 export function showNotNativelySupportedMessage() {
     showNotification({ timer: 13000, text: i18n.t('File is not natively supported. Preview playback may be slow and of low quality, but the final export will be lossless. You may convert the file from the menu for a better preview.') });
 }
@@ -48,6 +52,8 @@ export function showPreviewFileLoadedMessage(fileName: string) {
     showNotification({ icon: 'info', text: i18n.t('Loaded existing preview file: {{ fileName }}', { fileName }) });
 }
 
+//---------------------------------------------------------------------------
+
 /** Resets all per-file state of all features, including segments and their undo history */
 export function closeFile() {
     resetAllFileState();
@@ -55,14 +61,20 @@ export function closeFile() {
 }
 
 export async function tmcmd_file_closeFileWithConfirm() {
-    if (!jotaiDefaultStore.get(isFileOpenedAtom) || isWorking()) return;
-    if (userSettings.askBeforeClose && !(await dialog_Confirm({ description: i18n.t('Are you sure you want to close the current file?') }))) return;
+    if (!jotaiDefaultStore.get(isFileOpenedAtom) || isWorking()) {
+        return;
+    }
+    if (userSettings.askBeforeClose && !(await dialog_Confirm({ description: i18n.t('Are you sure you want to close the current file?') }))) {
+        return;
+    }
     closeFile();
 }
 
 export async function loadMedia({ filePath: fp, projectPath }: { filePath: string; projectPath?: string | undefined; }) {
     async function tryOpenProjectPath(path: string) {
-        if (!(await mainApi.pathExists(path))) return false;
+        if (!(await mainApi.pathExists(path))) {
+            return false;
+        }
         await loadEdlFile({ path, type: 'llc' });
         return true;
     }
@@ -73,7 +85,9 @@ export async function loadMedia({ filePath: fp, projectPath }: { filePath: strin
     async function tryFindAndLoadProjectFile({ chapters, cod }: { chapters: FFprobeChapter[]; cod: string | undefined; }) {
         try {
             // First try to open from working dir
-            if (await tryOpenProjectPath(getEdlFilePath(fp, cod))) return;
+            if (await tryOpenProjectPath(getEdlFilePath(fp, cod))) {
+                return;
+            }
 
             // then try to open project from source file dir
             const sameDirEdlFilePath = getEdlFilePath(fp);
@@ -89,7 +103,9 @@ export async function loadMedia({ filePath: fp, projectPath }: { filePath: strin
                 loadCutSegments({ segments: edl, append: false });
             }
         } catch (err) {
-            if (err instanceof DirectoryAccessDeclinedError) throw err;
+            if (err instanceof DirectoryAccessDeclinedError) {
+                throw err;
+            }
             console.error('EDL load failed, but continuing', err);
             show_ErrorToast(`${i18n.t('Failed to load segments')} (${err instanceof Error && err.message})`);
         }
@@ -101,9 +117,15 @@ export async function loadMedia({ filePath: fp, projectPath }: { filePath: strin
         const pathReadAccessErrorCode = await getPathReadAccessError(fp);
         if (pathReadAccessErrorCode != null) {
             let errorMessage: string | undefined;
-            if (pathReadAccessErrorCode === 'ENOENT') errorMessage = i18n.t('The media you tried to open does not exist');
-            else if (['EACCES', 'EPERM'].includes(pathReadAccessErrorCode)) errorMessage = i18n.t('You do not have permission to access this file');
-            else errorMessage = i18n.t('Could not open media due to error {{errorCode}}', { errorCode: pathReadAccessErrorCode });
+            if (pathReadAccessErrorCode === 'ENOENT') {
+                errorMessage = i18n.t('The media you tried to open does not exist');
+            }
+            else if (['EACCES', 'EPERM'].includes(pathReadAccessErrorCode)) {
+                errorMessage = i18n.t('You do not have permission to access this file');
+            }
+            else {
+                errorMessage = i18n.t('Could not open media due to error {{errorCode}}', { errorCode: pathReadAccessErrorCode });
+            }
             show_ErrorToast(errorMessage);
             return;
         }
@@ -118,16 +140,18 @@ export async function loadMedia({ filePath: fp, projectPath }: { filePath: strin
         const fileStats = await readFileStats(fp);
 
         const fileFormatNew = await getDefaultOutFormat({ filePath: fp, fileMeta: ffprobeMeta });
-        if (!fileFormatNew) throw new Error('Unable to determine file format');
+        if (!fileFormatNew) {
+            throw new Error('Unable to determine file format');
+        }
 
         const timecode = autoLoadTimecode ? getTimecodeFromStreams(ffprobeMeta.streams) : undefined;
 
         const [firstVideoStream] = getRealVideoStreams(ffprobeMeta.streams);
         const [firstAudioStream] = getAudioStreams(ffprobeMeta.streams);
 
-        const copyStreamIdsForPathNew = Object.fromEntries(ffprobeMeta.streams.map((stream) => [
-            stream.index, shouldCopyStreamByDefault(stream),
-        ]));
+        const copyStreamIdsForPathNew = Object.fromEntries(ffprobeMeta.streams.map(
+            (stream) => [stream.index, shouldCopyStreamByDefault(stream),]
+        ));
 
         const validDuration = isDurationValid(parseFloat(ffprobeMeta.format.duration));
 
@@ -137,7 +161,9 @@ export async function loadMedia({ filePath: fp, projectPath }: { filePath: strin
         const cod = await ensureWritableOutDir({ inputPath: fp, outDir: jotaiDefaultStore.get(customOutDirAtom) });
 
         // if storeProjectInSourceDir is true, we will be writing project file to input path's dir, so ensure that one too
-        if (storeProjectInSourceDir) await ensureAccessToSourceDir(fp);
+        if (storeProjectInSourceDir) {
+            await ensureAccessToSourceDir(fp);
+        }
 
         const existingHtml5FriendlyFile = await findExistingHtml5FriendlyFile(fp, cod);
 
@@ -169,12 +195,18 @@ export async function loadMedia({ filePath: fp, projectPath }: { filePath: strin
         }
 
         function getFps() {
-            if (firstVideoStream != null) return getStreamFps(firstVideoStream);
-            if (firstAudioStream != null) return getStreamFps(firstAudioStream);
+            if (firstVideoStream != null) {
+                return getStreamFps(firstVideoStream);
+            }
+            if (firstAudioStream != null) {
+                return getStreamFps(firstAudioStream);
+            }
             return undefined;
         }
 
-        if (timecode) jotaiDefaultStore.set(startTimeOffsetAtom, timecode);
+        if (timecode) {
+            jotaiDefaultStore.set(startTimeOffsetAtom, timecode);
+        }
         jotaiDefaultStore.set(detectedFpsAtom, getFps());
         jotaiDefaultStore.set(mainFileMetaAtom, {
             ffprobeMeta,
@@ -186,7 +218,9 @@ export async function loadMedia({ filePath: fp, projectPath }: { filePath: strin
             jotaiDefaultStore.set(fileFormatAtom, outFormatLocked);
         } else {
             const recommendedDefaultFormat = mapRecommendedDefaultFormat({ sourceFormat: fileFormatNew, streams: ffprobeMeta.streams });
-            if (recommendedDefaultFormat.message) showNotification({ icon: 'info', text: recommendedDefaultFormat.message });
+            if (recommendedDefaultFormat.message) {
+                showNotification({ icon: 'info', text: recommendedDefaultFormat.message });
+            }
             jotaiDefaultStore.set(fileFormatAtom, recommendedDefaultFormat.format);
         }
 
@@ -206,7 +240,9 @@ export async function loadMedia({ filePath: fp, projectPath }: { filePath: strin
         // https://github.com/mifi/lossless-cut/issues/515
         jotaiDefaultStore.set(filePathAtom, fp);
     } catch (err) {
-        if (err instanceof DirectoryAccessDeclinedError) return;
+        if (err instanceof DirectoryAccessDeclinedError) {
+            return;
+        }
         closeFile();
         throw err;
     }
@@ -219,11 +255,15 @@ export async function userOpenSingleFile({ path: pathIn, isLlcProject }: { path:
     // Open .llc AND media referenced within
     if (isLlcProject) {
         console.log('Loading LLC project', path);
+
         const project = await loadLlcProject(path);
         const { mediaFileName } = project;
 
         console.log({ mediaFileName });
-        if (!mediaFileName) return;
+        
+        if (!mediaFileName) {
+            return;
+        }
 
         const mediaFilePath = join(dirname(path), mediaFileName);
 
@@ -238,7 +278,9 @@ export async function userOpenSingleFile({ path: pathIn, isLlcProject }: { path:
         try {
             await ensureAccessToSourceDir(mediaFilePath);
         } catch (err) {
-            if (err instanceof DirectoryAccessDeclinedError) return;
+            if (err instanceof DirectoryAccessDeclinedError) {
+                return;
+            }
         }
         path = mediaFilePath;
     }
@@ -252,7 +294,9 @@ export async function runAndReloadFile({ operation, loadingText, errorText = i18
     errorText?: string;
     nameSuffix: string;
 }) {
-    if (!checkFileOpened() || isWorking()) return;
+    if (!checkFileOpened() || isWorking()) {
+        return;
+    }
     try {
         setWorking({ text: loadingText });
         setProgress(0);
@@ -311,7 +355,9 @@ export async function tmcmd_tools_askStartTimeOffset() {
         allowRelative: true,
     });
 
-    if (newStartTimeOffset === undefined || newStartTimeOffset.duration < 0) return;
+    if (newStartTimeOffset === undefined || newStartTimeOffset.duration < 0) {
+        return;
+    }
 
     const duration = newStartTimeOffset.relDirection != null ? newStartTimeOffset.duration * newStartTimeOffset.relDirection : newStartTimeOffset.duration;
     setStartTimeOffset(duration);

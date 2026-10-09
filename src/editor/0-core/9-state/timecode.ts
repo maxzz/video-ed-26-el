@@ -1,6 +1,9 @@
 import { atom } from "jotai";
-import i18n from "i18next";
 import { jotaiDefaultStore } from "../../../utils/local-utils/9-jotai-default-store";
+import i18n from "i18next";
+
+import { userSettingsAtom } from "./user-settings";
+
 import { fire_Dialog } from "../../../components/4-dialogs/7-0-dialogs/1-dialogs";
 
 import { type FormatTimecode, type ParseTimecode } from "../8-lib/9-types-core";
@@ -8,7 +11,6 @@ import { getFrameCountRaw } from "@/editor/9-edl/8-lib/edl-formats";
 import { getFrameDuration } from "../8-lib/util";
 import { formatDuration, parseDuration } from "../8-lib/duration";
 import { detectedFpsAtom } from "@/editor/2-file/9-state/a-file-atoms";
-import { userSettingsAtom } from "./user-settings";
 
 // Port of upstream useTimecode: the functions are derived atoms, so they change when fps or format changes
 
@@ -37,7 +39,9 @@ export const formatTimecodeAtom = atom<FormatTimecode>((get) => {
     };
 });
 
-export const timecodePlaceholderAtom = atom((get) => get(formatTimecodeAtom)({ seconds: 0, shorten: false }));
+export const timecodePlaceholderAtom = atom(
+    (get) => get(formatTimecodeAtom)({ seconds: 0, shorten: false })
+);
 
 export const parseTimecodeAtom = atom<ParseTimecode>((get) => {
     const detectedFps = get(detectedFpsAtom);
@@ -70,8 +74,12 @@ export async function promptTimecode({ initialValue, title, description, inputPl
     function parse(value: string) {
         let relDirection: number | undefined;
         if (allowRelative) {
-            if (value.startsWith('-')) relDirection = -1;
-            else if (value.startsWith('+')) relDirection = 1;
+            if (value.startsWith('-')) {
+                relDirection = -1;
+            }
+            else if (value.startsWith('+')) {
+                relDirection = 1;
+            }
         }
         const withoutPrefix = allowRelative ? value.replace(/^[+-]/, '') : value;
         const duration = parseTimecode(withoutPrefix);
@@ -89,6 +97,9 @@ export async function promptTimecode({ initialValue, title, description, inputPl
         className: 'max-w-xl',
         inputValidator: (v) => (parse(v) == null ? i18n.t('Invalid timecode format') : undefined),
     });
-    if (!isConfirmed || value == null) return undefined;
+    
+    if (!isConfirmed || value == null) {
+        return undefined;
+    }
     return parse(value);
 }

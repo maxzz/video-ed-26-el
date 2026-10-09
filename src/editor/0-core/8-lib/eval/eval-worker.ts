@@ -52,29 +52,33 @@ const wl = {
     PERSISTENT: 1,
 };
 
-Object.getOwnPropertyNames(myGlobal).forEach(function (prop) {
-    if (!wl.hasOwnProperty(prop)) {
-        Object.defineProperty(myGlobal, prop, {
-            get: function () {
-                throw `Security Exception: cannot access ${prop}`;
-            },
-            configurable: false,
-        });
+Object.getOwnPropertyNames(myGlobal).forEach(
+    function (prop) {
+        if (!wl.hasOwnProperty(prop)) {
+            Object.defineProperty(myGlobal, prop, {
+                get: function () {
+                    throw `Security Exception: cannot access ${prop}`;
+                },
+                configurable: false,
+            });
+        }
     }
-});
+);
 
 // @ts-expect-error dunno how to type this
-Object.getOwnPropertyNames(myGlobal.__proto__).forEach(function (prop) {
-    if (!wl.hasOwnProperty(prop)) {
-        // @ts-expect-error dunno how to type this
-        Object.defineProperty(myGlobal.__proto__, prop, {
-            get: function () {
-                throw `Security Exception: cannot access ${prop}`;
-            },
-            configurable: false,
-        });
+Object.getOwnPropertyNames(myGlobal.__proto__).forEach(
+    function (prop) {
+        if (!wl.hasOwnProperty(prop)) {
+            // @ts-expect-error dunno how to type this
+            Object.defineProperty(myGlobal.__proto__, prop, {
+                get: function () {
+                    throw `Security Exception: cannot access ${prop}`;
+                },
+                configurable: false,
+            });
+        }
     }
-});
+);
 
 // Array(5000000000).join("adasdadadasd") instantly crashing some browser tabs
 Object.defineProperty(Array.prototype, 'join', {
@@ -93,7 +97,6 @@ Object.defineProperty(Array.prototype, 'join', {
         };
     }(Array.prototype.join),
 });
-
 
 /*
     https://github.com/Zirak/SO-ChatBot/blob/accbfb4b8738781afaf4f080a6bb0337e13f7c25/source/codeWorker.js#L87

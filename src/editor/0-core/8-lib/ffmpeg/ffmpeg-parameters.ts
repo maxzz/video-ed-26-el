@@ -46,5 +46,10 @@ export type FfmpegDialog = keyof typeof parametersRaw;
 // widen types
 export const parameters: Record<FfmpegDialog, Record<string, { value: string, hint?: () => string, label?: string }>> = parametersRaw;
 
-export const getHint = (dialogType: FfmpegDialog, param: string) => parameters[dialogType][param]?.hint?.();
-export const getLabel = (dialogType: FfmpegDialog, param: string) => parameters[dialogType][param]?.label;
+export function getHint(dialogType: FfmpegDialog, param: string) {
+    return parameters[dialogType][param]?.hint?.();
+}
+
+export function getLabel(dialogType: FfmpegDialog, param: string) {
+    return parameters[dialogType][param]?.label;
+}

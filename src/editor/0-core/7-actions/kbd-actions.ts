@@ -24,6 +24,7 @@ const registry = new Map<string, ActionDef>();
 export const actionsVersionAtom = atom(0);
 
 export function registerActions(actions: Record<string, ActionFn | ActionDef>) {
+
     for (const [name, fnOrDef] of Object.entries(actions)) {
         if (import.meta.env.DEV && registry.has(name)) {
             console.warn('Action registered twice, the last one wins:', name);
@@ -55,6 +56,7 @@ export async function runAction(name: string, ...args: unknown[]) {
         console.warn('Action not found:', name);
         return false;
     }
+
     try {
         await (def.run as (...a: unknown[]) => unknown)(...args);
     } catch (err) {

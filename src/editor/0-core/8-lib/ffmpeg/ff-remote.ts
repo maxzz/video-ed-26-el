@@ -1,4 +1,5 @@
 import { nanoid } from "nanoid";
+
 import { type CaptureFormat, type FfmpegHwAccel } from "@shared/types";
 import { type DetectedSegment, type FfRunOptions } from "@shared/ipc-contract";
 import { getFfCommandLine, mainApi, mainEvents } from "../../7-actions/0-main-api";
@@ -17,6 +18,7 @@ async function withJob<T>(onProgress: OnProgress | undefined, signal: AbortSigna
     const offSegment = onSegment ? mainEvents.on('ffSegmentDetected', (id, segment) => id === jobId && onSegment(segment)) : undefined;
     const onAbort = () => mainApi.ffAbortJob(jobId);
     signal?.addEventListener('abort', onAbort);
+    
     try {
         return await fn(jobId);
     } finally {

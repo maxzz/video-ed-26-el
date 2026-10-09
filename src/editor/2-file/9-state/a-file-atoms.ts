@@ -1,4 +1,6 @@
 import { atom } from "jotai";
+import { jotaiDefaultStore } from "@/utils/local-utils/9-jotai-default-store";
+
 import { type FFprobeStream } from "@shared/ffprobe";
 import { type Html5ifyMode } from "@shared/types";
 import { type BatchFile, type FfmpegCommandLog, type FileStats, type FilesMeta, type ParamsByFile } from "@/editor/0-core/8-lib/9-types-core";
@@ -8,7 +10,6 @@ import { getAudioStreams, getRealVideoStreams, getSubtitleStreams } from "@/edit
 import { isDurationValid } from "@/editor/5-segments/8-lib/segment-utils";
 import { getOutDir } from "@/editor/0-core/8-lib/util";
 import { customOutDirAtom } from "@/editor/0-core/9-state/user-settings";
-import { jotaiDefaultStore } from "@/utils/local-utils/9-jotai-default-store";
 import { setProgress } from "@/editor/0-core/9-state/working";
 import { onFileReset } from "@/editor/0-core/7-actions/2-lifecycle";
 
@@ -90,19 +91,21 @@ export const isRotationSetAtom = atom((get) => get(rotationAtom) !== 360);
 
 export const outputDirAtom = atom((get) => getOutDir(get(customOutDirAtom), get(filePathAtom)));
 
-onFileReset(() => {
-    jotaiDefaultStore.set(previewFilePathAtom, undefined);
-    jotaiDefaultStore.set(usingDummyVideoAtom, false);
-    jotaiDefaultStore.set(fileDurationAtom, undefined);
-    jotaiDefaultStore.set(detectedFileFormatAtom, undefined);
-    jotaiDefaultStore.set(rotationAtom, 360);
-    setProgress(undefined);
-    jotaiDefaultStore.set(startTimeOffsetAtom, 0);
-    jotaiDefaultStore.set(filePathAtom, undefined);
-    jotaiDefaultStore.set(externalFilesMetaAtom, {});
-    jotaiDefaultStore.set(paramsByFileAtom, new Map());
-    jotaiDefaultStore.set(detectedFpsAtom, undefined);
-    jotaiDefaultStore.set(mainFileMetaAtom, undefined);
-    jotaiDefaultStore.set(shortestFlagAtom, false);
-    jotaiDefaultStore.set(currentFileExportCountAtom, 0);
-});
+onFileReset(
+    () => {
+        jotaiDefaultStore.set(previewFilePathAtom, undefined);
+        jotaiDefaultStore.set(usingDummyVideoAtom, false);
+        jotaiDefaultStore.set(fileDurationAtom, undefined);
+        jotaiDefaultStore.set(detectedFileFormatAtom, undefined);
+        jotaiDefaultStore.set(rotationAtom, 360);
+        setProgress(undefined);
+        jotaiDefaultStore.set(startTimeOffsetAtom, 0);
+        jotaiDefaultStore.set(filePathAtom, undefined);
+        jotaiDefaultStore.set(externalFilesMetaAtom, {});
+        jotaiDefaultStore.set(paramsByFileAtom, new Map());
+        jotaiDefaultStore.set(detectedFpsAtom, undefined);
+        jotaiDefaultStore.set(mainFileMetaAtom, undefined);
+        jotaiDefaultStore.set(shortestFlagAtom, false);
+        jotaiDefaultStore.set(currentFileExportCountAtom, 0);
+    }
+);

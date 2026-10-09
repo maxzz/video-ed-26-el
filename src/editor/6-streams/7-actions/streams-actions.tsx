@@ -8,7 +8,7 @@ import { mainApi } from "@/editor/0-core/7-actions/0-main-api";
 import { showDialog_Open } from "@/components/4-dialogs/7-1-dialogs/01-show-open-dialog";
 import { readFileFfprobeMeta } from "@/editor/0-core/8-lib/ffmpeg/ffmpeg";
 import { type FileParams, type ParamsByFile, type StreamParams } from "@/editor/0-core/8-lib/9-types-core";
-import { openExpressionDialog } from "@/editor/0-core/0-ui/dlg-expression";
+import { openDialog_Expression } from "@/editor/0-core/0-ui/dlg-expression";
 import { allFilesMetaAtom, externalFilesMetaAtom, filePathAtom, paramsByFileAtom } from "@/editor/2-file/9-state/a-file-atoms";
 import { streamsSelectorShownAtom } from "@/components/2-main/0-all/a-panels-atoms";
 import { applyEnabledStreamsFilter, enabledStreamsFilterAtom, filterEnabledStreams, setCopyStreamIdsForPath } from "../9-state/a-streams-store";
@@ -84,7 +84,7 @@ export async function changeEnabledStreamsFilter() {
 
     const isEmpty = (v: string) => v.trim().length === 0;
 
-    await openExpressionDialog({
+    await openDialog_Expression({
         confirmButtonText: i18n.t('Apply filter'),
         onSubmit: async (value: string) => {
             try {

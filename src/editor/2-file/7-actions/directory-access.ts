@@ -1,12 +1,14 @@
-import i18n from "i18next";
 import invariant from "tiny-invariant";
+import i18n from "i18next";
+
+import { fs } from "@/editor/0-core/8-lib/node-shims";
+import { mainApi } from "@/editor/0-core/7-actions/0-main-api";
+
 import { setCustomOutDir } from "@/editor/0-core/9-state/user-settings";
 import { askDialog_ForOutDir } from "@/components/4-dialogs/7-1-dialogs/02-ask-for-out-dir";
 import { showDialog_Open } from "@/components/4-dialogs/7-1-dialogs/01-show-open-dialog";
 import { show_ErrorToast } from "@/components/4-dialogs/7-1-dialogs/00-app-dialogs";
 import { DirectoryAccessDeclinedError } from "@/editor/0-core/8-lib/9-error-types";
-import { mainApi } from "@/editor/0-core/7-actions/0-main-api";
-import { fs } from "@/editor/0-core/8-lib/node-shims";
 import { checkDirWriteAccess, getFileDir, getOutDir } from "@/editor/0-core/8-lib/util";
 
 // Port of upstream useDirectoryAccess.
@@ -22,6 +24,7 @@ export async function askForInputDir(defaultPath?: string | undefined) {
         message: i18n.t('Press confirm to grant LosslessCut access to write the project file (due to App Sandbox restrictions).'),
         buttonLabel: i18n.t('Confirm'),
     });
+
     return filePaths.length === 1 ? filePaths[0] : undefined;
 }
 
@@ -30,8 +33,10 @@ export async function ensureAccessToSourceDir(inputPath: string) {
     const inputFileDir = getFileDir(inputPath);
     invariant(inputFileDir != null);
 
-    for (;;) {
-        if (await checkDirWriteAccess(inputFileDir)) break;
+    for (; ;) {
+        if (await checkDirWriteAccess(inputFileDir)) {
+            break;
+        }
 
         if (!masMode) {
             show_ErrorToast(i18n.t('You have no write access to the directory of this file'));
@@ -39,7 +44,9 @@ export async function ensureAccessToSourceDir(inputPath: string) {
         }
 
         const userSelectedDir = await askForInputDir(inputFileDir);
-        if (userSelectedDir == null) throw new DirectoryAccessDeclinedError();
+        if (userSelectedDir == null) {
+            throw new DirectoryAccessDeclinedError();
+        }
     }
 }
 
@@ -57,14 +64,18 @@ export async function ensureWritableOutDir({ inputPath, outDir }: { inputPath?: 
     }
 
     // if we don't (no longer) have a working dir, and not an main file path, then there's nothing we can do, just return the dir
-    if (!newCustomOutDir && !inputPath) return newCustomOutDir;
+    if (!newCustomOutDir && !inputPath) {
+        return newCustomOutDir;
+    }
 
     const effectiveOutDirPath = getOutDir(newCustomOutDir, inputPath);
     const hasDirWriteAccess = effectiveOutDirPath != null && await checkDirWriteAccess(effectiveOutDirPath);
     if (!hasDirWriteAccess) {
         if (masMode) {
             const newOutDir = await askDialog_ForOutDir(effectiveOutDirPath);
-            if (!newOutDir) throw new DirectoryAccessDeclinedError();
+            if (!newOutDir) {
+                throw new DirectoryAccessDeclinedError();
+            }
             setCustomOutDir(newOutDir);
             newCustomOutDir = newOutDir;
         } else {

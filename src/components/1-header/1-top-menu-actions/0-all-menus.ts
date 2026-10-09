@@ -1,12 +1,13 @@
+import { type MenuAction } from "./9-types-menu-action";
 import { handleError } from "@/editor/0-core/9-state/working";
-import * as edit from "./2-top-menu-edit";
+
 import * as file from "./1-top-menu-file";
+import * as edit from "./2-top-menu-edit";
+import * as segments from "./3-top-menu-segments";
+import * as view from "./4-top-menu-view";
+import * as tools from "./5-top-menu-tools";
 import * as help from "./6-top-menu-help";
 import * as host from "./7-top-menu-host";
-import * as segments from "./3-top-menu-segments";
-import * as tools from "./5-top-menu-tools";
-import { type MenuAction } from "./9-types-menu-action";
-import * as view from "./4-top-menu-view";
 
 export { type MenuAction } from "./9-types-menu-action";
 

@@ -1,10 +1,10 @@
 import { atom } from "jotai";
+import { jotaiDefaultStore } from "@/utils/local-utils/9-jotai-default-store";
 import { observe } from "jotai-effect";
 import debounce from "lodash/debounce";
 import isEqual from "lodash/isEqual";
 import i18n from "i18next";
 
-import { jotaiDefaultStore } from "@/utils/local-utils/9-jotai-default-store";
 import { type StateSegment } from "@/editor/0-core/8-lib/9-types-core";
 import { customOutDirAtom, userSettingsAtom } from "@/editor/0-core/9-state/user-settings";
 import { show_ErrorToast } from "@/components/4-dialogs/7-1-dialogs/00-app-dialogs";
