@@ -4,7 +4,7 @@ import { jotaiDefaultStore } from "@/utils/local-utils/9-jotai-default-store";
 import { cn } from "@/utils/classnames";
 import { Button } from "@/ui/shadcn/button";
 import { useTranslation } from "react-i18next";
-import { CircleXIcon, MenuIcon, RotateCcwSquareIcon } from "lucide-react";
+import { CircleXIcon, MenuIcon, RotateCcwSquareIcon, XIcon } from "lucide-react";
 
 import { runAction } from "@/editor/0-core/7-actions/kbd-actions";
 import { calculateTimelinePercent, mediaSourceQualities } from "@/editor/0-core/8-lib/util";
@@ -12,7 +12,9 @@ import { fullscreenAtom } from "@/components/2-main/0-all/a-panels-atoms";
 import { showRightBarAtom } from "@/components/2-main/0-all/a-layout-atoms";
 import { fileDurationAtom, filePathAtom, hasVideoAtom, isFileOpenedAtom, isRotationSetAtom } from "@/editor/2-file/9-state/a-file-atoms";
 import { onFilesDrop } from "@/editor/2-file/7-actions/open-files";
+import { actionTitleAtom } from "@/editor/4-timeline/9-state/action-title";
 import { bigWaveformEnabledAtom } from "@/editor/4-timeline/9-state/timeline-atoms";
+import { simpleModeAtom } from "@/editor/5-segments/9-state/a-seg-ui-atoms";
 import { onTimelineWheel } from "@/editor/4-timeline/7-actions/3-timeline-actions";
 import { BigWaveform } from "@/editor/4-timeline/0-ui/0-all/3-big-waveform";
 import {
@@ -27,6 +29,7 @@ import { NoFileLoaded } from "./no-file-loaded";
 /** The middle part of the editor (also shown in fullscreen): video, compat player, drop zone and player overlays */
 export function PlayerView() {
     const isFileOpened = useAtomValue(isFileOpenedAtom);
+    const simpleMode = useAtomValue(simpleModeAtom);
     const hasVideo = useAtomValue(hasVideoAtom);
     const bigWaveformEnabled = useAtomValue(bigWaveformEnabledAtom);
 
@@ -46,6 +49,8 @@ export function PlayerView() {
             )}
 
             <CompatPlayerBanner />
+
+            {isFileOpened && !simpleMode && <Button_CloseFile />}
 
             {isFileOpened && <PlayerControls />}
 
@@ -115,6 +120,21 @@ function CompatPlayerBanner() {
                 </Button>
             )}
         </div>
+    );
+}
+
+function Button_CloseFile() {
+    const actionTitle = useAtomValue(actionTitleAtom);
+    const { t } = useTranslation();
+    return (
+        <button
+            className="absolute top-1 right-1 p-0.5 text-destructive hover:text-destructive cursor-pointer z-10"
+            onClick={() => runAction("cleanupFilesDialog")}
+            title={actionTitle(t("Close file and clean up"), "cleanupFilesDialog")}
+            type="button"
+        >
+            <XIcon className="size-4" />
+        </button>
     );
 }
 

@@ -15,7 +15,6 @@ import { formatTimecodeAtom } from "@/editor/0-core/9-state/timecode";
 import { rightBarWidth } from "@/editor/0-core/8-lib/constants";
 import { runAction } from "@/editor/0-core/7-actions/kbd-actions";
 import { actionTitleAtom } from "@/editor/4-timeline/9-state/action-title";
-import { isFileOpenedAtom } from "@/editor/2-file/9-state/a-file-atoms";
 import { currentSegIndexSafeAtom, cutSegmentsAtom } from "../9-state/a-segments-store";
 import {
     darkModeAtom, draggingSegIdAtom, firstSegmentAtCursorAtom, getSegColorAtom, invertCutSegmentsAtom, isOnlyMarkersAtom,
@@ -50,8 +49,6 @@ function Header() {
     const items = useAtomValue(segmentListItemsAtom);
     const invertCutSegments = useAtomValue(invertCutSegmentsAtom);
     const isOnlyMarkers = useAtomValue(isOnlyMarkersAtom);
-    const isFileOpened = useAtomValue(isFileOpenedAtom);
-    const simpleMode = useAtomValue(simpleModeAtom);
     const actionTitle = useAtomValue(actionTitleAtom);
     const { t } = useTranslation();
 
@@ -67,22 +64,12 @@ function Header() {
     }
 
     return (
-        <div className="px-2 py-0.5 text-foreground flex items-center gap-1">
-            {!simpleMode && isFileOpened && (
-                <button
-                    className="shrink-0 p-0.5 text-destructive hover:text-destructive cursor-pointer"
-                    onClick={() => runAction("cleanupFilesDialog")}
-                    title={actionTitle(t("Close file and clean up"), "cleanupFilesDialog")}
-                    type="button"
-                >
-                    <XIcon className="size-4" />
-                </button>
-            )}
-            <span className="min-w-0 text-xs">
+        <div className="px-2 py-0.5 text-foreground flex items-center justify-between gap-1">
+            <span className="text-xs">
                 {header}
             </span>
             <button
-                className="shrink-0 ml-auto p-0.5 text-muted-foreground hover:text-foreground cursor-pointer"
+                className="shrink-0 p-0.5 text-muted-foreground hover:text-foreground cursor-pointer"
                 onClick={() => runAction('toggleSegmentsList')}
                 title={actionTitle(t('Close sidebar'), 'toggleSegmentsList')}
                 type="button"
