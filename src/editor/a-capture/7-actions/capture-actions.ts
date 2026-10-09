@@ -3,19 +3,19 @@ import invariant from "tiny-invariant";
 import i18n from "i18next";
 
 import { handleError, isWorking, setProgress, setWorking, withErrorHandling } from "@/editor/0-core/9-state/working";
+import { showNotification, showOsNotification } from "@/editor/0-core/8-lib/notifications";
 
 import { type CaptureFormat } from "@shared/types";
 import { type SegmentBase } from "@/editor/0-core/8-lib/9-types-core";
 import { customOutDirAtom, userSettings } from "@/editor/0-core/9-state/user-settings";
 import { getFrameCount } from "@/editor/0-core/9-state/timecode";
 import { detectedFpsAtom, fileDurationAtom, filePathAtom, outputDirAtom, paramsByFileAtom, usingPreviewFileAtom } from "@/editor/2-file/9-state/a-file-atoms";
-import { showNotification, showOsNotification } from "@/editor/0-core/8-lib/notifications";
 import { addStreamSourceFile } from "@/editor/6-streams/7-actions/streams-actions";
 import { videoElementAtom } from "@/editor/3-player/9-state/a-player-atoms";
 import { getRelevantTime } from "@/editor/3-player/7-actions/player-actions";
 import { currentCutSegAtom, selectedSegmentsAtom } from "@/editor/5-segments/9-state/a-segments-store";
 import { captureFrameFromFfmpeg, captureFrameFromTag, captureFrameToClipboard, captureFramesRange } from "../8-lib/frame-capture";
-import { askDialog_ExtractFramesAsImages } from "../8-lib/extract-frames-dialog";
+import { askDialog_ExtractFramesAsImages } from "../8-lib/dlg-extract-frames";
 import { openDialog_ExportFinished } from "@/components/4-dialogs/7-2-dialogs/1-dlgs-finished";
 
 // Port of upstream App.tsx captureSnapshot*, extract*FramesAsImages, toggleCaptureFormat
