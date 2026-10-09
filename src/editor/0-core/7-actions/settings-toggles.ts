@@ -15,7 +15,7 @@ export function toggleInvertCutSegments() {
     });
 }
 
-export function toggleSimpleMode() {
+export function tmcmd_view_toggleSimpleMode() {
     const v = userSettings.simpleMode;
     showNotification({ text: v ? i18n.t('Advanced view has been enabled. You will now also see non-essential buttons and functions') : i18n.t('Advanced view disabled. You will now see only the most essential buttons and functions') });
     userSettings.simpleMode = !v;
