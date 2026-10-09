@@ -6,7 +6,7 @@ import { motion } from "motion/react";
 import { Button } from "@/ui/shadcn/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/ui/shadcn/select";
 import {
-    AudioWaveformIcon, BabyIcon, CameraIcon, ChevronLeftIcon, ChevronRightIcon, ContrastIcon, FileOutputIcon, GaugeIcon, ImagesIcon, KeyIcon,
+    AudioWaveformIcon, CameraIcon, ChevronLeftIcon, ChevronRightIcon, ContrastIcon, FileOutputIcon, GaugeIcon, ImagesIcon, KeyIcon,
     KeyRoundIcon, NotebookTextIcon, PauseIcon, PlayIcon, RotateCcwSquareIcon, ScissorsIcon, SkipBackIcon, SkipForwardIcon, StepBackIcon,
     StepForwardIcon, Trash2Icon, TriangleAlertIcon,
 } from "lucide-react";
@@ -30,7 +30,7 @@ import { areWeCuttingAtom } from "../../9-state/bottom-bar-atoms";
 import { currentFrameAtom, displayTimeAtom, isZoomedAtom, keyframesEnabledAtom, showThumbnailsAtom, waveformModeAtom, zoomAtom } from "../../9-state/timeline-atoms";
 import {
     increaseRotation, seekClosestKeyframe, timelineToggleComfortZoom, toggleExportConfirmEnabled, toggleInvertCutSegments, toggleShowKeyframes,
-    toggleShowThumbnails, toggleSimpleMode, toggleWaveformMode, zoomAbs,
+    toggleShowThumbnails, toggleWaveformMode, zoomAbs,
 } from "../../7-actions/3-timeline-actions";
 import { Input_CutTime } from "./1-input-cut-time";
 import { Button_JumpSegment, Button_SegmentCutpoint, Button_SetCutpoint } from "./2-button-segment-cut";
@@ -195,15 +195,6 @@ function BottomBarBottomRow() {
         <div className="relative px-1 py-0.5 h-8 flex items-center justify-between gap-2">
             <Button_InvertCutMode />
 
-            <div className="flex items-center">
-                <Button_SimpleMode />
-                {simpleMode && (
-                    <div role="button" className="ml-1 text-xs cursor-pointer" onClick={toggleSimpleMode}>
-                        {t('Toggle advanced view')}
-                    </div>
-                )}
-            </div>
-
             {isFileOpened && !simpleMode && (<>
                 <Button_ZoomControls />
                 <Indicator_PlaybackRate />
@@ -258,16 +249,6 @@ function Button_InvertCutMode() {
                 <ContrastIcon className="size-6" />
             </Button_Bar>
         </motion.div>
-    );
-}
-
-function Button_SimpleMode() {
-    const simpleMode = useAtomValue(simpleModeAtom);
-    const { t } = useTranslation();
-    return (
-        <Button_Bar className={simpleMode ? activeClasses : 'text-foreground'} title={t('Toggle advanced view')} onClick={toggleSimpleMode}>
-            <BabyIcon className="size-5" />
-        </Button_Bar>
     );
 }
 

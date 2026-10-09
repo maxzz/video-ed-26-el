@@ -3,7 +3,7 @@ import { useAtomValue } from "jotai";
 import { useTranslation } from "react-i18next";
 import { Button } from "@/ui/shadcn/button";
 import { cn } from "@/utils/classnames";
-import { BabyIcon, FilterIcon, ListIcon, LockIcon, MoonIcon, PanelRightIcon, SettingsIcon, SunIcon, UnlockIcon } from "lucide-react";
+import { FilterIcon, ListIcon, LockIcon, MoonIcon, PanelRightIcon, SettingsIcon, SunIcon, UnlockIcon } from "lucide-react";
 import { jotaiDefaultStore } from "@/utils/local-utils/9-jotai-default-store";
 import { mainApi, preloadEnv } from "@/editor/0-core/7-actions/0-main-api";
 
@@ -11,7 +11,6 @@ import { customOutDirAtom, setCustomOutDir, userSettingsAtom } from "@/editor/0-
 import { runAction } from "@/editor/0-core/7-actions/kbd-actions";
 import { settingsVisibleAtom, streamsSelectorShownAtom } from "@/components/2-main/0-all/a-panels-atoms";
 import { filePathAtom, isCustomFormatSelectedAtom, numStreamsTotalAtom } from "@/editor/2-file/9-state/a-file-atoms";
-import { toggleSimpleMode } from "@/editor/4-timeline/7-actions/3-timeline-actions";
 import { enabledStreamsFilterAtom, numStreamsToCopyAtom } from "@/editor/6-streams/9-state/a-streams-store";
 import { changeEnabledStreamsFilter, toggleStripCurrentFilter } from "@/editor/6-streams/7-actions/streams-actions";
 import { toggleOutFormatLocked } from "@/editor/7-export/7-actions/export-actions";
@@ -71,10 +70,6 @@ export function MainArea_Toolbar() {
             )}
 
             {filePath && <Button_ExportMode className="h-6 w-36 text-xs" />}
-
-            <Button variant="outline" size="icon-xs" className={cn(simpleMode && 'text-primary')} title={t('Toggle advanced view')} onClick={toggleSimpleMode}>
-                <BabyIcon />
-            </Button>
 
             {!simpleMode && (
                 <Button variant="outline" size="icon-xs" title={t('Toggle dark mode')} onClick={() => runAction('toggleDarkMode')}>

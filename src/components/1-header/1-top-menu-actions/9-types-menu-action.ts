@@ -39,6 +39,7 @@ export type MenuAction =
     | { what: 'mutateSegmentsByExpr'; }
     | { what: 'clearSegments'; }
     | { what: 'toggleCommandPalette'; }
+    | { what: 'toggleSimpleMode'; }
     | { what: 'concatBatch'; }
     | { what: 'setStartTimeOffset'; }
     | { what: 'detectBlackScenes'; }

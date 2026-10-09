@@ -60,6 +60,7 @@ function dispatch(action: MenuAction) {
         case 'mutateSegmentsByExpr': return segments.mutateSegmentsByExpr();
         case 'clearSegments': return segments.clearSegments();
         case 'toggleCommandPalette': return view.toggleCommandPalette();
+        case 'toggleSimpleMode': return view.toggleSimpleMode();
         case 'concatBatch': return tools.concatBatch();
         case 'setStartTimeOffset': return tools.setStartTimeOffset();
         case 'detectBlackScenes': return tools.detectBlackScenes();

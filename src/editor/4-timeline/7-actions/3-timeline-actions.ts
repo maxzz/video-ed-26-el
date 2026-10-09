@@ -17,7 +17,7 @@ import { isModifierPressed } from "../8-lib/modifier-keys";
 import { comfortZoomAtom, forceBigWaveformAtom, neighbouringKeyFramesAtom, seekAccelerationAtom, zoomedDurationAtom, zoomUnroundedAtom } from "../9-state/timeline-atoms";
 
 export { showNotification };
-export { toggleInvertCutSegments, toggleSimpleMode, toggleExportConfirmEnabled } from "@/editor/0-core/7-actions/settings-toggles";
+export { toggleInvertCutSegments, toggleExportConfirmEnabled } from "@/editor/0-core/7-actions/settings-toggles";
 
 //---------------------------------------------------------------------------
 // Zoom

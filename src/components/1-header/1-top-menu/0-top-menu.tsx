@@ -6,7 +6,8 @@ import { appName, faqUrl, featureRequestUrl, getReleaseUrl, githubUrl, homepageU
 import { getAppInfo } from "@/editor/0-core/7-actions/0-main-api";
 import { newVersionAtom } from "@/editor/f-platform/9-state/a-platform";
 import { canRedoAtom, canUndoAtom } from "@/editor/5-segments/9-state/a-segments-store";
-import { MenuActionItem, modShortcut } from "./8-menu-item";
+import { simpleModeAtom } from "@/editor/5-segments/9-state/a-seg-ui-atoms";
+import { MenuActionItem, MenuCheckboxItem, modShortcut } from "./8-menu-item";
 import { TopMenu_File } from "./1-top-menu-file";
 
 export function TopMenu_All() {
@@ -91,11 +92,14 @@ function TopMenu_Segments() {
 
 function TopMenu_View() {
     const { isWindows } = getAppInfo();
+    const simpleMode = useAtomValue(simpleModeAtom);
     const { t } = useTranslation();
     return (
         <MenubarMenu>
             <MenubarTrigger>{t('View')}</MenubarTrigger>
             <MenubarContent className="min-w-56">
+                <MenuCheckboxItem label={t('Advanced view')} checked={!simpleMode} action={{ what: 'toggleSimpleMode' }} />
+                <MenubarSeparator />
                 {isWindows && (
                     <>
                         <MenuActionItem label={t('Minimize')} shortcut="Ctrl+M" action={{ what: 'minimize' }} />
