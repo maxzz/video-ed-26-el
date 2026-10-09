@@ -123,18 +123,18 @@ function TopMenu_Tools() {
         <MenubarMenu>
             <MenubarTrigger>{t('Tools')}</MenubarTrigger>
             <MenubarContent className="min-w-64">
-                <MenuActionItem label={t('Merge/concatenate files')} action={{ what: 'concatBatch' }} />
-                <MenuActionItem label={t('Set custom start offset/timecode')} action={{ what: 'setStartTimeOffset' }} />
+                <MenuActionItem label={t('Merge/concatenate files...')} action={{ what: 'concatBatch' }} />
+                <MenuActionItem label={t('Set custom start offset/timecode...')} action={{ what: 'setStartTimeOffset' }} />
                 <MenubarSub>
                     <MenubarSubTrigger>{t('Detect')}</MenubarSubTrigger>
                     <MenubarSubContent className="min-w-56">
-                        <MenuActionItem label={t('Detect black scenes')} action={{ what: 'detectBlackScenes' }} />
-                        <MenuActionItem label={t('Detect silent scenes')} action={{ what: 'detectSilentScenes' }} />
-                        <MenuActionItem label={t('Detect scene changes')} action={{ what: 'detectSceneChanges' }} />
+                        <MenuActionItem label={t('Detect black scenes...')} action={{ what: 'detectBlackScenes' }} />
+                        <MenuActionItem label={t('Detect silent scenes...')} action={{ what: 'detectSilentScenes' }} />
+                        <MenuActionItem label={t('Detect scene changes...')} action={{ what: 'detectSceneChanges' }} />
                     </MenubarSubContent>
                 </MenubarSub>
                 <MenuActionItem label={t('Read all keyframes')} action={{ what: 'readAllKeyframes' }} />
-                <MenuActionItem label={t('Last ffmpeg commands')} action={{ what: 'toggleLastCommands' }} />
+                <MenuActionItem label={t('Last ffmpeg commands...')} action={{ what: 'toggleLastCommands' }} />
                 <MenubarSeparator />
                 <MenuActionItem label={t('Toggle Developer Tools')} shortcut={modShortcut('I', true)} action={{ what: 'toggleDevTools' }} />
             </MenubarContent>
