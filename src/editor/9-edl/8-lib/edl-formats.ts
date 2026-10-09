@@ -1,13 +1,15 @@
 import { XMLParser } from "fast-xml-parser";
 import i18n from "i18next";
 import invariant from "tiny-invariant";
+import sortBy from "lodash/sortBy";
+import { z } from "zod";
+
 import { Duration } from "luxon";
 
-import { parse as csvParse } from "csv-parse/browser/esm/sync";
 import { stringify as csvStringify } from "csv-stringify/browser/esm/sync";
-import sortBy from "lodash/sortBy";
+import { parse as csvParse } from "csv-parse/browser/esm/sync";
+
 import { type ICueSheet, type ITrack } from "cue-parser/lib/types";
-import { z } from "zod";
 
 import { formatDuration } from "@/editor/0-core/8-lib/duration";
 import { invertSegments, sortSegments } from "@/editor/5-segments/8-lib/segment-utils";
@@ -19,13 +21,17 @@ import { UserFacingError } from "@/editor/0-core/8-lib/9-error-types";
 export const getTimeFromFrameNum = (detectedFps: number, frameNum: number) => frameNum / detectedFps;
 
 export function getFrameCountRaw(detectedFps: number | undefined, sec: number) {
-    if (detectedFps == null) return undefined;
+    if (detectedFps == null) {
+        return undefined;
+    }
     return Math.round(sec * detectedFps);
 }
 
 function parseTime(str: string) {
     const timeMatch = str.match(/^\D*(?:(?:(\d+):)?(\d{1,2}):)?(\d+)(?:\.(\d{1,3}))?:?/);
-    if (!timeMatch) return undefined;
+    if (!timeMatch) {
+        return undefined;
+    }
 
     const rest = str.slice(timeMatch[0].length);
 
@@ -44,7 +50,9 @@ export function parseCsvTime(str: string) {
 }
 
 export const getFrameValParser = (fps: number) => (str: string) => {
-    if (str === '') return undefined;
+    if (str === '') {
+        return undefined;
+    }
     const frameCount = parseFloat(str);
     return getTimeFromFrameNum(fps, frameCount);
 };
@@ -58,42 +66,46 @@ const csvHeader = [
 export function parseCsv(csvStr: string, parseTimeFn: (a: string) => number | undefined) {
     const rows: string[][] = csvParse(csvStr, {});
 
-    if (rows.length === 0) throw new UserFacingError(i18n.t('No rows found'));
+    if (rows.length === 0) {
+        throw new UserFacingError(i18n.t('No rows found'));
+    }
     invariant(rows.every((row) => row.length > 0), 'One row had no columns.');
 
     // from header
     let tagsKeys: string[] | undefined;
 
-    const mapped = rows.flatMap(([start, end, name, ...tagsColumns], rowIndex) => {
-        invariant(start != null, `Row ${rowIndex + 1} has no start time`);
+    const mapped = rows.flatMap(
+        ([start, end, name, ...tagsColumns], rowIndex) => {
+            invariant(start != null, `Row ${rowIndex + 1} has no start time`);
 
-        if (rowIndex === 0
-            && start === csvHeader[0]
-            && (end == null || end === csvHeader[1])
-            && (name == null || name === csvHeader[2])
-        ) {
-            if (end === csvHeader[1] && name === csvHeader[2]) {
-                tagsKeys = tagsColumns.map((tag) => tag.trim());
+            if (rowIndex === 0
+                && start === csvHeader[0]
+                && (end == null || end === csvHeader[1])
+                && (name == null || name === csvHeader[2])
+            ) {
+                if (end === csvHeader[1] && name === csvHeader[2]) {
+                    tagsKeys = tagsColumns.map((tag) => tag.trim());
+                }
+                // skip header row
+                return [];
             }
-            // skip header row
-            return [];
-        }
 
-        return [{
-            start: parseTimeFn(start) ?? 0,
-            ...(end != null && { end: parseTimeFn(end) }),
-            ...(name != null && { name: name?.trim() }),
-            ...(tagsColumns.length > 0 && {
-                tags: Object.fromEntries(tagsColumns.flatMap((tagValue, tagIndex) => {
-                    if (tagValue.trim() === '') return [];
-                    return [[
-                        tagsKeys?.[tagIndex] ?? `tag${tagIndex + 1}`,
-                        tagValue.trim(),
-                    ]];
-                })),
-            }),
-        }];
-    });
+            return [{
+                start: parseTimeFn(start) ?? 0,
+                ...(end != null && { end: parseTimeFn(end) }),
+                ...(name != null && { name: name?.trim() }),
+                ...(tagsColumns.length > 0 && {
+                    tags: Object.fromEntries(tagsColumns.flatMap((tagValue, tagIndex) => {
+                        if (tagValue.trim() === '') return [];
+                        return [[
+                            tagsKeys?.[tagIndex] ?? `tag${tagIndex + 1}`,
+                            tagValue.trim(),
+                        ]];
+                    })),
+                }),
+            }];
+        }
+    );
 
     if (!mapped.every(({ start, end }) => (
         !Number.isNaN(start)
@@ -117,37 +129,39 @@ export async function parseCutlist(clStr: string) {
 
     const lines = clStr.split(/[\n\r]+/);
     let section: string | undefined;
-    lines.forEach((line) => {
-        if (regex.comment.test(line)) {
-            return;
-        }
-        if (regex.param.test(line)) {
-            const match = line.match(regex.param) || [];
-            const [, key, value] = match;
-            if (key) {
-                if (section) {
-                    const sectionObj = iniValue[section];
-                    invariant(sectionObj != null && typeof sectionObj !== 'string');
-                    sectionObj[key] = value;
-                } else {
-                    iniValue[key] = value;
+    lines.forEach(
+        (line) => {
+            if (regex.comment.test(line)) {
+                return;
+            }
+            if (regex.param.test(line)) {
+                const match = line.match(regex.param) || [];
+                const [, key, value] = match;
+                if (key) {
+                    if (section) {
+                        const sectionObj = iniValue[section];
+                        invariant(sectionObj != null && typeof sectionObj !== 'string');
+                        sectionObj[key] = value;
+                    } else {
+                        iniValue[key] = value;
+                    }
                 }
+            } else if (regex.section.test(line)) {
+                const match = line.match(regex.section) || [];
+                const [, sectionMatch] = match;
+                if (sectionMatch) {
+                    iniValue[sectionMatch] = {};
+                    section = sectionMatch;
+                }
+            } else if (line.length === 0 && section) {
+                section = undefined;
             }
-        } else if (regex.section.test(line)) {
-            const match = line.match(regex.section) || [];
-            const [, sectionMatch] = match;
-            if (sectionMatch) {
-                iniValue[sectionMatch] = {};
-                section = sectionMatch;
-            }
-        } else if (line.length === 0 && section) {
-            section = undefined;
         }
-    });
+    );
 
     // end INI-File parse
 
-    const cutArr: { start: number, end: number, name: string }[] = [];
+    const cutArr: { start: number, end: number, name: string; }[] = [];
     for (let i = 0; ; i += 1) {
         const cutEntry = iniValue[`Cut${i}`];
         if (cutEntry && typeof cutEntry !== 'string') {
@@ -171,12 +185,18 @@ export async function parseCutlist(clStr: string) {
 export async function parseMplayerEdl(text: string) {
     const allRows = text.split('\n').flatMap((line) => {
         const match = line.match(/^\s*(\S+)\s+(\S+)\s+([0-3])\s*$/);
-        if (!match) return [];
+        if (!match) {
+            return [];
+        }
         const start = parseFloat(match[1]!);
         const end = parseFloat(match[2]!);
         const type = parseInt(match[3]!, 10);
-        if (Number.isNaN(start) || Number.isNaN(end)) return [];
-        if (start < 0 || end < 0 || start >= end) return [];
+        if (Number.isNaN(start) || Number.isNaN(end)) {
+            return [];
+        }
+        if (start < 0 || end < 0 || start >= end) {
+            return [];
+        }
         return [{ start, end, type }];
     });
 
@@ -195,7 +215,9 @@ export async function parseMplayerEdl(text: string) {
         ...map(sceneMarkers, 'Scene Marker', 2),
         ...map(commercialBreaks, 'Commercial Break', 3),
     ];
-    if (out.length === 0) throw new UserFacingError(i18n.t('Invalid EDL data found'));
+    if (out.length === 0) {
+        throw new UserFacingError(i18n.t('Invalid EDL data found'));
+    }
     return out;
 }
 
@@ -221,7 +243,9 @@ export async function parseEdlCmx3600(text: string, fps: number) {
 }
 
 export async function parseEdl(text: string, fps: number) {
-    if (text.startsWith('TITLE: ')) return parseEdlCmx3600(text, fps);
+    if (text.startsWith('TITLE: ')) {
+        return parseEdlCmx3600(text, fps);
+    }
     return parseMplayerEdl(text);
 }
 
@@ -234,9 +258,13 @@ export function parseCuesheet(cuesheet: ICueSheet) {
 
     function getTime(track: ITrack) {
         const index = track.indexes![0];
-        if (!index) return undefined;
+        if (!index) {
+            return undefined;
+        }
         const { time } = index;
-        if (!time) return undefined;
+        if (!time) {
+            return undefined;
+        }
 
         return (time.min * 60) + time.sec + time.frame / fps;
     }
@@ -255,7 +283,9 @@ export function parsePbf(buf: Uint8Array) {
 
     return text.split('\n').flatMap((line) => {
         const match = line.match(/^\d+=(\d+)\*([^*]+)*([^*]+)?/);
-        if (match) return [{ start: parseInt(match[1]!, 10) / 1000, name: match[2] }];
+        if (match) {
+            return [{ start: parseInt(match[1]!, 10) / 1000, name: match[2] }];
+        }
         return [];
     });
 }
@@ -266,7 +296,9 @@ export function parseXmeml(xmlStr: string) {
 
     // TODO maybe support media.audio also?
     const { xmeml } = xml;
-    if (!xmeml) throw new Error('Root element <xmeml> not found in file');
+    if (!xmeml) {
+        throw new Error('Root element <xmeml> not found in file');
+    }
 
     let sequence;
 
@@ -283,7 +315,7 @@ export function parseXmeml(xmlStr: string) {
     }
 
     // todo
-    const mainTrack: { clipitem: { in: number, out: number, rate: { timebase: number } }[] } = Array.isArray(sequence.media.video.track) ? sequence.media.video.track[0] : sequence.media.video.track;
+    const mainTrack: { clipitem: { in: number, out: number, rate: { timebase: number; }; }[]; } = Array.isArray(sequence.media.video.track) ? sequence.media.video.track[0] : sequence.media.video.track;
 
     return mainTrack.clipitem.map((item) => ({ start: item.in / item.rate.timebase, end: item.out / item.rate.timebase }));
 }
@@ -292,11 +324,15 @@ export function parseFcpXml(xmlStr: string) {
     const xml = new XMLParser({ ignoreAttributes: false }).parse(xmlStr);
 
     const { fcpxml } = xml;
-    if (!fcpxml) throw new Error('Root element <fcpxml> not found in file');
+    if (!fcpxml) {
+        throw new Error('Root element <fcpxml> not found in file');
+    }
 
     function getTime(str: string) {
         const match = str.match(/(\d+)\/(\d+)s/);
-        if (!match) throw new Error('Invalid attribute');
+        if (!match) {
+            throw new Error('Invalid attribute');
+        }
         return parseInt(match[1]!, 10) / parseInt(match[2]!, 10);
     }
 
@@ -312,12 +348,16 @@ export function parseFcpXml(xmlStr: string) {
 export function parseYouTube(str: string) {
     function parseLine(lineStr: string) {
         const timeParsed = parseTime(lineStr);
-        if (timeParsed == null) return undefined;
+        if (timeParsed == null) {
+            return undefined;
+        }
 
         const { time, rest } = timeParsed;
 
         const nameMatch = rest.match(/^[\s-]+([^\n]*)$/);
-        if (!nameMatch) return undefined;
+        if (!nameMatch) {
+            return undefined;
+        }
 
         const [, name] = nameMatch;
 
@@ -336,7 +376,7 @@ export function parseYouTube(str: string) {
     return edl.filter((ed) => ed.start !== ed.end);
 }
 
-export function formatYouTube(segments: { start: number, name?: string }[]) {
+export function formatYouTube(segments: { start: number, name?: string; }[]) {
     return segments.map((segment) => {
         const timeStr = formatDuration({ seconds: segment.start, showFraction: false, shorten: true });
         const namePart = segment.name ? ` ${segment.name}` : '';
@@ -347,7 +387,7 @@ export function formatYouTube(segments: { start: number, name?: string }[]) {
 // because null/undefined is also valid values (start/end of timeline)
 const safeFormatDuration = (duration: number | undefined) => (duration != null ? formatDuration({ seconds: duration }) : '');
 
-type Segment = SegmentBase & { tags?: SegmentTags | undefined };
+type Segment = SegmentBase & { tags?: SegmentTags | undefined; };
 
 const segmentToColumns = (segments: Segment[], formatTime: (t: number | undefined) => string) => {
     const tagsColumnNames = sortBy([...new Set(segments.flatMap((segment) => (segment.tags != null ? Object.keys(segment.tags) : [])))]);
@@ -368,7 +408,7 @@ const segmentToColumns = (segments: Segment[], formatTime: (t: number | undefine
 };
 
 
-export function formatCsvFrames({ cutSegments, getFrameCount }: { cutSegments: Segment[], getFrameCount: GetFrameCount }) {
+export function formatCsvFrames({ cutSegments, getFrameCount }: { cutSegments: Segment[], getFrameCount: GetFrameCount; }) {
     const safeFormatFrameCount = (seconds: number | undefined) => String((seconds != null ? getFrameCount(seconds) : undefined) ?? '');
 
     return csvStringify(segmentToColumns(cutSegments, safeFormatFrameCount));
@@ -391,7 +431,7 @@ export function parseDvAnalyzerSummaryTxt(txt: string) {
 
     let headerFound = false;
 
-    const times: { time: number, name: string, tags: Record<string, string> }[] = [];
+    const times: { time: number, name: string, tags: Record<string, string>; }[] = [];
     for (const line of lines) {
         if (headerFound) {
             const match = line.match(/^(\d{2}):(\d{2}):(\d{2}).(\d{3})\s+(\S+)\s+-\s+(\S+)\s+(\S+\s+\S+)\s+-\s+(\S+\s+\S+)/);
@@ -405,7 +445,9 @@ export function parseDvAnalyzerSummaryTxt(txt: string) {
             const recordedEnd = match[8]!;
             times.push({ time: total, name: recordedStart, tags: { recordedStart, recordedEnd } });
         }
-        if (/^Absolute time\s+DV timecode range\s+Recorded date\/time range\s+Frame range\s*$/.test(line)) headerFound = true;
+        if (/^Absolute time\s+DV timecode range\s+Recorded date\/time range\s+Frame range\s*$/.test(line)) {
+            headerFound = true;
+        }
     }
 
     const edl = times.map(({ time, name, tags }, i) => {
@@ -418,7 +460,7 @@ export function parseDvAnalyzerSummaryTxt(txt: string) {
 
 // http://www.textfiles.com/uploads/kds-srt.txt
 export function parseSrt(text: string) {
-    const ret: { start: number, end: number, lines: string[], index: number | undefined }[] = [];
+    const ret: { start: number, end: number, lines: string[], index: number | undefined; }[] = [];
 
     // working state
     let subtitleIndexAt: number | undefined;
@@ -440,16 +482,19 @@ export function parseSrt(text: string) {
         const line = lineRaw.trim();
         if (line === '') {
             flush();
-        } else if (subtitleIndexAt != null && subtitleIndexAt > 0) {
+        }
+        else if (subtitleIndexAt != null && subtitleIndexAt > 0) {
             const match = line.match(/^(\d+:\d+:\d+[,.]\d+\s+)-->(\s+\d+:\d+:\d+[,.]\d+)$/);
             if (match) {
                 const fixComma = (v: string | undefined) => v!.replaceAll(',', '.');
                 start = parseTime(fixComma(match[1]))?.time;
                 end = parseTime(fixComma(match[2]))?.time;
-            } else if (start != null && end != null) {
+            }
+            else if (start != null && end != null) {
                 lines.push(line);
             }
-        } else if (/^\d+$/.test(line)) {
+        }
+        else if (/^\d+$/.test(line)) {
             const parsedIndex = parseInt(line, 10);
             if (!Number.isNaN(parsedIndex) && parsedIndex > 0) {
                 subtitleIndexAt = parsedIndex;
@@ -477,10 +522,14 @@ export function formatSrt(segments: SegmentBase[]) {
 
 export function parseDjiGps1(lines: string[]) {
     const firstLine = lines[0];
-    if (firstLine == null) return undefined;
+    if (firstLine == null) {
+        return undefined;
+    }
 
     const gpsMatch = firstLine.match(/^\s*([^,]+),\s*SS\s+([^,]+),\s*ISO\s+([^,]+),\s*EV\s+([^,]+)(?:,\s*DZOOM\s+([^,]+))?,\s*GPS\s+\(([^,]+),\s*([^,]+),\s*([^,]+)\),\s*D\s+([^m]+)m,\s*H\s+([^m]+)m,\s*H\.S\s+([^m]+)m\/s,\s*V\.S\s+([^m]+)m\/s\s*$/);
-    if (!gpsMatch) return undefined;
+    if (!gpsMatch) {
+        return undefined;
+    }
     return {
         f: gpsMatch[1]!,
         ss: parseFloat(gpsMatch[2]!),
@@ -504,7 +553,9 @@ export function parseDjiGps2(lines: string[]) {
     invariant(line != null);
     const records: Record<string, string> = {};
     const pairsMatch = line.match(/([^\s:[]+\s*:\s*[^\s\]]+)+/g);
-    if (pairsMatch == null) return undefined;
+    if (pairsMatch == null) {
+        return undefined;
+    }
     for (const match of pairsMatch) {
         const split = match.split(':');
         if (split.length === 2) {
@@ -561,7 +612,7 @@ export type Otio = z.infer<typeof otioSchema>;
 export function parseOtio(data: unknown): SegmentBase[] {
     const schema = otioSchema.parse(data);
 
-    const segments: (SegmentBase & { tags: SegmentTags })[] = [];
+    const segments: (SegmentBase & { tags: SegmentTags; })[] = [];
 
     schema.tracks.children.forEach((track) => {
         track.children.forEach((clip) => {

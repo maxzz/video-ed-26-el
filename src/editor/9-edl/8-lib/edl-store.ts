@@ -3,6 +3,8 @@ import i18n from "i18next";
 import invariant from "tiny-invariant";
 import { ZodError } from "zod";
 
+import { basename } from "@/editor/0-core/8-lib/node-shims";
+
 import { type ICueSheet } from "cue-parser/lib/types";
 import { parseSrtToSegments, formatSrt, parseCuesheet, parseXmeml, parseFcpXml, parseCsv, parseCutlist, parsePbf, parseEdl, formatCsvHuman, formatTsvHuman, formatCsvFrames, formatCsvSeconds, parseCsvTime, getFrameValParser, parseDvAnalyzerSummaryTxt, parseOtio } from "./edl-formats";
 import { askForYouTubeInput } from "./youtube-input";
@@ -11,7 +13,6 @@ import { type EdlExportType, type EdlFileType, type EdlImportType, type GetFrame
 import { llcProjectV1Schema, llcProjectV2Schema } from "@/editor/0-core/8-lib/9-types-core";
 import { mapSaveableSegments } from "@/editor/5-segments/8-lib/segment-utils";
 import { getAppInfo, mainApi } from "@/editor/0-core/7-actions/0-main-api";
-import { basename } from "@/editor/0-core/8-lib/node-shims";
 
 const readFile = async (path: string, _encoding: 'utf8') => mainApi.readTextFile(path);
 const writeFile = async (path: string, text: string) => mainApi.writeTextFile(path, text);
@@ -67,11 +68,7 @@ export async function saveCsvHuman(path: string, cutSegments: SegmentBase[]) {
     await writeFile(path, formatCsvHuman(cutSegments));
 }
 
-export async function saveCsvFrames({ path, cutSegments, getFrameCount }: {
-    path: string,
-    cutSegments: SegmentBase[],
-    getFrameCount: GetFrameCount,
-}) {
+export async function saveCsvFrames({ path, cutSegments, getFrameCount }: { path: string, cutSegments: SegmentBase[], getFrameCount: GetFrameCount; }) {
     await writeFile(path, formatCsvFrames({ cutSegments, getFrameCount }));
 }
 
@@ -83,11 +80,7 @@ export async function saveSrt(path: string, cutSegments: SegmentBase[]) {
     await writeFile(path, formatSrt(cutSegments));
 }
 
-export async function saveLlcProject({ savePath, mediaFilePath, cutSegments }: {
-    savePath: string,
-    mediaFilePath: string,
-    cutSegments: StateSegment[],
-}) {
+export async function saveLlcProject({ savePath, mediaFilePath, cutSegments }: { savePath: string, mediaFilePath: string, cutSegments: StateSegment[]; }) {
     const projectData: LlcProject = {
         version: 2,
         mediaFileName: basename(mediaFilePath),
@@ -122,7 +115,9 @@ export async function loadLlcProject(path: string) {
 
     const project = await doLoad();
     console.log(`Loaded LLC project v${project.version}, mediaFileName: ${project.mediaFileName}, ${project.cutSegments.length} segments`);
-    if (isDev()) console.log(project);
+    if (isDev()) {
+        console.log(project);
+    }
     return project;
 }
 
@@ -130,11 +125,7 @@ export async function loadOtio(path: string) {
     return parseOtio(JSON.parse(await readFile(path, 'utf8')));
 }
 
-export async function readEdlFile({ type, path, fps }: {
-    type: EdlFileType,
-    path: string,
-    fps: number | undefined,
-}) {
+export async function readEdlFile({ type, path, fps }: { type: EdlFileType, path: string, fps: number | undefined; }) {
     if (type === 'csv') return loadCsv(path, parseCsvTime);
     if (type === 'csv-frames' || type === 'edl') {
         invariant(fps != null, 'The loaded media has an unknown framerate');
@@ -156,8 +147,10 @@ export async function readEdlFile({ type, path, fps }: {
     throw new Error('Invalid EDL type');
 }
 
-export async function askForEdlImport({ type, fps, fileDuration }: { type: EdlImportType, fps?: number | undefined, fileDuration?: number | undefined }) {
-    if (type === 'youtube') return askForYouTubeInput({ fileDuration });
+export async function askForEdlImport({ type, fps, fileDuration }: { type: EdlImportType, fps?: number | undefined, fileDuration?: number | undefined; }) {
+    if (type === 'youtube') {
+        return askForYouTubeInput({ fileDuration });
+    }
 
     let filters;
     if (type === 'csv' || type === 'csv-frames') filters = [{ name: i18n.t('CSV files'), extensions: ['csv'] }];
@@ -176,7 +169,9 @@ export async function askForEdlImport({ type, fps, fileDuration }: { type: EdlIm
         ...(filters && { filters }),
     });
     const [firstFilePath] = filePaths;
-    if (canceled || firstFilePath == null) return [];
+    if (canceled || firstFilePath == null) {
+        return [];
+    }
     return readEdlFile({ type, path: firstFilePath, fps });
 }
 
@@ -189,7 +184,7 @@ export async function exportEdlFile({ type, cutSegments, customOutDir, filePath,
 }) {
     invariant(filePath != null);
 
-    let filters: { name: string, extensions: string[] }[] | undefined;
+    let filters: { name: string, extensions: string[]; }[] | undefined;
     let ext: string | undefined;
     if (type === 'csv') {
         ext = 'csv';
@@ -214,7 +209,10 @@ export async function exportEdlFile({ type, cutSegments, customOutDir, filePath,
     const defaultPath = getOutPath({ filePath, customOutDir, fileName: `${basename(filePath)}.${ext}` });
 
     const { canceled, filePath: savePath } = await mainApi.showSaveDialog({ defaultPath, title: i18n.t('Export project'), ...(filters != null ? { filters } : {}) });
-    if (canceled || !savePath) return;
+    if (canceled || !savePath) {
+        return;
+    }
+    
     console.log('Saving', type, savePath);
     if (type === 'csv') await saveCsv(savePath, cutSegments);
     else if (type === 'tsv-human') await saveTsv(savePath, cutSegments);
