@@ -6,7 +6,7 @@ import { register_5_segments } from "./5-segments-register";
 import { register_6_streams } from "./6-streams-register";
 import { register_7_export } from "./7-export-register";
 import { register_8_concat } from "./8-concat-register";
-import { register_9_edl } from "./9-edl-register";
+import { register_9_closed_captions } from "./9-closed-captions-register";
 import { register_a_capture } from "./a-capture-register";
 import { register_b_detect } from "./b-detect-register";
 import { register_c_keyboard } from "./c-keyboard-register";
@@ -22,7 +22,7 @@ export function loadViewsSideEffects() {
     register_6_streams();
     register_7_export();
     register_8_concat();
-    register_9_edl();
+    register_9_closed_captions();
     register_a_capture();
     register_b_detect();
     register_c_keyboard();

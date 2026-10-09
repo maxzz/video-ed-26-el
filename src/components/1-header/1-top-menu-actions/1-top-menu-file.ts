@@ -5,7 +5,7 @@ import { tmcmd_file_userHtml5ifyCurrentFile } from "@/editor/2-file/7-actions/ht
 import { tmcmd_file_closeFileWithConfirm, tmcmd_file_tryFixInvalidDuration } from "@/editor/2-file/7-actions/load-media";
 import { tmcmd_file_openDirDialog, tmcmd_file_openFilesDialog, tmcmd_file_promptDownloadMediaUrlWrapper } from "@/editor/2-file/7-actions/open-files";
 import { tmcmd_file_tryDecimate } from "@/editor/7-export/7-actions/export-actions";
-import { tmcmd_file_exportYouTube, tmcmd_file_importEdlFile, tmcmd_file_tryExportEdlFile } from "@/editor/9-edl/7-actions/edl-actions";
+import { tmcmd_file_exportYouTube, tmcmd_file_importEdlFile, tmcmd_file_tryExportEdlFile } from "@/editor/9-closed-captions/7-actions/edl-actions";
 
 export function openFilesDialog() {
     return tmcmd_file_openFilesDialog();

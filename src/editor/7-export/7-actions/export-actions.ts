@@ -29,7 +29,7 @@ import { checkFileOpened } from "@/editor/3-player/7-actions/player-actions";
 import { cutSegmentsAtom, haveInvalidSegsAtom, segmentsOrInverseAtom, segmentsToExportAtom, selectedSegmentsAtom } from "@/editor/5-segments/9-state/a-segments-store";
 import { convertSegmentsToChaptersWithGaps, hasAnySegmentOverlap, sortSegments } from "@/editor/5-segments/8-lib/segment-utils";
 import { copyFileStreamsAtom, copyStreamIdsByFileAtom, exportExtraStreamsAtom, mainCopiedStreamsAtom, nonCopiedExtraStreamsAtom, numStreamsToCopyAtom } from "@/editor/6-streams/9-state/a-streams-store";
-import { formatTsvHuman } from "@/editor/9-edl/8-lib/edl-formats";
+import { formatTsvHuman } from "@/editor/9-closed-captions/8-lib/edl-formats";
 import { areWeCuttingAtom, cutFileTemplateOrDefaultAtom, cutMergedFileTemplateOrDefaultAtom, willMergeAtom } from "../9-state/export-atoms";
 import { concatCutSegments, cutMultiple, decimate, extractStreams, fixInvalidDuration, OutputNotWritableError, tryDeleteFiles } from "../8-lib/ffmpeg-operations";
 import { defaultCutFileTemplate } from "../8-lib/output-name-template";

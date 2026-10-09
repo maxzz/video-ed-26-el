@@ -22,7 +22,7 @@ src/editor/<n>-<feature>/
 | 6-streams | which streams are copied, tracks editor, tags, dispositions, GPS map |
 | 7-export | ffmpeg operations (cut/merge/smart cut), export confirm, output name template, top menu |
 | 8-concat | merge files dialog, batch file list |
-| 9-edl | project import/export formats |
+| 9-closed-captions | project import/export formats |
 | a-capture | frame capture, extract frames |
 | b-detect | scene/black/silence/keyframe detection |
 | c-keyboard | key bindings, shortcuts editor, command palette |

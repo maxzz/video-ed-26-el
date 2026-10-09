@@ -12,7 +12,7 @@ import { getAppInfo } from "@/editor/0-core/7-actions/0-main-api";
 import { getSuffixedOutPath } from "@/editor/0-core/8-lib/util";
 import { cutSegmentsAtom } from "@/editor/5-segments/9-state/a-segments-store";
 import { mapSaveableSegments } from "@/editor/5-segments/8-lib/segment-utils";
-import { saveLlcProject } from "@/editor/9-edl/8-lib/edl-store";
+import { saveLlcProject } from "@/editor/9-closed-captions/8-lib/edl-store";
 import { filePathAtom } from "../9-state/a-file-atoms";
 
 // Port of upstream useSegmentsAutoSave

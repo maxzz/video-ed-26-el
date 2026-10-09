@@ -13,7 +13,7 @@ import { basename, fs } from "@/editor/0-core/8-lib/node-shims";
 import { getDownloadMediaOutPath, getImportProjectType, readDirRecursively, readVideoTs, resolvePathIfNeeded } from "@/editor/0-core/8-lib/util";
 import { concatDialogOpenAtom, streamsSelectorShownAtom } from "@/components/2-main/0-all/a-panels-atoms";
 import { checkFileOpened } from "@/editor/3-player/7-actions/player-actions";
-import { loadEdlFile } from "@/editor/9-edl/7-actions/edl-actions";
+import { loadEdlFile } from "@/editor/9-closed-captions/7-actions/edl-actions";
 import { alwaysConcatMultipleFilesAtom, batchFilesAtom, filePathAtom, isFileOpenedAtom, lastOpenedPathAtom } from "../9-state/a-file-atoms";
 import { getDroppedFilePaths } from "../../../utils/local-utils/8-drop-full-path";
 import { batchLoadPaths } from "./batch-actions";

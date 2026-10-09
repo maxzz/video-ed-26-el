@@ -7,7 +7,7 @@ import { userSettingsAtom } from "./user-settings";
 import { fire_Dialog } from "../../../components/4-dialogs/7-0-dialogs/1-dialogs";
 
 import { type FormatTimecode, type ParseTimecode } from "../8-lib/9-types-core";
-import { getFrameCountRaw } from "@/editor/9-edl/8-lib/edl-formats";
+import { getFrameCountRaw } from "@/editor/9-closed-captions/8-lib/edl-formats";
 import { getFrameDuration } from "../8-lib/util";
 import { formatDuration, parseDuration } from "../8-lib/duration";
 import { detectedFpsAtom } from "@/editor/2-file/9-state/a-file-atoms";

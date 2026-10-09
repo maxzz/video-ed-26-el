@@ -6,7 +6,7 @@ import { userSettings } from "@/editor/0-core/9-state/user-settings";
 import { showMessage_PlaybackFailed } from "@/components/4-dialogs/7-1-dialogs/14-show-playback-failed-message";
 import { toast } from "@/components/4-dialogs/7-0-dialogs/3-toast";
 import { adjustRate } from "@/editor/0-core/8-lib/rate-calculator";
-import { getFrameCountRaw } from "@/editor/9-edl/8-lib/edl-formats";
+import { getFrameCountRaw } from "@/editor/9-closed-captions/8-lib/edl-formats";
 import { enableAudioTrack, enableVideoTrack } from "@/editor/0-core/8-lib/ffmpeg/streams";
 import { detectedFpsAtom, fileDurationAtom, filePathAtom, isFileOpenedAtom, previewFilePathAtom, usingDummyVideoAtom } from "@/editor/2-file/9-state/a-file-atoms";
 import { cutSegmentsAtom, currentCutSegAtom, currentSegIndexAtom, findSegmentsAtCursor, selectedSegmentsAtom, currentSegIndexSafeAtom } from "@/editor/5-segments/9-state/a-segments-store";

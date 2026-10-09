@@ -26,8 +26,8 @@ import { cutSegmentsAtom } from "@/editor/5-segments/9-state/a-segments-store";
 import { clearSegColorCounter, loadCutSegments, resetSegments } from "@/editor/5-segments/7-actions/segment-actions";
 import { isDurationValid } from "@/editor/5-segments/8-lib/segment-utils";
 import { copyStreamIdsByFileAtom, setCopyStreamIdsForPath } from "@/editor/6-streams/9-state/a-streams-store";
-import { loadLlcProject } from "@/editor/9-edl/8-lib/edl-store";
-import { loadEdlFile } from "@/editor/9-edl/7-actions/edl-actions";
+import { loadLlcProject } from "@/editor/9-closed-captions/8-lib/edl-store";
+import { loadEdlFile } from "@/editor/9-closed-captions/7-actions/edl-actions";
 import {
     cacheBusterAtom, detectedFileFormatAtom, detectedFpsAtom, externalFilesMetaAtom, ffmpegInfoAtom, fileFormatAtom, filePathAtom, isFileOpenedAtom,
     mainFileMetaAtom, mainStreamsAtom, allFilesMetaAtom, previewFilePathAtom, rotationAtom, shortestFlagAtom, startTimeOffsetAtom, usingDummyVideoAtom,
