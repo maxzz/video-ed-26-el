@@ -6,6 +6,7 @@ import { Button_Export } from "@/editor/7-export/0-ui/3-export-buttons";
 import { TopMenu_All } from "../1-top-menu/0-top-menu";
 import { ButtonOptions } from "./7-3-btn-options";
 import { ButtonThemeToggle } from "./7-2-btn-theme-toggle";
+import { HeaderCapture } from "./7-0-btn-capture";
 import { ButtonSegments } from "./7-1-btn-segments";
 
 export function Header() {
@@ -26,6 +27,7 @@ export function Header() {
             <TopMenu_All />
 
             <div className="shrink-0 flex items-center gap-1">
+                <HeaderCapture />
                 {isFileOpened && <Button_Export size="xs" />}
 
                 <div className="flex items-center gap-px">

@@ -3,19 +3,15 @@ import { useAtomValue } from "jotai";
 import { jotaiDefaultStore } from "@/utils/local-utils/9-jotai-default-store";
 import { cn } from "@/utils/classnames";
 import { motion } from "motion/react";
-import { Button } from "@/ui/shadcn/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/ui/shadcn/select";
 import {
-    AudioWaveformIcon, CameraIcon, ChevronLeftIcon, ChevronRightIcon, ContrastIcon, GaugeIcon, ImagesIcon, KeyIcon,
+    AudioWaveformIcon, ChevronLeftIcon, ChevronRightIcon, ContrastIcon, GaugeIcon, ImagesIcon, KeyIcon,
     KeyRoundIcon, PauseIcon, PlayIcon, RotateCcwSquareIcon, SkipBackIcon, SkipForwardIcon, StepBackIcon,
-    StepForwardIcon, Trash2Icon,
+    StepForwardIcon,
 } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import { userSettings, userSettingsAtom } from "@/editor/0-core/9-state/user-settings";
 
-import { type CaptureFormat } from "@shared/types";
 import { formatTimecodeAtom, getFrameCountAtom } from "@/editor/0-core/9-state/timecode";
-import { hasAction, runAction } from "@/editor/0-core/7-actions/kbd-actions";
 import { askDialog_ForPlaybackRate } from "@/components/4-dialogs/7-1-dialogs/13-ask-for-playback-rate";
 import { getSegColor as getSegColorRaw } from "@/editor/0-core/8-lib/colors";
 import { detectedFpsAtom, fileDurationNonZeroAtom, hasAudioAtom, hasVideoAtom, isFileOpenedAtom, isRotationSetAtom, rotationAtom } from "@/editor/2-file/9-state/a-file-atoms";
@@ -195,30 +191,10 @@ function Button_PlayPause() {
 
 function BottomBarBottomRow() {
     const isFileOpened = useAtomValue(isFileOpenedAtom);
-    const simpleMode = useAtomValue(simpleModeAtom);
-    const hasVideo = useAtomValue(hasVideoAtom);
-    const actionTitle = useAtomValue(actionTitleAtom);
-    const { t } = useTranslation();
 
     return (
         <div className="relative px-1 py-0.5 h-8 flex items-center justify-end gap-2">
             <Indicator_DisplayTime />
-
-            {!simpleMode && isFileOpened && (
-                <Button_Bar className="text-destructive hover:text-destructive" title={actionTitle(t('Close file and clean up'), 'cleanupFilesDialog')} onClick={() => runAction('cleanupFilesDialog')}>
-                    <Trash2Icon className="size-4" />
-                </Button_Bar>
-            )}
-
-            {hasVideo && (
-                <div className="whitespace-nowrap flex items-center gap-1">
-                    <Button_Bar title={actionTitle(t('Capture frame'), 'captureSnapshot')} onClick={() => runAction('captureSnapshot')}>
-                        <CameraIcon className="size-6" />
-                    </Button_Bar>
-                    {!simpleMode && <Button_CaptureFormat />}
-                </div>
-            )}
-
             {isFileOpened && <Button_LoopSelectedSegments />}
         </div>
     );
@@ -362,30 +338,6 @@ function Indicator_DisplayTime() {
         </div>
     );
 }
-
-//---------------------------------------------------------------------------
-
-function Button_CaptureFormat() {
-    const { captureFormat } = useAtomValue(userSettingsAtom);
-    const actionTitle = useAtomValue(actionTitleAtom);
-    const { t } = useTranslation();
-    return (
-        <Button size="xs" variant="outline" className="w-[3.7em]" title={actionTitle(t('Capture frame format'), 'toggleCaptureFormat')} onClick={(e) => { e.currentTarget.blur(); toggleCaptureFormat(); }}>
-            {captureFormat.toUpperCase()}
-        </Button>
-    );
-}
-
-function toggleCaptureFormat() {
-    if (hasAction('toggleCaptureFormat')) {
-        void runAction('toggleCaptureFormat');
-        return;
-    }
-    const index = captureFormats.indexOf(userSettings.captureFormat);
-    userSettings.captureFormat = captureFormats[(index + 1) % captureFormats.length]!;
-}
-
-const captureFormats: CaptureFormat[] = ['jpeg', 'png', 'webp'];
 
 //---------------------------------------------------------------------------
 

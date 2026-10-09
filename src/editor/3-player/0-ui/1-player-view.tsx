@@ -17,14 +17,12 @@ import { onTimelineWheel } from "@/editor/4-timeline/7-actions/3-timeline-action
 import { BigWaveform } from "@/editor/4-timeline/0-ui/0-all/3-big-waveform";
 import {
     activeSubtitleAtom, compatPlayerEnabledAtom, compatPlayerRequiredAtom, mediaSourceQualityAtom, playbackVolumeAtom, playerTimeAtom,
-    shouldShowPlaybackStreamSelectorAtom, videoContainerElementAtom, videoElementAtom,
+    videoContainerElementAtom, videoElementAtom,
 } from "../9-state/a-player-atoms";
 import { handleHideCompatPlayerClick, onSeeked, onStartPlaying, onStopPlaying, onTimeUpdate, onVideoAbort, togglePlay } from "../7-actions/player-actions";
 import { incrementMediaSourceQuality, onDurationChange, onVideoError, toggleFullscreenVideo } from "../7-actions/video-events";
 import { MediaSourcePlayer } from "./media-source-player";
 import { NoFileLoaded } from "./no-file-loaded";
-import { PlaybackStreamSelector } from "./playback-stream-selector";
-import { VolumeControl } from "./volume-control";
 
 /** The middle part of the editor (also shown in fullscreen): video, compat player, drop zone and player overlays */
 export function PlayerView() {
@@ -122,19 +120,15 @@ function CompatPlayerBanner() {
 
 function PlayerControls() {
     const { t } = useTranslation();
-    const shouldShowPlaybackStreamSelector = useAtomValue(shouldShowPlaybackStreamSelectorAtom);
     const showRightBar = useAtomValue(showRightBarAtom);
+    if (showRightBar) {
+        return null;
+    }
     return (
         <div className="absolute right-0 bottom-0 mb-2.5 mr-1 select-none flex items-end gap-0.5">
-            <VolumeControl />
-
-            {shouldShowPlaybackStreamSelector && <PlaybackStreamSelector />}
-
-            {!showRightBar && (
-                <Button variant="ghost" size="icon" className="text-foreground/70" title={t('Show sidebar')} onClick={() => runAction('toggleSegmentsList')}>
-                    <MenuIcon className="size-5" />
-                </Button>
-            )}
+            <Button variant="ghost" size="icon" className="text-foreground/70" title={t('Show sidebar')} onClick={() => runAction('toggleSegmentsList')}>
+                <MenuIcon className="size-5" />
+            </Button>
         </div>
     );
 }

@@ -18,8 +18,8 @@ export function VolumeControl() {
     return (
         <Popover>
             <PopoverTrigger asChild>
-                <Button variant="ghost" size="icon" className="text-foreground/70" title={t('Mute preview? (will not affect output)')}>
-                    <VolumeIcon className="size-5" />
+                <Button variant="ghost" size="icon-xs" className="size-6 text-foreground/70 rounded" title={t('Mute preview? (will not affect output)')}>
+                    <VolumeIcon className="size-3.5" />
                 </Button>
             </PopoverTrigger>
 

@@ -8,7 +8,10 @@ import { jotaiDefaultStore } from "@/utils/local-utils/9-jotai-default-store";
 import { mainApi, preloadEnv } from "@/editor/0-core/7-actions/0-main-api";
 import { customOutDirAtom, setCustomOutDir, userSettingsAtom } from "@/editor/0-core/9-state/user-settings";
 import { streamsSelectorShownAtom } from "@/components/2-main/0-all/a-panels-atoms";
-import { filePathAtom, isCustomFormatSelectedAtom, numStreamsTotalAtom } from "@/editor/2-file/9-state/a-file-atoms";
+import { filePathAtom, isCustomFormatSelectedAtom, isFileOpenedAtom, numStreamsTotalAtom } from "@/editor/2-file/9-state/a-file-atoms";
+import { shouldShowPlaybackStreamSelectorAtom } from "@/editor/3-player/9-state/a-player-atoms";
+import { VolumeControl } from "@/editor/3-player/0-ui/volume-control";
+import { PlaybackStreamSelector } from "@/editor/3-player/0-ui/playback-stream-selector";
 import { enabledStreamsFilterAtom, numStreamsToCopyAtom } from "@/editor/6-streams/9-state/a-streams-store";
 import { changeEnabledStreamsFilter, toggleStripCurrentFilter } from "@/editor/6-streams/7-actions/streams-actions";
 import { toggleOutFormatLocked } from "@/editor/7-export/7-actions/export-actions";
@@ -34,6 +37,8 @@ export function StatusBar({ className, ...rest }: HTMLAttributes<HTMLDivElement>
 function StatusBar_Controls() {
     const { t } = useTranslation();
     const filePath = useAtomValue(filePathAtom);
+    const isFileOpened = useAtomValue(isFileOpenedAtom);
+    const shouldShowPlaybackStreamSelector = useAtomValue(shouldShowPlaybackStreamSelectorAtom);
     const customOutDir = useAtomValue(customOutDirAtom);
     const { simpleMode, outFormatLocked } = useAtomValue(userSettingsAtom);
     const isCustomFormatSelected = useAtomValue(isCustomFormatSelectedAtom);
@@ -67,6 +72,11 @@ function StatusBar_Controls() {
         </div>
 
         <div className="flex items-center gap-1.5">
+            {isFileOpened && (<>
+                <VolumeControl />
+                {shouldShowPlaybackStreamSelector && <PlaybackStreamSelector />}
+            </>)}
+
             <Dialog_OutDirSelector>
                 <Button variant="outline" size="xs" title={customOutDir} onDragOver={(e) => e.preventDefault()} onDrop={onWorkingDirDrop}>
                     {customOutDir ? t('Working dir set') : t('Working dir unset')}
