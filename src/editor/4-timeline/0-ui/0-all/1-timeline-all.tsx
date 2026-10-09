@@ -44,12 +44,13 @@ export function Timeline() {
                             onScroll={onTimelineScroll}
                             ref={timelineScrollerRef}
                         >
-                            <Timeline_Waveforms />
-                            <Timeline_Thumbnails />
                             <Timeline_Track />
+                            <Timeline_Thumbnails />
+                            <Timeline_Waveforms />
                         </div>
                     </div>
                 </ContextMenuTrigger>
+
                 <ContextMenuContent>
                     <ContextMenuItem onSelect={() => { void goToTimecode(); }}>{t('Seek to timecode')}</ContextMenuItem>
                 </ContextMenuContent>

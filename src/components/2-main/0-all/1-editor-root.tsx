@@ -31,8 +31,8 @@ export function EditorRoot() {
                     <Panel_Segments_Guard />
                 </div>
 
-                <Timeline />
                 <Bar_Playback />
+                <Timeline />
             </div>
 
             <FileHosts />
