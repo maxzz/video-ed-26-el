@@ -15,7 +15,7 @@ export function TopMenu_All() {
             <TopMenu_File />
             <TopMenu_Edit />
             <TopMenu_Segments />
-            <TopMenu_ViewM />
+            <TopMenu_View />
             <TopMenu_Tools />
             <TopMenu_Help />
             <TopMenu_NewVersion />
@@ -57,10 +57,16 @@ function TopMenu_Segments() {
         <MenubarMenu>
             <MenubarTrigger>{t('Segments')}</MenubarTrigger>
             <MenubarContent className="min-w-72">
-                <MenuActionItem label={t('Create num segments')} action={{ what: 'createNumSegments' }} />
-                <MenuActionItem label={t('Create fixed duration segments')} action={{ what: 'createFixedDurationSegments' }} />
-                <MenuActionItem label={t('Create byte sized segments')} action={{ what: 'createFixedByteSizedSegments' }} />
-                <MenuActionItem label={t('Create random segments')} action={{ what: 'createRandomSegments' }} />
+                <MenubarSub>
+                    <MenubarSubTrigger>{t('Create')}</MenubarSubTrigger>
+                    <MenubarSubContent className="min-w-72">
+                        <MenuActionItem label={t('Create num segments')} action={{ what: 'createNumSegments' }} />
+                        <MenuActionItem label={t('Create fixed duration segments')} action={{ what: 'createFixedDurationSegments' }} />
+                        <MenuActionItem label={t('Create byte sized segments')} action={{ what: 'createFixedByteSizedSegments' }} />
+                        <MenuActionItem label={t('Create random segments')} action={{ what: 'createRandomSegments' }} />
+                        <MenuActionItem label={t('Create segments from keyframes')} action={{ what: 'createSegmentsFromKeyframes' }} />
+                    </MenubarSubContent>
+                </MenubarSub>
                 <MenubarSeparator />
                 <MenuActionItem label={t('Reorder segments by start time')} action={{ what: 'reorderSegsByStartTime' }} />
                 <MenuActionItem label={t('Shuffle segments order')} action={{ what: 'shuffleSegments' }} />
@@ -83,7 +89,7 @@ function TopMenu_Segments() {
     );
 }
 
-function TopMenu_ViewM() {
+function TopMenu_View() {
     const { isWindows } = getAppInfo();
     const { t } = useTranslation();
     return (
@@ -115,11 +121,15 @@ function TopMenu_Tools() {
             <MenubarContent className="min-w-64">
                 <MenuActionItem label={t('Merge/concatenate files')} action={{ what: 'concatBatch' }} />
                 <MenuActionItem label={t('Set custom start offset/timecode')} action={{ what: 'setStartTimeOffset' }} />
-                <MenuActionItem label={t('Detect black scenes')} action={{ what: 'detectBlackScenes' }} />
-                <MenuActionItem label={t('Detect silent scenes')} action={{ what: 'detectSilentScenes' }} />
-                <MenuActionItem label={t('Detect scene changes')} action={{ what: 'detectSceneChanges' }} />
+                <MenubarSub>
+                    <MenubarSubTrigger>{t('Detect')}</MenubarSubTrigger>
+                    <MenubarSubContent className="min-w-56">
+                        <MenuActionItem label={t('Detect black scenes')} action={{ what: 'detectBlackScenes' }} />
+                        <MenuActionItem label={t('Detect silent scenes')} action={{ what: 'detectSilentScenes' }} />
+                        <MenuActionItem label={t('Detect scene changes')} action={{ what: 'detectSceneChanges' }} />
+                    </MenubarSubContent>
+                </MenubarSub>
                 <MenuActionItem label={t('Read all keyframes')} action={{ what: 'readAllKeyframes' }} />
-                <MenuActionItem label={t('Create segments from keyframes')} action={{ what: 'createSegmentsFromKeyframes' }} />
                 <MenuActionItem label={t('Last ffmpeg commands')} action={{ what: 'toggleLastCommands' }} />
                 <MenubarSeparator />
                 <MenuActionItem label={t('Toggle Developer Tools')} shortcut={modShortcut('I', true)} action={{ what: 'toggleDevTools' }} />
