@@ -23,7 +23,7 @@ src/editor/<n>-<feature>/
 | 7-export | ffmpeg operations (cut/merge/smart cut), export confirm, output name template, top menu |
 | 8-concat | merge files dialog, batch file list |
 | 9-closed-captions | project import/export formats |
-| a-capture | frame capture, extract frames |
+| a-capture-frame | frame capture, extract frames |
 | b-detect | scene/black/silence/keyframe detection |
 | c-keyboard | key bindings, shortcuts editor, command palette |
 | d-settings | settings dialog |
