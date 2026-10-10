@@ -2,7 +2,6 @@ import { useEffect, useRef, type CSSProperties, type ReactNode } from "react";
 import { useAtomValue } from "jotai";
 import { jotaiDefaultStore } from "@/utils/local-utils/9-jotai-default-store";
 import { cn } from "@/utils/classnames";
-import { motion } from "motion/react";
 import { closestCenter, DndContext, DragOverlay, PointerSensor, useSensor, useSensors, type DragEndEvent, type DragStartEvent } from "@dnd-kit/core";
 import { arrayMove, SortableContext, verticalListSortingStrategy } from "@dnd-kit/sortable";
 import { restrictToVerticalAxis } from "@dnd-kit/modifiers";
@@ -12,13 +11,12 @@ import { Trans, useTranslation } from "react-i18next";
 
 import { type SegmentColorIndex } from "@/editor/0-core/8-lib/9-types-core";
 import { formatTimecodeAtom } from "@/editor/0-core/9-state/timecode";
-import { rightBarWidth } from "@/editor/0-core/8-lib/constants";
 import { runAction } from "@/editor/0-core/7-actions/kbd-actions";
 import { actionTitleAtom } from "@/editor/4-timeline/9-state/action-title";
 import { currentSegIndexSafeAtom, cutSegmentsAtom } from "../9-state/a-segments-store";
 import {
     darkModeAtom, draggingSegIdAtom, firstSegmentAtCursorAtom, getSegColorAtom, invertCutSegmentsAtom, isOnlyMarkersAtom,
-    nextSegColorIndexAtom, segmentListItemsAtom, selectedSegmentsTotalAtom, simpleModeAtom, springAnimationAtom,
+    nextSegColorIndexAtom, segmentListItemsAtom, selectedSegmentsTotalAtom, simpleModeAtom,
 } from "../9-state/a-seg-ui-atoms";
 import * as seg from "../7-actions/segment-actions";
 import { reorderSegmentDialog } from "../7-actions/segment-dialogs";
@@ -27,21 +25,13 @@ import { SegmentRowContent, SortableSegmentRow } from "./1-segment-row";
 // Port of upstream SegmentList.tsx (right bar)
 
 export function Panel_Segments() {
-    const springAnimation = useAtomValue(springAnimationAtom);
     return (
-        <motion.div
-            className="shrink-0 text-muted-foreground bg-muted/50 border-l overflow-hidden flex flex-col"
-            style={{ width: rightBarWidth }}
-            initial={{ x: rightBarWidth }}
-            animate={{ x: 0 }}
-            exit={{ x: rightBarWidth }}
-            transition={springAnimation}
-        >
+        <div className="h-full min-h-0 text-muted-foreground bg-muted/50 overflow-hidden flex flex-col">
             <Header />
             <Rows />
             <MarkersNotice />
             <Footer />
-        </motion.div>
+        </div>
     );
 }
 
