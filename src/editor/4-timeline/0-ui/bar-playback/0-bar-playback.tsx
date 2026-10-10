@@ -3,31 +3,26 @@ import { useAtomValue } from "jotai";
 import { jotaiDefaultStore } from "@/utils/local-utils/9-jotai-default-store";
 import { cn } from "@/utils/classnames";
 import { motion } from "motion/react";
+import { Button } from "@/ui/shadcn/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/ui/shadcn/select";
-import {
-    AudioWaveformIcon, ChevronLeftIcon, ChevronRightIcon, ContrastIcon, GaugeIcon, ImagesIcon, KeyIcon,
-    KeyRoundIcon, PauseIcon, PlayIcon, RotateCcwSquareIcon, SkipBackIcon, SkipForwardIcon, StepBackIcon,
-    StepForwardIcon,
-} from "lucide-react";
+import { AudioWaveformIcon, ContrastIcon, GaugeIcon, ImagesIcon, KeyIcon, PauseIcon, PlayIcon, RotateCcwSquareIcon, SkipBackIcon, SkipForwardIcon, StepBackIcon, StepForwardIcon } from "lucide-react";
+import { Icon_ToFrame, Icon_ToKeyframe } from "@/ui/icons/normal/local-ui";
 import { useTranslation } from "react-i18next";
 
+import * as player from "@/editor/3-player/7-actions/player-actions";
 import { formatTimecodeAtom, getFrameCountAtom } from "@/editor/0-core/9-state/timecode";
 import { askDialog_ForPlaybackRate } from "@/components/4-dialogs/7-1-dialogs/13-ask-for-playback-rate";
 import { getSegColor as getSegColorRaw } from "@/editor/0-core/8-lib/colors";
 import { detectedFpsAtom, fileDurationNonZeroAtom, hasAudioAtom, hasVideoAtom, isFileOpenedAtom, isRotationSetAtom, rotationAtom } from "@/editor/2-file/9-state/a-file-atoms";
 import { outputPlaybackRateAtom, playbackModeAtom, playbackRateAtom, playingAtom } from "@/editor/3-player/9-state/a-player-atoms";
-import * as player from "@/editor/3-player/7-actions/player-actions";
 import { currentCutSegAtom, selectedSegmentsAtom } from "@/editor/5-segments/9-state/a-segments-store";
 import { invertCutSegmentsAtom, simpleModeAtom } from "@/editor/5-segments/9-state/a-seg-ui-atoms";
 import { setCutEnd, setCutStart } from "@/editor/5-segments/7-actions/segment-actions";
 import { actionTitleAtom } from "../../9-state/action-title";
 import { currentFrameAtom, displayTimeAtom, isZoomedAtom, keyframesEnabledAtom, showThumbnailsAtom, waveformModeAtom, zoomAtom } from "../../9-state/timeline-atoms";
-import {
-    increaseRotation, seekClosestKeyframe, timelineToggleComfortZoom, toggleInvertCutSegments, toggleShowKeyframes,
-    toggleShowThumbnails, toggleWaveformMode, zoomAbs,
-} from "../../7-actions/3-timeline-actions";
-import { Input_CutTime } from "./1-input-cut-time";
-import { Button_JumpSegment, Button_SegmentCutpoint, Button_SetCutpoint } from "./2-button-segment-cut";
+import { increaseRotation, seekClosestKeyframe, timelineToggleComfortZoom, toggleInvertCutSegments, toggleShowKeyframes, toggleShowThumbnails, toggleWaveformMode, zoomAbs } from "../../7-actions/3-timeline-actions";
+import { Control_CutTime } from "./1-input-cut-time";
+import { Button_JumpSegment, Button_SegmentCutpoint } from "./2-button-segment-cut";
 
 // Port of upstream BottomBar.tsx
 
@@ -41,72 +36,75 @@ export function Bar_Playback() {
 }
 
 function BottomBarTopRow() {
-    const { t } = useTranslation();
     const isFileOpened = useAtomValue(isFileOpenedAtom);
-    const simpleMode = useAtomValue(simpleModeAtom);
     const keyframesEnabled = useAtomValue(keyframesEnabledAtom);
+    const simpleMode = useAtomValue(simpleModeAtom);
     const currentCutSeg = useAtomValue(currentCutSegAtom);
     const actionTitle = useAtomValue(actionTitleAtom);
+    const { t } = useTranslation();
 
     return (
         <div className={cn('select-none flex items-center justify-between', !isFileOpened && 'opacity-50')}>
-            <div className="grow" />
+            {/* --------- Left side --------- */}
+            <Controls_TimelineEdge direction={-1} simpleMode={simpleMode} />
+            <Control_CutTime side="start" currentCutSeg={currentCutSeg ?? { segColorIndex: 0 }} onSetCut={setCutStart} title={actionTitle(t('Start current segment at current time'), 'setCutStart')} />
+            <Button_KeyframeSeek direction={-1} keyframesEnabled={keyframesEnabled} />
+            <Button_FrameStep direction={-1} simpleMode={simpleMode} />
 
-            {!simpleMode && (<>
-                <Button_Bar title={actionTitle(t('Jump to start of video'), 'jumpTimelineStart')} onClick={player.jumpTimelineStart}>
-                    <SkipBackIcon className="size-4" />
-                </Button_Bar>
-
-                <Button_JumpSegment direction={-1} />
-
-                <Button_SegmentCutpoint className="mr-1.25" currentCutSeg={currentCutSeg} side="start" Icon={StepBackIcon} onClick={player.jumpCutStart} title={actionTitle(t('Jump to current segment\'s start time'), 'jumpCutStart')} />
-            </>)}
-
-            <Button_SetCutpoint className="mr-1.25" currentCutSeg={currentCutSeg ?? { segColorIndex: 0 }} side="start" onClick={setCutStart} title={actionTitle(t('Start current segment at current time'), 'setCutStart')} />
-
-            {!simpleMode && <Input_CutTime side="start" />}
-
-            {keyframesEnabled && <Button_KeyframeSeek direction={-1} />}
-
-            {!simpleMode && (
-                <Button_Bar className="-mr-1 -ml-1.5" title={actionTitle(t('One frame back'), 'seekPreviousFrame')} onClick={() => player.shortStep(-1)}>
-                    <ChevronLeftIcon className="size-7" />
-                </Button_Bar>
-            )}
-
+            {/* --------- Center --------- */}
             <Button_PlayPause />
 
-            {!simpleMode && (
-                <Button_Bar className="-mr-1.5 -ml-1" title={actionTitle(t('One frame forward'), 'seekNextFrame')} onClick={() => player.shortStep(1)}>
-                    <ChevronRightIcon className="size-7" />
-                </Button_Bar>
-            )}
-
-            {keyframesEnabled && <Button_KeyframeSeek direction={1} />}
-
-            {!simpleMode && <Input_CutTime side="end" />}
-
-            <Button_SetCutpoint className="ml-1.25" currentCutSeg={currentCutSeg} side="end" onClick={setCutEnd} title={actionTitle(t('End current segment at current time'), 'setCutEnd')} />
-
-            {!simpleMode && (<>
-                <Button_SegmentCutpoint className="ml-1.25" currentCutSeg={currentCutSeg} side="end" Icon={StepForwardIcon} onClick={player.jumpCutEnd} title={actionTitle(t('Jump to current segment\'s end time'), 'jumpCutEnd')} />
-
-                <Button_JumpSegment direction={1} />
-
-                <Button_Bar title={actionTitle(t('Jump to end of video'), 'jumpTimelineEnd')} onClick={player.jumpTimelineEnd}>
-                    <SkipForwardIcon className="size-4" />
-                </Button_Bar>
-            </>)}
-
-            <div className="grow" />
+            {/* --------- Right side --------- */}
+            <Button_FrameStep direction={1} simpleMode={simpleMode} />
+            <Button_KeyframeSeek direction={1} keyframesEnabled={keyframesEnabled} />
+            <Control_CutTime side="end" currentCutSeg={currentCutSeg} onSetCut={setCutEnd} title={actionTitle(t('End current segment at current time'), 'setCutEnd')} />
+            <Controls_TimelineEdge direction={1} simpleMode={simpleMode} />
         </div>
     );
 }
 
+/** Jump-to-edge, neighboring segment, and current-segment cutpoint. Start order is mirrored for the end. */
+function Controls_TimelineEdge({ direction, simpleMode }: { direction: -1 | 1; simpleMode: boolean; }) {
+    const currentCutSeg = useAtomValue(currentCutSegAtom);
+    const actionTitle = useAtomValue(actionTitleAtom);
+    const { t } = useTranslation();
+
+    const start = direction < 0;
+
+    if (simpleMode) {
+        return null;
+    }
+
+    const jumpTimeline = (
+        <Button_Bar
+            title={actionTitle(t(start ? 'Jump to start of video' : 'Jump to end of video'), start ? 'jumpTimelineStart' : 'jumpTimelineEnd')}
+            onClick={start ? player.jumpTimelineStart : player.jumpTimelineEnd}
+        >
+            {start ? <SkipBackIcon className="size-4" /> : <SkipForwardIcon className="size-4" />}
+        </Button_Bar>
+    );
+
+    const cutpoint = (
+        <Button_SegmentCutpoint
+            className={start ? 'mr-1.25' : 'ml-1.25'}
+            currentCutSeg={currentCutSeg}
+            side={start ? 'start' : 'end'}
+            Icon={start ? StepBackIcon : StepForwardIcon}
+            onClick={start ? player.jumpCutStart : player.jumpCutEnd}
+            title={actionTitle(t(start ? 'Jump to current segment\'s start time' : 'Jump to current segment\'s end time'), start ? 'jumpCutStart' : 'jumpCutEnd')}
+        />
+    );
+
+    return (<>
+        {start ? jumpTimeline : cutpoint}
+        <Button_JumpSegment direction={direction} />
+        {start ? cutpoint : jumpTimeline}
+    </>);
+}
+
 /** Waveform, zoom, and related controls shown in the status bar. */
-export function BarPlayback_StatusControls() {
+export function BarPlayback_StatusControls({ simpleMode }: { simpleMode: boolean; }) {
     const isFileOpened = useAtomValue(isFileOpenedAtom);
-    const simpleMode = useAtomValue(simpleModeAtom);
     const hasVideo = useAtomValue(hasVideoAtom);
 
     return (
@@ -124,13 +122,13 @@ export function BarPlayback_StatusControls() {
 }
 
 function ViewToggles() {
-    const { t } = useTranslation();
     const hasAudio = useAtomValue(hasAudioAtom);
     const hasVideo = useAtomValue(hasVideoAtom);
     const waveformMode = useAtomValue(waveformModeAtom);
     const showThumbnails = useAtomValue(showThumbnailsAtom);
     const keyframesEnabled = useAtomValue(keyframesEnabledAtom);
     const actionTitle = useAtomValue(actionTitleAtom);
+    const { t } = useTranslation();
 
     return (<>
         {hasAudio && (
@@ -150,25 +148,50 @@ function ViewToggles() {
     </>);
 }
 
-function Button_KeyframeSeek({ direction }: { direction: -1 | 1; }) {
-    const { t } = useTranslation();
-    const currentFrame = useAtomValue(currentFrameAtom);
+function Button_FrameStep({ direction, simpleMode }: { direction: -1 | 1; simpleMode: boolean; }) {
     const actionTitle = useAtomValue(actionTitleAtom);
+    const { t } = useTranslation();
     const prev = direction < 0;
+
+    if (simpleMode) {
+        return null;
+    }
+
     return (
         <Button_Bar
-            className={cn(prev ? 'mr-0.5 -scale-x-100' : 'ml-0.5', currentFrame?.keyframe && activeClasses)}
-            onClick={() => seekClosestKeyframe(direction)}
-            title={prev ? actionTitle(t('Seek previous keyframe'), 'seekBackwardsKeyframe') : actionTitle(t('Seek next keyframe'), 'seekForwardsKeyframe')}
+            className={prev ? '-mr-1 -ml-1.5' : '-mr-1.5 -ml-1'}
+            title={actionTitle(t(prev ? 'One frame back' : 'One frame forward'), prev ? 'seekPreviousFrame' : 'seekNextFrame')}
+            onClick={() => player.shortStep(direction)}
         >
-            <KeyRoundIcon className="size-5" />
+            <Icon_ToFrame className={cn('size-5 stroke-2!', !prev && '-scale-x-100')} />
         </Button_Bar>
     );
 }
 
-const activeClasses = 'text-primary';
+function Button_KeyframeSeek({ direction, keyframesEnabled }: { direction: -1 | 1; keyframesEnabled: boolean; }) {
+    const currentFrame = useAtomValue(currentFrameAtom);
+    const actionTitle = useAtomValue(actionTitleAtom);
+    const { t } = useTranslation();
+    const prev = direction < 0;
 
-const roundButtonClasses = 'size-[2.3em] text-white rounded-full flex items-center justify-center';
+    if (!keyframesEnabled) {
+        return null;
+    }
+
+    return (
+        <Button_Bar
+            className={cn(prev ? "ml-0.5" : "mr-0.5 -scale-x-100", currentFrame?.keyframe && activeClasses)}
+            onClick={() => seekClosestKeyframe(direction)}
+            title={prev ? actionTitle(t("Seek previous keyframe"), "seekBackwardsKeyframe") : actionTitle(t("Seek next keyframe"), "seekForwardsKeyframe")}
+        >
+            <Icon_ToKeyframe className="size-5 stroke-2!" />
+        </Button_Bar>
+    );
+}
+
+const activeClasses = "text-primary";
+
+const roundButtonClasses = "size-[2.3em] text-white rounded-full flex items-center justify-center";
 
 function Button_PlayPause() {
     const playing = useAtomValue(playingAtom);
@@ -378,5 +401,13 @@ function Button_LoopSelectedSegments() {
 }
 
 function Button_Bar({ className, ...rest }: ComponentProps<'button'>) {
-    return <button type="button" className={cn('shrink-0 hover:text-foreground cursor-pointer', className)} {...rest} />;
+    return (
+        <Button
+            className={cn('hover:bg-background hover:text-foreground rounded cursor-pointer', className)}
+            variant="outline"
+            size="icon-sm"
+            type="button"
+            {...rest}
+        />
+    );
 }

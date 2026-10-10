@@ -98,17 +98,20 @@ function CompatPlayerBanner() {
     const isRotationSet = useAtomValue(isRotationSetAtom);
     const mediaSourceQuality = useAtomValue(mediaSourceQualityAtom);
     const { t } = useTranslation();
-    
+
     if (!compatPlayerEnabled) {
         return null;
     }
 
     return (
         <div className="absolute top-0 left-0 right-0 mt-3 ml-3 text-sm text-foreground/70 flex items-center gap-1 pointer-events-none">
-            {isRotationSet ? (<>
-                <RotateCcwSquareIcon className="size-5" />
-                {t('Rotation preview')}
-            </>) : t('FFmpeg-assisted playback')}
+            {isRotationSet
+                ? (<>
+                    <RotateCcwSquareIcon className="size-5" />
+                    {t('Rotation preview')}
+                </>)
+                : t('FFmpeg-assisted playback')
+            }
 
             <Button variant="ghost" size="xs" className="text-foreground/70 pointer-events-auto" title={t('Select playback quality')} onClick={incrementMediaSourceQuality}>
                 {mediaSourceQualities[mediaSourceQuality]}
@@ -128,7 +131,7 @@ function Button_CloseFile() {
     const { t } = useTranslation();
     return (
         <button
-            className="absolute top-1 right-1 p-0.5 text-destructive hover:text-destructive cursor-pointer z-10"
+            className="absolute top-1 right-1 p-0.5 hover:text-white hover:bg-destructive rounded cursor-pointer z-10"
             onClick={() => runAction("cleanupFilesDialog")}
             title={actionTitle(t("Close file and clean up"), "cleanupFilesDialog")}
             type="button"

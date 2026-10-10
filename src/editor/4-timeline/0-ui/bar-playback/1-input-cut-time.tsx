@@ -1,23 +1,81 @@
-import { type ClipboardEvent, type SubmitEvent } from "react";
+import { useState, type ClipboardEvent, type KeyboardEvent, type SubmitEvent } from "react";
 import { useAtomValue } from "jotai";
 import { jotaiDefaultStore } from "@/utils/local-utils/9-jotai-default-store";
 import { cn } from "@/utils/classnames";
 import { useTranslation } from "react-i18next";
+import { CheckIcon, XIcon } from "lucide-react";
+import { Button } from "@/ui/shadcn/button";
+import { Popover, PopoverContent } from "@/ui/shadcn/popover";
 
 import { mainApi } from "@/editor/0-core/7-actions/0-main-api";
 import { formatTimecodeAtom, parseTimecode } from "@/editor/0-core/9-state/timecode";
-import { isExactDurationMatch } from "@/editor/0-core/8-lib/duration";
 import { isFileOpenedAtom, startTimeOffsetAtom } from "@/editor/2-file/9-state/a-file-atoms";
 import { seekAbs } from "@/editor/3-player/7-actions/player-actions";
+import { type SegmentColorIndex } from "@/editor/0-core/8-lib/9-types-core";
 import { currentCutSegAtom } from "@/editor/5-segments/9-state/a-segments-store";
-import { darkModeAtom, getSegColorAtom } from "@/editor/5-segments/9-state/a-seg-ui-atoms";
+import { darkModeAtom, getSegColorAtom, simpleModeAtom } from "@/editor/5-segments/9-state/a-seg-ui-atoms";
 import { setCutTime } from "@/editor/5-segments/7-actions/segment-actions";
 import { cutTimeErrorAtoms, cutTimeManualAtoms } from "../../9-state/bottom-bar-atoms";
+import { Button_SetCutpoint } from "./2-button-segment-cut";
 import { type Side } from "./9-types-playbar";
 
 // Port of upstream BottomBar.tsx CutTimeInput
 
-export function Input_CutTime({ side }: { side: Side; }) {
+/** Set-cutpoint button. The down arrow opens a time popup under the button. */
+export function Control_CutTime({ side, currentCutSeg, onSetCut, title }: {
+    side: Side;
+    currentCutSeg: SegmentColorIndex | undefined;
+    onSetCut: () => unknown;
+    title: string;
+}) {
+    const simpleMode = useAtomValue(simpleModeAtom);
+    const [open, setOpen] = useState(false);
+    const isStart = side === 'start';
+    const { t } = useTranslation();
+
+    if (simpleMode) {
+        return (
+            <Button_SetCutpoint
+                className={isStart ? 'mr-1.25' : 'ml-1.25'}
+                currentCutSeg={currentCutSeg}
+                side={side}
+                onClick={onSetCut}
+                title={title}
+            />
+        );
+    }
+
+    function closePopup() {
+        setManual(side, undefined);
+        setOpen(false);
+    }
+
+    const revealTitle = isStart
+        ? t('Manually input current segment\'s start time')
+        : t('Manually input current segment\'s end time');
+
+    return (
+        <Popover open={open} onOpenChange={(next) => next ? setOpen(true) : closePopup()}>
+            <div className={isStart ? 'mr-1.25' : 'ml-1.25'}>
+                <Button_SetCutpoint
+                    currentCutSeg={currentCutSeg}
+                    side={side}
+                    onClick={onSetCut}
+                    title={title}
+                    revealed={open}
+                    revealTitle={revealTitle}
+                    popover
+                />
+            </div>
+
+            <PopoverContent className="p-1 w-auto flex-row items-center gap-1" side="bottom" align="center" sideOffset={6}>
+                <Input_CutTime side={side} onApplied={() => setOpen(false)} onCancel={closePopup} />
+            </PopoverContent>
+        </Popover>
+    );
+}
+
+function Input_CutTime({ side, onApplied, onCancel }: { side: Side; onApplied: () => void; onCancel: () => void; }) {
     const isFileOpened = useAtomValue(isFileOpenedAtom);
     const currentCutSeg = useAtomValue(currentCutSegAtom);
     const cutTimeManual = useAtomValue(cutTimeManualAtoms[side]);
@@ -43,49 +101,80 @@ export function Input_CutTime({ side }: { side: Side; }) {
     }
 
     return (
-        <form onSubmit={(e) => handleSubmit(side, e)}>
+        <form className="flex items-center gap-1" onSubmit={(e) => submitCutTime(side, e, onApplied)} onKeyDown={(e) => cancelCutTimeOnEscape(e, onCancel)}>
             <input
+                name="cut-time"
                 className={cn(
-                    'px-1 py-px w-23.5 font-mono text-[13px] text-center bg-muted outline-none rounded-[5px] tracking-tighter',
-                    isStart ? 'mr-1.25' : 'ml-1.25',
+                    'px-1 py-px w-23.5 text-[13px] font-mono text-center tracking-tighter bg-muted outline-none rounded-[5px]',
                     error ? 'text-destructive' : (cutTimeManual !== undefined ? 'text-foreground' : 'text-muted-foreground'),
                 )}
                 style={{ border }}
                 disabled={!isFileOpened}
                 value={value}
-                onChange={(e) => handleCutTimeInput(side, e.target.value)}
+                autoFocus
+                onChange={(e) => setDraft(side, e.target.value)}
                 onPaste={(e) => handleCutTimePaste(side, e)}
-                onBlur={() => setManual(side, undefined)}
                 onContextMenu={() => { void handleContextMenu(side); }}
                 title={isStart ? t('Manually input current segment\'s start time') : t('Manually input current segment\'s end time')}
                 type="text"
             />
+
+            <Button type="submit" size="icon-xs" disabled={!isFileOpened} title={t('OK')} aria-label={t('OK')}>
+                <CheckIcon />
+            </Button>
+            <Button type="button" size="icon-xs" variant="outline" onClick={onCancel} title={t('Cancel')} aria-label={t('Cancel')}>
+                <XIcon />
+            </Button>
         </form>
     );
 }
 
 //---------------------------------------------------------------------------
 
+function cancelCutTimeOnEscape(e: KeyboardEvent<HTMLElement>, onCancel: () => void) {
+    if (e.key !== 'Escape') {
+        return;
+    }
+    e.preventDefault();
+    e.stopPropagation();
+    onCancel();
+}
+
+function setDraft(side: Side, text: string) {
+    setManual(side, text);
+}
+
 function setManual(side: Side, text: string | undefined, error = false) {
     jotaiDefaultStore.set(cutTimeManualAtoms[side], text);
     jotaiDefaultStore.set(cutTimeErrorAtoms[side], error);
 }
 
-function handleSubmit(side: Side, e: SubmitEvent<HTMLFormElement>) {
+function submitCutTime(side: Side, e: SubmitEvent<HTMLFormElement>, onApplied: () => void) {
     e.preventDefault();
-    const cutTimeManual = jotaiDefaultStore.get(cutTimeManualAtoms[side]);
+    const field = e.currentTarget.elements.namedItem('cut-time');
+    const text = field instanceof HTMLInputElement ? field.value : '';
+    if (commitCutTime(side, text)) {
+        onApplied();
+    }
+}
+
+function commitCutTime(side: Side, text: string) {
     try {
-        if (isEmptyEndTime(side, cutTimeManual)) {
+        if (isEmptyEndTime(side, text)) {
             setTime(side, undefined);
-            return;
+            return true;
         }
-        const timeWithOffset = cutTimeManual != null ? parseTimecode(cutTimeManual) : undefined;
+        const timeWithOffset = parseTimecode(text);
         if (timeWithOffset === undefined) {
-            return;
+            setManual(side, text, true);
+            return false;
         }
         setTime(side, timeWithOffset);
+        return true;
     } catch (err) {
         console.warn('Cannot submit cut time', err);
+        setManual(side, text, true);
+        return false;
     }
 }
 
@@ -105,54 +194,16 @@ function setTime(side: Side, timeWithOffset: number | undefined) {
 
 //---------------------------------------------------------------------------
 
-function handleCutTimeInput(side: Side, text: string) {
-    try {
-        if (isExactDurationMatch(text) || isEmptyEndTime(side, text)) {
-            parseAndSetCutTime(side, text);
-            return;
-        }
-    } catch (err) {
-        console.warn(err);
-        jotaiDefaultStore.set(cutTimeErrorAtoms[side], true);
-    }
-    // else or if error, just set manual value, to make sure it doesn't jump to end https://github.com/mifi/lossless-cut/issues/988#issuecomment-3475870072
-    jotaiDefaultStore.set(cutTimeManualAtoms[side], text);
-}
-
-function setFromText(side: Side, text: string) {
-    try {
-        jotaiDefaultStore.set(cutTimeManualAtoms[side], text);
-        parseAndSetCutTime(side, text);
-        jotaiDefaultStore.set(cutTimeErrorAtoms[side], false);
-    } catch (err) {
-        console.warn(err);
-        jotaiDefaultStore.set(cutTimeErrorAtoms[side], true);
-    }
-}
-
 function handleCutTimePaste(side: Side, e: ClipboardEvent<HTMLInputElement>) {
     e.preventDefault();
-    setFromText(side, e.clipboardData.getData('Text'));
+    setDraft(side, e.clipboardData.getData('Text'));
 }
 
 async function handleContextMenu(side: Side) {
     const text = await mainApi.readClipboardText();
     if (text) {
-        setFromText(side, text);
+        setDraft(side, text);
     }
-}
-
-function parseAndSetCutTime(side: Side, text: string) {
-    if (isEmptyEndTime(side, text)) {
-        setTime(side, undefined);
-        return;
-    }
-    // Don't proceed if not a valid time value
-    const timeWithOffset = parseTimecode(text);
-    if (timeWithOffset === undefined) {
-        return;
-    }
-    setTime(side, timeWithOffset);
 }
 
 function isEmptyEndTime(side: Side, v: string | undefined) {

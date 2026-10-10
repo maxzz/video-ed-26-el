@@ -50,7 +50,7 @@ function StatusBar_Controls() {
 
     return (<>
         <div className="flex items-center gap-1.5">
-            <BarPlayback_StatusControls />
+            <BarPlayback_StatusControls simpleMode={simpleMode} />
 
             {filePath && (<>
                 <Button variant="outline" size="xs" onClick={() => jotaiDefaultStore.set(streamsSelectorShownAtom, true)}>
