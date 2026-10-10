@@ -5,13 +5,13 @@ import { cn } from "@/utils/classnames";
 import { motion } from "motion/react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/ui/shadcn/select";
 import {
-    AudioWaveformIcon, ChevronLeftIcon, ChevronRightIcon, ContrastIcon, GaugeIcon, ImagesIcon, KeyIcon,
+    AudioWaveformIcon, ContrastIcon, GaugeIcon, ImagesIcon, KeyIcon,
     PauseIcon, PlayIcon, RotateCcwSquareIcon, SkipBackIcon, SkipForwardIcon, StepBackIcon,
     StepForwardIcon,
 } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
-import { Icon_ToKeyframe } from "@/ui/icons/normal/local-ui";
+import { Icon_ToFrame, Icon_ToKeyframe } from "@/ui/icons/normal/local-ui";
 import { formatTimecodeAtom, getFrameCountAtom } from "@/editor/0-core/9-state/timecode";
 import { askDialog_ForPlaybackRate } from "@/components/4-dialogs/7-1-dialogs/13-ask-for-playback-rate";
 import { getSegColor as getSegColorRaw } from "@/editor/0-core/8-lib/colors";
@@ -69,7 +69,7 @@ function BottomBarTopRow() {
 
             {!simpleMode && (
                 <Button_Bar className="-mr-1 -ml-1.5" title={actionTitle(t('One frame back'), 'seekPreviousFrame')} onClick={() => player.shortStep(-1)}>
-                    <ChevronLeftIcon className="size-7" />
+                    <Icon_ToFrame className="size-5 stroke-2!" />
                 </Button_Bar>
             )}
 
@@ -77,7 +77,7 @@ function BottomBarTopRow() {
 
             {!simpleMode && (
                 <Button_Bar className="-mr-1.5 -ml-1" title={actionTitle(t('One frame forward'), 'seekNextFrame')} onClick={() => player.shortStep(1)}>
-                    <ChevronRightIcon className="size-7" />
+                    <Icon_ToFrame className="size-5 stroke-2! -scale-x-100" />
                 </Button_Bar>
             )}
 
