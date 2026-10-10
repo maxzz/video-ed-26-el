@@ -118,11 +118,11 @@ function cutpointColors(currentCutSeg: SegmentColorIndex | undefined, darkMode: 
 }
 
 export function Button_JumpSegment({ direction }: { direction: -1 | 1; }) {
-    const { t } = useTranslation();
     const cutSegments = useAtomValue(cutSegmentsAtom);
     const currentSegIndexSafe = useAtomValue(currentSegIndexSafeAtom);
     const darkMode = useAtomValue(darkModeAtom);
     const getSegColor = useAtomValue(getSegColorAtom);
+    const { t } = useTranslation();
 
     const newIndex = currentSegIndexSafe + direction;
     const seg = cutSegments[newIndex];

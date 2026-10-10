@@ -6,11 +6,12 @@ import { motion } from "motion/react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/ui/shadcn/select";
 import {
     AudioWaveformIcon, ChevronLeftIcon, ChevronRightIcon, ContrastIcon, GaugeIcon, ImagesIcon, KeyIcon,
-    KeyRoundIcon, PauseIcon, PlayIcon, RotateCcwSquareIcon, SkipBackIcon, SkipForwardIcon, StepBackIcon,
+    PauseIcon, PlayIcon, RotateCcwSquareIcon, SkipBackIcon, SkipForwardIcon, StepBackIcon,
     StepForwardIcon,
 } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
+import { Icon_ToKeyframe } from "@/ui/icons/normal/local-ui";
 import { formatTimecodeAtom, getFrameCountAtom } from "@/editor/0-core/9-state/timecode";
 import { askDialog_ForPlaybackRate } from "@/components/4-dialogs/7-1-dialogs/13-ask-for-playback-rate";
 import { getSegColor as getSegColorRaw } from "@/editor/0-core/8-lib/colors";
@@ -153,18 +154,18 @@ function Button_KeyframeSeek({ direction }: { direction: -1 | 1; }) {
     const prev = direction < 0;
     return (
         <Button_Bar
-            className={cn(prev ? 'mr-0.5 -scale-x-100' : 'ml-0.5', currentFrame?.keyframe && activeClasses)}
+            className={cn(prev ? "ml-0.5" : "mr-0.5 -scale-x-100", currentFrame?.keyframe && activeClasses)}
             onClick={() => seekClosestKeyframe(direction)}
-            title={prev ? actionTitle(t('Seek previous keyframe'), 'seekBackwardsKeyframe') : actionTitle(t('Seek next keyframe'), 'seekForwardsKeyframe')}
+            title={prev ? actionTitle(t("Seek previous keyframe"), "seekBackwardsKeyframe") : actionTitle(t("Seek next keyframe"), "seekForwardsKeyframe")}
         >
-            <KeyRoundIcon className="size-5" />
+            <Icon_ToKeyframe className="size-5 stroke-2!" />
         </Button_Bar>
     );
 }
 
-const activeClasses = 'text-primary';
+const activeClasses = "text-primary";
 
-const roundButtonClasses = 'size-[2.3em] text-white rounded-full flex items-center justify-center';
+const roundButtonClasses = "size-[2.3em] text-white rounded-full flex items-center justify-center";
 
 function Button_PlayPause() {
     const playing = useAtomValue(playingAtom);

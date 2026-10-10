@@ -1,0 +1,12 @@
+import { type HTMLAttributes } from "react";
+import { classNames } from "@/utils";
+
+export function Icon_ToKeyframe({ className, title, ...rest }: HTMLAttributes<SVGSVGElement>) {
+    return (
+        <svg className={classNames("fill-none stroke-current stroke-[1.5px]", className)} strokeLinecap="round" viewBox="0 0 24 24" {...rest}>
+            {title && <title>{title}</title>}
+            <path d="M10.927 10.781 C11.595 11.386 11.929 11.688 11.929 12.091 C11.929 12.494 11.595 12.796 10.926 13.401 L9.283 14.886 C8.393 15.689 7.949 16.091 7.429 16.091 C6.909 16.091 6.464 15.689 5.575 14.886 L3.931 13.4 C3.264 12.796 2.929 12.494 2.929 12.091 C2.929 11.688 3.263 11.386 3.931 10.781 L5.575 9.296 C6.465 8.493 6.909 8.091 7.429 8.091 C7.949 8.091 8.394 8.493 9.283 9.296 Z" />
+            <path d="M21.012 5.239 L15.14 11.112 A0.923 0.923 0 0 0 15.14 12.416 L21.012 18.289" />
+        </svg>
+    );
+}
