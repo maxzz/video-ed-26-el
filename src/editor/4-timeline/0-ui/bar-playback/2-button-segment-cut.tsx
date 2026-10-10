@@ -83,14 +83,14 @@ function Split_SetCutpoint({ currentCutSeg, side, onClick, title, className, rev
     const isStart = side === 'start';
 
     const pointer = (
-        <button type="button" className="py-1 pr-0.5 pl-1 flex items-center cursor-pointer" onClick={() => { void onClick(); }} title={title}>
+        <button type="button" className="py-1 pr-0.5 pl-1 outline-none focus:outline-none focus-visible:outline-none flex items-center cursor-pointer" onClick={() => { void onClick(); }} title={title} tabIndex={-1}>
             <PointerIcon className={cn('size-3.25', isStart && '-scale-x-100')} />
         </button>
     );
 
     const chevron = (
         <PopoverTrigger asChild>
-            <button type="button" className="py-1 pr-1 pl-0.5 flex items-center cursor-pointer" title={revealTitle}>
+            <button type="button" className="py-1 pr-1 pl-0.5 outline-none focus:outline-none focus-visible:outline-none flex items-center cursor-pointer" title={revealTitle} tabIndex={-1}>
                 <ChevronDownIcon className={cn('size-3 transition-transform', revealed && 'rotate-180')} />
             </button>
         </PopoverTrigger>
@@ -99,7 +99,7 @@ function Split_SetCutpoint({ currentCutSeg, side, onClick, title, className, rev
     return (
         <PopoverAnchor asChild>
             <div
-                className={cn('shrink-0 text-white rounded-md flex items-stretch', className)}
+                className={cn('shrink-0 text-white rounded shadow flex items-stretch', className)}
                 style={{ backgroundColor, borderLeft: isStart ? border : undefined, borderRight: isStart ? undefined : border }}
             >
                 {pointer}

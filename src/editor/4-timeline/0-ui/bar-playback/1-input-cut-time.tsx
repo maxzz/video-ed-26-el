@@ -68,12 +68,7 @@ export function Control_CutTime({ side, currentCutSeg, onSetCut, title }: {
                 />
             </div>
 
-            <PopoverContent
-                side="bottom"
-                align="center"
-                sideOffset={6}
-                className="p-1 w-auto flex-row items-center gap-1"
-            >
+            <PopoverContent className="p-1 w-auto flex-row items-center gap-1" side="bottom" align="center" sideOffset={6}>
                 <Input_CutTime side={side} onApplied={() => setOpen(false)} onCancel={closePopup} />
             </PopoverContent>
         </Popover>
