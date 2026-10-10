@@ -3,6 +3,7 @@ import { useAtomValue } from "jotai";
 import { jotaiDefaultStore } from "@/utils/local-utils/9-jotai-default-store";
 import { cn } from "@/utils/classnames";
 import { motion } from "motion/react";
+import { Button } from "@/ui/shadcn/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/ui/shadcn/select";
 import {
     AudioWaveformIcon, ContrastIcon, GaugeIcon, ImagesIcon, KeyIcon,
@@ -45,27 +46,17 @@ function BottomBarTopRow() {
     const { t } = useTranslation();
     const isFileOpened = useAtomValue(isFileOpenedAtom);
     const simpleMode = useAtomValue(simpleModeAtom);
-    const keyframesEnabled = useAtomValue(keyframesEnabledAtom);
     const currentCutSeg = useAtomValue(currentCutSegAtom);
     const actionTitle = useAtomValue(actionTitleAtom);
 
     return (
         <div className={cn('select-none flex items-center justify-between', !isFileOpened && 'opacity-50')}>
-            <div className="grow" />
-
-            {!simpleMode && (<>
-                <Button_Bar title={actionTitle(t('Jump to start of video'), 'jumpTimelineStart')} onClick={player.jumpTimelineStart}>
-                    <SkipBackIcon className="size-4" />
-                </Button_Bar>
-
-                <Button_JumpSegment direction={-1} />
-
-                <Button_SegmentCutpoint className="mr-1.25" currentCutSeg={currentCutSeg} side="start" Icon={StepBackIcon} onClick={player.jumpCutStart} title={actionTitle(t('Jump to current segment\'s start time'), 'jumpCutStart')} />
-            </>)}
+            {/* --------- Left side --------- */}
+            {!simpleMode && <Controls_TimelineEdge direction={-1} />}
 
             <Control_CutTime side="start" currentCutSeg={currentCutSeg ?? { segColorIndex: 0 }} onSetCut={setCutStart} title={actionTitle(t('Start current segment at current time'), 'setCutStart')} />
 
-            {keyframesEnabled && <Button_KeyframeSeek direction={-1} />}
+            <Button_KeyframeSeek direction={-1} />
 
             {!simpleMode && (
                 <Button_Bar className="-mr-1 -ml-1.5" title={actionTitle(t('One frame back'), 'seekPreviousFrame')} onClick={() => player.shortStep(-1)}>
@@ -73,31 +64,57 @@ function BottomBarTopRow() {
                 </Button_Bar>
             )}
 
+            {/* --------- Center --------- */}
             <Button_PlayPause />
 
+            {/* --------- Right side --------- */}
             {!simpleMode && (
                 <Button_Bar className="-mr-1.5 -ml-1" title={actionTitle(t('One frame forward'), 'seekNextFrame')} onClick={() => player.shortStep(1)}>
                     <Icon_ToFrame className="size-5 stroke-2! -scale-x-100" />
                 </Button_Bar>
             )}
 
-            {keyframesEnabled && <Button_KeyframeSeek direction={1} />}
+            <Button_KeyframeSeek direction={1} />
 
             <Control_CutTime side="end" currentCutSeg={currentCutSeg} onSetCut={setCutEnd} title={actionTitle(t('End current segment at current time'), 'setCutEnd')} />
 
-            {!simpleMode && (<>
-                <Button_SegmentCutpoint className="ml-1.25" currentCutSeg={currentCutSeg} side="end" Icon={StepForwardIcon} onClick={player.jumpCutEnd} title={actionTitle(t('Jump to current segment\'s end time'), 'jumpCutEnd')} />
-
-                <Button_JumpSegment direction={1} />
-
-                <Button_Bar title={actionTitle(t('Jump to end of video'), 'jumpTimelineEnd')} onClick={player.jumpTimelineEnd}>
-                    <SkipForwardIcon className="size-4" />
-                </Button_Bar>
-            </>)}
-
-            <div className="grow" />
+            {!simpleMode && <Controls_TimelineEdge direction={1} />}
         </div>
     );
+}
+
+/** Jump-to-edge, neighboring segment, and current-segment cutpoint. Start order is mirrored for the end. */
+function Controls_TimelineEdge({ direction }: { direction: -1 | 1; }) {
+    const { t } = useTranslation();
+    const currentCutSeg = useAtomValue(currentCutSegAtom);
+    const actionTitle = useAtomValue(actionTitleAtom);
+    const start = direction < 0;
+
+    const jumpTimeline = (
+        <Button_Bar
+            title={actionTitle(t(start ? 'Jump to start of video' : 'Jump to end of video'), start ? 'jumpTimelineStart' : 'jumpTimelineEnd')}
+            onClick={start ? player.jumpTimelineStart : player.jumpTimelineEnd}
+        >
+            {start ? <SkipBackIcon className="size-4" /> : <SkipForwardIcon className="size-4" />}
+        </Button_Bar>
+    );
+
+    const cutpoint = (
+        <Button_SegmentCutpoint
+            className={start ? 'mr-1.25' : 'ml-1.25'}
+            currentCutSeg={currentCutSeg}
+            side={start ? 'start' : 'end'}
+            Icon={start ? StepBackIcon : StepForwardIcon}
+            onClick={start ? player.jumpCutStart : player.jumpCutEnd}
+            title={actionTitle(t(start ? 'Jump to current segment\'s start time' : 'Jump to current segment\'s end time'), start ? 'jumpCutStart' : 'jumpCutEnd')}
+        />
+    );
+
+    return (<>
+        {start ? jumpTimeline : cutpoint}
+        <Button_JumpSegment direction={direction} />
+        {start ? cutpoint : jumpTimeline}
+    </>);
 }
 
 /** Waveform, zoom, and related controls shown in the status bar. */
@@ -148,10 +165,15 @@ function ViewToggles() {
 }
 
 function Button_KeyframeSeek({ direction }: { direction: -1 | 1; }) {
-    const { t } = useTranslation();
     const currentFrame = useAtomValue(currentFrameAtom);
     const actionTitle = useAtomValue(actionTitleAtom);
+    const keyframesEnabled = useAtomValue(keyframesEnabledAtom);
+    const { t } = useTranslation();
     const prev = direction < 0;
+
+    if (!keyframesEnabled) {
+        return null;
+    }
     return (
         <Button_Bar
             className={cn(prev ? "ml-0.5" : "mr-0.5 -scale-x-100", currentFrame?.keyframe && activeClasses)}
@@ -375,5 +397,13 @@ function Button_LoopSelectedSegments() {
 }
 
 function Button_Bar({ className, ...rest }: ComponentProps<'button'>) {
-    return <button type="button" className={cn('shrink-0 hover:text-foreground cursor-pointer', className)} {...rest} />;
+    return (
+        <Button
+            className={cn('hover:bg-background hover:text-foreground rounded cursor-pointer', className)}
+            variant="outline"
+            size="icon-sm"
+            type="button"
+            {...rest}
+        />
+    );
 }
