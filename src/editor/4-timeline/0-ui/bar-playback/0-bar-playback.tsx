@@ -26,8 +26,8 @@ import {
     increaseRotation, seekClosestKeyframe, timelineToggleComfortZoom, toggleInvertCutSegments, toggleShowKeyframes,
     toggleShowThumbnails, toggleWaveformMode, zoomAbs,
 } from "../../7-actions/3-timeline-actions";
-import { Input_CutTime } from "./1-input-cut-time";
-import { Button_JumpSegment, Button_SegmentCutpoint, Button_SetCutpoint } from "./2-button-segment-cut";
+import { Control_CutTime } from "./1-input-cut-time";
+import { Button_JumpSegment, Button_SegmentCutpoint } from "./2-button-segment-cut";
 
 // Port of upstream BottomBar.tsx
 
@@ -62,9 +62,7 @@ function BottomBarTopRow() {
                 <Button_SegmentCutpoint className="mr-1.25" currentCutSeg={currentCutSeg} side="start" Icon={StepBackIcon} onClick={player.jumpCutStart} title={actionTitle(t('Jump to current segment\'s start time'), 'jumpCutStart')} />
             </>)}
 
-            <Button_SetCutpoint className="mr-1.25" currentCutSeg={currentCutSeg ?? { segColorIndex: 0 }} side="start" onClick={setCutStart} title={actionTitle(t('Start current segment at current time'), 'setCutStart')} />
-
-            {!simpleMode && <Input_CutTime side="start" />}
+            <Control_CutTime side="start" currentCutSeg={currentCutSeg ?? { segColorIndex: 0 }} onSetCut={setCutStart} title={actionTitle(t('Start current segment at current time'), 'setCutStart')} />
 
             {keyframesEnabled && <Button_KeyframeSeek direction={-1} />}
 
@@ -84,9 +82,7 @@ function BottomBarTopRow() {
 
             {keyframesEnabled && <Button_KeyframeSeek direction={1} />}
 
-            {!simpleMode && <Input_CutTime side="end" />}
-
-            <Button_SetCutpoint className="ml-1.25" currentCutSeg={currentCutSeg} side="end" onClick={setCutEnd} title={actionTitle(t('End current segment at current time'), 'setCutEnd')} />
+            <Control_CutTime side="end" currentCutSeg={currentCutSeg} onSetCut={setCutEnd} title={actionTitle(t('End current segment at current time'), 'setCutEnd')} />
 
             {!simpleMode && (<>
                 <Button_SegmentCutpoint className="ml-1.25" currentCutSeg={currentCutSeg} side="end" Icon={StepForwardIcon} onClick={player.jumpCutEnd} title={actionTitle(t('Jump to current segment\'s end time'), 'jumpCutEnd')} />

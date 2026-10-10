@@ -1,8 +1,8 @@
-import { type ComponentType } from "react";
+import { type ComponentType, type MouseEvent } from "react";
 import { useAtomValue } from "jotai";
 import { cn } from "@/utils/classnames";
 import { useTranslation } from "react-i18next";
-import { PointerIcon } from "lucide-react";
+import { ChevronDownIcon, PointerIcon } from "lucide-react";
 
 import { type SegmentColorIndex } from "@/editor/0-core/8-lib/9-types-core";
 import { currentSegIndexSafeAtom, cutSegmentsAtom } from "@/editor/5-segments/9-state/a-segments-store";
@@ -22,11 +22,9 @@ export function Button_SegmentCutpoint({ currentCutSeg, side, Icon, onClick, tit
 }) {
     const darkMode = useAtomValue(darkModeAtom);
     const getSegColor = useAtomValue(getSegColorAtom);
-    const segColor = getSegColor(currentCutSeg);
 
     const start = side === 'start';
-    const border = `3px solid ${segColor.desaturate(0.6).lightness(darkMode ? 45 : 35).string()}`;
-    const backgroundColor = segColor.desaturate(0.6).lightness(darkMode ? 35 : 55).string();
+    const { border, backgroundColor } = cutpointColors(currentCutSeg, darkMode, getSegColor);
 
     return (
         <button
@@ -41,15 +39,91 @@ export function Button_SegmentCutpoint({ currentCutSeg, side, Icon, onClick, tit
     );
 }
 
-/** Constant side because we are mirroring */
-export function Button_SetCutpoint({ currentCutSeg, side, onClick, title, className }: {
+/** Constant side because we are mirroring. Pass `onToggleReveal` to add the down arrow that shows the time input. */
+export function Button_SetCutpoint({ currentCutSeg, side, onClick, title, className, revealed, onToggleReveal, revealTitle }: {
     currentCutSeg: SegmentColorIndex | undefined;
     side: Side;
     onClick: () => unknown;
     title: string;
     className?: string;
+    revealed?: boolean;
+    onToggleReveal?: () => void;
+    revealTitle?: string;
 }) {
-    return <Button_SegmentCutpoint currentCutSeg={currentCutSeg} side="end" Icon={PointerIcon} onClick={onClick} title={title} className={cn(side === 'start' && '-scale-x-100', className)} />;
+    if (onToggleReveal == null) {
+        return <Button_SegmentCutpoint currentCutSeg={currentCutSeg} side="end" Icon={PointerIcon} onClick={onClick} title={title} className={cn(side === 'start' && '-scale-x-100', className)} />;
+    }
+
+    return (
+        <Split_SetCutpoint
+            currentCutSeg={currentCutSeg}
+            side={side}
+            onClick={onClick}
+            title={title}
+            className={className}
+            revealed={revealed ?? false}
+            onToggleReveal={onToggleReveal}
+            revealTitle={revealTitle ?? title}
+        />
+    );
+}
+
+function Split_SetCutpoint({ currentCutSeg, side, onClick, title, className, revealed, onToggleReveal, revealTitle }: {
+    currentCutSeg: SegmentColorIndex | undefined;
+    side: Side;
+    onClick: () => unknown;
+    title: string;
+    className?: string;
+    revealed: boolean;
+    onToggleReveal: () => void;
+    revealTitle: string;
+}) {
+    const darkMode = useAtomValue(darkModeAtom);
+    const getSegColor = useAtomValue(getSegColorAtom);
+    const { border, backgroundColor } = cutpointColors(currentCutSeg, darkMode, getSegColor);
+    const isStart = side === 'start';
+
+    const pointer = (
+        <button type="button" className={isStart ? 'py-1 pr-0.5 pl-1 flex items-center cursor-pointer' : 'py-1 pr-1 pl-0.5 flex items-center cursor-pointer'} onClick={() => { void onClick(); }} title={title}>
+            <PointerIcon className={cn('size-3.25', isStart && '-scale-x-100')} />
+        </button>
+    );
+
+    const chevron = (
+        <button
+            type="button"
+            className={isStart ? 'py-1 pr-1 pl-0.5 flex items-center cursor-pointer' : 'py-1 pr-0.5 pl-1 flex items-center cursor-pointer'}
+            aria-expanded={revealed}
+            title={revealTitle}
+            onMouseDown={keepTimeInputFocused}
+            onClick={onToggleReveal}
+        >
+            <ChevronDownIcon className={cn('size-3 transition-transform', revealed && 'rotate-180')} />
+        </button>
+    );
+
+    return (
+        <div
+            className={cn('shrink-0 text-white rounded-md flex items-stretch', className)}
+            style={{ backgroundColor, borderLeft: isStart ? border : undefined, borderRight: isStart ? undefined : border }}
+        >
+            {isStart ? pointer : chevron}
+            {isStart ? chevron : pointer}
+        </div>
+    );
+}
+
+function cutpointColors(currentCutSeg: SegmentColorIndex | undefined, darkMode: boolean, getSegColor: ReturnType<typeof useAtomValue<typeof getSegColorAtom>>) {
+    const segColor = getSegColor(currentCutSeg);
+    return {
+        border: `3px solid ${segColor.desaturate(0.6).lightness(darkMode ? 45 : 35).string()}`,
+        backgroundColor: segColor.desaturate(0.6).lightness(darkMode ? 35 : 55).string(),
+    };
+}
+
+/** Keep a focused time input from blurring before the arrow click toggles it. */
+function keepTimeInputFocused(e: MouseEvent<HTMLButtonElement>) {
+    e.preventDefault();
 }
 
 export function Button_JumpSegment({ direction }: { direction: -1 | 1; }) {

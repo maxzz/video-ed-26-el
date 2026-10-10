@@ -1,4 +1,4 @@
-import { type ClipboardEvent, type SubmitEvent } from "react";
+import { useState, type ClipboardEvent, type KeyboardEvent, type SubmitEvent } from "react";
 import { useAtomValue } from "jotai";
 import { jotaiDefaultStore } from "@/utils/local-utils/9-jotai-default-store";
 import { cn } from "@/utils/classnames";
@@ -9,15 +9,71 @@ import { formatTimecodeAtom, parseTimecode } from "@/editor/0-core/9-state/timec
 import { isExactDurationMatch } from "@/editor/0-core/8-lib/duration";
 import { isFileOpenedAtom, startTimeOffsetAtom } from "@/editor/2-file/9-state/a-file-atoms";
 import { seekAbs } from "@/editor/3-player/7-actions/player-actions";
+import { type SegmentColorIndex } from "@/editor/0-core/8-lib/9-types-core";
 import { currentCutSegAtom } from "@/editor/5-segments/9-state/a-segments-store";
-import { darkModeAtom, getSegColorAtom } from "@/editor/5-segments/9-state/a-seg-ui-atoms";
+import { darkModeAtom, getSegColorAtom, simpleModeAtom } from "@/editor/5-segments/9-state/a-seg-ui-atoms";
 import { setCutTime } from "@/editor/5-segments/7-actions/segment-actions";
 import { cutTimeErrorAtoms, cutTimeManualAtoms } from "../../9-state/bottom-bar-atoms";
+import { Button_SetCutpoint } from "./2-button-segment-cut";
 import { type Side } from "./9-types-playbar";
 
 // Port of upstream BottomBar.tsx CutTimeInput
 
-export function Input_CutTime({ side }: { side: Side; }) {
+/** Set-cutpoint button. The down arrow opens the time field that used to sit beside it. */
+export function Control_CutTime({ side, currentCutSeg, onSetCut, title }: {
+    side: Side;
+    currentCutSeg: SegmentColorIndex | undefined;
+    onSetCut: () => unknown;
+    title: string;
+}) {
+    const simpleMode = useAtomValue(simpleModeAtom);
+    const [open, setOpen] = useState(false);
+    const isStart = side === 'start';
+    const { t } = useTranslation();
+
+    if (simpleMode) {
+        return (
+            <Button_SetCutpoint
+                className={isStart ? 'mr-1.25' : 'ml-1.25'}
+                currentCutSeg={currentCutSeg}
+                side={side}
+                onClick={onSetCut}
+                title={title}
+            />
+        );
+    }
+
+    function toggleInput() {
+        if (open) {
+            setManual(side, undefined);
+        }
+        setOpen((value) => !value);
+    }
+
+    const revealTitle = isStart
+        ? t('Manually input current segment\'s start time')
+        : t('Manually input current segment\'s end time');
+
+    return (
+        <div className={cn(isStart ? 'mr-1.25' : 'ml-1.25', 'flex items-center gap-1.25')}>
+            {!isStart && open && <Input_CutTime side={side} autoFocus onDismiss={() => setOpen(false)} />}
+
+            <Button_SetCutpoint
+                currentCutSeg={currentCutSeg}
+                side={side}
+                onClick={onSetCut}
+                title={title}
+                revealed={open}
+                revealTitle={revealTitle}
+                onToggleReveal={toggleInput}
+            />
+
+            {isStart && open && <Input_CutTime side={side} autoFocus onDismiss={() => setOpen(false)} />}
+        </div>
+    );
+}
+
+export function Input_CutTime({ side, autoFocus, onDismiss }: { side: Side; autoFocus?: boolean; onDismiss?: () => void; }) {
     const isFileOpened = useAtomValue(isFileOpenedAtom);
     const currentCutSeg = useAtomValue(currentCutSegAtom);
     const cutTimeManual = useAtomValue(cutTimeManualAtoms[side]);
@@ -46,16 +102,17 @@ export function Input_CutTime({ side }: { side: Side; }) {
         <form onSubmit={(e) => handleSubmit(side, e)}>
             <input
                 className={cn(
-                    'px-1 py-px w-23.5 font-mono text-[13px] text-center bg-muted outline-none rounded-[5px] tracking-tighter',
-                    isStart ? 'mr-1.25' : 'ml-1.25',
+                    'px-1 py-px w-23.5 text-[13px] font-mono text-center tracking-tighter bg-muted outline-none rounded-[5px]',
                     error ? 'text-destructive' : (cutTimeManual !== undefined ? 'text-foreground' : 'text-muted-foreground'),
                 )}
                 style={{ border }}
                 disabled={!isFileOpened}
                 value={value}
+                autoFocus={autoFocus}
                 onChange={(e) => handleCutTimeInput(side, e.target.value)}
                 onPaste={(e) => handleCutTimePaste(side, e)}
-                onBlur={() => setManual(side, undefined)}
+                onBlur={() => dismissCutTime(side, onDismiss)}
+                onKeyDown={(e) => dismissCutTimeOnEscape(e, onDismiss)}
                 onContextMenu={() => { void handleContextMenu(side); }}
                 title={isStart ? t('Manually input current segment\'s start time') : t('Manually input current segment\'s end time')}
                 type="text"
@@ -65,6 +122,18 @@ export function Input_CutTime({ side }: { side: Side; }) {
 }
 
 //---------------------------------------------------------------------------
+
+function dismissCutTime(side: Side, onDismiss?: () => void) {
+    setManual(side, undefined);
+    onDismiss?.();
+}
+
+function dismissCutTimeOnEscape(e: KeyboardEvent<HTMLInputElement>, onDismiss?: () => void) {
+    if (e.key !== 'Escape' || onDismiss == null) {
+        return;
+    }
+    e.currentTarget.blur();
+}
 
 function setManual(side: Side, text: string | undefined, error = false) {
     jotaiDefaultStore.set(cutTimeManualAtoms[side], text);
