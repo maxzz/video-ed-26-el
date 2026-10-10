@@ -3,6 +3,7 @@ import { useAtomValue } from "jotai";
 import { jotaiDefaultStore } from "@/utils/local-utils/9-jotai-default-store";
 import { cn } from "@/utils/classnames";
 import { useTranslation } from "react-i18next";
+import { CheckIcon, XIcon } from "lucide-react";
 import { Button } from "@/ui/shadcn/button";
 import { Popover, PopoverContent } from "@/ui/shadcn/popover";
 
@@ -116,7 +117,6 @@ function Input_CutTime({ side, onApplied, onCancel }: { side: Side; onApplied: (
                 disabled={!isFileOpened}
                 value={value}
                 autoFocus
-                onFocus={selectInputText}
                 onChange={(e) => setDraft(side, e.target.value)}
                 onPaste={(e) => handleCutTimePaste(side, e)}
                 onContextMenu={() => { void handleContextMenu(side); }}
@@ -124,17 +124,17 @@ function Input_CutTime({ side, onApplied, onCancel }: { side: Side; onApplied: (
                 type="text"
             />
 
-            <Button type="submit" size="xs" disabled={!isFileOpened}>{t('OK')}</Button>
-            <Button type="button" size="xs" variant="outline" onClick={onCancel}>{t('Cancel')}</Button>
+            <Button type="submit" size="icon-xs" disabled={!isFileOpened} title={t('OK')} aria-label={t('OK')}>
+                <CheckIcon />
+            </Button>
+            <Button type="button" size="icon-xs" variant="outline" onClick={onCancel} title={t('Cancel')} aria-label={t('Cancel')}>
+                <XIcon />
+            </Button>
         </form>
     );
 }
 
 //---------------------------------------------------------------------------
-
-function selectInputText(e: { currentTarget: HTMLInputElement; }) {
-    e.currentTarget.select();
-}
 
 function cancelCutTimeOnEscape(e: KeyboardEvent<HTMLElement>, onCancel: () => void) {
     if (e.key !== 'Escape') {
