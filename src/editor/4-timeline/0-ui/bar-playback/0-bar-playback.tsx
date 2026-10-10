@@ -5,29 +5,22 @@ import { cn } from "@/utils/classnames";
 import { motion } from "motion/react";
 import { Button } from "@/ui/shadcn/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/ui/shadcn/select";
-import {
-    AudioWaveformIcon, ContrastIcon, GaugeIcon, ImagesIcon, KeyIcon,
-    PauseIcon, PlayIcon, RotateCcwSquareIcon, SkipBackIcon, SkipForwardIcon, StepBackIcon,
-    StepForwardIcon,
-} from "lucide-react";
+import { AudioWaveformIcon, ContrastIcon, GaugeIcon, ImagesIcon, KeyIcon, PauseIcon, PlayIcon, RotateCcwSquareIcon, SkipBackIcon, SkipForwardIcon, StepBackIcon, StepForwardIcon } from "lucide-react";
+import { Icon_ToFrame, Icon_ToKeyframe } from "@/ui/icons/normal/local-ui";
 import { useTranslation } from "react-i18next";
 
-import { Icon_ToFrame, Icon_ToKeyframe } from "@/ui/icons/normal/local-ui";
+import * as player from "@/editor/3-player/7-actions/player-actions";
 import { formatTimecodeAtom, getFrameCountAtom } from "@/editor/0-core/9-state/timecode";
 import { askDialog_ForPlaybackRate } from "@/components/4-dialogs/7-1-dialogs/13-ask-for-playback-rate";
 import { getSegColor as getSegColorRaw } from "@/editor/0-core/8-lib/colors";
 import { detectedFpsAtom, fileDurationNonZeroAtom, hasAudioAtom, hasVideoAtom, isFileOpenedAtom, isRotationSetAtom, rotationAtom } from "@/editor/2-file/9-state/a-file-atoms";
 import { outputPlaybackRateAtom, playbackModeAtom, playbackRateAtom, playingAtom } from "@/editor/3-player/9-state/a-player-atoms";
-import * as player from "@/editor/3-player/7-actions/player-actions";
 import { currentCutSegAtom, selectedSegmentsAtom } from "@/editor/5-segments/9-state/a-segments-store";
 import { invertCutSegmentsAtom, simpleModeAtom } from "@/editor/5-segments/9-state/a-seg-ui-atoms";
 import { setCutEnd, setCutStart } from "@/editor/5-segments/7-actions/segment-actions";
 import { actionTitleAtom } from "../../9-state/action-title";
 import { currentFrameAtom, displayTimeAtom, isZoomedAtom, keyframesEnabledAtom, showThumbnailsAtom, waveformModeAtom, zoomAtom } from "../../9-state/timeline-atoms";
-import {
-    increaseRotation, seekClosestKeyframe, timelineToggleComfortZoom, toggleInvertCutSegments, toggleShowKeyframes,
-    toggleShowThumbnails, toggleWaveformMode, zoomAbs,
-} from "../../7-actions/3-timeline-actions";
+import { increaseRotation, seekClosestKeyframe, timelineToggleComfortZoom, toggleInvertCutSegments, toggleShowKeyframes, toggleShowThumbnails, toggleWaveformMode, zoomAbs } from "../../7-actions/3-timeline-actions";
 import { Control_CutTime } from "./1-input-cut-time";
 import { Button_JumpSegment, Button_SegmentCutpoint } from "./2-button-segment-cut";
 
@@ -43,52 +36,44 @@ export function Bar_Playback() {
 }
 
 function BottomBarTopRow() {
-    const { t } = useTranslation();
     const isFileOpened = useAtomValue(isFileOpenedAtom);
+    const keyframesEnabled = useAtomValue(keyframesEnabledAtom);
     const simpleMode = useAtomValue(simpleModeAtom);
     const currentCutSeg = useAtomValue(currentCutSegAtom);
     const actionTitle = useAtomValue(actionTitleAtom);
+    const { t } = useTranslation();
 
     return (
         <div className={cn('select-none flex items-center justify-between', !isFileOpened && 'opacity-50')}>
             {/* --------- Left side --------- */}
-            {!simpleMode && <Controls_TimelineEdge direction={-1} />}
-
+            <Controls_TimelineEdge direction={-1} simpleMode={simpleMode} />
             <Control_CutTime side="start" currentCutSeg={currentCutSeg ?? { segColorIndex: 0 }} onSetCut={setCutStart} title={actionTitle(t('Start current segment at current time'), 'setCutStart')} />
-
-            <Button_KeyframeSeek direction={-1} />
-
-            {!simpleMode && (
-                <Button_Bar className="-mr-1 -ml-1.5" title={actionTitle(t('One frame back'), 'seekPreviousFrame')} onClick={() => player.shortStep(-1)}>
-                    <Icon_ToFrame className="size-5 stroke-2!" />
-                </Button_Bar>
-            )}
+            <Button_KeyframeSeek direction={-1} keyframesEnabled={keyframesEnabled} />
+            <Button_FrameStep direction={-1} simpleMode={simpleMode} />
 
             {/* --------- Center --------- */}
             <Button_PlayPause />
 
             {/* --------- Right side --------- */}
-            {!simpleMode && (
-                <Button_Bar className="-mr-1.5 -ml-1" title={actionTitle(t('One frame forward'), 'seekNextFrame')} onClick={() => player.shortStep(1)}>
-                    <Icon_ToFrame className="size-5 stroke-2! -scale-x-100" />
-                </Button_Bar>
-            )}
-
-            <Button_KeyframeSeek direction={1} />
-
+            <Button_FrameStep direction={1} simpleMode={simpleMode} />
+            <Button_KeyframeSeek direction={1} keyframesEnabled={keyframesEnabled} />
             <Control_CutTime side="end" currentCutSeg={currentCutSeg} onSetCut={setCutEnd} title={actionTitle(t('End current segment at current time'), 'setCutEnd')} />
-
-            {!simpleMode && <Controls_TimelineEdge direction={1} />}
+            <Controls_TimelineEdge direction={1} simpleMode={simpleMode} />
         </div>
     );
 }
 
 /** Jump-to-edge, neighboring segment, and current-segment cutpoint. Start order is mirrored for the end. */
-function Controls_TimelineEdge({ direction }: { direction: -1 | 1; }) {
-    const { t } = useTranslation();
+function Controls_TimelineEdge({ direction, simpleMode }: { direction: -1 | 1; simpleMode: boolean; }) {
     const currentCutSeg = useAtomValue(currentCutSegAtom);
     const actionTitle = useAtomValue(actionTitleAtom);
+    const { t } = useTranslation();
+
     const start = direction < 0;
+
+    if (simpleMode) {
+        return null;
+    }
 
     const jumpTimeline = (
         <Button_Bar
@@ -118,9 +103,8 @@ function Controls_TimelineEdge({ direction }: { direction: -1 | 1; }) {
 }
 
 /** Waveform, zoom, and related controls shown in the status bar. */
-export function BarPlayback_StatusControls() {
+export function BarPlayback_StatusControls({ simpleMode }: { simpleMode: boolean; }) {
     const isFileOpened = useAtomValue(isFileOpenedAtom);
-    const simpleMode = useAtomValue(simpleModeAtom);
     const hasVideo = useAtomValue(hasVideoAtom);
 
     return (
@@ -138,13 +122,13 @@ export function BarPlayback_StatusControls() {
 }
 
 function ViewToggles() {
-    const { t } = useTranslation();
     const hasAudio = useAtomValue(hasAudioAtom);
     const hasVideo = useAtomValue(hasVideoAtom);
     const waveformMode = useAtomValue(waveformModeAtom);
     const showThumbnails = useAtomValue(showThumbnailsAtom);
     const keyframesEnabled = useAtomValue(keyframesEnabledAtom);
     const actionTitle = useAtomValue(actionTitleAtom);
+    const { t } = useTranslation();
 
     return (<>
         {hasAudio && (
@@ -164,16 +148,36 @@ function ViewToggles() {
     </>);
 }
 
-function Button_KeyframeSeek({ direction }: { direction: -1 | 1; }) {
+function Button_FrameStep({ direction, simpleMode }: { direction: -1 | 1; simpleMode: boolean; }) {
+    const actionTitle = useAtomValue(actionTitleAtom);
+    const { t } = useTranslation();
+    const prev = direction < 0;
+
+    if (simpleMode) {
+        return null;
+    }
+
+    return (
+        <Button_Bar
+            className={prev ? '-mr-1 -ml-1.5' : '-mr-1.5 -ml-1'}
+            title={actionTitle(t(prev ? 'One frame back' : 'One frame forward'), prev ? 'seekPreviousFrame' : 'seekNextFrame')}
+            onClick={() => player.shortStep(direction)}
+        >
+            <Icon_ToFrame className={cn('size-5 stroke-2!', !prev && '-scale-x-100')} />
+        </Button_Bar>
+    );
+}
+
+function Button_KeyframeSeek({ direction, keyframesEnabled }: { direction: -1 | 1; keyframesEnabled: boolean; }) {
     const currentFrame = useAtomValue(currentFrameAtom);
     const actionTitle = useAtomValue(actionTitleAtom);
-    const keyframesEnabled = useAtomValue(keyframesEnabledAtom);
     const { t } = useTranslation();
     const prev = direction < 0;
 
     if (!keyframesEnabled) {
         return null;
     }
+
     return (
         <Button_Bar
             className={cn(prev ? "ml-0.5" : "mr-0.5 -scale-x-100", currentFrame?.keyframe && activeClasses)}
