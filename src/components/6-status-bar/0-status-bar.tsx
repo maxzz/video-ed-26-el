@@ -35,7 +35,6 @@ export function StatusBar({ className, ...rest }: HTMLAttributes<HTMLDivElement>
 }
 
 function StatusBar_Controls() {
-    const { t } = useTranslation();
     const filePath = useAtomValue(filePathAtom);
     const isFileOpened = useAtomValue(isFileOpenedAtom);
     const shouldShowPlaybackStreamSelector = useAtomValue(shouldShowPlaybackStreamSelectorAtom);
@@ -45,6 +44,7 @@ function StatusBar_Controls() {
     const numStreamsToCopy = useAtomValue(numStreamsToCopyAtom);
     const numStreamsTotal = useAtomValue(numStreamsTotalAtom);
     const enabledStreamsFilter = useAtomValue(enabledStreamsFilterAtom);
+    const { t } = useTranslation();
 
     const FormatLockIcon = outFormatLocked ? LockIcon : UnlockIcon;
 
@@ -55,7 +55,8 @@ function StatusBar_Controls() {
             {filePath && (<>
                 <Button variant="outline" size="xs" onClick={() => jotaiDefaultStore.set(streamsSelectorShownAtom, true)}>
                     <ListIcon />
-                    {t('Tracks')} ({numStreamsToCopy}/{numStreamsTotal})
+                    {t('Tracks')}
+                    {' '}({numStreamsToCopy}/{numStreamsTotal})
                 </Button>
 
                 {enabledStreamsFilter != null && (

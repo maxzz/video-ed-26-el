@@ -24,19 +24,24 @@ export function BarPlayback_StatusControls({ simpleMode }: { simpleMode: boolean
 
     return (
         <div className="flex items-center gap-1.5">
-            {!simpleMode && <ViewToggles />}
+            {!simpleMode && <Track_Toggles />}
+            
             <Button_InvertCutMode />
+
             {isFileOpened && !simpleMode && (<>
                 <Button_ZoomControls />
                 <Indicator_PlaybackRate />
                 <Button_Fps />
             </>)}
+
             {isFileOpened && !simpleMode && hasVideo && <Button_Rotation />}
         </div>
     );
 }
 
-function ViewToggles() {
+//---------------------------------------------------------------------------
+
+function Track_Toggles() {
     const hasAudio = useAtomValue(hasAudioAtom);
     const hasVideo = useAtomValue(hasVideoAtom);
     const waveformMode = useAtomValue(waveformModeAtom);
@@ -65,6 +70,8 @@ function ViewToggles() {
 
 const activeClasses = "text-primary";
 
+//---------------------------------------------------------------------------
+
 function Button_InvertCutMode() {
     const invertCutSegments = useAtomValue(invertCutSegmentsAtom);
     const { t } = useTranslation();
@@ -80,6 +87,8 @@ function Button_InvertCutMode() {
         </motion.div>
     );
 }
+
+//---------------------------------------------------------------------------
 
 function Button_ZoomControls() {
     const zoom = useAtomValue(zoomAtom);
@@ -105,15 +114,19 @@ function Button_ZoomControls() {
 
 const zoomOptions = Array.from({ length: 13 }, (_unused, z) => 2 ** z);
 
+//---------------------------------------------------------------------------
+
 function Indicator_PlaybackRate() {
     const playbackRate = useAtomValue(playbackRateAtom);
     const { t } = useTranslation();
+    
     let flashColor = 'rgb(234 88 12)';
     if (playbackRate === 1) {
         flashColor = 'rgb(8 145 178)';
     } else if (playbackRate < 1) {
         flashColor = 'rgb(234 179 8)';
     }
+
     return (
         <motion.div
             className="px-0.5 text-xs text-muted-foreground rounded-lg"
@@ -128,12 +141,7 @@ function Indicator_PlaybackRate() {
     );
 }
 
-async function handleChangePlaybackRateClick() {
-    const newRate = await askDialog_ForPlaybackRate({ detectedFps: jotaiDefaultStore.get(detectedFpsAtom), outputPlaybackRate: jotaiDefaultStore.get(outputPlaybackRateAtom) });
-    if (newRate != null) {
-        player.setOutputPlaybackRate(newRate);
-    }
-}
+//---------------------------------------------------------------------------
 
 function Button_Fps() {
     const detectedFps = useAtomValue(detectedFpsAtom);
@@ -154,6 +162,15 @@ function Button_Fps() {
     );
 }
 
+async function handleChangePlaybackRateClick() {
+    const newRate = await askDialog_ForPlaybackRate({ detectedFps: jotaiDefaultStore.get(detectedFpsAtom), outputPlaybackRate: jotaiDefaultStore.get(outputPlaybackRateAtom) });
+    if (newRate != null) {
+        player.setOutputPlaybackRate(newRate);
+    }
+}
+
+//---------------------------------------------------------------------------
+
 function Button_Rotation() {
     const rotation = useAtomValue(rotationAtom);
     const isRotationSet = useAtomValue(isRotationSetAtom);
@@ -171,6 +188,8 @@ function Button_Rotation() {
         </Button_Bar>
     );
 }
+
+//---------------------------------------------------------------------------
 
 function Button_Bar({ className, ...rest }: ComponentProps<'button'>) {
     return (
