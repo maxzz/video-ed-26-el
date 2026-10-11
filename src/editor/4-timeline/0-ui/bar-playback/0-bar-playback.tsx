@@ -1,8 +1,7 @@
-import { type ComponentProps, type CSSProperties } from "react";
+import { type CSSProperties } from "react";
 import { useAtomValue } from "jotai";
 import { cn } from "@/utils/classnames";
-import { Button } from "@/ui/shadcn/button";
-import { PauseIcon, PlayIcon, SkipBackIcon, SkipForwardIcon, StepBackIcon, StepForwardIcon } from "lucide-react";
+import { PauseIcon, PlayIcon } from "lucide-react";
 import { Icon_ToFrame, Icon_ToKeyframe } from "@/ui/icons/normal/local-ui";
 import { useTranslation } from "react-i18next";
 
@@ -17,8 +16,9 @@ import { setCutEnd, setCutStart } from "@/editor/5-segments/7-actions/segment-ac
 import { actionTitleAtom } from "../../9-state/action-title";
 import { currentFrameAtom, displayTimeAtom, isZoomedAtom, keyframesEnabledAtom } from "../../9-state/timeline-atoms";
 import { seekClosestKeyframe } from "../../7-actions/3-timeline-actions";
-import { Control_CutTime } from "./1-input-cut-time";
-import { Button_JumpSegment, Button_SegmentCutpoint } from "./2-button-segment-cut";
+import { Button_CutTime } from "./1-btn-cut-time";
+import { Button_Bar } from "./8-bar-playback-shared";
+import { Controls_TimelineEdge } from "./3-controls-timeline-edge";
 
 // Port of upstream BottomBar.tsx
 
@@ -43,7 +43,7 @@ function BottomBarTopRow() {
         <div className={cn('select-none flex items-center justify-center', !isFileOpened && 'opacity-50')}>
             {/* --------- Left side --------- */}
             <Controls_TimelineEdge direction={-1} simpleMode={simpleMode} />
-            <Control_CutTime side="start" currentCutSeg={currentCutSeg ?? { segColorIndex: 0 }} onSetCut={setCutStart} title={actionTitle(t('Start current segment at current time'), 'setCutStart')} />
+            <Button_CutTime side="start" currentCutSeg={currentCutSeg ?? { segColorIndex: 0 }} onSetCut={setCutStart} title={actionTitle(t('Start current segment at current time'), 'setCutStart')} />
             <Button_KeyframeSeek direction={-1} keyframesEnabled={keyframesEnabled} />
             <Button_FrameStep direction={-1} simpleMode={simpleMode} />
 
@@ -53,50 +53,13 @@ function BottomBarTopRow() {
             {/* --------- Right side --------- */}
             <Button_FrameStep direction={1} simpleMode={simpleMode} />
             <Button_KeyframeSeek direction={1} keyframesEnabled={keyframesEnabled} />
-            <Control_CutTime side="end" currentCutSeg={currentCutSeg} onSetCut={setCutEnd} title={actionTitle(t('End current segment at current time'), 'setCutEnd')} />
+            <Button_CutTime side="end" currentCutSeg={currentCutSeg} onSetCut={setCutEnd} title={actionTitle(t('End current segment at current time'), 'setCutEnd')} />
             <Controls_TimelineEdge direction={1} simpleMode={simpleMode} />
         </div>
     );
 }
 
-/** Jump-to-edge, neighboring segment, and current-segment cutpoint. Start order is mirrored for the end. */
-function Controls_TimelineEdge({ direction, simpleMode }: { direction: -1 | 1; simpleMode: boolean; }) {
-    const currentCutSeg = useAtomValue(currentCutSegAtom);
-    const actionTitle = useAtomValue(actionTitleAtom);
-    const { t } = useTranslation();
-
-    const start = direction < 0;
-
-    if (simpleMode) {
-        return null;
-    }
-
-    const jumpTimeline = (
-        <Button_Bar
-            title={actionTitle(t(start ? 'Jump to start of video' : 'Jump to end of video'), start ? 'jumpTimelineStart' : 'jumpTimelineEnd')}
-            onClick={start ? player.jumpTimelineStart : player.jumpTimelineEnd}
-        >
-            {start ? <SkipBackIcon className="size-4" /> : <SkipForwardIcon className="size-4" />}
-        </Button_Bar>
-    );
-
-    const cutpoint = (
-        <Button_SegmentCutpoint
-            className={start ? 'mr-1.25' : 'ml-1.25'}
-            currentCutSeg={currentCutSeg}
-            side={start ? 'start' : 'end'}
-            Icon={start ? StepBackIcon : StepForwardIcon}
-            onClick={start ? player.jumpCutStart : player.jumpCutEnd}
-            title={actionTitle(t(start ? 'Jump to current segment\'s start time' : 'Jump to current segment\'s end time'), start ? 'jumpCutStart' : 'jumpCutEnd')}
-        />
-    );
-
-    return (<>
-        {start ? jumpTimeline : cutpoint}
-        <Button_JumpSegment direction={direction} />
-        {start ? cutpoint : jumpTimeline}
-    </>);
-}
+//---------------------------------------------------------------------------
 
 function Button_FrameStep({ direction, simpleMode }: { direction: -1 | 1; simpleMode: boolean; }) {
     const actionTitle = useAtomValue(actionTitleAtom);
@@ -117,6 +80,8 @@ function Button_FrameStep({ direction, simpleMode }: { direction: -1 | 1; simple
     );
 }
 
+//---------------------------------------------------------------------------
+
 function Button_KeyframeSeek({ direction, keyframesEnabled }: { direction: -1 | 1; keyframesEnabled: boolean; }) {
     const currentFrame = useAtomValue(currentFrameAtom);
     const actionTitle = useAtomValue(actionTitleAtom);
@@ -129,7 +94,7 @@ function Button_KeyframeSeek({ direction, keyframesEnabled }: { direction: -1 | 
 
     return (
         <Button_Bar
-            className={cn(!prev && "-scale-x-100", currentFrame?.keyframe && activeClasses)}
+            className={cn(!prev && "-scale-x-100", currentFrame?.keyframe && "text-primary")}
             onClick={() => seekClosestKeyframe(direction)}
             title={prev ? actionTitle(t("Seek previous keyframe"), "seekBackwardsKeyframe") : actionTitle(t("Seek next keyframe"), "seekForwardsKeyframe")}
         >
@@ -138,7 +103,7 @@ function Button_KeyframeSeek({ direction, keyframesEnabled }: { direction: -1 | 
     );
 }
 
-const activeClasses = "text-primary";
+//---------------------------------------------------------------------------
 
 function Button_PlayPause() {
     const playing = useAtomValue(playingAtom);
@@ -218,11 +183,13 @@ function Button_LoopSelectedSegments() {
             : [selectedSegments[0] ?? { segColorIndex: 0 }, selectedSegments[1] ?? { segColorIndex: 1 }]
     ).slice(0, 10);
 
-    const gradientColors = selectedSegmentsSafe.map((seg, i) => {
-        const segColor = getSegColorRaw(seg);
-        // make colors stronger, the more segments
-        return `${segColor.alpha(Math.max(0.4, Math.min(0.8, selectedSegmentsSafe.length / 3))).string()} ${((i / (selectedSegmentsSafe.length - 1)) * 100).toFixed(1)}%`;
-    }).join(', ');
+    const gradientColors = selectedSegmentsSafe.map(
+        (seg, i) => {
+            const segColor = getSegColorRaw(seg);
+            // make colors stronger, the more segments
+            return `${segColor.alpha(Math.max(0.4, Math.min(0.8, selectedSegmentsSafe.length / 3))).string()} ${((i / (selectedSegmentsSafe.length - 1)) * 100).toFixed(1)}%`;
+        }
+    ).join(', ');
 
     const style: CSSProperties = { background: `linear-gradient(90deg, ${gradientColors})` };
     const Icon = playing && (playbackMode === 'play-selected-segments' || playbackMode === 'loop-selected-segments') ? PauseIcon : PlayIcon;
@@ -237,17 +204,5 @@ function Button_LoopSelectedSegments() {
         >
             <Icon className="size-3 fill-current" />
         </div>
-    );
-}
-
-function Button_Bar({ className, ...rest }: ComponentProps<'button'>) {
-    return (
-        <Button
-            className={cn('hover:bg-background hover:text-foreground rounded cursor-pointer', className)}
-            variant="outline"
-            size="icon-sm"
-            type="button"
-            {...rest}
-        />
     );
 }

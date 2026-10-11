@@ -16,13 +16,13 @@ import { currentCutSegAtom } from "@/editor/5-segments/9-state/a-segments-store"
 import { darkModeAtom, getSegColorAtom, simpleModeAtom } from "@/editor/5-segments/9-state/a-seg-ui-atoms";
 import { setCutTime } from "@/editor/5-segments/7-actions/segment-actions";
 import { cutTimeErrorAtoms, cutTimeManualAtoms } from "../../9-state/bottom-bar-atoms";
-import { Button_SetCutpoint } from "./2-button-segment-cut";
+import { Button_SetCutpoint } from "./2-btn-segment-cut";
 import { type Side } from "./9-types-playbar";
 
 // Port of upstream BottomBar.tsx CutTimeInput
 
 /** Set-cutpoint button. The down arrow opens a time popup under the button. */
-export function Control_CutTime({ side, currentCutSeg, onSetCut, title }: {
+export function Button_CutTime({ side, currentCutSeg, onSetCut, title }: {
     side: Side;
     currentCutSeg: SegmentColorIndex | undefined;
     onSetCut: () => unknown;
