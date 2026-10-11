@@ -44,7 +44,7 @@ function BottomBarTopRow() {
     const { t } = useTranslation();
 
     return (
-        <div className={cn('select-none flex items-center justify-between', !isFileOpened && 'opacity-50')}>
+        <div className={cn('select-none flex items-center justify-center', !isFileOpened && 'opacity-50')}>
             {/* --------- Left side --------- */}
             <Controls_TimelineEdge direction={-1} simpleMode={simpleMode} />
             <Control_CutTime side="start" currentCutSeg={currentCutSeg ?? { segColorIndex: 0 }} onSetCut={setCutStart} title={actionTitle(t('Start current segment at current time'), 'setCutStart')} />
@@ -159,7 +159,6 @@ function Button_FrameStep({ direction, simpleMode }: { direction: -1 | 1; simple
 
     return (
         <Button_Bar
-            className={prev ? '-mr-1 -ml-1.5' : '-mr-1.5 -ml-1'}
             title={actionTitle(t(prev ? 'One frame back' : 'One frame forward'), prev ? 'seekPreviousFrame' : 'seekNextFrame')}
             onClick={() => player.shortStep(direction)}
         >
@@ -180,7 +179,7 @@ function Button_KeyframeSeek({ direction, keyframesEnabled }: { direction: -1 | 
 
     return (
         <Button_Bar
-            className={cn(prev ? "ml-0.5" : "mr-0.5 -scale-x-100", currentFrame?.keyframe && activeClasses)}
+            className={cn(!prev && "-scale-x-100", currentFrame?.keyframe && activeClasses)}
             onClick={() => seekClosestKeyframe(direction)}
             title={prev ? actionTitle(t("Seek previous keyframe"), "seekBackwardsKeyframe") : actionTitle(t("Seek next keyframe"), "seekForwardsKeyframe")}
         >
@@ -191,8 +190,6 @@ function Button_KeyframeSeek({ direction, keyframesEnabled }: { direction: -1 | 
 
 const activeClasses = "text-primary";
 
-const roundButtonClasses = "size-[2.3em] text-white rounded-full flex items-center justify-center";
-
 function Button_PlayPause() {
     const playing = useAtomValue(playingAtom);
     const actionTitle = useAtomValue(actionTitleAtom);
@@ -200,12 +197,12 @@ function Button_PlayPause() {
     const Icon = playing ? PauseIcon : PlayIcon;
     return (
         <div
-            className={cn('mt-0.5 mr-0.5 ml-1 bg-primary', roundButtonClasses, !playing && 'pl-0.5')}
+            className="size-4 rounded-full flex items-center justify-center"
             onClick={() => player.togglePlay()}
             title={actionTitle(t('Play/pause'), 'togglePlayResetSpeed')}
             role="button"
         >
-            <Icon className="size-[.9em] fill-current" />
+            <Icon className="size-3.5" />
         </div>
     );
 }
@@ -389,7 +386,7 @@ function Button_LoopSelectedSegments() {
 
     return (
         <div
-            className={cn('text-[.7em] border border-muted-foreground', roundButtonClasses)}
+            className={cn('text-[.7em] border border-muted-foreground', "size-4 rounded-full flex items-center justify-center")}
             style={style}
             onClick={player.toggleLoopSelectedSegments}
             title={actionTitle(t('Play selected segments in order'), 'toggleLoopSelectedSegments')}
