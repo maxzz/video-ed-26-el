@@ -22,7 +22,7 @@
         "@types/smpte-timecode": "^1.2.5",
         "@types/yargs-parser": "^21.0.3",
         "@vitejs/plugin-react": "^6.1.1",
-        "electron": "^44.5.1",
+        "electron": "^44.7.0",
         "electron-builder": "^26.15.3",
         "electron-vite": "^5.0.0",
         "globals": "^17.13.0",
