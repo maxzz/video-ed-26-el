@@ -18,7 +18,7 @@ import { toggleOutFormatLocked } from "@/editor/7-export/7-actions/export-action
 import { Button_ExportMode } from "@/editor/7-export/0-ui/3-export-buttons";
 import { Dialog_OutDirSelector } from "@/editor/7-export/0-ui/5-dlg-out-dir-selector";
 import { Select_CurrentFileOutputFormat } from "@/editor/7-export/0-ui/7-output-format-select";
-import { BarPlayback_StatusControls } from "@/editor/4-timeline/0-ui/bar-playback/0-bar-playback";
+import { BarPlayback_StatusControls } from "./1-playback-status-controls";
 
 /** Bottom bar on the main page. Holds track, working-directory, and export controls. */
 export function StatusBar({ className, ...rest }: HTMLAttributes<HTMLDivElement>) {
