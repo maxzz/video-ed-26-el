@@ -1,21 +1,21 @@
-import { type ComponentProps } from "react";
 import { useAtomValue } from "jotai";
 import { jotaiDefaultStore } from "@/utils/local-utils/9-jotai-default-store";
 import { cn } from "@/utils/classnames";
 import { motion } from "motion/react";
-import { Button } from "@/ui/shadcn/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/ui/shadcn/select";
-import { AudioWaveformIcon, ContrastIcon, GaugeIcon, ImagesIcon, KeyIcon, RotateCcwSquareIcon } from "lucide-react";
+import { ContrastIcon, GaugeIcon, RotateCcwSquareIcon } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
 import * as player from "@/editor/3-player/7-actions/player-actions";
 import { askDialog_ForPlaybackRate } from "@/components/4-dialogs/7-1-dialogs/13-ask-for-playback-rate";
-import { detectedFpsAtom, hasAudioAtom, hasVideoAtom, isFileOpenedAtom, isRotationSetAtom, rotationAtom } from "@/editor/2-file/9-state/a-file-atoms";
+import { detectedFpsAtom, hasVideoAtom, isFileOpenedAtom, isRotationSetAtom, rotationAtom } from "@/editor/2-file/9-state/a-file-atoms";
 import { outputPlaybackRateAtom, playbackRateAtom } from "@/editor/3-player/9-state/a-player-atoms";
 import { invertCutSegmentsAtom } from "@/editor/5-segments/9-state/a-seg-ui-atoms";
 import { actionTitleAtom } from "@/editor/4-timeline/9-state/action-title";
-import { keyframesEnabledAtom, showThumbnailsAtom, waveformModeAtom, zoomAtom } from "@/editor/4-timeline/9-state/timeline-atoms";
-import { increaseRotation, timelineToggleComfortZoom, toggleInvertCutSegments, toggleShowKeyframes, toggleShowThumbnails, toggleWaveformMode, zoomAbs } from "@/editor/4-timeline/7-actions/3-timeline-actions";
+import { zoomAtom } from "@/editor/4-timeline/9-state/timeline-atoms";
+import { increaseRotation, timelineToggleComfortZoom, toggleInvertCutSegments, zoomAbs } from "@/editor/4-timeline/7-actions/3-timeline-actions";
+import { Button_Bar, activeClasses } from "./8-status-bar-shared";
+import { Track_Toggles } from "./2-track-toggles";
 
 /** Waveform, zoom, and related controls shown in the status bar. */
 export function BarPlayback_StatusControls({ simpleMode }: { simpleMode: boolean; }) {
@@ -38,37 +38,6 @@ export function BarPlayback_StatusControls({ simpleMode }: { simpleMode: boolean
         </div>
     );
 }
-
-//---------------------------------------------------------------------------
-
-function Track_Toggles() {
-    const hasAudio = useAtomValue(hasAudioAtom);
-    const hasVideo = useAtomValue(hasVideoAtom);
-    const waveformMode = useAtomValue(waveformModeAtom);
-    const showThumbnails = useAtomValue(showThumbnailsAtom);
-    const keyframesEnabled = useAtomValue(keyframesEnabledAtom);
-    const actionTitle = useAtomValue(actionTitleAtom);
-    const { t } = useTranslation();
-
-    return (<>
-        {hasAudio && (
-            <Button_Bar className={cn('px-0.5', waveformMode != null && activeClasses)} title={actionTitle(t('Show waveform'), 'toggleWaveformMode')} onClick={toggleWaveformMode}>
-                <AudioWaveformIcon className="size-5" />
-            </Button_Bar>
-        )}
-
-        {hasVideo && (<>
-            <Button_Bar className={cn('px-1', showThumbnails && activeClasses)} title={actionTitle(t('Show thumbnails'), 'toggleShowThumbnails')} onClick={toggleShowThumbnails}>
-                <ImagesIcon className="size-4" />
-            </Button_Bar>
-            <Button_Bar className={cn('px-1', keyframesEnabled && activeClasses)} title={actionTitle(t('Show keyframes'), 'toggleShowKeyframes')} onClick={toggleShowKeyframes}>
-                <KeyIcon className="size-4" />
-            </Button_Bar>
-        </>)}
-    </>);
-}
-
-const activeClasses = "text-primary";
 
 //---------------------------------------------------------------------------
 
@@ -190,15 +159,3 @@ function Button_Rotation() {
 }
 
 //---------------------------------------------------------------------------
-
-function Button_Bar({ className, ...rest }: ComponentProps<'button'>) {
-    return (
-        <Button
-            className={cn('hover:bg-background hover:text-foreground rounded cursor-pointer', className)}
-            variant="outline"
-            size="icon-sm"
-            type="button"
-            {...rest}
-        />
-    );
-}
