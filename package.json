@@ -59,7 +59,7 @@
         "execa": "^9.6.1",
         "express": "^5.2.1",
         "fast-xml-parser": "^5.8.0",
-        "i18next": "^26.3.0",
+        "i18next": "^26.4.3",
         "jotai": "^3.0.1",
         "jotai-effect": "^2.1.0",
         "jotai-valtio": "^0.6.0",
