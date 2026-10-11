@@ -75,6 +75,8 @@ export function Button_CutTime({ side, currentCutSeg, onSetCut, title }: {
     );
 }
 
+//---------------------------------------------------------------------------
+
 function Input_CutTime({ side, onApplied, onCancel }: { side: Side; onApplied: () => void; onCancel: () => void; }) {
     const isFileOpened = useAtomValue(isFileOpenedAtom);
     const currentCutSeg = useAtomValue(currentCutSegAtom);

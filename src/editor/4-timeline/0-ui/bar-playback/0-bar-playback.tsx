@@ -42,7 +42,7 @@ function BottomBarTopRow() {
     return (
         <div className={cn('select-none flex items-center justify-center', !isFileOpened && 'opacity-50')}>
             {/* --------- Left side --------- */}
-            <Controls_TimelineEdge direction={-1} simpleMode={simpleMode} />
+            <Controls_TimelineEdge direction={-1} />
             <Button_CutTime side="start" currentCutSeg={currentCutSeg ?? { segColorIndex: 0 }} onSetCut={setCutStart} title={actionTitle(t('Start current segment at current time'), 'setCutStart')} />
             <Button_KeyframeSeek direction={-1} keyframesEnabled={keyframesEnabled} />
             <Button_FrameStep direction={-1} simpleMode={simpleMode} />
@@ -54,7 +54,7 @@ function BottomBarTopRow() {
             <Button_FrameStep direction={1} simpleMode={simpleMode} />
             <Button_KeyframeSeek direction={1} keyframesEnabled={keyframesEnabled} />
             <Button_CutTime side="end" currentCutSeg={currentCutSeg} onSetCut={setCutEnd} title={actionTitle(t('End current segment at current time'), 'setCutEnd')} />
-            <Controls_TimelineEdge direction={1} simpleMode={simpleMode} />
+            <Controls_TimelineEdge direction={1} />
         </div>
     );
 }
