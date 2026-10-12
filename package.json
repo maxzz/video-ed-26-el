@@ -61,7 +61,7 @@
         "fast-xml-parser": "^5.8.0",
         "i18next": "^26.4.3",
         "jotai": "^3.0.1",
-        "jotai-effect": "^2.1.0",
+        "jotai-effect": "^2.4.2",
         "jotai-valtio": "^0.6.0",
         "json5": "^2.2.3",
         "leaflet": "^1.9.4",

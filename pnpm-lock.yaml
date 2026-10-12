@@ -78,8 +78,8 @@ importers:
         specifier: ^3.0.1
         version: 3.0.1(@types/react@19.3.0)(react@19.3.0)
       jotai-effect:
-        specifier: ^2.1.0
-        version: 2.4.1(jotai@3.0.1(@types/react@19.3.0)(react@19.3.0))
+        specifier: ^2.4.2
+        version: 2.4.2(jotai@3.0.1(@types/react@19.3.0)(react@19.3.0))
       jotai-valtio:
         specifier: ^0.6.0
         version: 0.6.0(jotai@3.0.1(@types/react@19.3.0)(react@19.3.0))(valtio@2.3.2(@types/react@19.3.0)(react@19.3.0))
@@ -3422,8 +3422,8 @@ packages:
   jose@6.2.12:
     resolution: {integrity: sha512-9NiFmJEex0sy2Dk58j2UGBSHgUs2ypF9eZSu4L6vjOX3Dp96Sw1F3uL+H+D1sx02jZZdzUT0HgvCy59CuvXcWw==}
 
-  jotai-effect@2.4.1:
-    resolution: {integrity: sha512-wptUnVOEeU8SkBA+sKGzXGnR3rbSfXLXrRxcj5QF3ukxH7CUbo5hoO2iMwUzsJSYaZM804ZpPoAxUY9nmksu8w==}
+  jotai-effect@2.4.2:
+    resolution: {integrity: sha512-YACEgYedHkSH0p3QkcBN3p41Ebhw8EOs+4hmyeApZ7eUINrQjs9ZITSap30WtC7kU4Jbz9RIpQ3v58qLv9/WGA==}
     engines: {node: '>=12.20.0'}
     peerDependencies:
       jotai: '>=2.20.0 || >=3.0.0-alpha.0'
@@ -8197,7 +8197,7 @@ snapshots:
 
   jose@6.2.12: {}
 
-  jotai-effect@2.4.1(jotai@3.0.1(@types/react@19.3.0)(react@19.3.0)):
+  jotai-effect@2.4.2(jotai@3.0.1(@types/react@19.3.0)(react@19.3.0)):
     dependencies:
       jotai: 3.0.1(@types/react@19.3.0)(react@19.3.0)
 
